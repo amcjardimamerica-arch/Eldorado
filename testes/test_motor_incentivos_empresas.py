@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 import pytest
 
 from eldorado.motores.canal.motor import MotorCanal
+from recorte_motor import recorte   # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 PASTA = Path("testes/paginas/empresas-editais-incentivados")
 INDICE = json.loads((PASTA / "indice.json").read_text(encoding="utf-8"))
@@ -36,7 +37,7 @@ def govbr():
 
 
 def test_os_chamamentos_do_pronas_e_do_pronon(govbr, tmp_path):
-    texto = Path("eldorado/motores/canal/config/empresas-editais-incentivados.toml").read_text(encoding="utf-8").replace("https://www.gov.br", govbr)
+    texto = recorte("empresas-editais-incentivados").replace("https://www.gov.br", govbr)
     texto = texto.replace("paginas_dos_achados = true", "paginas_dos_achados = false").replace("seguir_oficial = true", "seguir_oficial = false")
     texto = texto.replace('degraus = ["api", "leve"]', 'degraus = ["api"]').replace('degraus = ["api", "leve", "local"]', 'degraus = ["api"]')
     (tmp_path / "e.toml").write_text(texto, encoding="utf-8")

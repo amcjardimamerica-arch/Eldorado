@@ -1,14 +1,17 @@
-# PNCP: as contratações recebendo proposta, por UF (Goiás) e pelas modalidades em que as seleções de OSC aparecem
-# (12 credenciamento, 3 concurso, 10 manifestação de interesse, 11 pré-qualificação). Lição de 01/10: ler o país inteiro
-# sem filtro trazia registros sem data de encerramento e fora de Goiás; o portão e a validação cuidam do resto.
+# PNCP — contratações e chamamentos recebendo proposta — organização dos 43 motores (titular, 09/11/2026): motor 23, grupo «Executivo federal».
+# O mesmo motor, renumerado e renomeado.
+
 [motor]
 id = "pncp-api"
-nome = "PNCP — contratações recebendo proposta"
+numero = 23
+grupo = "Executivo federal"
+nome = "PNCP — contratações e chamamentos recebendo proposta"
 categoria = "Plataformas federais"
+categoria_estudo = "EXE"
 finalidade = "credenciamentos, concursos e chamamentos com prazo oficial de encerramento"
 canal = "api"
 uf = "GO"
-categoria_estudo = "EXE"
+destino = "biblioteca"
 nomes_anteriores = ["pncp", "plat-pncp"]
 
 [[fonte]]
@@ -30,6 +33,29 @@ municipio = "unidadeOrgao.municipioNome"
 modalidade = "modalidadeNome"
 resumo = "informacaoComplementar"
 
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "PNCP — busca de editais (termo \"chamamento\")"
+url = "https://pncp.gov.br/app/editais?q=chamamento%20p%C3%BAblico&status=recebendo_proposta"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "PNCP — documentação da API de consulta"
+url = "https://pncp.gov.br/api/consulta/swagger-ui/index.html"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Compras.gov.br — API de dados abertos"
+url = "https://dadosabertos.compras.gov.br/swagger-ui/index.html"
+tipo = "pagina"
+papel = "alternativa"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 # ---- os alvos do estudo (19/10/2026): pontos de captação vigiados na janela prevista; endereços do cadastro.
 
 [[alvo]]
@@ -38,11 +64,15 @@ nome = "PNCP — MUNICIPIO DE CARAZINHO — oportunidades (espalhado de edital v
 enderecos = ["https://carazinho.atende.net/"]
 orgao = "PNCP — MUNICIPIO DE CARAZINHO"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-carire-ce-gov-br"
 nome = "PNCP — MUNICIPIO DE CARIRE — oportunidades (espalhado de edital validado)"
 enderecos = ["https://carire.ce.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE CARIRE"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-crcgo-org-br"
@@ -50,11 +80,15 @@ nome = "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oport
 enderecos = ["https://crcgo.org.br/"]
 orgao = "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-sistema-mirassoldoeste-mt-gov-br"
 nome = "PNCP — MUNICIPIO DE MIRASSOL D’OESTE — oportunidades (espalhado de edital validado)"
 enderecos = ["https://sistema.mirassoldoeste.mt.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE MIRASSOL D'OESTE"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-transparencia-agilicloud-com-br"
@@ -62,11 +96,15 @@ nome = "PNCP — MUNICIPIO DE PARANATINGA — oportunidades (espalhado de edital
 enderecos = ["https://transparencia.agilicloud.com.br/"]
 orgao = "PNCP — MUNICIPIO DE PARANATINGA"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-transparencia-cacoal-ro-gov-br"
 nome = "PNCP — MUNICIPIO DE CACOAL — oportunidades (espalhado de edital validado)"
 enderecos = ["https://transparencia.cacoal.ro.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE CACOAL"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-transparencia-nobres-mt-gov-br"
@@ -74,11 +112,15 @@ nome = "PNCP — MUNICIPIO DE NOBRES — oportunidades (espalhado de edital vali
 enderecos = ["https://transparencia.nobres.mt.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE NOBRES"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-www-bentogoncalves-rs-gov-br"
 nome = "PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado)"
 enderecos = ["https://www.bentogoncalves.rs.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE BENTO GONCALVES"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-www-detran-rj-gov-br"
@@ -86,11 +128,15 @@ nome = "PNCP — ESTADO DO RIO DE JANEIRO — oportunidades (espalhado de edital
 enderecos = ["https://www.detran.rj.gov.br/"]
 orgao = "PNCP — ESTADO DO RIO DE JANEIRO"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-www-ipora-pr-gov-br"
 nome = "PNCP — MUNICIPIO DE IPORA — oportunidades (espalhado de edital validado)"
 enderecos = ["https://www.ipora.pr.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE IPORA"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-www-itabaianinha-se-gov-br"
@@ -98,11 +144,15 @@ nome = "PNCP — MUNICIPIO DE ITABAIANINHA — oportunidades (espalhado de edita
 enderecos = ["https://www.itabaianinha.se.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE ITABAIANINHA"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-www-novohamburgo-rs-gov-br"
 nome = "PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado)"
 enderecos = ["https://www.novohamburgo.rs.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE NOVO HAMBURGO"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-www-ribeiraodasneves-mg-gov-br"
@@ -110,11 +160,15 @@ nome = "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES — oportunidades (espalhado de
 enderecos = ["https://www.ribeiraodasneves.mg.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-www-riopreto-sp-gov-br"
 nome = "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO — oportunidades (espalhado de edital validado)"
 enderecos = ["https://www.riopreto.sp.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-www-rosariodosul-rs-gov-br"
@@ -122,11 +176,15 @@ nome = "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edi
 enderecos = ["https://www.rosariodosul.rs.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE ROSARIO DO SUL"
 
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-www-senadorpompeu-ce-gov-br"
 nome = "PNCP — MUNICIPIO DE SENADOR POMPEU — oportunidades (espalhado de edital validado)"
 enderecos = ["https://www.senadorpompeu.ce.gov.br/"]
 orgao = "PNCP — MUNICIPIO DE SENADOR POMPEU"
+
+# PROPOSTO SAIR em 09/11/2026 (comprador de outro estado, sem sentido como local): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-espalhado-www-vilarica-mt-gov-br"
@@ -151,4 +209,4 @@ territorio = "goias"
 salvos = ["re:13\\.019|termo de (fomento|colaboracao)|mrosc|termo de execucao cultural"]
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): os 17 alvos são portais de órgãos compradores de outros estados (RS, CE, MT, RO, RJ, PR, SE, MG, SP) e o CRC-GO, abertos um a um no Chrome: nenhum é fonte de oportunidade para OSC de Goiás (municipais de outro estado saem pela R27). Recomendação: retirar (decisão da titular, R19). A busca do PNCP com UF=GO trouxe Abadia de Goiás (PNAB, 03/11) e o chamamento de OSC do FMAS de Senador Canedo (ainda recebendo).", "08/11/2026 (parecer): 0 acertos em 18 — 16 eram de prefeituras de outros estados vigiadas pelos alvos espalhados do PNCP; com o território de Goiás esses alvos não são lidos.", "08/11/2026: a API de propostas falhou em 19 de 128 leituras com XML malformado (resposta de erro do PNCP); a próxima passagem relê.", "08/11/2026: a consulta passou a incluir o DF (os órgãos federais e a capital)."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 23, grupo «Executivo federal»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): os 17 alvos são portais de órgãos compradores de outros estados (RS, CE, MT, RO, RJ, PR, SE, MG, SP) e o CRC-GO, abertos um a um no Chrome: nenhum é fonte de oportunidade para OSC de Goiás (municipais de outro estado saem pela R27). Recomendação: retirar (decisão da titular, R19). A busca do PNCP com UF=GO trouxe Abadia de Goiás (PNAB, 03/11) e o chamamento de OSC do FMAS de Senador Canedo (ainda recebendo).", "08/11/2026 (parecer): 0 acertos em 18 — 16 eram de prefeituras de outros estados vigiadas pelos alvos espalhados do PNCP; com o território de Goiás esses alvos não são lidos.", "08/11/2026: a API de propostas falhou em 19 de 128 leituras com XML malformado (resposta de erro do PNCP); a próxima passagem relê.", "08/11/2026: a consulta passou a incluir o DF (os órgãos federais e a capital)."]

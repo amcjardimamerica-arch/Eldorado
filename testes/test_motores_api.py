@@ -10,6 +10,7 @@ import pytest
 from servidor_local import criar_servidor
 
 from eldorado.motores.canal.motor import MotorCanal
+from recorte_motor import recorte   # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 CONFIG = Path("eldorado/motores/canal/config")
 HOJE = date.today()
@@ -101,7 +102,7 @@ def api():
 def motor(nome, base, tmp_path):
     # 08/11/2026: o www.gov.br também vai ao servidor de ensaio (o alvo do MDHC no DOU; os degraus curl_cffi e primp não
     # passam pela barreira de rede dos testes e liam a página real)
-    texto = (CONFIG / f"{nome}.toml").read_text(encoding="utf-8")
+    texto = recorte(nome)
     texto = re.sub(r"https://(?:www\.in\.gov\.br|www\.gov\.br|pncp\.gov\.br|mapa\.cultura\.gov\.br|goias\.gov\.br|queridodiario\.ok\.org\.br|api-publica\.transferegov\.gestao\.gov\.br)",
                    base, texto)
     texto = texto.replace('intervalo_s = 1.0', 'intervalo_s = 0')

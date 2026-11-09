@@ -12,7 +12,7 @@ def _bib():
                     "CREATE TABLE livro(id TEXT, situacao TEXT, criado_em TEXT, justificativa_exclusao TEXT);"
                     "CREATE TABLE passaporte(livro_id TEXT, fase TEXT);")
     for i, (sit, fase) in enumerate([("aguardando", "farol"), ("excluido", "arquivo"), ("excluido", "arquivo"), ("aguardando", "arquivo")]):
-        b.execute("INSERT INTO achado VALUES (?, 'site-rede-comua', '2026-11-01')", (f"L{i}",))
+        b.execute("INSERT INTO achado VALUES (?, 'fundacoes-nacionais', '2026-11-01')", (f"L{i}",))
         b.execute("INSERT INTO livro VALUES (?, ?, '2026-11-03', ?)", (f"L{i}", sit, "página institucional do órgão" if sit == "excluido" else ""))
         b.execute("INSERT INTO passaporte VALUES (?, ?)", (f"L{i}", fase))
     return b
@@ -24,7 +24,7 @@ def test_acertos_contra_erros_e_as_indicacoes(tmp_path):
     v = tmp_path / "verificacao" / "vereditos" / "importados"
     v.mkdir(parents=True)
     v.joinpath("x.json").write_text(json.dumps({"vereditos": [{"livro_id": "L3", "decisao": "valido"}]}))
-    r = calcular(_bib(), None, tmp_path)["site-rede-comua"]
+    r = calcular(_bib(), None, tmp_path)["fundacoes-nacionais"]
     assert (r["acertos"], r["erros"]) == (2, 2) and r["precisao"] == 0.5          # o Farol e o válido; os dois expurgos
     assert r["erros_por_tipo"] == {"pagina_institucional": 2} and r["melhorias"][0]["tipo"] == "pagina_institucional"
     assert r["faixa"] == "formacao"                                                    # 4 decididos (< 5): em formação
@@ -44,6 +44,6 @@ def test_o_mostrador_3d_recebe_os_dados_reais_de_cada_motor(tmp_path):
     from datetime import datetime, timezone
     (tmp_path / "config").mkdir()
     (tmp_path / "config" / "pontuacao_motores.toml").write_text(Path("config/pontuacao_motores.toml").read_text(encoding="utf-8"), encoding="utf-8")
-    r = calcular(_bib(), None, tmp_path, agora=datetime(2026, 11, 9, 12, tzinfo=timezone.utc))["site-rede-comua"]["m3d"]
+    r = calcular(_bib(), None, tmp_path, agora=datetime(2026, 11, 9, 12, tzinfo=timezone.utc))["fundacoes-nacionais"]["m3d"]
     assert {"a", "e", "curso", "local", "saude", "melh", "exec", "falhas", "ach", "acc", "livros", "estrelas", "hl", "ha", "dias", "diasRot"} <= set(r)
     assert len(r["dias"]) == 8 and r["diasRot"] == "2–9 nov"

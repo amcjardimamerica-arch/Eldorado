@@ -1,32 +1,18 @@
-# Sites oficiais do Governo de Goiás em WordPress, pela API pública (as secretarias de Cultura e Social).
+# Governo de Goiás — secretarias e órgãos estaduais — organização dos 43 motores (titular, 09/11/2026): motor 20, grupo «Executivo estadual».
+# O mesmo motor, renumerado e renomeado.
+
 [motor]
 id = "estaduais-go-gov"
-nome = "Oportunidades estaduais governamentais de Goiás"
+numero = 20
+grupo = "Executivo estadual"
+nome = "Governo de Goiás — secretarias e órgãos estaduais"
 categoria = "Executivo — portais do governo"
+categoria_estudo = "EXE"
 finalidade = "editais, chamamentos e programas das secretarias e fundos de Goiás, pela API do WordPress (a rota principal) e pelas páginas oficiais"
 canal = "api"
 uf = "GO"
-categoria_estudo = "EXE"
+destino = "biblioteca"
 nomes_anteriores = ["wordpress-goias", "goyazes", "plataforma-wordpress", "plat-estaduais-go-gov", "plat-fapeg", "plat-fundos-estaduais-go", "plat-goias-social", "plat-ovg", "plat-secult-go"]
-
-
-# O Programa Goyazes é um ALVO deste motor (estudo da titular, 19/10/2026), com as regras de extração das normas só para ele.
-[programa]
-titulo = "Programa Goyazes (Lei estadual 13.613/2000) — incentivo fiscal à cultura em Goiás"
-orgao = "Secretaria de Estado da Cultura de Goiás"
-modalidade = "incentivo fiscal estadual (ICMS)"
-link_divulgacao = "https://goias.gov.br/cultura/programa-goyazes/"
-link_oficial = "https://goias.gov.br/cultura/programa-goyazes/legislacao/"
-documentos = ["https://goias.gov.br/cultura/programa-goyazes/legislacao/", "https://goias.gov.br/cultura/programa-goyazes/inscricoes/",
-              "https://goias.gov.br/cultura/programa-goyazes/"]   # a página de inscrições traz as datas (sondagem de 22/10)
-
-[programa.normas]
-padrao = "resolucao|instrucao normativa|portaria"
-maximo = 3
-
-[legislacao]
-leis = ["lei-go-13613-2000"]
-notas = "Prazos de inscrição, limites e contrapartidas vêm da legislação e das portarias vigentes, lidas na página oficial."
 
 [[fonte]]
 nome = "Secretaria de Cultura de Goiás"
@@ -39,17 +25,6 @@ nome = "Secretaria de Desenvolvimento Social de Goiás"
 url = "https://goias.gov.br/social/wp-json/wp/v2/posts"
 tipo = "wordpress"
 termos = "edital"
-
-[[fonte]]
-nome = "Programa Goyazes — página do programa"
-url = "https://goias.gov.br/cultura/programa-goyazes/"
-tipo = "pagina"
-
-[[fonte]]
-nome = "Secult — publicações sobre o Goyazes"
-url = "https://goias.gov.br/cultura/wp-json/wp/v2/posts"
-tipo = "wordpress"
-termos = "goyazes"
 
 [[fonte]]
 nome = "FAPEG — Fundação de Amparo à Pesquisa do Estado de Goiás"
@@ -90,18 +65,6 @@ papel = "alternativa"
 termos = "edital"
 
 [[fonte]]
-nome = "Anater — chamadas públicas"
-url = "https://www.anater.org/index.php/chamada-publica/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
-nome = "Anater — editais do ano"
-url = "https://www.anater.org/editais-2/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
 nome = "OVG — página inicial"
 url = "https://www.ovg.org.br/"
 tipo = "pagina"
@@ -114,13 +77,6 @@ url = "https://goias.gov.br/cultura/chamamentos-publicos-secult/"
 tipo = "pagina"
 papel = "principal"
 
-[[fonte]]
-nome = "Programa Goyazes — inscrições (a página das inscrições do ano)"
-url = "https://goias.gov.br/cultura/programa-goyazes/inscricoes-2/"
-tipo = "pagina"
-papel = "alternativa"
-
-
 # 08/11/2026 (passada no Chrome): a PNAB Goiás mostra a SITUAÇÃO de cada edital ("Inscrições abertas", "Habilitação para
 # Pagamento", "Encerrado") em vez da data — Editais 20 e 21/2026 (Ocupa Goiás) abertos. A ferramenta nova lê o rótulo do item.
 [[fonte]]
@@ -129,13 +85,321 @@ url = "https://goias.gov.br/cultura/pnab/edital-2026-pnab/"
 tipo = "pagina"
 papel = "alternativa"
 
-# Anater: a página de chamadas tem texto de spam injetado no fim (site comprometido): só os links das chamadas contam.
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
 [[fonte]]
-nome = "Anater — chamadas públicas de ATER (só os blocos das chamadas)"
-url = "https://www.anater.org/chamada-publica/"
+nome = "Desenvolvimento Social — edital/chamamento público do ano"
+url = "https://goias.gov.br/social/edital-chamamento-publico-2026/"
 tipo = "pagina"
 papel = "alternativa"
-filtro = { titulo = '(?i)chamada|edital|sele[cç][aã]o' }
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Secretaria-Geral de Governo — editais"
+url = "https://goias.gov.br/governo/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Retomada — chamamentos públicos"
+url = "https://goias.gov.br/retomada/chamamento-publico/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SECTI — chamamentos"
+url = "https://goias.gov.br/inovacao/chamamentos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SECTI — Radar de Editais"
+url = "https://goias.gov.br/inovacao/radar-de-editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "FAPEG — editais"
+url = "https://goias.gov.br/fapeg/categoria/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Saúde — chamamento público do ano"
+url = "https://goias.gov.br/saude/categoria/prestacao-de-contas/licitacoes/chamamento-publico-2026/"
+tipo = "pagina"
+papel = "alternativa"
+
+# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
+# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+# [[fonte]]
+# nome = "Polícia Penal — chamamentos públicos (seleção de OSC)"
+# url = "https://policiapenal.go.gov.br/publicacoes/chamamentos-publicos"
+# tipo = "pagina"
+# papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Esporte e Lazer — portal"
+url = "https://esporte.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Sead — fundos de direitos (idoso e outros)"
+url = "https://goias.gov.br/administracao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Governo de Goiás — documentos para termo de fomento"
+url = "https://goias.gov.br/institucional/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "SEAPA - Secretaria de Estado de Agricultura, Pecuária e Abastecimento — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/agricultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria de Estado de Ciência, Tecnologia e Inovação — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/inovacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "FAPEG — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/fapeg/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Retomada — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/retomada/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria-Geral de Governo — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/governo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria da Economia — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/economia/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Casa Civil — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/casacivil/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Controladoria — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/controladoria/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Goiás Turismo — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/turismo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria de Segurança Pública — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/seguranca/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Emater Goiás — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/emater/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "AGEHAB — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/agehab/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Departamento Estadual de Trânsito de Goiás — site próprio dentro de goias.gov.br"
+url = "https://goias.gov.br/detran/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/social"
+url = "https://goias.gov.br/social/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/governo"
+url = "https://goias.gov.br/governo/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/retomada"
+url = "https://goias.gov.br/retomada/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/inovacao"
+url = "https://goias.gov.br/inovacao/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/fapeg"
+url = "https://goias.gov.br/fapeg/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/saude"
+url = "https://goias.gov.br/saude/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/administracao"
+url = "https://goias.gov.br/administracao/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/institucional"
+url = "https://goias.gov.br/institucional/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/cultura"
+url = "https://goias.gov.br/cultura/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/esporte"
+url = "https://goias.gov.br/esporte/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/educacao"
+url = "https://goias.gov.br/educacao/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/meioambiente"
+url = "https://goias.gov.br/meioambiente/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/agricultura"
+url = "https://goias.gov.br/agricultura/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/economia"
+url = "https://goias.gov.br/economia/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/casacivil"
+url = "https://goias.gov.br/casacivil/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/controladoria"
+url = "https://goias.gov.br/controladoria/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/turismo"
+url = "https://goias.gov.br/turismo/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/seguranca"
+url = "https://goias.gov.br/seguranca/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/emater"
+url = "https://goias.gov.br/emater/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/agehab"
+url = "https://goias.gov.br/agehab/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/detran"
+url = "https://goias.gov.br/detran/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [[alvo]]
 id = "f260-captacao-018"
@@ -197,6 +461,24 @@ nome = "SECULT Goiás — chamamentos públicos da Lei 13.019/2014"
 enderecos = ["https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/", "https://goias.gov.br/cultura/editais/"]
 orgao = "Secretaria de Estado da Cultura de Goiás — SECULT"
 
+# O Programa Goyazes é um ALVO deste motor (estudo da titular, 19/10/2026), com as regras de extração das normas só para ele.
+[programa]
+titulo = "Programa Goyazes (Lei estadual 13.613/2000) — incentivo fiscal à cultura em Goiás"
+orgao = "Secretaria de Estado da Cultura de Goiás"
+modalidade = "incentivo fiscal estadual (ICMS)"
+link_divulgacao = "https://goias.gov.br/cultura/programa-goyazes/"
+link_oficial = "https://goias.gov.br/cultura/programa-goyazes/legislacao/"
+documentos = ["https://goias.gov.br/cultura/programa-goyazes/legislacao/", "https://goias.gov.br/cultura/programa-goyazes/inscricoes/",
+              "https://goias.gov.br/cultura/programa-goyazes/"]   # a página de inscrições traz as datas (sondagem de 22/10)
+
+[programa.normas]
+padrao = "resolucao|instrucao normativa|portaria"
+maximo = 3
+
+[legislacao]
+leis = ["lei-go-13613-2000"]
+notas = "Prazos de inscrição, limites e contrapartidas vêm da legislação e das portarias vigentes, lidas na página oficial."
+
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
 
@@ -236,4 +518,4 @@ nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalida
 "Objeto" = ['(Programa Estadual de Incentivo [àa] Cultura\s*[–-]\s*GOYAZES)', '((?:incentivo|apoio) (?:fiscal )?(?:a|à|aos) projetos culturais[^.;]{10,200})']
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): Secult GO passou a abrir editais no Baru 2.0 (editaiscultura.sistemas.go.gov.br, com Login Único — sem lista pública); o Mapa Goiano não teve nenhuma oportunidade nova em 30 d. A página PNAB 2026 traz a situação (\"Inscrições abertas\") — lida pela ferramenta nova. A página de chamadas da Anater tem SPAM injetado (apostas, indonésio): ler só os blocos das chamadas. Alvos mortos: goias.gov.br/social/cedca/ (404), goiania.go.gov.br/sme/cmdca/ (404), páginas CONANDA e CNDI no MDH (pedem login) — decisão da titular para trocar/retirar (R19).", "08/11/2026 (estudo Claude × motores, 30 d): navegando pelo menu da Secult, o Claude chegou à página oficial dos chamamentos (goias.gov.br/cultura/chamamentos-publicos-secult/) e à das inscrições do Goyazes: entraram como rotas. O Ocupa Goiás (MITsp, Brasilidades & Futuros, Virada) foi achado pelo motor e pelo Claude.", "08/11/2026 (conferido pelo Chrome, do Brasil): a página de editais da Anater responde do Brasil com as chamadas públicas 005 e 006/2026 e a seleção dos Quintais Produtivos — rota boa pela ponte.", "08/11/2026 (parecer): a página do Edital PNAB 2026 rende muito (63 aceitas pelo motor em 30 d), mas cada anexo, errata, lista e formulário virava livro (27 erros anexo/lista): agora vetados pelo título.", "08/11/2026: a busca do WordPress ordena por relevância e trazia posts de anos (32 erros de edição encerrada): a pista com mais de 180 dias não entra.", "08/11/2026: a FAPEG é de pesquisa (19 de 43 achados num experimento eram chamadas para pesquisadores); a busca dela passou a ser por associações."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 20, grupo «Executivo estadual»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): Secult GO passou a abrir editais no Baru 2.0 (editaiscultura.sistemas.go.gov.br, com Login Único — sem lista pública); o Mapa Goiano não teve nenhuma oportunidade nova em 30 d. A página PNAB 2026 traz a situação (\"Inscrições abertas\") — lida pela ferramenta nova. A página de chamadas da Anater tem SPAM injetado (apostas, indonésio): ler só os blocos das chamadas. Alvos mortos: goias.gov.br/social/cedca/ (404), goiania.go.gov.br/sme/cmdca/ (404), páginas CONANDA e CNDI no MDH (pedem login) — decisão da titular para trocar/retirar (R19).", "08/11/2026 (estudo Claude × motores, 30 d): navegando pelo menu da Secult, o Claude chegou à página oficial dos chamamentos (goias.gov.br/cultura/chamamentos-publicos-secult/) e à das inscrições do Goyazes: entraram como rotas. O Ocupa Goiás (MITsp, Brasilidades & Futuros, Virada) foi achado pelo motor e pelo Claude.", "08/11/2026 (conferido pelo Chrome, do Brasil): a página de editais da Anater responde do Brasil com as chamadas públicas 005 e 006/2026 e a seleção dos Quintais Produtivos — rota boa pela ponte.", "08/11/2026 (parecer): a página do Edital PNAB 2026 rende muito (63 aceitas pelo motor em 30 d), mas cada anexo, errata, lista e formulário virava livro (27 erros anexo/lista): agora vetados pelo título.", "08/11/2026: a busca do WordPress ordena por relevância e trazia posts de anos (32 erros de edição encerrada): a pista com mais de 180 dias não entra.", "08/11/2026: a FAPEG é de pesquisa (19 de 43 achados num experimento eram chamadas para pesquisadores); a busca dela passou a ser por associações."]

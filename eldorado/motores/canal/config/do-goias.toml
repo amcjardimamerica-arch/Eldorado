@@ -1,16 +1,45 @@
-# Diário Oficial do Estado de Goiás — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Diário Oficial do Estado de Goiás — organização dos 43 motores (titular, 09/11/2026): motor 03, grupo «Diários oficiais».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "diario"
 id = "do-goias"
+numero = 3
+grupo = "Diários oficiais"
 nome = "Diário Oficial do Estado de Goiás"
 categoria = "Executivo — diários e portais do governo"
 categoria_estudo = "EXE"
 finalidade = "encontrar oportunidade aberta para OSC em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda"
 tipo_finalidade = "descoberta"
+canal = "diario"
+uf = "GO"
+destino = "biblioteca"
 nomes_anteriores = []
+
+# 09/11/2026: veio do motor alego-pl (organização dos 43 motores)
+
+[[fonte]]
+nome = "Diário Oficial do Estado — os atos legislativos do terceiro setor (leis de utilidade pública, subvenções, entidades)"
+url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
+tipo = "cadeia"
+papel = "alternativa"
+lexico = { termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|associa[çc][õo]es|entidades? (sociais|assistenciais|sem fins|beneficentes|filantr|culturais|esportivas)|voluntari|emendas? (parlamentar|impositiv|individua)|doa[çc][ãa]o (de|a) (bens|materiais|im[óo]veis|recursos)|chamamento p[úu]blico|cooperativas? (sociais|solid)|economia solid|organiza[çc][ãa]o social"], vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|decreto or[çc]ament|cr[ée]dito (suplementar|especial)|abre (ao|cr[ée]dito)|servid[ãa]o administrativa|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|licen[çc]a|dia (estadual|municipal) d", "re:novembro negro|banda marcial|apresenta[çc][ãa]o (de|da|do) banda|outubro rosa|novembro azul|calend[áa]rio c[íi]vico"], termos_em = "tudo" }   # 09/11/2026: o léxico do motor alego-pl (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "itens"
+campos = { edicao = "id", numero = "numero" }
+
+[[fonte.cadeia]]
+formato = "html"
+url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
+itens = "a.linkMateria"
+campos = { materia = "attr:data-materia-id", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
+filtro = { titulo = '(?i)utilidade p[úu]blica|terceiro setor|sociedade civil|subven[çc]|sem fins lucrativos|entidade|filantr|associa[çc][ãa]o|lei n' }
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
+resumo = "{caminho} · edição {numero}"
 
 # ---- rotas confirmadas na sondagem e nas páginas gravadas (23/10/2026, testes/paginas/do-goias/):
 # as edições do dia (JSON) → o sumário de cada edição (árvore por órgão e seção) → o texto integral de cada matéria.
@@ -58,7 +87,6 @@ titulo = "{titulo}"
 link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
 resumo = "{caminho} · edição {numero} · protocolo {protocolo}"
 
-
 # 08/11/2026 (passada no Chrome): a busca de texto completo do próprio DOE (a mesma do formulário "Buscar no ABC", Elasticsearch)
 # com período — nos 30 d achou 13 chamamentos para OSC e cultura (Santo Antônio do Descoberto, DGPP, SEDS, CMDCA Catalão, PNAB de
 # Quirinópolis, Vianópolis, Mossâmedes, Piracanjuba, Panamá…) que a leitura da edição do dia trazia com título genérico ("Edital").
@@ -86,6 +114,53 @@ limite = 40
 titulo = "DOE-GO: {titulo}"
 link = "https://diariooficial.abc.go.gov.br/buscanova/#/p=1&q={id}"
 resumo = "Diário Oficial do Estado de Goiás — aviso achado pela busca de texto completo (página {id})"
+
+# 09/11/2026: veio do motor mpgo-destinacao (organização dos 43 motores)
+
+[[fonte]]
+nome = "Diário Oficial do Estado — as matérias do Ministério Público, da destinação e do TAC"
+url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
+tipo = "cadeia"
+papel = "alternativa"
+lexico = { termos = ["re:destina|tac\\b|ajustamento de conduta|doa[çc][ãa]o|cadastr|chamamento|edital|entidade|compor|presta[çc][ãa]o pecuni"], vetos = ["re:concurso|est[áa]gio|licita|preg[ãa]o|resultado final|nomea|exonera", "re:credenciamento (p[úu]blico )?(para cadastro )?de bachar|bachar[ée]is|capacita[çc][ãa]o|\\bcursos?\\b|\\bpalestras?\\b|semin[áa]rio|\\breuni[ãa]o|\\bvisitas?\\b|\\bcampanhas?\\b|como atuar"], termos_em = "tudo" }   # 09/11/2026: o léxico do motor mpgo-destinacao (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "itens"
+campos = { edicao = "id", numero = "numero" }
+
+[[fonte.cadeia]]
+formato = "html"
+url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
+itens = "a.linkMateria"
+campos = { materia = "attr:data-materia-id", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
+filtro = { titulo = '(?i)minist[ée]rio p[úu]blico|mpgo|destina[çc][ãa]o|\btac\b|ajustamento de conduta|compor' }
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
+resumo = "{caminho} · edição {numero}"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Diário Oficial do Estado — página da Secretaria-Geral de Governo"
+url = "https://goias.gov.br/governo/diario-oficial-do-estado/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "DOE — downloads das edições"
+url = "https://diariooficial.abc.go.gov.br/portal/edicoes/download/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/governo"
+url = "https://goias.gov.br/governo/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [[alvo]]
 id = "f260-captacao-034"
@@ -118,12 +193,10 @@ vetos = ["re:cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o|penalidade|co
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a edição do dia (JSON) dá títulos genéricos (\"Edital\", \"Chamamentos Públicos\") que não casam com nada; a busca de texto completo do DOE (/busca/busca/buscar/query/{p}/di:/df:/?q=\"…\") devolve a página inteira e o aviso de chamamento é recortado dela (ferramenta nova: cadeia \"linhas\" sobre um campo já lido). 30 d: 13 avisos para OSC/cultura, nenhum casou com os 55 achados do motor.", "08/11/2026 (parecer): a edição 'de hoje' rende mais (30 pistas acumuladas) que a 'de ontem' (8); a de ontem fica para os suplementos.", "08/11/2026: o 'edital de comunicação/publicação' é aviso de licença ambiental de empresa e o 'edital de convocação' é assembleia: vetados pelo título; o credenciamento só o de entidades e agentes culturais.", "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 03, grupo «Diários oficiais»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a edição do dia (JSON) dá títulos genéricos (\"Edital\", \"Chamamentos Públicos\") que não casam com nada; a busca de texto completo do DOE (/busca/busca/buscar/query/{p}/di:/df:/?q=\"…\") devolve a página inteira e o aviso de chamamento é recortado dela (ferramenta nova: cadeia \"linhas\" sobre um campo já lido). 30 d: 13 avisos para OSC/cultura, nenhum casou com os 55 achados do motor.", "08/11/2026 (parecer): a edição 'de hoje' rende mais (30 pistas acumuladas) que a 'de ontem' (8); a de ontem fica para os suplementos.", "08/11/2026: o 'edital de comunicação/publicação' é aviso de licença ambiental de empresa e o 'edital de convocação' é assembleia: vetados pelo título; o credenciamento só o de entidades e agentes culturais.", "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
 bloqueios_conhecidos = ["diariooficial.abc.go.gov.br", "goias.gov.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["https://diariooficial.abc.go.gov.br/apifront/portal/visualizacoes/view_html_diario/{edicao} (404, 23/10/2026)",
-                      "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_materia/{materia} (404, 23/10/2026)",
-                      "/portal/edicoes e /portal/visualizacoes/pesquisa (caminhos que não existem: o motor antigo ficou um mês sem ler)"]
+rotas_que_falharam = ["https://diariooficial.abc.go.gov.br/apifront/portal/visualizacoes/view_html_diario/{edicao} (404, 23/10/2026)", "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_materia/{materia} (404, 23/10/2026)", "/portal/edicoes e /portal/visualizacoes/pesquisa (caminhos que não existem: o motor antigo ficou um mês sem ler)"]
 
 [metrica]
 cadencia_h = 12

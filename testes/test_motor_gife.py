@@ -49,7 +49,8 @@ def fontes():
 
 
 def achados(base, tmp_path):
-    texto = Path("eldorado/motores/canal/config/motor-gife.toml").read_text(encoding="utf-8")
+    from recorte_motor import recorte              # 09/11/2026 (R50): o motor-gife dentro do novo-fundacoes-institutos (destino da fonte)
+    texto = recorte("motor-gife")
     texto = texto.replace("https://goias.gov.br", base).replace("https://api.salic.cultura.gov.br", base)
     texto = texto.replace('degraus = ["api", "leve", "local"]', 'degraus = ["api"]').replace('degraus = ["api", "leve"]', 'degraus = ["api"]')
     (tmp_path / "g.toml").write_text(texto, encoding="utf-8")

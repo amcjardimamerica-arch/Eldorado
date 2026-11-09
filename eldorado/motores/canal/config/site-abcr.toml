@@ -1,14 +1,19 @@
-# Financiadores do terceiro setor com site em WordPress (API pública). Alguns publicam editais num tipo próprio
-# (chamadas, edital), que já é só de oportunidades.
+# ABCR — editais divulgados — organização dos 43 motores (titular, 09/11/2026): motor 31, grupo «Sites de divulgação — terceiro setor».
+# O mesmo motor, renumerado e renomeado.
+
 [motor]
 id = "site-abcr"
-nome = "ABCR — Associação Brasileira de Captadores de Recursos"
+numero = 31
+grupo = "Sites de divulgação — terceiro setor"
+nome = "ABCR — editais divulgados"
 categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
 finalidade = "editais divulgados pela associação dos captadores"
 canal = "api"
 uf = "BR"
-categoria_estudo = "POR"
+destino = "biblioteca"
 nomes_anteriores = ["plat-abcr"]
+
 [[fonte]]
 nome = "ABCR — publicações (API do WordPress; sondagem de 22/10/2026)"
 # 08/11/2026 (parecer): a categoria "Editais" (id 162, 413 posts) do WordPress da ABCR, os mais novos primeiro — antes, todas
@@ -16,15 +21,29 @@ nome = "ABCR — publicações (API do WordPress; sondagem de 22/10/2026)"
 url = "https://captadores.org.br/wp-json/wp/v2/posts?categories=162&orderby=date"
 tipo = "wordpress"
 papel = "principal"
+
 # 08/11/2026 (estudo Claude × motores): sem a busca "edital" — a categoria Editais já é a curadoria; a busca deixava de fora
 # "Plan Brasil lança fundo de R$ 600 mil para projetos…" (o Claude achou navegando; o motor, não)
-
 
 # a rota alternativa (sondagem de 23/10/2026): o mapa do site, outro tipo de rota no mesmo órgão (o léxico filtra pelos endereços)
 [[fonte]]
 nome = "mapa do site (captadores.org.br)"
 url = "https://captadores.org.br/wp-sitemap.xml"
 tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "ABCR — categoria editais"
+url = "https://captadores.org.br/category/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "ABCR — editais (página)"
+url = "https://captadores.org.br/editais/"
+tipo = "pagina"
 papel = "alternativa"
 
 [acesso]
@@ -43,4 +62,4 @@ vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscrico
 idade_maxima_dias = 120
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): wp-json 30 d: 8 editais (Cerbranorte, SP idosos, Floresta Viva, Pague Menos, Plan, Brasilcap, BB reciclagem, apoio em comunicação) — 6 casaram com o motor depois do ajuste de léxico.", "08/11/2026 (estudo Claude × motores, 30 d): navegando, o Claude achou 5 editais recentes na categoria Editais e o motor achou 4; o que faltou (Plan Brasil, \"lança fundo de R$ 600 mil\") caía pela busca \"edital\" da API e pelo léxico: a busca saiu (a categoria já é a curadoria) e o léxico ganhou \"lança fundo\", \"abre edital/inscrições\", \"recebe projetos\".", "08/11/2026 (parecer): 144 de 217 pistas vinham do mapa do site (o acervo) e 25 eram editais de ano anterior. Agora a rota principal é a categoria Editais do WordPress (categories=162), pelos mais novos, e a idade máxima é de 120 dias."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 31, grupo «Sites de divulgação — terceiro setor»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): wp-json 30 d: 8 editais (Cerbranorte, SP idosos, Floresta Viva, Pague Menos, Plan, Brasilcap, BB reciclagem, apoio em comunicação) — 6 casaram com o motor depois do ajuste de léxico.", "08/11/2026 (estudo Claude × motores, 30 d): navegando, o Claude achou 5 editais recentes na categoria Editais e o motor achou 4; o que faltou (Plan Brasil, \"lança fundo de R$ 600 mil\") caía pela busca \"edital\" da API e pelo léxico: a busca saiu (a categoria já é a curadoria) e o léxico ganhou \"lança fundo\", \"abre edital/inscrições\", \"recebe projetos\".", "08/11/2026 (parecer): 144 de 217 pistas vinham do mapa do site (o acervo) e 25 eram editais de ano anterior. Agora a rota principal é a categoria Editais do WordPress (categories=162), pelos mais novos, e a idade máxima é de 120 dias."]

@@ -1,16 +1,19 @@
-# MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# MPT-GO — editais de destinação (PRT 18ª Região) — organização dos 43 motores (titular, 09/11/2026): motor 12, grupo «Ministério Público».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
-orgao = "Ministério Público do Trabalho em Goiás (PRT 18ª Região)"
 id = "mptgo-destinacao"
-nome = "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)"
+numero = 12
+grupo = "Ministério Público"
+nome = "MPT-GO — editais de destinação (PRT 18ª Região)"
 categoria = "Judiciário e Ministérios Públicos"
 categoria_estudo = "JUD"
 finalidade = "editais de 5 dias do MPT-GO (todo dia) e habilitação da A.M.C."
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+orgao = "Ministério Público do Trabalho em Goiás (PRT 18ª Região)"
+destino = "biblioteca"
 nomes_anteriores = []
 
 # ---- rotas (23/10/2026, testes/paginas/ministerios-publicos/): a página dos editais de destinação da PRT 18ª Região
@@ -47,6 +50,27 @@ url = "https://mpt.mp.br/search_rss?SearchableText=edital+destina%C3%A7%C3%A3o&s
 tipo = "feed"
 papel = "alternativa"
 
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MPT — Sistema de Destinações (cadastro nacional de entidades)"
+url = "https://destinacoes.mpt.mp.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MPT-GO — cadastro de entidades"
+url = "https://www.prt18.mpt.mp.br/15-servicos/99-cadastro-de-entidades"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MPT-GO — notícias"
+url = "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go"
+tipo = "pagina"
+papel = "alternativa"
+
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
 
@@ -61,11 +85,10 @@ vetos = ["re:resultado da sele|homologa"]
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na tabela da PRT18 o link do edital se chama \"abrir/salvar\": o título vem da linha (Região + Data + Número) — ferramenta nova (título do item quando o link é genérico). 30 d: Goiânia 27/10 (094312.2026) e Anápolis 23/10 (010513.2026). O RSS nacional mistura datas dd/mm/aaaa e aaaa/mm/dd.", "08/11/2026 (parecer): o RSS nacional do MPT traz editais de outras regionais (MPT-SE, MPT/AL, MPT-CE): ficam (R27: a estadual de outro estado fica; R38: por último na ordem); a cláusula de quem pode participar é lida no edital (R30). O título que era nome de arquivo (\"edital...Gerado-em...pdf\") e o \"arquivo.pdf/view\" do Plone agora são lidos como o próprio edital.", "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 12, grupo «Ministério Público»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na tabela da PRT18 o link do edital se chama \"abrir/salvar\": o título vem da linha (Região + Data + Número) — ferramenta nova (título do item quando o link é genérico). 30 d: Goiânia 27/10 (094312.2026) e Anápolis 23/10 (010513.2026). O RSS nacional mistura datas dd/mm/aaaa e aaaa/mm/dd.", "08/11/2026 (parecer): o RSS nacional do MPT traz editais de outras regionais (MPT-SE, MPT/AL, MPT-CE): ficam (R27: a estadual de outro estado fica; R38: por último na ordem); a cláusula de quem pode participar é lida no edital (R30). O título que era nome de arquivo (\"edital...Gerado-em...pdf\") e o \"arquivo.pdf/view\" do Plone agora são lidos como o próprio edital.", "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"]
 bloqueios_conhecidos = ["mpt.mp.br", "www.gov.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["a tabela da PRT 18 por GET (404): só por POST, na sessão da página (23/10/2026)",
-                      "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias (quebrada, no Eldorado0)"]
+rotas_que_falharam = ["a tabela da PRT 18 por GET (404): só por POST, na sessão da página (23/10/2026)", "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias (quebrada, no Eldorado0)"]
 
 [metrica]
 esporadica = true   # R48 (titular, 08/11/2026): o Judiciário e os MPs publicam raramente; a vigilância sem erro cumpre a finalidade

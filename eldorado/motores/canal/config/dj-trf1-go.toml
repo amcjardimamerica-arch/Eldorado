@@ -1,16 +1,19 @@
-# Diário da Justiça Federal — Seção Judiciária de Goiás — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Justiça Federal em Goiás — editais e avisos — organização dos 43 motores (titular, 09/11/2026): motor 10, grupo «Judiciário».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
-orgao = "Justiça Federal — Seção Judiciária de Goiás (TRF1)"
 id = "dj-trf1-go"
-nome = "Diário da Justiça Federal — Seção Judiciária de Goiás"
+numero = 10
+grupo = "Judiciário"
+nome = "Justiça Federal em Goiás — editais e avisos"
 categoria = "Judiciário e Ministérios Públicos"
 categoria_estudo = "JUD"
 finalidade = "encontrar oportunidade aberta para OSC em destinações de pena federais — raras em Goiás"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+orgao = "Justiça Federal — Seção Judiciária de Goiás (TRF1)"
+destino = "biblioteca"
 nomes_anteriores = []
 
 # ---- diagnóstico (23/10/2026): a Justiça Federal em Goiás responde; não há página própria de prestação pecuniária (os
@@ -30,7 +33,6 @@ tipo = "pagina"
 seletor = "#corpo_pagina"
 papel = "alternativa"
 
-
 # 08/11/2026 (passada no Chrome): os editais de chamamento da SJGO saem em "Avisos" (Chamamento Público nº 02/2026, 27/10).
 [[fonte]]
 nome = "SJGO — avisos (editais de chamamento para entidades)"
@@ -38,6 +40,36 @@ url = "https://www.trf1.jus.br/sjgo/imprensa/avisos"
 tipo = "pagina"
 papel = "alternativa"
 filtro = { titulo = '(?i)chamamento|cadastramento|entidade' }
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SJGO — notícias (edital de cadastramento de entidades)"
+url = "https://www.trf1.jus.br/sjgo/noticias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SJGO — página inicial"
+url = "https://www.trf1.jus.br/sjgo/home/"
+tipo = "pagina"
+papel = "alternativa"
+
+# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
+# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+# [[fonte]]
+# nome = "JFGO — novo domínio da Seção Judiciária"
+# url = "https://www.jfgo.jus.br/sjgo"
+# tipo = "pagina"
+# papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TRF1 — repositório de portarias (DSpace)"
+url = "https://portal.trf1.jus.br/dspace/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -52,7 +84,7 @@ vetos = ["re:est[áa]gio|correi[çc][ãa]o|inspe[çc][ãa]o|perit|advogad|push|c
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a rota /sjgo/imprensa/avisos (achada no menu) traz o \"Publicação de edital Chamamento Público nº 02/2026\" (27/10); os editais de citação da mesma lista são ruído (filtro na fonte).", "08/11/2026 (parecer): destinações de pena federais são raras em Goiás (1 livro em 30 dias, vencido); fonte esporádica: a finalidade é a vigilância sem erro, com o edital anual de cadastramento de entidades (fev–mar).", "Destinações de pena federais são raras em Goiás; não há página própria de prestação pecuniária na SJGO (23/10/2026).", "Rota de acesso única para os domínios com bloqueio (www.cnj.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 2 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Nenhum resultado em 80 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 10, grupo «Judiciário»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a rota /sjgo/imprensa/avisos (achada no menu) traz o \"Publicação de edital Chamamento Público nº 02/2026\" (27/10); os editais de citação da mesma lista são ruído (filtro na fonte).", "08/11/2026 (parecer): destinações de pena federais são raras em Goiás (1 livro em 30 dias, vencido); fonte esporádica: a finalidade é a vigilância sem erro, com o edital anual de cadastramento de entidades (fev–mar).", "Destinações de pena federais são raras em Goiás; não há página própria de prestação pecuniária na SJGO (23/10/2026).", "Rota de acesso única para os domínios com bloqueio (www.cnj.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 2 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Nenhum resultado em 80 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = ["www.cnj.jus.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://www.cnj.jus.br/?s=prestação pecuniária Goiás (a busca do CNJ é do motor judiciario-cnj)"]

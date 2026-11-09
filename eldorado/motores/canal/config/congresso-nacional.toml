@@ -1,15 +1,18 @@
-# Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Congresso Nacional — proposições, orçamento e emendas parlamentares — organização dos 43 motores (titular, 09/11/2026): motor 07, grupo «Legislativo».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "BR"
-canal = "portal"
 id = "congresso-nacional"
-nome = "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)"
+numero = 7
+grupo = "Legislativo"
+nome = "Congresso Nacional — proposições, orçamento e emendas parlamentares"
 categoria = "Legislativo"
 categoria_estudo = "LEG"
 finalidade = "monitorar no Congresso os projetos de lei e os atos do terceiro setor e das OSC, as emendas ao orçamento da União e o prazo delas, e as oportunidades para entidades"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
 nomes_anteriores = []
 
 # ---- rotas (23/10/2026, testes/paginas/legislativo-sondagem/): os comunicados da CMO (o prazo das emendas), a página do
@@ -172,6 +175,62 @@ titulo = "{ident} — {ementa}"
 link = "https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo}"
 resumo = "Senado · apresentada em {data}"
 
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal da Transparência — emendas por favorecido (entidade)"
+url = "https://portaldatransparencia.gov.br/emendas/consulta-por-favorecido"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Tesouro Transparente — painel das emendas individuais e de bancada"
+url = "https://www.tesourotransparente.gov.br/consultas/painel-das-emendas-parlamentares-individuais-e-de-bancada"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TCU — painel de acompanhamento da execução de emendas"
+url = "https://sites.tcu.gov.br/painel-de-acompanhamento-da-execucao-de-emendas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Comissão Mista de Orçamento — portal"
+url = "https://www.congressonacional.leg.br/portal-cmo"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Transferegov — cartilhas e emendas parlamentares"
+url = "https://www.gov.br/transferegov/pt-br/manuais/emendas"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — portaldatransparencia.gov.br"
+url = "https://portaldatransparencia.gov.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.congressonacional.leg.br"
+url = "https://www.congressonacional.leg.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.gov.br"
+url = "https://www.gov.br/sitemap.xml.gz"
+tipo = "mapa"
+papel = "alternativa"
+
 [[alvo]]
 id = "f260-captacao-200"
 nome = "Emenda parlamentar federal individual"
@@ -191,7 +250,7 @@ vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|come
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na API da Câmara, ano=AAAA&ordenarPor=id devolve as proposições mais novas pela numeração (as de 2026 com os termos são de jul–ago: nada nos 30 d); dataInicio/dataFim filtram o que TRAMITOU no período (sociedade civil 8, sem fins lucrativos 12 nos 30 d). Trocado para dataInicio=ontem&dataFim=hoje; \"13.019\" e \"filantrópicas\" não casam como palavra-chave → \"Marco Regulatório\" e \"sem fins lucrativos\".", "08/11/2026 (parecer): o motor é de acompanhamento (R14): os atos vão à tela Legislativo e ficam na Biblioteca (R35); a recusa \"ato legislativo\" do portão é o caminho certo, não erro. A saída principal é o prazo das emendas da CMO (ex.: \"LOA 2027 — MANUAL DE EMENDAS e ORIENTAÇÕES\", 06/11/2026). O RSS do Senado repetia cada notícia em \"Áudio: …\": vetado pelo título.", "O prazo das emendas da LOA sai nos comunicados da CMO (por exemplo, 21/10/2026: Matérias Novas/Relatórios Entregues e prazo de emendas).", "Ler primeiro pela dados abertos da Câmara e do Senado; as páginas ficam como reserva.", "O afinador já achou 3 rota(s) que funcionaram: entram como rotas do motor.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 07, grupo «Legislativo»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na API da Câmara, ano=AAAA&ordenarPor=id devolve as proposições mais novas pela numeração (as de 2026 com os termos são de jul–ago: nada nos 30 d); dataInicio/dataFim filtram o que TRAMITOU no período (sociedade civil 8, sem fins lucrativos 12 nos 30 d). Trocado para dataInicio=ontem&dataFim=hoje; \"13.019\" e \"filantrópicas\" não casam como palavra-chave → \"Marco Regulatório\" e \"sem fins lucrativos\".", "08/11/2026 (parecer): o motor é de acompanhamento (R14): os atos vão à tela Legislativo e ficam na Biblioteca (R35); a recusa \"ato legislativo\" do portão é o caminho certo, não erro. A saída principal é o prazo das emendas da CMO (ex.: \"LOA 2027 — MANUAL DE EMENDAS e ORIENTAÇÕES\", 06/11/2026). O RSS do Senado repetia cada notícia em \"Áudio: …\": vetado pelo título.", "O prazo das emendas da LOA sai nos comunicados da CMO (por exemplo, 21/10/2026: Matérias Novas/Relatórios Entregues e prazo de emendas).", "Ler primeiro pela dados abertos da Câmara e do Senado; as páginas ficam como reserva.", "O afinador já achou 3 rota(s) que funcionaram: entram como rotas do motor.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=sociedade civil (vazio desde 01/09/2026: a palavra-chave da Câmara precisa de outro termo)"]

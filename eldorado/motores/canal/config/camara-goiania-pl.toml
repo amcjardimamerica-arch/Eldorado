@@ -1,16 +1,19 @@
-# Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Câmara Municipal de Goiânia — projetos de lei, utilidade pública e emendas — organização dos 43 motores (titular, 09/11/2026): motor 05, grupo «Legislativo».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
-orgao = "Câmara Municipal de Goiânia"
 id = "camara-goiania-pl"
-nome = "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos"
+numero = 5
+grupo = "Legislativo"
+nome = "Câmara Municipal de Goiânia — projetos de lei, utilidade pública e emendas"
 categoria = "Legislativo"
 categoria_estudo = "LEG"
 finalidade = "monitorar na Câmara de Goiânia os projetos de lei e os atos do terceiro setor e das OSC, a utilidade pública (a da associação: PL 288/2026), as emendas impositivas, as leis de fomento, parceria e isenção, e os chamamentos"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+orgao = "Câmara Municipal de Goiânia"
+destino = "biblioteca"
 nomes_anteriores = []
 
 # ---- rotas (23/10/2026): o SUAP da Câmara e o portal não respondem à nuvem (tempo esgotado e 502): computador local. Na
@@ -39,48 +42,6 @@ tipo = "feed"
 papel = "alternativa"
 exige_brasil = true
 
-[[fonte]]
-nome = "Querido Diário — Goiânia: utilidade pública e Jardim América (a sanção do PL 288/2026)"
-url = "https://api.queridodiario.org.br/gazettes?territory_ids=5208707&querystring=%22utilidade%20p%C3%BAblica%22%20%2B%20%22Jardim%20Am%C3%A9rica%22&published_since={hoje-30:%Y-%m-%d}&size=10&excerpt_size=300&number_of_excerpts=1&sort_by=descending_date"
-tipo = "cadeia"
-papel = "alternativa"
-
-[[fonte.cadeia]]
-formato = "json"
-itens = "gazettes"
-campos = { url = "url", data = "date", edicao = "edition", trecho = "excerpts[0]" }
-limite = 10
-
-[fonte.pista]
-titulo = "Diário de Goiânia de {data}: utilidade pública (Jardim América)"
-link = "{url}"
-resumo = "{trecho}"
-
-
-[[fonte]]
-nome = "Querido Diário — Goiânia: os atos do terceiro setor (utilidade pública, OSC, sem fins lucrativos, emendas impositivas), recortados em atos"
-url = "https://api.queridodiario.org.br/gazettes?territory_ids=5208707&querystring=%22utilidade%20p%C3%BAblica%22%20%7C%20%22terceiro%20setor%22%20%7C%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22%20%7C%20%22sem%20fins%20lucrativos%22%20%7C%20%22emenda%20impositiva%22%20%7C%20%22emendas%20impositivas%22&published_since={hoje-3:%Y-%m-%d}&size=5&sort_by=descending_date"
-tipo = "cadeia"
-papel = "alternativa"
-
-[[fonte.cadeia]]
-formato = "json"
-itens = "gazettes"
-campos = { pdf = "url", edicao = "edition", data = "date" }
-limite = 5
-
-[[fonte.cadeia]]
-formato = "atos"
-url = "{pdf}"
-limite = 400
-
-[fonte.pista]
-titulo = "{titulo}"
-link = "{pdf}#ato-{ordem}"
-resumo = "{orgao} · {inicio}"
-texto = "{texto}"
-
-
 # 08/11/2026 (passada no Chrome, do Brasil): o SUAP voltou a responder por GET — 25 projetos de utilidade pública em 2026,
 # 4 nos últimos 30 dias (PL 574, 540, 507, 502). Cada item: "Processo … Assunto: Projeto de Lei nº …  Data de criação: dd/mm/aaaa".
 # Da nuvem, a cadeia TLS do SUAP falha (código 60): só pela ponte do Brasil.
@@ -100,6 +61,41 @@ limite = 50
 titulo = "{titulo}"
 link = "https://suap.camaragyn.go.gov.br/camara/consulta_publica/?processo={processo}"
 resumo = "Câmara de Goiânia — projeto de lei de utilidade pública (SUAP), criado em {data}"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Câmara de Goiânia — processo legislativo"
+url = "https://www.goiania.go.leg.br/processo-legislativo/legislativo"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Câmara de Goiânia — chamadas públicas da própria Câmara"
+url = "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos/licitacoes/chamada-publica/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Prefeitura — Painel de Emendas Parlamentares (impositivas dos vereadores)"
+url = "https://www.goiania.go.gov.br/sing_transparencia/painel-emendas-parlamentares-2026/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal de Emendas Parlamentares de Goiânia (TransWeb)"
+url = "https://www10.goiania.go.gov.br/TransWeb/Portal_EmendasParlamentares.aspx"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br"
+url = "https://www.goiania.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [[alvo]]
 id = "f260-captacao-069"
@@ -138,7 +134,7 @@ vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o SUAP respondeu do Brasil por GET (consulta_publica?classificacao=PL&assunto=utilidade pública&ano=AAAA): fonte acrescentada com exige_brasil; nos 30 d trouxe 4 PLs que o motor não tinha (só tinha as notícias/diários). A busca @@search do Plone expira (>7 s); o search_rss continua sendo a rota rápida.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (experimento, edições de 04 e 05/11): 102 atos em dois dias, 56 despachos e portarias (o expediente interno: designa gestor, autoriza aditivo) — vetados pelo título; ficam os extratos e termos de fomento e colaboração, os chamamentos, as resoluções, as leis e as emendas (R14).", "08/11/2026 (parecer): o motor é de acompanhamento (R14): os atos vão à tela Legislativo e ficam na Biblioteca (R35), por isso a precisão do Cartório não o mede. A cadeia do Querido Diário passou a buscar também as emendas impositivas (a execução delas para entidades sai no diário: \"Recursos Ordinários para Atender Emenda Impositiva\"); o pagamento por indenização sai pelo título. O SUAP e o site da Câmara só respondem do Brasil (ponte ou computador local); a consulta do PL 288/2026 pelo número fica para a ponte.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América): a sanção sai no Diário do Município.", "Rota de acesso única para os domínios com bloqueio (saude.goiania.go.gov.br, www.goiania.go.gov.br, www.goiania.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 14 rota(s) que funcionaram: entram como rotas do motor.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "robots_proibe: None", "ponte_brasil_aprendida: {'www.goiania.go.leg.br': True}", "alternativas_conhecidas: None"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 05, grupo «Legislativo»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o SUAP respondeu do Brasil por GET (consulta_publica?classificacao=PL&assunto=utilidade pública&ano=AAAA): fonte acrescentada com exige_brasil; nos 30 d trouxe 4 PLs que o motor não tinha (só tinha as notícias/diários). A busca @@search do Plone expira (>7 s); o search_rss continua sendo a rota rápida.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (experimento, edições de 04 e 05/11): 102 atos em dois dias, 56 despachos e portarias (o expediente interno: designa gestor, autoriza aditivo) — vetados pelo título; ficam os extratos e termos de fomento e colaboração, os chamamentos, as resoluções, as leis e as emendas (R14).", "08/11/2026 (parecer): o motor é de acompanhamento (R14): os atos vão à tela Legislativo e ficam na Biblioteca (R35), por isso a precisão do Cartório não o mede. A cadeia do Querido Diário passou a buscar também as emendas impositivas (a execução delas para entidades sai no diário: \"Recursos Ordinários para Atender Emenda Impositiva\"); o pagamento por indenização sai pelo título. O SUAP e o site da Câmara só respondem do Brasil (ponte ou computador local); a consulta do PL 288/2026 pelo número fica para a ponte.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América): a sanção sai no Diário do Município.", "Rota de acesso única para os domínios com bloqueio (saude.goiania.go.gov.br, www.goiania.go.gov.br, www.goiania.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 14 rota(s) que funcionaram: entram como rotas do motor.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "robots_proibe: None", "ponte_brasil_aprendida: {'www.goiania.go.leg.br': True}", "alternativas_conhecidas: None"]
 bloqueios_conhecidos = ["www.goiania.go.leg.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://suap.camaragyn.go.gov.br e https://www.goiania.go.leg.br pela nuvem (tempo esgotado e 502, 23/10/2026)", "https://suap.camaragyn.go.gov.br/camara/consulta_publica/ (\"Erro no Sistema\" também do Brasil, 08/11/2026: 95 leituras e 0 pista)"]

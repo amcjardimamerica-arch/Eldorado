@@ -22,6 +22,17 @@ canal = "portal"                            # diario | api | portal (a categoria
 uf = "GO"                                   # GO, BR ou a UF da fonte
 orgao = ""                                  # o órgão da fonte, quando o motor for de um órgão só
 nomes_anteriores = «nomes_anteriores»       # os motores antigos reunidos neste (o histórico deles passa a ser deste)
+# numero = 1                               # 09/11/2026 (R50): a posição do motor na organização da titular (1 a 43)
+# grupo = "Diários oficiais"                # 09/11/2026 (R50): o grupo do motor (a ordem de config/motores_previstos.json)
+
+# 09/11/2026 (R50, os motores reunidos): o DESTINO e o LÉXICO POR FONTE valem sobre os do motor — o motor que reúne outros
+# mantém o filtro de cada fonte e a base de empresas (destino especial) num motor da Biblioteca:
+# [[fonte]]
+# nome = "Salic — incentivadores pessoa jurídica de Goiás"
+# url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica"
+# tipo = "cadeia"
+# destino = "especial"                      # biblioteca | especial (a empresa e o incentivo, pelo mapa [fonte.especial])
+# lexico = { termos = ["re:edital|chamada"], vetos = ["re:resultado"], termos_em = "titulo" }   # o léxico desta fonte
 
 # ---------------------------------------------------------------------------------------------------------------------
 # AS ROTAS: [[fonte]]. Só entra rota que respondeu na sondagem (eldorado gravar / o fluxo Gravar páginas). Ao menos duas

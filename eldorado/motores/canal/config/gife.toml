@@ -1,13 +1,17 @@
-# Financiadores do terceiro setor com site em WordPress (API pública). Alguns publicam editais num tipo próprio
-# (chamadas, edital), que já é só de oportunidades.
+# GIFE — editais divulgados — organização dos 43 motores (titular, 09/11/2026): motor 30, grupo «Sites de divulgação — terceiro setor».
+# O mesmo motor, renumerado e renomeado.
+
 [motor]
 id = "gife"
-nome = "GIFE — Grupo de Institutos, Fundações e Empresas"
+numero = 30
+grupo = "Sites de divulgação — terceiro setor"
+nome = "GIFE — editais divulgados"
 categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
 finalidade = "editais e oportunidades divulgados pelo GIFE"
 canal = "api"
 uf = "BR"
-categoria_estudo = "POR"
+destino = "biblioteca"
 nomes_anteriores = ["wordpress-financiadores", "plat-gife"]
 
 [[fonte]]
@@ -45,7 +49,6 @@ titulo = "{titulo} — {prazo}"
 link = "{link}"
 resumo = "Seleção GIFE ({post}) · {resumo}"
 
-
 # a rota alternativa (sondagem de 23/10/2026): o mapa do site, outro tipo de rota no mesmo órgão (o léxico filtra pelos endereços)
 [[fonte]]
 nome = "mapa do site (gife.org.br)"
@@ -58,6 +61,48 @@ papel = "alternativa"
 nome = "GIFE — página de editais"
 url = "https://gife.org.br/editais/"
 tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "GIFE — categoria editais"
+url = "https://gife.org.br/category/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "GIFE — painel de transparência (editais)"
+url = "https://paineldetransparencia.gife.org.br/category/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "GIFE GrantLab — seleção de projetos"
+url = "https://grantlab.gife.org.br/assuntos/lista-selecao-de-projetos-iniciativas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "GIFE Mosaico — base de projetos"
+url = "https://mosaico.gife.org.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — paineldetransparencia.gife.org.br"
+url = "https://paineldetransparencia.gife.org.br/sitemap_index.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — grantlab.gife.org.br"
+url = "https://grantlab.gife.org.br/wp-sitemap.xml"
+tipo = "mapa"
 papel = "alternativa"
 
 [acesso]
@@ -76,4 +121,4 @@ vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscrico
 idade_maxima_dias = 120
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o post-resumo mensal (\"Confira editais com inscrições abertas para novembro\", 02/11) traz 3 editais com prazos próprios (Plan até 11/11; SoMar Azul até 05/11; AngloGold até 06/11) — o motor precisa desmembrar o post por seção (proposta de ferramenta).", "08/11/2026 (parecer): 83 livros de notícia, 181 de 184 achados do mapa do site (o acervo inteiro). Agora: idade máxima de 120 dias (pela data do mapa e pela lida na página), a API do WordPress pelos mais novos, e a seleção mensal \"Confira editais com inscrições abertas\" lida edital por edital, cada um com o link do financiador ou do PDF."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 30, grupo «Sites de divulgação — terceiro setor»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o post-resumo mensal (\"Confira editais com inscrições abertas para novembro\", 02/11) traz 3 editais com prazos próprios (Plan até 11/11; SoMar Azul até 05/11; AngloGold até 06/11) — o motor precisa desmembrar o post por seção (proposta de ferramenta).", "08/11/2026 (parecer): 83 livros de notícia, 181 de 184 achados do mapa do site (o acervo inteiro). Agora: idade máxima de 120 dias (pela data do mapa e pela lida na página), a API do WordPress pelos mais novos, e a seleção mensal \"Confira editais com inscrições abertas\" lida edital por edital, cada um com o link do financiador ou do PDF."]

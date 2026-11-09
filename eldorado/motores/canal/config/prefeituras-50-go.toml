@@ -1,48 +1,31 @@
-# Prefeituras das 25 maiores cidades de Goiás — portais de editais — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Prefeituras das 50 maiores cidades de Goiás (as demais 45) — organização dos 43 motores (titular, 09/11/2026): motor 19, grupo «Executivo municipal».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
 id = "prefeituras-50-go"
-nome = "Prefeituras das 25 maiores cidades de Goiás — portais de editais"
+numero = 19
+grupo = "Executivo municipal"
+nome = "Prefeituras das 50 maiores cidades de Goiás (as demais 45)"
 categoria = "Executivo — diários e portais do governo"
 categoria_estudo = "EXE"
-finalidade = "encontrar nos portais das 25 maiores prefeituras de Goiás os editais, chamamentos e programas abertos a OSC (cultura, esporte, assistência, conselhos e fundos municipais)"
+finalidade = "encontrar chamamentos, editais e programas para OSC nos sites, secretarias, portais de transparência e subdomínios das 50 maiores cidades de Goiás (exceto Goiânia e a Região Metropolitana, que têm motor próprio)"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+destino = "biblioteca"
 nomes_anteriores = ["plat-prefeituras-50-go"]
 
-# ---- rotas confirmadas na sondagem de 23/10/2026 (testes/paginas/prefeituras-50-go/): 23 das 25 cidades respondem da
-# nuvem (o Eldorado0 registrava 17 só pelo Brasil); Luziânia (tempo esgotado) e Mineiros (página vazia) exigem o Brasil.
-# Os diários das cidades (AGM e Querido Diário) são o canal de outro motor (novo-diarios-municipais-go).
+# 09/11/2026: veio do motor outros-agregadores (organização dos 43 motores)
 
+# 08/11/2026 (parecer): "Editais do Brasil — competições e prêmios" nunca deu pista (público pessoa física): retirada (em
+# rotas_que_falharam). As três buscas abertas não tinham Goiás: entram as variantes de Goiás e de Goiânia.
 [[fonte]]
-nome = "Prefeitura de Goiânia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
-url = "https://www.goiania.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "chamamento"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Goiânia — publicações com \"edital\" (API do WordPress, 120 dias)"
-url = "https://www.goiania.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "edital"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Aparecida de Goiânia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
-url = "https://aparecida.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "chamamento"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Aparecida de Goiânia — publicações com \"edital\" (API do WordPress, 120 dias)"
-url = "https://aparecida.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "edital"
-papel = "principal"
+nome = "busca aberta: chamamento público organizações da sociedade civil Goiás"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "\"chamamento público\" \"organizações da sociedade civil\" Goiás inscrições abertas"
+lexico = { termos = ["re:edital|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|inscri[çc][õo]es|fomento|patroc[ií]nio|apoio a projetos|financiamento|programa de (apoio|acelera)"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|licita[çc]|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|concurso p[úu]blico|processo seletivo|vagas|est[áa]gio|resultado|homologa|^entrar$|^perguntar|editalai|planos|^setores|^modalidades|(^| )tese( |$)|mestrado|doutorado|produtividade|kaggle|^fomento e (bolsas|inova)|^competi[çc][õo]es e pr", "re:^confira editais|editais com inscri[çc][õo]es abertas (para|em|no|na)|^editais (abertos|de) (novembro|dezembro|janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro)"], termos_em = "titulo", idade_maxima_dias = 180, territorio = "goias" }   # 09/11/2026: o léxico do motor outros-agregadores (cada fonte reunida mantém o próprio filtro)
 
 [[fonte]]
 nome = "Prefeitura de Anápolis — publicações com \"chamamento\" (API do WordPress, 120 dias)"
@@ -139,20 +122,6 @@ tipo = "pagina"
 papel = "alternativa"
 
 [[fonte]]
-nome = "Prefeitura de Trindade — publicações com \"chamamento\" (API do WordPress, 120 dias)"
-url = "https://www.trindade.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "chamamento"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Trindade — publicações com \"edital\" (API do WordPress, 120 dias)"
-url = "https://www.trindade.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "edital"
-papel = "principal"
-
-[[fonte]]
 nome = "Prefeitura de Formosa — publicações com \"chamamento\" (API do WordPress, 120 dias)"
 url = "https://www.formosa.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
 tipo = "wordpress"
@@ -170,20 +139,6 @@ papel = "principal"
 nome = "Prefeitura de Novo Gama — página inicial (notícias)"
 url = "https://www.novogama.go.gov.br/"
 tipo = "pagina"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Senador Canedo — publicações com \"chamamento\" (API do WordPress, 120 dias)"
-url = "https://www.senadorcanedo.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "chamamento"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Senador Canedo — publicações com \"edital\" (API do WordPress, 120 dias)"
-url = "https://www.senadorcanedo.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "edital"
 papel = "principal"
 
 [[fonte]]
@@ -331,20 +286,6 @@ termos = "edital"
 papel = "principal"
 
 [[fonte]]
-nome = "Prefeitura de Inhumas — publicações com \"chamamento\" (API do WordPress, 120 dias)"
-url = "https://www.inhumas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "chamamento"
-papel = "principal"
-
-[[fonte]]
-nome = "Prefeitura de Inhumas — publicações com \"edital\" (API do WordPress, 120 dias)"
-url = "https://www.inhumas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
-tipo = "wordpress"
-termos = "edital"
-papel = "principal"
-
-[[fonte]]
 nome = "Prefeitura de Itaberaí — publicações com \"chamamento\" (API do WordPress, 120 dias)"
 url = "https://www.itaberai.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
 tipo = "wordpress"
@@ -357,6 +298,8 @@ url = "https://www.itaberai.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-
 tipo = "wordpress"
 termos = "edital"
 papel = "principal"
+
+# PROPOSTO SAIR em 09/11/2026 (a lista parou em 2021): fica até a decisão da titular (R19)
 
 [[fonte]]
 nome = "Prefeitura de Itaberaí — página de editais (/aviso/)"
@@ -392,29 +335,4184 @@ tipo = "wordpress"
 termos = "edital"
 papel = "principal"
 
-[[alvo]]
-id = "f260-captacao-072"
-nome = "Arte e Cultura na Educação Integral"
-enderecos = ["https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3", "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1", "https://www.goiania.go.gov.br/educacao/", "https://diariooficial.goiania.go.gov.br/", "https://www.in.gov.br/"]
-orgao = "Diário Oficial da União — Seção 3 (avisos e editais)"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Luziânia — editais de chamamento (SMS/FMS e outros)"
+url = "https://luziania.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
-[[alvo]]
-id = "f260-captacao-149"
-nome = "SMS Goiânia - parceria com entidade de saúde"
-enderecos = ["https://saude.goiania.go.gov.br/", "https://diariooficial.goiania.go.gov.br/"]
-orgao = "Secretaria Municipal de Saúde de Goiânia"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Cidade de Goiás — editais"
+url = "https://www.goias.go.gov.br/public/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Cidade de Goiás — Portal da Cultura (editais e oportunidades)"
+url = "https://cultura.goias.go.gov.br/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Caldas Novas — CMDCA (editais)"
+url = "https://cmdcacaldasnovas.com.br/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Rio Verde — fundo da pessoa idosa (edital)"
+url = "https://www.rioverde.go.gov.br/wp-content/uploads/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Planaltina — chamamentos públicos"
+url = "https://www.planaltina.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Anápolis — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.anapolis.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Anápolis — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.anapolis.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Anápolis — ?pg=1&"
+url = "https://www.anapolis.go.gov.br/estrutura-organizacional/?pg=1&"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Anápolis — Acesso à Informação — Chamamentos de OS's"
+url = "https://acessoainformacao.anapolis.go.gov.br/cidadao/informacao/mp/id=36"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Anápolis — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.anapolis.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Anápolis — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.anapolis.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Anápolis — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.anapolis.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Anápolis — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.anapolis.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Anápolis — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.anapolis.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Anápolis — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.anapolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Anápolis — Subdomínio diario"
+url = "https://diario.anapolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Anápolis — Subdomínio dom"
+url = "https://dom.anapolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Anápolis — Subdomínio leis"
+url = "https://leis.anapolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Anápolis — Subdomínio transparencia"
+url = "https://transparencia.anapolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Águas Lindas de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://aguaslindasdegoias.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Águas Lindas de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Águas Lindas de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Águas Lindas de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Águas Lindas de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Águas Lindas de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Águas Lindas de Goiás — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.aguaslindasdegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Águas Lindas de Goiás — Subdomínio cultura"
+url = "https://cultura.aguaslindasdegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Rio Verde — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.rioverde.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Rio Verde — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.rioverde.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de esportes e lazer"
+url = "https://www.rioverde.go.gov.br/estrutura/secretaria-de-esportes-e-lazer/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria da fazenda"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-da-fazenda/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de ação urbana"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-acao-urbana/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de assistência social"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-assistencia-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de cultura e esportes"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-cultura-e-esportes/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de desenvolvimento econômico sustentavel e turismo"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-desenvolvimento-economico-sustentavel-e-turismo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de educação"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de meio ambiente"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-meio-ambiente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de planejamento e gestão"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-planejamento-e-gestao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de saúde"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria municipal de esporte e lazer"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-municipal-de-esporte-e-lazer/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria municipal de habitação e regularização fundiária"
+url = "https://www.rioverde.go.gov.br/orgao_download/secretaria-municipal-de-habitacao-e-regularizacao-fundiaria/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de ação urbana e serviços públicos"
+url = "https://www.rioverde.go.gov.br/secretaria-de-acao-urbana-e-servicos-publicos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de ciência tecnologia invovacao"
+url = "https://www.rioverde.go.gov.br/secretaria-de-ciencia-tecnologia-invovacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de desenvolvimento econômico sustentavel"
+url = "https://www.rioverde.go.gov.br/secretaria-de-desenvolvimento-economico-sustentavel/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de fms"
+url = "https://www.rioverde.go.gov.br/secretaria-de-fms/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria de infraestrutura rural"
+url = "https://www.rioverde.go.gov.br/secretaria-de-infraestrutura-rural/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Rio Verde — Secretaria do meio ambiente"
+url = "https://www.rioverde.go.gov.br/secretaria-do-meio-ambiente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Rio Verde — Acesso à Informação — Emendas parlamentares municipais"
+url = "https://acessoainformacao.rioverde.go.gov.br/cidadao/transparencia/mp/id=17"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Rio Verde — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.rioverde.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Rio Verde — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.rioverde.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Rio Verde — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.rioverde.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Rio Verde — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.rioverde.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Rio Verde — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.rioverde.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Rio Verde — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.rioverde.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Rio Verde — Subdomínio biblioteca"
+url = "https://biblioteca.rioverde.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Rio Verde — Subdomínio educacao"
+url = "https://educacao.ead.rioverde.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Rio Verde — Subdomínio leis"
+url = "https://leis.rioverde.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Rio Verde — Subdomínio transparencia"
+url = "https://transparencia.rioverde.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Luziânia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.luziania.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Luziânia — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.luziania.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Luziânia — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.luziania.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Luziânia — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.luziania.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Luziânia — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.luziania.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Luziânia — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.luziania.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Valparaíso de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.valparaisodegoias.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Valparaíso de Goiás — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.valparaisodegoias.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Valparaíso de Goiás — ?tax=tipo secretaria=70"
+url = "https://valparaisodegoias.go.gov.br/estrutura/?tax=tipo-secretaria=70"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Valparaíso de Goiás — ?tax=tipo secretaria=71"
+url = "https://valparaisodegoias.go.gov.br/estrutura/?tax=tipo-secretaria=71"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Valparaíso de Goiás — Secretaria de saúde"
+url = "https://valparaisodegoias.go.gov.br/secretaria/secretaria-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Valparaíso de Goiás — Acesso à Informação — Emendas Pix"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/informacao/emendas_pix"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Valparaíso de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Valparaíso de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Valparaíso de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Valparaíso de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Valparaíso de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Valparaíso de Goiás — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Valparaíso de Goiás — Subdomínio educacao"
+url = "https://educacao.valparaisodegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Valparaíso de Goiás — Subdomínio leis"
+url = "https://leis.valparaisodegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Valparaíso de Goiás — Subdomínio saude"
+url = "https://saude.valparaisodegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Catalão — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.catalao.go.gov.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Catalão — Secretarias e orgaos"
+url = "https://www.catalao.go.gov.br/secretarias-e-orgaos"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Catalão — Subdomínio cmdca"
+url = "https://cmdca.catalao.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Catalão — Subdomínio cultura"
+url = "https://cultura.catalao.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Catalão — Subdomínio transparencia"
+url = "https://transparencia.catalao.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Formosa — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.formosa.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Formosa — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.formosa.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Formosa — Secretaria de desenvolvimento social e trabalho"
+url = "https://formosa.go.gov.br/secretaria-de-desenvolvimento-social-e-trabalho/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Chamamento Público"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/informacao/mp/id=28"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Subvenção Social"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/outras_informacoes/mp/id=13"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Formosa — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.formosa.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Formosa — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.formosa.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Formosa — Subdomínio biblioteca"
+url = "https://biblioteca.formosa.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Formosa — Subdomínio educacao"
+url = "https://educacao.formosa.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Formosa — Subdomínio transparencia"
+url = "https://transparencia.emendas.formosa.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Itumbiara — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.itumbiara.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Itumbiara — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.itumbiara.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Itumbiara — Serviços da secretaria de finanças"
+url = "https://itumbiara.go.gov.br/servicos-da-secretaria-de-financas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Itumbiara — Smtt secretariamunicipaldetransitoetransportes"
+url = "https://itumbiara.go.gov.br/smtt-secretariamunicipaldetransitoetransportes/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Itumbiara — Governo e secretarias"
+url = "https://www.itumbiara.go.gov.br/governo-e-secretarias"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itumbiara — Acesso à Informação — Chamamentos de OS's"
+url = "https://acessoainformacao.itumbiara.go.gov.br/cidadao/informacao/mp/id=19"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itumbiara — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.itumbiara.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itumbiara — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.itumbiara.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itumbiara — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.itumbiara.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itumbiara — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.itumbiara.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itumbiara — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.itumbiara.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Planaltina — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.planaltina.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Planaltina — Governo e secretarias"
+url = "https://www.planaltina.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Planaltina — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.planaltina.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Planaltina — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.planaltina.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Planaltina — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.planaltina.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Planaltina — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.planaltina.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Planaltina — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.planaltina.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Planaltina — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.planaltina.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Planaltina — Subdomínio leis"
+url = "https://leis.planaltina.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Jataí — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.jatai.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Jataí — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.jatai.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Secretaria da mulher"
+url = "https://www.jatai.go.gov.br/secretaria-da-mulher/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Secretaria da saúde"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Ação programas e projetos em andamento"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/acao-programas-e-projetos-em-andamento/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Acesso a medicamentos especiais alto custo"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/acesso-a-medicamentos-especiais-alto-custo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Auditoria"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/auditoria/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Boletim epidemiologico aedes aegypti"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/boletim-epidemiologico-aedes-aegypti/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Boletim epidemiologico"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/boletim-epidemiologico/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Conselho municipal de saúde"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/conselho-municipal-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Informacoes em saúde"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/informacoes-em-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Informe epidemiologico"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/informe-epidemiologico/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Links uteis"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/links-uteis/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Ouvidoria saúde"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/ouvidoria-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Projetos em fase de implantacao"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/projetos-em-fase-de-implantacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Protocolo de fornecimento de dietas especiais formulas infantis e suplementos"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/protocolo-de-fornecimento-de-dietas-especiais-formulas-infantis-e-suplementos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Publicacoes arte em defesa da vida"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/publicacoes-arte-em-defesa-da-vida/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Remume relacao municipal de medicamentos"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/remume-relacao-municipal-de-medicamentos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Serviços ofertados"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/servicos-ofertados/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Unidades de saúde ambulatorios"
+url = "https://www.jatai.go.gov.br/secretaria-da-saude/unidades-de-saude-ambulatorios/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Secretaria de desenvolvimento econômico"
+url = "https://www.jatai.go.gov.br/secretaria-de-desenvolvimento-economico/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Casadoempreendedor"
+url = "https://www.jatai.go.gov.br/secretaria-de-desenvolvimento-economico/casadoempreendedor/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jataí — Programas e projetos"
+url = "https://www.jatai.go.gov.br/secretaria-de-desenvolvimento-economico/programas-e-projetos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jataí — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.jatai.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jataí — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.jatai.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jataí — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.jatai.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jataí — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.jatai.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jataí — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.jatai.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Jataí — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.jatai.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Caldas Novas — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.caldasnovas.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Caldas Novas — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.caldasnovas.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Credenciamento"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/concursos_selecoes/mp/id=12"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Emendas impositivas municipais"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/transparencia/mp/id=11"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Caldas Novas — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Caldas Novas — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.caldasnovas.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Caldas Novas — Subdomínio educacao"
+url = "https://educacao.caldasnovas.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Novo Gama — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.novogama.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Novo Gama — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.novogama.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Novo Gama — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.novogama.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Novo Gama — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.novogama.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Novo Gama — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.novogama.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Novo Gama — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.novogama.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Novo Gama — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.novogama.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Novo Gama — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.novogama.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Cidade Ocidental — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://cidadeocidental.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Cidade Ocidental — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://cidadeocidental.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cidade Ocidental — Governo e secretarias"
+url = "https://cidadeocidental.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cidade Ocidental — Organograma"
+url = "https://cidadeocidental.go.gov.br/governo-e-secretarias/organograma/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cidade Ocidental — Secretaria municipal de habitação e regularização fundiária"
+url = "https://cidadeocidental.go.gov.br/secretaria-municipal-de-habitacao-e-regularizacao-fundiaria/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cidade Ocidental — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.cidadeocidental.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cidade Ocidental — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.cidadeocidental.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cidade Ocidental — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.cidadeocidental.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cidade Ocidental — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.cidadeocidental.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cidade Ocidental — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.cidadeocidental.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Goianira — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.goianira.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Goianira — Site oficial da prefeitura"
+url = "https://www.goianira.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Goianira — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.goianira.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Secretarias"
+url = "https://goianira.go.gov.br/secretarias"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Prefeito"
+url = "https://goianira.go.gov.br/secretarias/prefeito/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Secretaria de administração e finanças"
+url = "https://goianira.go.gov.br/secretarias/secretaria-de-administracao-e-financas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Secretaria de educação cultura desporto e lazer"
+url = "https://goianira.go.gov.br/secretarias/secretaria-de-educacao-cultura-desporto-e-lazer/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Secretaria de infraestrutura e transporte"
+url = "https://goianira.go.gov.br/secretarias/secretaria-de-infraestrutura-e-transporte/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Secretaria de promoção e assistência social"
+url = "https://goianira.go.gov.br/secretarias/secretaria-de-promocao-e-assistencia-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianira — Secretaria de saúde"
+url = "https://goianira.go.gov.br/secretarias/secretaria-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goianira — Subdomínio saude"
+url = "https://saude.goianira.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Goianésia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.goianesia.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Goianésia — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.goianesia.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de agricultura"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-agricultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de casa civil"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-casa-civil/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de cultura"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-cultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de educação"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de esporte juventude e lazer"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-esporte-juventude-e-lazer/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de finanças"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-financas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de habitação"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-habitacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de indústria e comércio"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-industria-e-comercio/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de infraestrutura"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-infraestrutura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de meio ambiente"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-meio-ambiente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de planejamento"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-planejamento/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de promoção social"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-promocao-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — Secretaria de saúde"
+url = "https://goianesia.go.gov.br/secretaria/secretaria-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — ?tax=tipo secretaria%3D10"
+url = "https://www.goianesia.go.gov.br/estrutura/?tax=tipo-secretaria%3D10"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — ?tax=tipo secretaria%3D8"
+url = "https://www.goianesia.go.gov.br/estrutura/?tax=tipo-secretaria%3D8"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goianésia — ?tax=tipo secretaria%3D9"
+url = "https://www.goianesia.go.gov.br/estrutura/?tax=tipo-secretaria%3D9"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goianésia — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.goianesia.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goianésia — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.goianesia.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goianésia — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.goianesia.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goianésia — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.goianesia.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goianésia — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.goianesia.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goianésia — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.goianesia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Mineiros — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.mineiros.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Santo Antônio do Descoberto — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.santoantoniododescoberto.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.santoantoniododescoberto.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Governo e secretarias"
+url = "https://santoantoniododescoberto.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.santoantoniododescoberto.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.santoantoniododescoberto.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.santoantoniododescoberto.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.santoantoniododescoberto.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.santoantoniododescoberto.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.santoantoniododescoberto.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Santo Antônio do Descoberto — Subdomínio leis"
+url = "https://leis.santoantoniododescoberto.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Cristalina — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://cristalina.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Cristalina — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://cristalina.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cristalina — Governo e secretarias"
+url = "https://cristalina.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cristalina — Secretaria municipal de meio ambiente saneamento e recursos hidricos"
+url = "https://cristalina.go.gov.br/secretaria-municipal-de-meio-ambiente-saneamento-e-recursos-hidricos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cristalina — Secretarias"
+url = "https://cristalina.go.gov.br/site-antigo/secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cristalina — Acesso à Informação — Credenciamentos / Chamada Pública"
+url = "https://acessoainformacao.cristalina.go.gov.br/cidadao/informacao/mp/id=11"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cristalina — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.cristalina.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cristalina — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.cristalina.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cristalina — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.cristalina.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cristalina — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.cristalina.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cristalina — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.cristalina.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Cristalina — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.cristalina.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Cristalina — Subdomínio educacao"
+url = "https://educacao.cristalina.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Morrinhos — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.morrinhos.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Morrinhos — Site oficial da prefeitura"
+url = "https://www.morrinhos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Morrinhos — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.morrinhos.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Morrinhos — Governo e secretarias"
+url = "https://morrinhos.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Morrinhos — ?tipo_estrutura=30&"
+url = "https://morrinhos.go.gov.br/governo-e-secretarias/?tipo_estrutura=30&"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Morrinhos — Acesso à Informação — Chamamentos Públicos"
+url = "https://acessoainformacao.morrinhos.go.gov.br/cidadao/informacao/mp/id=5"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Morrinhos — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.morrinhos.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Morrinhos — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.morrinhos.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Morrinhos — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.morrinhos.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Morrinhos — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.morrinhos.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Morrinhos — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.morrinhos.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Morrinhos — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.morrinhos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Quirinópolis — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.quirinopolis.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Quirinópolis — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.quirinopolis.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Quirinópolis — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.quirinopolis.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Quirinópolis — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.quirinopolis.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Quirinópolis — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.quirinopolis.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Quirinópolis — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.quirinopolis.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Quirinópolis — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.quirinopolis.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Quirinópolis — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.quirinopolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Itaberaí — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.itaberai.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Itaberaí — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.itaberai.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Itaberaí — Secretaria de assistência social"
+url = "https://itaberai.go.gov.br/estrutura/secretaria-de-assistencia-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Itaberaí — Secretaria de saúde"
+url = "https://itaberai.go.gov.br/estrutura/secretaria-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Itaberaí — Secretaria municipal de educação"
+url = "https://itaberai.go.gov.br/estrutura/secretaria-municipal-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itaberaí — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.itaberai.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itaberaí — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.itaberai.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itaberaí — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.itaberai.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itaberaí — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.itaberai.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itaberaí — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.itaberai.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Itaberaí — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.itaberai.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Itaberaí — Subdomínio saude"
+url = "https://saude.itaberai.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Jaraguá — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.jaragua.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Jaraguá — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.jaragua.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Jaraguá — ?pg=1&"
+url = "https://www.jaragua.go.gov.br/estrutura-organizacional/?pg=1&"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jaraguá — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.jaragua.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jaraguá — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.jaragua.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jaraguá — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.jaragua.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jaraguá — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.jaragua.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Jaraguá — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.jaragua.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Jaraguá — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.jaragua.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Porangatu — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.porangatu.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Porangatu — Site oficial da prefeitura"
+url = "https://www.porangatu.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Porangatu — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.porangatu.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Porangatu — Secom"
+url = "https://porangatu.go.gov.br/secom/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Porangatu — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.porangatu.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Porangatu — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.porangatu.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Porangatu — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.porangatu.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Porangatu — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.porangatu.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Porangatu — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.porangatu.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Uruaçu — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.uruacu.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Uruaçu — Site oficial da prefeitura"
+url = "https://www.uruacu.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Uruaçu — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.uruacu.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Uruaçu — Governo e secretarias"
+url = "https://uruacu.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Uruaçu — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.uruacu.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Uruaçu — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.uruacu.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Uruaçu — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.uruacu.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Uruaçu — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.uruacu.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Uruaçu — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.uruacu.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Uruaçu — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.uruacu.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Uruaçu — Subdomínio cmdca"
+url = "https://cmdca.uruacu.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Santa Helena de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.santahelena.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Santa Helena de Goiás — Site oficial da prefeitura"
+url = "https://www.santahelena.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Santa Helena de Goiás — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.santahelena.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santa Helena de Goiás — Acesso à Informação — Programas sociais"
+url = "https://acessoainformacao.santahelena.go.gov.br/cidadao/atos_adm/mp/id=11"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santa Helena de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.santahelena.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santa Helena de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.santahelena.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santa Helena de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.santahelena.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santa Helena de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.santahelena.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Santa Helena de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.santahelena.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Santa Helena de Goiás — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.santahelena.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Santa Helena de Goiás — Subdomínio leis"
+url = "https://leis.santahelena.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Bela Vista de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.belavista.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Bela Vista de Goiás — Site oficial da prefeitura"
+url = "https://www.belavista.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Bela Vista de Goiás — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.belavista.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Governo e secretarias"
+url = "https://belavista.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretarias"
+url = "https://belavista.go.gov.br/secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Comunicação"
+url = "https://belavista.go.gov.br/secretarias/comunicacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Controladoria geral do município"
+url = "https://belavista.go.gov.br/secretarias/controladoria-geral-do-municipio/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Fundacao municipal do idoso casa dona nenem lucindo"
+url = "https://belavista.go.gov.br/secretarias/fundacao-municipal-do-idoso-casa-dona-nenem-lucindo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Previbel"
+url = "https://belavista.go.gov.br/secretarias/previbel/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Procuradoria geral do município pgm"
+url = "https://belavista.go.gov.br/secretarias/procuradoria-geral-do-municipio-pgm/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal da mulher"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-da-mulher/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de ação e promoção social"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-acao-e-promocao-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de administração e governo smag"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-administracao-e-governo-smag/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de agricultura"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-agricultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de cultura e turismo"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-cultura-e-turismo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de desenvolvimento econômico e inovação"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-desenvolvimento-economico-e-inovacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de educação e cultura smec"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-educacao-e-cultura-smec/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de esporte lazer e juventude"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-esporte-lazer-e-juventude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de iluminacao pracas jardins e limpeza pública"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-iluminacao-pracas-jardins-e-limpeza-publica/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de meio ambiente e recursos hidricos"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-meio-ambiente-e-recursos-hidricos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de obras e manutencoes"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-obras-e-manutencoes/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de planejamento e finanças smpf"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-planejamento-e-financas-smpf/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretaria municipal de saúde sms"
+url = "https://belavista.go.gov.br/secretarias/secretaria-municipal-de-saude-sms/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Secretario municipal de estradas e rodagens"
+url = "https://belavista.go.gov.br/secretarias/secretario-municipal-de-estradas-e-rodagens/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bela Vista de Goiás — Smt"
+url = "https://belavista.go.gov.br/secretarias/smt/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bela Vista de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.belavista.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bela Vista de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.belavista.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bela Vista de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.belavista.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bela Vista de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.belavista.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bela Vista de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.belavista.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Bela Vista de Goiás — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.belavista.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Padre Bernardo — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.padrebernardo.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Padre Bernardo — Site oficial da prefeitura"
+url = "https://www.padrebernardo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Padre Bernardo — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.padrebernardo.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Padre Bernardo — Secretaria de obras"
+url = "https://padrebernardo.go.gov.br/secretaria-de-obras"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Padre Bernardo — Secretaria municipal de meio ambiente"
+url = "https://padrebernardo.go.gov.br/secretaria-municipal-de-meio-ambiente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Padre Bernardo — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.padrebernardo.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Padre Bernardo — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.padrebernardo.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Padre Bernardo — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.padrebernardo.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Padre Bernardo — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.padrebernardo.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Padre Bernardo — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.padrebernardo.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Padre Bernardo — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.padrebernardo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Padre Bernardo — Subdomínio leis"
+url = "https://leis.padrebernardo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Iporá — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.ipora.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Iporá — Site oficial da prefeitura"
+url = "https://www.ipora.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Iporá — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.ipora.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Iporá — Nota da secretaria de educação"
+url = "https://ipora.go.gov.br/aviso/nota-da-secretaria-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Iporá — Resumo dos principais avancos da secretaria de educação cultura desporto e lazer"
+url = "https://ipora.go.gov.br/resumo-dos-principais-avancos-da-secretaria-de-educacao-cultura-desporto-e-lazer/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Iporá — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.ipora.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Iporá — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.ipora.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Iporá — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.ipora.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Iporá — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.ipora.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Iporá — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.ipora.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Iporá — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.ipora.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Goiatuba — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.goiatuba.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Goiatuba — Site oficial da prefeitura"
+url = "https://www.goiatuba.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Goiatuba — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.goiatuba.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goiatuba — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.goiatuba.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goiatuba — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.goiatuba.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goiatuba — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.goiatuba.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goiatuba — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.goiatuba.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Goiatuba — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.goiatuba.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goiatuba — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.goiatuba.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goiatuba — Subdomínio editais"
+url = "https://editais.goiatuba.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Posse — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.posse.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Posse — Site oficial da prefeitura"
+url = "https://www.posse.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Posse — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.posse.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Posse — Edital processo seletivo oficineiros secretaria de educação"
+url = "https://posse.go.gov.br/edital-processo-seletivo-oficineiros-secretaria-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Posse — Governo e secretarias"
+url = "https://www.posse.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Posse — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.posse.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Posse — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.posse.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Posse — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.posse.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Posse — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.posse.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Posse — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.posse.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Posse — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.posse.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Posse — Subdomínio leis"
+url = "https://leis.posse.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "São Luís de Montes Belos — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.saoluisdemontesbelos.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "São Luís de Montes Belos — Site oficial da prefeitura"
+url = "https://www.saoluisdemontesbelos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "São Luís de Montes Belos — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.saoluisdemontesbelos.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "São Luís de Montes Belos — Governo e secretarias"
+url = "https://saoluisdemontesbelos.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "São Luís de Montes Belos — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.saoluisdemontesbelos.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "São Luís de Montes Belos — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.saoluisdemontesbelos.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "São Luís de Montes Belos — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.saoluisdemontesbelos.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "São Luís de Montes Belos — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.saoluisdemontesbelos.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "São Luís de Montes Belos — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.saoluisdemontesbelos.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "São Luís de Montes Belos — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.saoluisdemontesbelos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "São Luís de Montes Belos — Subdomínio educacao"
+url = "https://educacao.saoluisdemontesbelos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "São Luís de Montes Belos — Subdomínio emendas"
+url = "https://emendas.saoluisdemontesbelos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "São Luís de Montes Belos — Subdomínio publicacoes"
+url = "https://publicacoes.saoluisdemontesbelos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "São Luís de Montes Belos — Subdomínio semma"
+url = "https://semma.saoluisdemontesbelos.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Palmeiras de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.palmeirasdegoias.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Palmeiras de Goiás — Site oficial da prefeitura"
+url = "https://www.palmeirasdegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Palmeiras de Goiás — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.palmeirasdegoias.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Palmeiras de Goiás — Secretaria de economia de palmeiras informa mudanca na emissao de nfs e para empresas do simples nacional a partir de 1o de novembro"
+url = "https://palmeirasdegoias.go.gov.br/secretaria-de-economia-de-palmeiras-informa-mudanca-na-emissao-de-nfs-e-para-empresas-do-simples-nacional-a-partir-de-1o-de-novembro/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Palmeiras de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.palmeirasdegoias.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Palmeiras de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.palmeirasdegoias.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Palmeiras de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.palmeirasdegoias.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Palmeiras de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.palmeirasdegoias.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Palmeiras de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.palmeirasdegoias.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Palmeiras de Goiás — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.palmeirasdegoias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Nerópolis — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.neropolis.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Nerópolis — Site oficial da prefeitura"
+url = "https://www.neropolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Nerópolis — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.neropolis.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Nerópolis — Governo e secretarias"
+url = "https://www.neropolis.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Nerópolis — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.neropolis.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Nerópolis — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.neropolis.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Nerópolis — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.neropolis.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Nerópolis — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.neropolis.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Nerópolis — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.neropolis.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Nerópolis — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.neropolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Pires do Rio — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.piresdorio.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Pires do Rio — Site oficial da prefeitura"
+url = "https://www.piresdorio.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Pires do Rio — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.piresdorio.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pires do Rio — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.piresdorio.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pires do Rio — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.piresdorio.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pires do Rio — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.piresdorio.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pires do Rio — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.piresdorio.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pires do Rio — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.piresdorio.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Pires do Rio — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.piresdorio.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Niquelândia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.niquelandia.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Niquelândia — Site oficial da prefeitura"
+url = "https://www.niquelandia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Niquelândia — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.niquelandia.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Niquelândia — Governo e secretarias"
+url = "https://niquelandia.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Niquelândia — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.niquelandia.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Niquelândia — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.niquelandia.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Niquelândia — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.niquelandia.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Niquelândia — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.niquelandia.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Niquelândia — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.niquelandia.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Niquelândia — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.niquelandia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Niquelândia — Subdomínio dom"
+url = "https://dom.niquelandia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Niquelândia — Subdomínio leis"
+url = "https://leis.niquelandia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Hidrolândia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.hidrolandia.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Hidrolândia — Site oficial da prefeitura"
+url = "https://www.hidrolandia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Hidrolândia — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.hidrolandia.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Hidrolândia — Governo e secretarias"
+url = "https://www.hidrolandia.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Hidrolândia — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.hidrolandia.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Hidrolândia — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.hidrolandia.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Hidrolândia — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.hidrolandia.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Hidrolândia — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.hidrolandia.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Hidrolândia — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.hidrolandia.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Hidrolândia — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.hidrolandia.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Alexânia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://alexania.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Alexânia — Site oficial da prefeitura"
+url = "https://alexania.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Alexânia — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://alexania.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Alexânia — Governo e secretarias"
+url = "https://alexania.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Alexânia — Acesso à Informação — Credenciamentos / Chamada Pública"
+url = "https://acessoainformacao.alexania.go.gov.br/cidadao/informacao/mp/id=4"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Alexânia — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.alexania.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Alexânia — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.alexania.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Alexânia — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.alexania.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Alexânia — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.alexania.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Alexânia — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.alexania.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Alexânia — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.alexania.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Pirenópolis — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.pirenopolis.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Pirenópolis — Site oficial da prefeitura"
+url = "https://www.pirenopolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Pirenópolis — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.pirenopolis.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Pirenópolis — Governo e secretarias"
+url = "https://pirenopolis.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Pirenópolis — ?tipo_estrutura=308&"
+url = "https://pirenopolis.go.gov.br/governo-e-secretarias/?tipo_estrutura=308&"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Pirenópolis — Secretaria municipal de educação"
+url = "https://pirenopolis.go.gov.br/secretaria-municipal-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pirenópolis — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.pirenopolis.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pirenópolis — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.pirenopolis.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pirenópolis — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.pirenopolis.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pirenópolis — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.pirenopolis.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Pirenópolis — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.pirenopolis.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Pirenópolis — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.pirenopolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Pirenópolis — Subdomínio dom"
+url = "https://dom.pirenopolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Pirenópolis — Subdomínio turismo"
+url = "https://turismo.pirenopolis.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Cocalzinho de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.cocalzinho.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Cocalzinho de Goiás — Site oficial da prefeitura"
+url = "https://www.cocalzinho.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Cocalzinho de Goiás — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.cocalzinho.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cocalzinho de Goiás — Cocalzinho inaugura nova sede da secretaria municipal de turismo"
+url = "https://www.cocalzinho.go.gov.br/cocalzinho-inaugura-nova-sede-da-secretaria-municipal-de-turismo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cocalzinho de Goiás — Secretaria de educação e cultura processo seletivo 001017"
+url = "https://www.cocalzinho.go.gov.br/secretaria-de-educacao-e-cultura-processo-seletivo-001-2017/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Cocalzinho de Goiás — Secretaria municipal de cultura"
+url = "https://www.cocalzinho.go.gov.br/secretaria-municipal-de-cultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cocalzinho de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.cocalzinho.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cocalzinho de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.cocalzinho.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cocalzinho de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.cocalzinho.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cocalzinho de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.cocalzinho.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Cocalzinho de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.cocalzinho.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Itapuranga — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.itapuranga.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Itapuranga — Site oficial da prefeitura"
+url = "https://www.itapuranga.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Itapuranga — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.itapuranga.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itapuranga — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.itapuranga.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itapuranga — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.itapuranga.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itapuranga — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.itapuranga.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itapuranga — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.itapuranga.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Itapuranga — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.itapuranga.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Itapuranga — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.itapuranga.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Minaçu — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.minacu.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Minaçu — Site oficial da prefeitura"
+url = "https://www.minacu.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Minaçu — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.minacu.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Minaçu — Acesso à Informação — Editais de credenciamento"
+url = "https://acessoainformacao.minacu.go.gov.br/cidadao/atos_adm/mp/id=27"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Minaçu — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.minacu.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Minaçu — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.minacu.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Minaçu — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.minacu.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Minaçu — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.minacu.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Minaçu — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.minacu.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Minaçu — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.minacu.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Ipameri — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.ipameri.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Ipameri — Site oficial da prefeitura"
+url = "https://www.ipameri.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Ipameri — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.ipameri.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Ipameri — Governo e secretarias"
+url = "https://www.ipameri.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Ipameri — Acesso à Informação — Chamamento Público"
+url = "https://acessoainformacao.ipameri.go.gov.br/cidadao/informacao/mp/id=12"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Ipameri — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.ipameri.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Ipameri — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.ipameri.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Ipameri — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.ipameri.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Ipameri — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.ipameri.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Ipameri — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.ipameri.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Ipameri — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.ipameri.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Piracanjuba — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.piracanjuba.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Piracanjuba — Site oficial da prefeitura"
+url = "https://www.piracanjuba.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Piracanjuba — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.piracanjuba.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Piracanjuba — Governo e secretarias"
+url = "https://piracanjuba.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Piracanjuba — Secretariado"
+url = "https://piracanjuba.go.gov.br/secretariado/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Piracanjuba — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.piracanjuba.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Piracanjuba — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.piracanjuba.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Piracanjuba — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.piracanjuba.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Piracanjuba — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.piracanjuba.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Piracanjuba — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.piracanjuba.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Piracanjuba — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.piracanjuba.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Bom Jesus de Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.bomjesus.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Bom Jesus de Goiás — Site oficial da prefeitura"
+url = "https://www.bomjesus.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Bom Jesus de Goiás — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.bomjesus.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Bom Jesus de Goiás — Governo e secretarias"
+url = "https://www.bomjesus.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bom Jesus de Goiás — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.bomjesus.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bom Jesus de Goiás — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.bomjesus.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bom Jesus de Goiás — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.bomjesus.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bom Jesus de Goiás — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.bomjesus.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Bom Jesus de Goiás — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.bomjesus.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Bom Jesus de Goiás — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.bomjesus.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Goiás — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.goias.go.gov.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — site
+[[fonte]]
+nome = "Goiás — Site oficial da prefeitura"
+url = "https://www.goias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Secretarias"
+url = "https://www.goias.go.gov.br/secretarias"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Cgm"
+url = "https://www.goias.go.gov.br/secretarias/cgm"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Gabpref"
+url = "https://www.goias.go.gov.br/secretarias/gabpref"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Semads th"
+url = "https://www.goias.go.gov.br/secretarias/semads-th"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Semel"
+url = "https://www.goias.go.gov.br/secretarias/semel"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Semma"
+url = "https://www.goias.go.gov.br/secretarias/semma"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Seppieer"
+url = "https://www.goias.go.gov.br/secretarias/seppieer"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smapdr"
+url = "https://www.goias.go.gov.br/secretarias/smapdr"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smc"
+url = "https://www.goias.go.gov.br/secretarias/smc"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Sme"
+url = "https://www.goias.go.gov.br/secretarias/sme"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smgaf"
+url = "https://www.goias.go.gov.br/secretarias/smgaf"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smisp"
+url = "https://www.goias.go.gov.br/secretarias/smisp"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smmjdh"
+url = "https://www.goias.go.gov.br/secretarias/smmjdh"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smpoui"
+url = "https://www.goias.go.gov.br/secretarias/smpoui"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Sms"
+url = "https://www.goias.go.gov.br/secretarias/sms"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smtde"
+url = "https://www.goias.go.gov.br/secretarias/smtde"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiás — Smttm"
+url = "https://www.goias.go.gov.br/secretarias/smttm"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goiás — Subdomínio cultura"
+url = "https://cultura.goias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goiás — Subdomínio publicacoes"
+url = "https://publicacoes.goias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goiás — Subdomínio semma"
+url = "https://semma.goias.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.anapolis.go.gov.br"
+url = "https://www.anapolis.go.gov.br/sitemaps.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [[alvo]]
 id = "f260-espalhado-acessoainformacao-cavalcante-go-gov-br"
 nome = "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)"
 enderecos = ["https://acessoainformacao.cavalcante.go.gov.br/"]
 orgao = "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE"
-
-[[alvo]]
-id = "f260-espalhado-senadorcanedo-go-gov-br"
-nome = "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado)"
-enderecos = ["https://senadorcanedo.go.gov.br/"]
-orgao = "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC"
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -433,11 +4531,10 @@ termos_em = "titulo"
 idade_maxima_dias = 365
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): passada no Chrome (wp-json de 25 prefeituras + páginas de editais): os achados de 30 d para OSC foram Santo Antônio do Descoberto (Chamamento 001/2026 Pontos de Cultura, 04/11), Quirinópolis (4 editais PNAB, 03/11), Valparaíso (Chamamento 32/2026 e S/N Cultura e Esporte — tabela com Início e Fim: a data de Fim é o prazo, ferramenta nova), Catalão (16/10), Novo Gama e Senador Canedo (conselhos do FUNDEB). Cristalina devolve aviso do PHP antes do JSON (ferramenta nova: JSON tolerante). Mortos: diariooficial.goiania.go.gov.br (DNS), itaberai.go.gov.br/aviso/ (redireciona para 2021). Luziânia confirmada: só fiscal e compras.", "08/11/2026 (estudo Claude × motores): navegando, os \"editais\" de 30 d de Luziânia e das buscas do DOU eram intimação, notificação e lançamento fiscal (ruído): vetados pelo título. O chamamento de Novo Gama para os representantes de conselho (01/11) não veio pela página inicial; a segunda etapa (mapa do site, R49) o traz.", "08/11/2026 (conferido pelo Chrome, do Brasil): Luziânia tem mapa do site e feed (a segunda etapa os lê pela ponte); o site de Mineiros é um aplicativo (\"Carregando...\") que só abre no navegador; Caldas Novas e Inhumas devolvem a busca do WordPress vazia, mas têm mapa do site com data (a segunda etapa cobre). Em 30 d, os mapas mostraram páginas novas com edital em Formosa (3), Quirinópolis (2), Anápolis, Trindade, Novo Gama e Senador Canedo (1 cada).", "08/11/2026 (parecer): o 'prêmio' solto trazia notícia de prêmio de aluno, escola e servidor (Agrinho, Infosfera); o prêmio agora só com cultura, projeto, inscrição ou edital, e a premiação de aluno/escola/servidor é vetada.", "08/11/2026: 27 das 59 rotas nunca deram pista (o WordPress de muitas cidades não publica edital como notícia); 63 de 93 execuções chegaram ao computador local — Goiânia e Luziânia são as que pedem o Brasil.", "23 das 25 cidades respondem da nuvem (sondagem de 23/10/2026); o registro antigo de 17 só pelo Brasil ficou para trás.", "A busca do WordPress marca o termo no título (<mark>); o título é limpo antes do léxico.", "Rota de acesso única para os domínios com bloqueio (acessoainformacao.cavalcante.go.gov.br, pncp.gov.br, queridodiario.ok.org.br, saude.goiania.go.gov.br, senadorcanedo.go.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 15 rota(s) que funcionaram: entram como rotas do motor.", "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.", "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 19, grupo «Executivo municipal»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): passada no Chrome (wp-json de 25 prefeituras + páginas de editais): os achados de 30 d para OSC foram Santo Antônio do Descoberto (Chamamento 001/2026 Pontos de Cultura, 04/11), Quirinópolis (4 editais PNAB, 03/11), Valparaíso (Chamamento 32/2026 e S/N Cultura e Esporte — tabela com Início e Fim: a data de Fim é o prazo, ferramenta nova), Catalão (16/10), Novo Gama e Senador Canedo (conselhos do FUNDEB). Cristalina devolve aviso do PHP antes do JSON (ferramenta nova: JSON tolerante). Mortos: diariooficial.goiania.go.gov.br (DNS), itaberai.go.gov.br/aviso/ (redireciona para 2021). Luziânia confirmada: só fiscal e compras.", "08/11/2026 (estudo Claude × motores): navegando, os \"editais\" de 30 d de Luziânia e das buscas do DOU eram intimação, notificação e lançamento fiscal (ruído): vetados pelo título. O chamamento de Novo Gama para os representantes de conselho (01/11) não veio pela página inicial; a segunda etapa (mapa do site, R49) o traz.", "08/11/2026 (conferido pelo Chrome, do Brasil): Luziânia tem mapa do site e feed (a segunda etapa os lê pela ponte); o site de Mineiros é um aplicativo (\"Carregando...\") que só abre no navegador; Caldas Novas e Inhumas devolvem a busca do WordPress vazia, mas têm mapa do site com data (a segunda etapa cobre). Em 30 d, os mapas mostraram páginas novas com edital em Formosa (3), Quirinópolis (2), Anápolis, Trindade, Novo Gama e Senador Canedo (1 cada).", "08/11/2026 (parecer): o 'prêmio' solto trazia notícia de prêmio de aluno, escola e servidor (Agrinho, Infosfera); o prêmio agora só com cultura, projeto, inscrição ou edital, e a premiação de aluno/escola/servidor é vetada.", "08/11/2026: 27 das 59 rotas nunca deram pista (o WordPress de muitas cidades não publica edital como notícia); 63 de 93 execuções chegaram ao computador local — Goiânia e Luziânia são as que pedem o Brasil.", "23 das 25 cidades respondem da nuvem (sondagem de 23/10/2026); o registro antigo de 17 só pelo Brasil ficou para trás.", "A busca do WordPress marca o termo no título (<mark>); o título é limpo antes do léxico.", "Rota de acesso única para os domínios com bloqueio (acessoainformacao.cavalcante.go.gov.br, pncp.gov.br, queridodiario.ok.org.br, saude.goiania.go.gov.br, senadorcanedo.go.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 15 rota(s) que funcionaram: entram como rotas do motor.", "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.", "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = ["pncp.gov.br", "queridodiario.ok.org.br", "www.goiania.go.gov.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["https://www.luziania.go.gov.br (tempo esgotado da nuvem, 23/10/2026; a API do WordPress recusa: 401)",
-                      "https://www.mineiros.go.gov.br (página vazia da nuvem: bloqueio ou conteúdo só com JavaScript, 23/10/2026)"]
+rotas_que_falharam = ["https://www.luziania.go.gov.br (tempo esgotado da nuvem, 23/10/2026; a API do WordPress recusa: 401)", "https://www.mineiros.go.gov.br (página vazia da nuvem: bloqueio ou conteúdo só com JavaScript, 23/10/2026)"]
 
 [metrica]
 cadencia_h = 24

@@ -1,0 +1,742 @@
+# Prefeitura de Goiânia — secretarias, órgãos, conselhos e programas — organização dos 43 motores (titular, 09/11/2026): motor 17, grupo «Executivo municipal».
+# Criado a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml); as seções de acesso, leitura, léxico, canivete e métrica vêm do motor irmão prefeituras-50-go, com a finalidade própria.
+
+[motor]
+id = "prefeitura-goiania"
+numero = 17
+grupo = "Executivo municipal"
+nome = "Prefeitura de Goiânia — secretarias, órgãos, conselhos e programas"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar chamamentos, editais e programas para OSC em todas as secretarias, órgãos, conselhos e subsites da Prefeitura de Goiânia (o mapa do site completo, com os subdomínios)"
+tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+destino = "biblioteca"
+nomes_anteriores = []
+
+# 09/11/2026: veio do motor outros-agregadores (organização dos 43 motores)
+
+[[fonte]]
+nome = "busca aberta: termo de fomento edital Goiânia"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "\"termo de fomento\" edital Goiânia inscrições"
+lexico = { termos = ["re:edital|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|inscri[çc][õo]es|fomento|patroc[ií]nio|apoio a projetos|financiamento|programa de (apoio|acelera)"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|licita[çc]|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|concurso p[úu]blico|processo seletivo|vagas|est[áa]gio|resultado|homologa|^entrar$|^perguntar|editalai|planos|^setores|^modalidades|(^| )tese( |$)|mestrado|doutorado|produtividade|kaggle|^fomento e (bolsas|inova)|^competi[çc][õo]es e pr", "re:^confira editais|editais com inscri[çc][õo]es abertas (para|em|no|na)|^editais (abertos|de) (novembro|dezembro|janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro)"], termos_em = "titulo", idade_maxima_dias = 180, territorio = "goias" }   # 09/11/2026: o léxico do motor outros-agregadores (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+# ---- rotas confirmadas na sondagem de 23/10/2026 (testes/paginas/prefeituras-50-go/): 23 das 25 cidades respondem da
+# nuvem (o Eldorado0 registrava 17 só pelo Brasil); Luziânia (tempo esgotado) e Mineiros (página vazia) exigem o Brasil.
+# Os diários das cidades (AGM e Querido Diário) são o canal de outro motor (novo-diarios-municipais-go).
+
+[[fonte]]
+nome = "Prefeitura de Goiânia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.goiania.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Goiânia — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.goiania.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Secult Goiânia — editais publicados"
+url = "https://www.goiania.go.gov.br/secult/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SMS Goiânia — editais de chamamento público"
+url = "https://saude.goiania.go.gov.br/editas-de-chamamento-publico/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SEDHS — Fundo Municipal dos Direitos da Criança e do Adolescente"
+url = "https://www.goiania.go.gov.br/sedhs/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SME Goiânia — documentos oficiais"
+url = "https://sme.goiania.go.gov.br/site/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Arquivos públicos da Prefeitura (DadosINTER)"
+url = "https://www10.goiania.go.gov.br/DadosINTER/PUBLIC/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal antigo da Prefeitura (www6)"
+url = "https://www6.goiania.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Educação — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/sme/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Esporte e Lazer — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/semel/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Agência Municipal do Meio Ambiente — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/amma/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Agência Municipal de Turismo e Eventos — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/agetul/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Comunicação — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/secom/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Controladoria Geral do Município — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/controladoria/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal da Fazenda — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/sefin/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Administração — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/semad/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Planejamento e Urbanismo Estratégico — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/seplanh/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Procon Goiânia - Programa de Defesa do Consumidor — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/procon/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Instituto de Previdência dos Servidores do Município de Goiânia — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/goianiaprev/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Instituto Municipal de Assistência à Saúde e Social dos Servidores Municipais de Goiânia — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/imas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Planejamento e Urbanismo Estratégico — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/seplan/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Agência de Regulação de Goiânia — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/arg/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Secretaria Municipal de Habitação e Regularização Fundiária — site próprio dentro do portal"
+url = "https://www.goiania.go.gov.br/sehab/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Goiânia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.goiania.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Goiânia — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.goiania.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Controladoria geral do município"
+url = "https://www.goiania.go.gov.br/secretaria/controladoria-geral-do-municipio/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Procuradoria geral do município"
+url = "https://www.goiania.go.gov.br/secretaria/procuradoria-geral-do-municipio/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal da fazenda"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-da-fazenda/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de administração"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-administracao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de articulação institucional e captação"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-articulacao-institucional-e-captacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de comunicação"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-comunicacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de desenvolvimento econômico trabalho ciência e tecnologia"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-desenvolvimento-economico-trabalho-ciencia-e-tecnologia/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de educação"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de eficiência"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-eficiencia/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de engenharia de trânsito"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-engenharia-de-transito/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de esporte"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-esporte/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de governo"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-governo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de habitação e regularização fundiária"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-habitacao-e-regularizacao-fundiaria/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de infraestrutura e serviços públicos"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-infraestrutura-e-servicos-publicos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de inovação e transformação digital"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-inovacao-e-transformacao-digital/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de planejamento urbano e habitação"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-planejamento-urbano-e-habitacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de políticas para as mulheres assistência social e direitos humanos"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-politicas-para-as-mulheres-assistencia-social-e-direitos-humanos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de saúde"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Goiânia — Secretaria municipal de gestão de negócios e parcerias"
+url = "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-degestao-de-negocios-e-parcerias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Goiânia — Agência da guarda civil metropolitana"
+url = "https://www.goiania.go.gov.br/orgao/agencia-da-guarda-civil-metropolitana/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Goiânia — Agência municipal de turismo eventos e lazer"
+url = "https://www.goiania.go.gov.br/orgao/agencia-municipal-de-turismo-eventos-e-lazer-2/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Goiânia — Agência municipal do meio ambiente"
+url = "https://www.goiania.go.gov.br/orgao/agencia-municipal-do-meio-ambiente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Arg agência de regulação de Goiânia"
+url = "https://www.goiania.go.gov.br/orgao/arg-agencia-de-regulacao-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Companhia de urbanização de Goiânia"
+url = "https://www.goiania.go.gov.br/orgao/companhia-de-urbanizacao-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Instituto de previdência dos servidores municipais de Goiânia"
+url = "https://www.goiania.go.gov.br/orgao/instituto-de-previdencia-dos-servidores-municipais-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Instituto municipal de assistência a saúde e social dos servidores municipais de Goiânia"
+url = "https://www.goiania.go.gov.br/orgao/instituto-municipal-de-assistencia-a-saude-e-social-dos-servidores-municipais-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — órgão
+[[fonte]]
+nome = "Procon Goiânia"
+url = "https://www.goiania.go.gov.br/orgao/procon-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Comissão de projetos culturais"
+url = "https://www.goiania.go.gov.br/conselho-municipal/comissao-de-projetos-culturais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Conselho municipal de assistência social de Goiânia"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-assistencia-social-de-goianiaa/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal dos direitos da criança e do adolescente"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-dos-direitos-da-crianca-e-do-adolescente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Conselho municipal do idoso de Goiânia"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-do-idoso-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de cultura"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-cultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de saúde"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de pessoas com deficiência"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-pessoas-com-deficiencia/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de direitos da mulher"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-direitos-da-mulher/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de direitos humanos e cultura da paz"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-direitos-humanos-e-cultura-da-paz/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal para promoção da igualdade racial"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-para-promocao-da-igualdade-racial/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de políticas para a juventude"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-politicas-para-a-juventude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de políticas sobre drogas"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-politicas-sobre-drogas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Conselho municipal de segurança alimentar e nutricional de Goiânia"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-seguranca-alimentar-e-nutricional-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal do meio ambiente"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-do-meio-ambiente/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de proteção e bem estar animal"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-protecao-e-bem-estar-animal/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal do trabalho emprego e renda"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-do-trabalho-emprego-e-renda/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho municipal de turismo"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-turismo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho de alimentação escolar"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-de-alimentacao-escolar/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Conselho municipal de abastecimento alimentar agricultura e pecuaria de Goiânia"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-abastecimento-alimentar-agricultura-e-pecuaria-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Conselho municipal de ciência tecnologia e inovação de Goiânia"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-ciencia-tecnologia-e-inovacao-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselho gestor do fundo municipal de habitação de interesse social"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-gestor-do-fundo-municipal-de-habitacao-de-interesse-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Conselho municipal de preservação de patrimônio histórico cultural e ambiental da cidade de Goiânia"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselho-municipal-de-preservacao-de-patrimonio-historico-cultural-e-ambiental-da-cidade-de-goiania/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — conselho
+[[fonte]]
+nome = "Goiânia — Conselhos tutelares"
+url = "https://www.goiania.go.gov.br/conselho-municipal/conselhos-tutelares/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Goiânia — Subdomínio sme"
+url = "https://sme.goiania.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/secult"
+url = "https://www.goiania.go.gov.br/secult/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — saude.goiania.go.gov.br"
+url = "https://saude.goiania.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/sedhs"
+url = "https://www.goiania.go.gov.br/sedhs/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/sme"
+url = "https://www.goiania.go.gov.br/sme/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/semel"
+url = "https://www.goiania.go.gov.br/semel/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/amma"
+url = "https://www.goiania.go.gov.br/amma/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/agetul"
+url = "https://www.goiania.go.gov.br/agetul/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/secom"
+url = "https://www.goiania.go.gov.br/secom/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/controladoria"
+url = "https://www.goiania.go.gov.br/controladoria/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/sefin"
+url = "https://www.goiania.go.gov.br/sefin/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/semad"
+url = "https://www.goiania.go.gov.br/semad/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/seplanh"
+url = "https://www.goiania.go.gov.br/seplanh/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/procon"
+url = "https://www.goiania.go.gov.br/procon/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/goianiaprev"
+url = "https://www.goiania.go.gov.br/goianiaprev/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/imas"
+url = "https://www.goiania.go.gov.br/imas/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/seplan"
+url = "https://www.goiania.go.gov.br/seplan/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/arg"
+url = "https://www.goiania.go.gov.br/arg/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br/sehab"
+url = "https://www.goiania.go.gov.br/sehab/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: veio do motor do-goiania (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-001"
+nome = "PNAB Goiânia - Audiovisual"
+enderecos = ["https://www.goiania.go.gov.br/secult/", "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/"]
+orgao = "Secretaria Municipal de Cultura de Goiânia"
+
+# 09/11/2026: veio do motor do-goiania (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-039"
+nome = "Editais de ocupação cultural municipal"
+enderecos = ["https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/", "https://www.goiania.go.gov.br/secult/"]
+orgao = "Secretaria Municipal de Cultura de Goiânia"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-149"
+nome = "SMS Goiânia - parceria com entidade de saúde"
+enderecos = ["https://saude.goiania.go.gov.br/", "https://diariooficial.goiania.go.gov.br/"]
+orgao = "Secretaria Municipal de Saúde de Goiânia"
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true               # a busca cega: do post de divulgação a um documento candidato à origem
+max_documentos = 30
+
+[lexico]
+# o léxico próprio dos portais municipais, calibrado com os títulos reais da sondagem de 23/10/2026:
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento .{0,30}(entidades|organiza|osc|institui|oficin|artistas|agentes culturais|projetos|espa[çc]os culturais|cultur)|termo de (fomento|colabora)|aldir blanc|pnab|paulo gustavo|cmdca|\\bfia\\b|fundo municipal|subven[çc]|pr[êe]mio .{0,50}(cultur|arte|projeto|inscri|edital|osc|entidade|associa)|(edital|inscri[çc][õo]es|sele[çc][ãa]o) .{0,60}pr[êe]mio|premia[çc][ãa]o (de |para )?(projetos|iniciativas|agentes|artistas|cultur)|patroc[ií]n|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades|artistas))|(lan[çc]a|abre|publica)\\w* (o |os )?edita|inscri[çc][õo]es abertas|edital (de|n[ºo°.]|para|do|da)"]
+vetos = ["re:resultado|homologa|inexigibilidade|dispensa|extrato|lista de (inscri|inscritos|classifica)|inscritos|habilita[çc][ãa]o documental|concurso p[uú]blico|processo seletivo|contrata[çc][ãa]o tempor|convoca[çc][ãa]o|vacina|regulariza[çc][ãa]o fundi|permiss[ãa]o de uso|barracas|atividades comerciais|moradias|empresas que constru|licita[çc]|preg[ãa]o|audi[êe]ncia p[uú]blica|sess[ãa]o ordin|reuni[ãa]o|curso gratuito|aulas|matr[ií]cula|vagas|agentes de combate|sorteio|notifica[çc][ãa]o de lan[çc]amento|tabela de temporalidade|\\b(aluno|alunos|alunas|estudante|escola municipal|escola estadual|servidor|servidora)s?\\b|conquista|vence\\b|vencedor|pontua[çc][ãa]o t[ée]cnica|recebe(u)? (o )?pr[êe]mio|ganha(dor)?\\b|agrinho|infosfera|elimina[çc][ãa]o de documentos|cita[çc][ãa]o|\\bconcurso\\b|chamada p[uú]blica escolar|matr[íi]cula|ingresso na rede|transa[çc][ãa]o|guias de turismo|comerciantes|ambulantes|feirantes|campeonato|\\bcursos?\\b|vestibular|empresas para|intima[çc][ãa]o|diretor(es)? (escola|da rede)|banco de diretores|casamento|reforma agr[áa]ria|processo eleitoral|plano anual|certificados|aprovad", "re:notifica[çc][ãa]o|intima[çc][ãa]o|constata[çc][ãa]o|lan[çc]amento fiscal|^edital de \\d+ de \\w+ de \\d{4}$"]
+termos_em = "titulo"
+# 08/11/2026: a notícia velha não reabre (o WordPress já pede 120 dias; vale também para o mapa do site original)
+idade_maxima_dias = 365
+
+[aprendizado]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 17, grupo «Executivo municipal»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão prefeituras-50-go."]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

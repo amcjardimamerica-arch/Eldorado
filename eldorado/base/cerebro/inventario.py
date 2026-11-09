@@ -202,7 +202,8 @@ def mapa(cat: dict[str, Any]) -> str:
         linhas.append(f"| {a['ordem']} | `{a['arquivo']}` | {a.get('finalidade', '')[:110]} | {a['situacao']} | "
                       f"{', '.join(Path(x).stem for x in a.get('depende_de') or [])} | {uso[:120]} | {len(a.get('testes') or [])} |")
     m = cat["motores"]
-    linhas += ["", "## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)", "",
+    linhas += ["", f"## Os {len(m)} motores (a organização da titular de 09/11/2026: {sum(x.get('tipo') == 'regular' for x in m)} regulares e "
+               f"{sum(x.get('tipo') == 'piloto' for x in m)} pilotos, em grupos)", "",
                "| # | Categoria | Motor | Nome | Agrega | Alvos | Motor no sistema | Situação | Observação |", "|---|---|---|---|---|---|---|---|---|"]
     linhas += [f"| {i} | {x['categoria']} | {x['id']} | {x['nome']} | {len(x['agrega'])} | {len(x['alvos'])} | {x['motor_novo'] or '—'} | {x['situacao']} | "
                f"{x['observacao']} |" for i, x in enumerate(m, 1)]

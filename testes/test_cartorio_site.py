@@ -119,7 +119,7 @@ def test_o_quadro_motores_de_busca_tem_os_motores_do_sistema():
     for campo in ('"dias": dias', '"ultima_leitura":', '"situacao": situacao', '"rendimento":', '"descricao":', '"rank": i'):
         assert campo in s, campo
     previstos = json.loads(Path("config/motores_previstos.json").read_text(encoding="utf-8"))["motores"]
-    assert len(previstos) >= 45  # todos os motores entram na lista
+    assert len(previstos) == 43  # todos os motores entram na lista (a organização dos 43 motores, titular, 09/11/2026 — R50)
 
 
 def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():

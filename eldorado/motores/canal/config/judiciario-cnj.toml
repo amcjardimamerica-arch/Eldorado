@@ -1,15 +1,18 @@
-# CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# CNJ — destinação de prestações pecuniárias — organização dos 43 motores (titular, 09/11/2026): motor 09, grupo «Judiciário».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "BR"
-canal = "portal"
 id = "judiciario-cnj"
-nome = "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)"
+numero = 9
+grupo = "Judiciário"
+nome = "CNJ — destinação de prestações pecuniárias"
 categoria = "Judiciário e Ministérios Públicos"
 categoria_estudo = "JUD"
 finalidade = "editais e regra nacional de destinação de prestações pecuniárias no Portal do CNJ"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
 nomes_anteriores = ["cnj-destinacoes"]
 
 # ---- diagnóstico (23/10/2026): o portal do CNJ responde à nuvem; a busca por "prestação pecuniária" traz as notícias
@@ -30,6 +33,27 @@ nome = "CNJ — busca por penas pecuniárias e edital"
 url = "https://www.cnj.jus.br/?s=penas+pecuni%C3%A1rias+edital"
 tipo = "pagina"
 seletor = "main"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "CNJ — atos normativos (Resolução 558 e seguintes)"
+url = "https://atos.cnj.jus.br/atos"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "CNJ — editais"
+url = "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.cnj.jus.br"
+url = "https://www.cnj.jus.br/sitemap_index.xml"
+tipo = "mapa"
 papel = "alternativa"
 
 [[alvo]]
@@ -54,7 +78,7 @@ termos_em = "titulo"
 idade_maxima_dias = 365
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 30 d no CNJ: FONAMEC (chamamento colaborativo, até 27/11) e retificação do 8º Justiça Pesquisa — nenhum de destinação de prestação pecuniária.", "08/11/2026 (parecer): 40% de precisão; os erros eram notícias de repasse já feito em outros estados (\"tribunal fluminense repassa R$ 4,4 mi a 51 entidades\"): vetadas pelo título.", "O CNJ divulga os editais das comarcas; a origem do livro é a comarca do tribunal (decidida por livro, regra da titular).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 113 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 09, grupo «Judiciário»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 30 d no CNJ: FONAMEC (chamamento colaborativo, até 27/11) e retificação do 8º Justiça Pesquisa — nenhum de destinação de prestação pecuniária.", "08/11/2026 (parecer): 40% de precisão; os erros eram notícias de repasse já feito em outros estados (\"tribunal fluminense repassa R$ 4,4 mi a 51 entidades\"): vetadas pelo título.", "O CNJ divulga os editais das comarcas; a origem do livro é a comarca do tribunal (decidida por livro, regra da titular).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 113 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = ["pncp.gov.br", "www.cnj.jus.br", "www.tjgo.jus.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["a frase inteira «prestação pecuniária» na API do WordPress (0 resultados; a palavra sozinha é a busca)", "a busca da API do WordPress do CNJ (search= devolve [] para qualquer termo em 08/11/2026; trocada pela busca HTML)"]

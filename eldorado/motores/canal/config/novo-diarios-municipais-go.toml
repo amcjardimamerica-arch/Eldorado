@@ -1,15 +1,18 @@
-# Diários oficiais municipais de Goiás (Querido Diário) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Diários oficiais dos municípios de Goiás — organização dos 43 motores (titular, 09/11/2026): motor 02, grupo «Diários oficiais».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "diario"
 id = "novo-diarios-municipais-go"
-nome = "Diários oficiais municipais de Goiás (Querido Diário)"
+numero = 2
+grupo = "Diários oficiais"
+nome = "Diários oficiais dos municípios de Goiás"
 categoria = "Executivo — diários e portais do governo"
 categoria_estudo = "EXE"
 finalidade = "encontrar oportunidade aberta para OSC nos diários oficiais dos municípios de Goiás (o Diário Municipal da AGM e o Querido Diário), complementando o Diário de Goiânia"
 tipo_finalidade = "recorrencia"
+canal = "diario"
+uf = "GO"
+destino = "biblioteca"
 nomes_anteriores = ["querido-diario"]
 
 # ---- rotas confirmadas (23/10/2026, testes/paginas/novo-diarios-municipais-go/):
@@ -64,6 +67,66 @@ link = "{pdf}#ato-{ordem}"
 resumo = "{localidade} · {orgao} · {inicio}"
 texto = "{texto}"
 
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Diário Oficial dos Municípios (AGM/SIGPub) — pesquisa"
+url = "https://www.diariomunicipal.com.br/agm/pesquisar"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Diário Oficial dos Municípios (FGM) — consulta geral"
+url = "https://www.diarioficialdosmunicipios.org/consulta/ConPublicacaoGeral/ConPublicacaoGeral.php"
+tipo = "pagina"
+papel = "alternativa"
+
+# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
+# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+# [[fonte]]
+# nome = "DOFEM — Diário Oficial Eletrônico dos Municípios"
+# url = "https://goeb.dofem.com.br/"
+# tipo = "pagina"
+# papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Diário Oficial Eletrônico de Aparecida de Goiânia"
+url = "https://doe.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Diário Oficial de Senador Canedo"
+url = "https://diario.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal de Publicações da Cidade de Goiás (editais)"
+url = "https://publicacoes.goias.go.gov.br/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
+# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+# [[fonte]]
+# nome = "Querido Diário — busca por termo em todos os municípios goianos cobertos (territory_ids = códigos IBGE de GO)"
+# url = "https://api.queridodiario.org.br/gazettes?querystring=chamamento"
+# tipo = "pagina"
+# papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.diarioficialdosmunicipios.com.br"
+url = "https://www.diarioficialdosmunicipios.com.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# PROPOSTO SAIR em 09/11/2026 (município do Paraná): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-espalhado-www-arapongas-pr-gov-br"
 nome = "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)"
@@ -89,12 +152,10 @@ vetos = ["re:licen[çc]a.{0,3}pr[êe]mio|rescis[ãa]o|ratifica|aviso de licita|p
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (parecer): a precisão 0% era herança da busca nacional do Querido Diário (retirada antes de 26/10); território de Goiás na entrada e nos alvos (Arapongas-PR não é lido); atos de expediente e feiras vetados pelo título.", "Ler primeiro pela API do Querido Diário; as páginas ficam como reserva.", "Os 1 alvos são vigiados só na janela prevista da próxima edição."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 02, grupo «Diários oficiais»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (parecer): a precisão 0% era herança da busca nacional do Querido Diário (retirada antes de 26/10); território de Goiás na entrada e nos alvos (Arapongas-PR não é lido); atos de expediente e feiras vetados pelo título.", "Ler primeiro pela API do Querido Diário; as páginas ficam como reserva.", "Os 1 alvos são vigiados só na janela prevista da próxima edição."]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["https://www.diariomunicipal.com.br/agm/pesquisar (a busca não devolve resultados sem sessão, 23/10/2026)",
-                      "o XML da edição em www-storage.voxtecnologia.com.br (página vazia no acesso direto, 23/10/2026)",
-                      "https://api.queridodiario.ok.org.br (endereço antigo: o certo é queridodiario.ok.org.br/api)"]
+rotas_que_falharam = ["https://www.diariomunicipal.com.br/agm/pesquisar (a busca não devolve resultados sem sessão, 23/10/2026)", "o XML da edição em www-storage.voxtecnologia.com.br (página vazia no acesso direto, 23/10/2026)", "https://api.queridodiario.ok.org.br (endereço antigo: o certo é queridodiario.ok.org.br/api)"]
 
 [metrica]
 cadencia_h = 24

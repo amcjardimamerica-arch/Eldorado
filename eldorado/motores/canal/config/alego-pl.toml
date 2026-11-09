@@ -1,16 +1,19 @@
-# Assembleia Legislativa de Goiás — proposições — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Assembleia Legislativa de Goiás — proposições, leis e emendas estaduais — organização dos 43 motores (titular, 09/11/2026): motor 06, grupo «Legislativo».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
-orgao = "Assembleia Legislativa do Estado de Goiás"
 id = "alego-pl"
-nome = "Assembleia Legislativa de Goiás — proposições"
+numero = 6
+grupo = "Legislativo"
+nome = "Assembleia Legislativa de Goiás — proposições, leis e emendas estaduais"
 categoria = "Legislativo"
 categoria_estudo = "LEG"
 finalidade = "monitorar na Assembleia de Goiás os projetos de lei e os atos do terceiro setor e das OSC, as emendas impositivas estaduais, as declarações de utilidade pública e as oportunidades para entidades"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+orgao = "Assembleia Legislativa do Estado de Goiás"
+destino = "biblioteca"
 nomes_anteriores = []
 
 # ---- rotas (23/10/2026): o portal da ALEGO responde à nuvem (o Eldorado0 o tinha como bloqueado); o sistema de consulta
@@ -66,29 +69,70 @@ titulo = "{titulo}"
 link = "https://alegodigital.al.go.leg.br/spl/{processo}"
 resumo = "ALEGO — proposição do ano"
 
-
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
 [[fonte]]
-nome = "Diário Oficial do Estado — os atos legislativos do terceiro setor (leis de utilidade pública, subvenções, entidades)"
-url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
-tipo = "cadeia"
+nome = "Transparência Goiás — emendas parlamentares estaduais"
+url = "https://transparencia.go.gov.br/emendas-parlamentares-de-goias/"
+tipo = "pagina"
 papel = "alternativa"
 
-[[fonte.cadeia]]
-formato = "json"
-itens = "itens"
-campos = { edicao = "id", numero = "numero" }
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Sead — emendas parlamentares estaduais (termos de fomento com OSC)"
+url = "https://goias.gov.br/administracao/emendas-parlamentares-estaduais/"
+tipo = "pagina"
+papel = "alternativa"
 
-[[fonte.cadeia]]
-formato = "html"
-url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
-itens = "a.linkMateria"
-campos = { materia = "attr:data-materia-id", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
-filtro = { titulo = '(?i)utilidade p[úu]blica|terceiro setor|sociedade civil|subven[çc]|sem fins lucrativos|entidade|filantr|associa[çc][ãa]o|lei n' }
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Governo de Goiás — emendas impositivas (orientações e checklists)"
+url = "https://goias.gov.br/institucional/emendas-impositivas/"
+tipo = "pagina"
+papel = "alternativa"
 
-[fonte.pista]
-titulo = "{titulo}"
-link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
-resumo = "{caminho} · edição {numero}"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Sistema de Emendas do Estado (documentos dos termos de fomento)"
+url = "https://emendas.sistemas.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
+# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+# [[fonte]]
+# nome = "ALEGO — Portal da Transparência e dados abertos"
+# url = "https://transparencia.al.go.leg.br/dados-abertos"
+# tipo = "pagina"
+# papel = "alternativa"
+
+# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
+# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+# [[fonte]]
+# nome = "ALEGO — notícias (utilidade pública, pareceres)"
+# url = "https://portal.al.go.leg.br/noticias"
+# tipo = "pagina"
+# papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — transparencia.go.gov.br"
+url = "https://transparencia.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/administracao"
+url = "https://goias.gov.br/administracao/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/institucional"
+url = "https://goias.gov.br/institucional/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [[alvo]]
 id = "f260-captacao-068"
@@ -115,7 +159,7 @@ vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): ALEGO Digital confirmada: os itens são div.kt-widget5__item (o seletor div.kt-widget__item não existia: 0 pista); 50 proposições mais novas, nenhuma de utilidade pública nos 30 d; a página tem Cloudflare Turnstile e exportação CSV. O portal portal.al.go.leg.br estava fora do ar no Chrome (Brasil) em 08/11.", "08/11/2026 (parecer): a ALEGO Digital nunca deu pista (não responde da nuvem; a consulta cronológica é formulário ASP.NET) e o Diário do Estado traz as leis sem o assunto; a rota principal passou a ser a API da legislação da Casa Civil (legisla.casacivil.go.gov.br/api/v2), com a ementa: as declarações de utilidade pública, as organizações sociais e as leis do terceiro setor. Notícias de eventos (Novembro Negro, banda marcial) vetadas.", "As emendas impositivas estaduais têm janela em outubro e novembro; os achados são proposições e emendas, não editais.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 06, grupo «Legislativo»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): ALEGO Digital confirmada: os itens são div.kt-widget5__item (o seletor div.kt-widget__item não existia: 0 pista); 50 proposições mais novas, nenhuma de utilidade pública nos 30 d; a página tem Cloudflare Turnstile e exportação CSV. O portal portal.al.go.leg.br estava fora do ar no Chrome (Brasil) em 08/11.", "08/11/2026 (parecer): a ALEGO Digital nunca deu pista (não responde da nuvem; a consulta cronológica é formulário ASP.NET) e o Diário do Estado traz as leis sem o assunto; a rota principal passou a ser a API da legislação da Casa Civil (legisla.casacivil.go.gov.br/api/v2), com a ementa: as declarações de utilidade pública, as organizações sociais e as leis do terceiro setor. Notícias de eventos (Novembro Negro, banda marcial) vetadas.", "As emendas impositivas estaduais têm janela em outubro e novembro; os achados são proposições e emendas, não editais.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = ["portal.al.go.leg.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://alegodigital.al.go.leg.br pela nuvem (conexão derrubada, 23/10/2026)", "consulta-cronologico.aspx (só o índice dos anos, sem proposição: 59 leituras e 0 pista; trocada por consulta-producao.aspx?ano=AAAA em 08/11/2026)"]

@@ -69,7 +69,8 @@ seguir_oficial = true
 
 
 def motor_rouanet(site, tmp_path):
-    texto = Path("eldorado/motores/canal/config/salic.toml").read_text(encoding="utf-8")
+    from recorte_motor import recorte              # 09/11/2026 (R50): o salic dentro do governo-federal (com o programa e a legislação)
+    texto = recorte("salic")
     texto = re.sub(r"https://www\.gov\.br/cultura/pt-br/assuntos/acoes-programas-e-politicas", site, texto)
     (tmp_path / "rouanet.toml").write_text(texto, encoding="utf-8")
     m = MotorCanal(tmp_path / "rouanet.toml", dados=tmp_path / "motores", ponte=tmp_path / "p")

@@ -1,16 +1,164 @@
-# Fundações e institutos (sites próprios) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Institutos e fundações empresariais — e as empresas incentivadoras de Goiás — organização dos 43 motores (titular, 09/11/2026): motor 27, grupo «Editais de empresas privadas».
+# Reúne: motor-gife.
 
 [motor]
-uf = "BR"
-canal = "portal"
 id = "novo-fundacoes-institutos"
-nome = "Fundações e institutos (sites próprios)"
+numero = 27
+grupo = "Editais de empresas privadas"
+nome = "Institutos e fundações empresariais — e as empresas incentivadoras de Goiás"
 categoria = "Portais e fontes do terceiro setor"
 categoria_estudo = "POR"
-finalidade = "sugestão: as fundações e institutos que não estão na lista (Itaú, Bradesco, Vale, Boticário, Sabin, Telefônica, Tide Setubal, iCS e outras) ganham um motor de sites próprios"
+finalidade = "encontrar os editais das entidades mantidas por empresas (institutos e fundações empresariais) e manter a base das empresas incentivadoras de Goiás (ICMS e Salic, destino especial por fonte)"
 tipo_finalidade = "recorrencia"
-nomes_anteriores = ["site-fundacao-banco-do-brasil", "site-itau-social"]
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
+nomes_anteriores = ["site-fundacao-banco-do-brasil", "site-itau-social", "motor-gife", "motor-patrocinio"]
+
+# 09/11/2026: veio do motor motor-gife (organização dos 43 motores)
+
+# ---- destino ESPECIAL: este motor alimenta a base de empresas (quem pode destinar incentivo) e os incentivos (o que
+# cada uma já destinou). Rotas confirmadas (23/10/2026, testes/paginas/motor-gife/): o PDF dos 500 maiores contribuintes
+# do ICMS de Goiás (um por ano, com a raiz do CNPJ) e os incentivadores pessoa jurídica de Goiás no Salic (358, com o
+# CNPJ completo e o total doado pela Rouanet).
+[[fonte]]
+nome = "Economia de Goiás — os 500 maiores contribuintes do ICMS (o PDF do ano mais recente)"
+url = "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/"
+tipo = "cadeia"
+destino = "especial"                # 09/11/2026: a base de empresas (era o motor-gife)
+papel = "principal"
+lexico = { termos = [], vetos = [] }   # 09/11/2026: o léxico do motor motor-gife (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "html"
+itens = 'a[href*="MAIORES_DO_ICMS"]'
+campos = { pdf = "attr:href", ano = 're:OFICIAL_(\d{4})' }
+limite = 1
+
+[[fonte.cadeia]]
+formato = "linhas"
+url = "{pdf}"
+itens = '(?m)^(?P<posicao>\d+) º\n(?P<raiz>\d{8})\n(?P<nome>[^\n]+)\n(?P<localidade>[^\n]+)\n(?P<uf>[A-Z]{2})\n(?P<atividade>[^\n]+)'
+limite = 500
+
+[fonte.pista]
+titulo = "{nome}"
+link = "{pdf}#{posicao}"
+
+[fonte.especial]
+cnpj = "{raiz}"
+razao_social = "{nome}"
+uf = "{uf}"
+atividade_principal = "{atividade}"
+incentivo = { lei = "ICMS", ano = "{ano}" }   # 500 maiores contribuintes do ICMS de Goiás
+
+# 09/11/2026: veio do motor motor-gife (organização dos 43 motores)
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 1 a 100)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=0&format=json"
+tipo = "cadeia"
+destino = "especial"                # 09/11/2026: a base de empresas (era o motor-gife)
+papel = "principal"
+lexico = { termos = [], vetos = [] }   # 09/11/2026: o léxico do motor motor-gife (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+# 09/11/2026: veio do motor motor-gife (organização dos 43 motores)
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 101 a 200)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=100&format=json"
+tipo = "cadeia"
+destino = "especial"                # 09/11/2026: a base de empresas (era o motor-gife)
+papel = "alternativa"
+lexico = { termos = [], vetos = [] }   # 09/11/2026: o léxico do motor motor-gife (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+# 09/11/2026: veio do motor motor-gife (organização dos 43 motores)
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 201 a 300)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=200&format=json"
+tipo = "cadeia"
+destino = "especial"                # 09/11/2026: a base de empresas (era o motor-gife)
+papel = "alternativa"
+lexico = { termos = [], vetos = [] }   # 09/11/2026: o léxico do motor motor-gife (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+# 09/11/2026: veio do motor motor-gife (organização dos 43 motores)
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 301 a 400)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=300&format=json"
+tipo = "cadeia"
+destino = "especial"                # 09/11/2026: a base de empresas (era o motor-gife)
+papel = "alternativa"
+lexico = { termos = [], vetos = [] }   # 09/11/2026: o léxico do motor motor-gife (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
 
 # ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
 
@@ -21,44 +169,8 @@ tipo = "pagina"
 papel = "principal"
 
 [[fonte]]
-nome = "chamadas.funbio.org.br — editais"
-url = "https://chamadas.funbio.org.br/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
-nome = "editais.movimentobemmaior.org.br — editais"
-url = "https://editais.movimentobemmaior.org.br/2026/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
-nome = "rededobem.org.br — editais"
-url = "https://rededobem.org.br/editais/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
-nome = "fundacaotidesetubal.org.br — editais"
-url = "https://fundacaotidesetubal.org.br/editais-para-as-periferias/"    # 08/11/2026 (estudo): a página dos editais abertos
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
-nome = "climaesociedade.org — editais"
-url = "https://climaesociedade.org/editais/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
 nome = "banrisulcultural.com.br — editais"
 url = "https://banrisulcultural.com.br/editais/"
-tipo = "pagina"
-papel = "alternativa"
-
-[[fonte]]
-nome = "mariaemilia.org.br — editais"
-url = "https://mariaemilia.org.br/editais/"    # 08/11/2026 (estudo): a página dos editais (a antiga era de um edital só)
 tipo = "pagina"
 papel = "alternativa"
 
@@ -87,6 +199,128 @@ tipo = "metabusca"
 papel = "alternativa"
 termos = "instituto fundação edital Goiás organizações da sociedade civil inscrições (Unimed OR Equatorial OR Saneago OR Sicoob OR Sicredi OR \"Jaime Câmara\")"
 
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Instituto Equatorial — editais (Prosas)"
+url = "https://institutoequatorial.prosas.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Equatorial Goiás — notícias de editais e projetos"
+url = "https://go.equatorialenergia.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Mapfre — hub de projetos incentivados"
+url = "https://mapfre.hubdoincentivo.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Mapfre — patrocínios incentivados"
+url = "https://www.mapfre.com.br/quem-somos/patrocinios-incentivados/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Shell — projetos incentivados"
+url = "https://www.shell.com.br/sustentabilidade/sociedade/patrocinios-e-parcerias.html"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Itaú Viver Mais — editais (pessoa idosa)"
+url = "https://www.itauvivermais.com.br/pilares/editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Fundação Grupo Volkswagen — editais"
+url = "https://www.fundacaogrupovw.org.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Instituto Alcoa — programa de apoio a projetos locais"
+url = "https://www.alcoa.com/brasil/pt/institute/local-project-support-program"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Instituto Unimed BH — patrocínio a projetos"
+url = "https://www.unimedbh.com.br/instituto-unimed-bh/patrocinio-a-projetos-culturais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Fundação Banco do Brasil — editais públicos"
+url = "https://www.fbb.org.br/edital-publico/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.mapfre.com.br"
+url = "https://www.mapfre.com.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.shell.com.br"
+url = "https://www.shell.com.br/.sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.itauvivermais.com.br"
+url = "https://www.itauvivermais.com.br/sitemap_index.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — fundacaogrupovw.org.br"
+url = "https://fundacaogrupovw.org.br/sitemap_index.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.alcoa.com"
+url = "https://www.alcoa.com/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.unimedbh.com.br"
+url = "https://www.unimedbh.com.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — fbb.org.br"
+url = "https://fbb.org.br/sitemap_index.xml"
+tipo = "mapa"
+papel = "alternativa"
+
 [[alvo]]
 id = "f260-captacao-221"
 nome = "Fundação Banco do Brasil"
@@ -98,6 +332,8 @@ id = "f260-captacao-222"
 nome = "Fundação Itaú"
 enderecos = ["https://www.fundacaoitau.org.br/"]
 orgao = "Fundação Itaú"
+
+# PROPOSTO SAIR em 09/11/2026 (carrega, mas não tem editais): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-captacao-223"
@@ -123,11 +359,15 @@ nome = "Instituto Natura"
 enderecos = ["https://www.institutonatura.org/"]
 orgao = "Instituto Natura"
 
+# PROPOSTO SAIR em 09/11/2026 (erro de certificado): fica até a decisão da titular (R19)
+
 [[alvo]]
 id = "f260-captacao-227"
 nome = "Instituto Coca-Cola Brasil"
 enderecos = ["https://www.institutococacolabrasil.com.br/"]   # a nuvem não alcança (c:1010)); 2 · requisição com assinatura): fica registrado
 orgao = "Instituto Coca-Cola Brasil"
+
+# PROPOSTO SAIR em 09/11/2026 (domínio não existe mais): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-captacao-228"
@@ -140,6 +380,8 @@ id = "f260-captacao-229"
 nome = "Instituto Votorantim"
 enderecos = ["https://www.institutovotorantim.org.br/"]
 orgao = "Instituto Votorantim"
+
+# PROPOSTO SAIR em 09/11/2026 (domínio não existe mais): fica até a decisão da titular (R19)
 
 [[alvo]]
 id = "f260-captacao-230"
@@ -190,46 +432,10 @@ enderecos = ["https://www.institutosabin.org.br/"]
 orgao = "Instituto Sabin"
 
 [[alvo]]
-id = "f260-curadoria-002"
-nome = "Funbio — Programa Biodiversidade Litoral do Paraná"
-enderecos = ["https://chamadas.funbio.org.br/", "https://chamadas.funbio.org.br/planodemanejo-rppn", "https://chamadas.funbio.org.br/usopublico-rppn", "https://www.funbio.org.br/chamadas-de-projetos/"]
-orgao = "Fundo Brasileiro para a Biodiversidade — Funbio"
-
-[[alvo]]
-id = "f260-curadoria-003"
-nome = "Movimento Bem Maior — Edital Futuro Bem Maior"
-enderecos = ["https://editais.movimentobemmaior.org.br/2026/", "https://movimentobemmaior.org.br/"]
-orgao = "Movimento Bem Maior"
-
-[[alvo]]
-id = "f260-curadoria-004"
-nome = "Agência do Bem / Rede do Bem — Edital de Microprojetos"
-enderecos = ["https://rededobem.org.br/editais/"]
-orgao = "Agência do Bem"
-
-[[alvo]]
-id = "f260-curadoria-005"
-nome = "Fundação Tide Setubal — Edital Territórios Clínicos"
-enderecos = ["https://fundacaotidesetubal.org.br/editais/", "https://conteudo.fundacaotidesetubal.org.br/"]
-orgao = "Fundação Tide Setubal"
-
-[[alvo]]
-id = "f260-curadoria-006"
-nome = "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima"
-enderecos = ["https://climaesociedade.org/editais/"]
-orgao = "Instituto Clima e Sociedade"
-
-[[alvo]]
 id = "f260-curadoria-007"
 nome = "Banrisul Instituto Cultural e Social — Edital Merece!"
 enderecos = ["https://banrisulcultural.com.br/editais/", "https://banrisulcultural.com.br/projeto/merece/"]
 orgao = "Banrisul Instituto Cultural e Social"
-
-[[alvo]]
-id = "f260-curadoria-011"
-nome = "Fundacao Maria Emilia — Edital FME Transforma"
-enderecos = ["https://mariaemilia.org.br/edital-fme-transforma/", "https://mariaemilia.org.br"]
-orgao = "Fundacao Maria Emilia"
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -246,10 +452,10 @@ termos_em = "titulo"
 idade_maxima_dias = 180
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 30 institutos e fundações abertos um a um: só o Funbio tinha chamadas abertas datadas (11/2026 Articulação Institucional até 04/12; Floresta Viva São Francisco até 02/12; TCSA Porto Sul até 09/11). Erros no Chrome: Fundação Bradesco, Instituto Localiza e Fundação ArcelorMittal (página de erro), Coca-Cola (domínio protegido). Lojas Renner: só editais encerrados.", "08/11/2026 (estudo Claude × motores): as rotas da Lojas Renner e da Maria Emília apontavam para a página de UM edital (por isso \"sem mudança\" em 120 leituras); navegando, as páginas certas são /editais-abertos/ e /editais/; a Tide Setubal tem /editais-para-as-periferias/ — trocadas.", "08/11/2026 (conferido pelo Chrome, do Brasil): institutolocaliza.com.br não abre (domínio fora do ar: localizar o endereço novo); o Instituto Sicoob não publica edital (só programas próprios). A segunda etapa (R49) lê o mapa do site dos institutos: em 30 d, iCS 273 páginas novas (11 com edital), Fundação BB 42 (24), Lojas Renner 18 (1), Funbio 6 (1), Tide Setubal 24 (1), Maria Emília 9 (1), Instituto Claro 3 (1).", "08/11/2026 (parecer): um dos três melhores motores (11 estrelas), vivendo da metabusca; a lista mensal do GIFE (replicador) entrava como livro — vetada. Recebeu do motor-gife a busca dos editais de patrocínio e investimento social das empresas de Goiás e a dos institutos com atuação em Goiás (Unimed, Equatorial, Saneago, Sicoob/Sicredi, Fundação Jaime Câmara). O Banrisul (RS) fica: é alvo do estudo da titular e é privado (R27: as privadas ficam).", "Os institutos e fundações das empresas (do levantamento de destinação) também são deste canal.", "Rota de acesso única para os domínios com bloqueio (banrisulcultural.com.br, chamadas.funbio.org.br, climaesociedade.org, conteudo.fundacaotidesetubal.org.br, fundacao.bradesco…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 35 rota(s) que funcionaram: entram como rotas do motor.", "10 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 24 alvos são vigiados só na janela prevista da próxima edição."]
-bloqueios_conhecidos = []
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 27, grupo «Editais de empresas privadas»; reúne motor-gife", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 30 institutos e fundações abertos um a um: só o Funbio tinha chamadas abertas datadas (11/2026 Articulação Institucional até 04/12; Floresta Viva São Francisco até 02/12; TCSA Porto Sul até 09/11). Erros no Chrome: Fundação Bradesco, Instituto Localiza e Fundação ArcelorMittal (página de erro), Coca-Cola (domínio protegido). Lojas Renner: só editais encerrados.", "08/11/2026 (estudo Claude × motores): as rotas da Lojas Renner e da Maria Emília apontavam para a página de UM edital (por isso \"sem mudança\" em 120 leituras); navegando, as páginas certas são /editais-abertos/ e /editais/; a Tide Setubal tem /editais-para-as-periferias/ — trocadas.", "08/11/2026 (conferido pelo Chrome, do Brasil): institutolocaliza.com.br não abre (domínio fora do ar: localizar o endereço novo); o Instituto Sicoob não publica edital (só programas próprios). A segunda etapa (R49) lê o mapa do site dos institutos: em 30 d, iCS 273 páginas novas (11 com edital), Fundação BB 42 (24), Lojas Renner 18 (1), Funbio 6 (1), Tide Setubal 24 (1), Maria Emília 9 (1), Instituto Claro 3 (1).", "08/11/2026 (parecer): um dos três melhores motores (11 estrelas), vivendo da metabusca; a lista mensal do GIFE (replicador) entrava como livro — vetada. Recebeu do motor-gife a busca dos editais de patrocínio e investimento social das empresas de Goiás e a dos institutos com atuação em Goiás (Unimed, Equatorial, Saneago, Sicoob/Sicredi, Fundação Jaime Câmara). O Banrisul (RS) fica: é alvo do estudo da titular e é privado (R27: as privadas ficam).", "Os institutos e fundações das empresas (do levantamento de destinação) também são deste canal.", "Rota de acesso única para os domínios com bloqueio (banrisulcultural.com.br, chamadas.funbio.org.br, climaesociedade.org, conteudo.fundacaotidesetubal.org.br, fundacao.bradesco…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 35 rota(s) que funcionaram: entram como rotas do motor.", "10 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 24 alvos são vigiados só na janela prevista da próxima edição.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o VerSalic (página humana da API do SALIC) está \"em migração\" para https://aplicacoes.cultura.gov.br/comparar/salicnet/; a api.salic.cultura.gov.br ainda responde (só redireciona a barra final). A lista de maiores contribuintes de ICMS não mudou (atualização de 28/01/2026).", "08/11/2026 (parecer): a base está cheia (873 empresas e 856 incentivos na cópia de 25/10), mas a segunda etapa — os editais de patrocínio das empresas — nunca existiu neste motor (destino especial: só empresas). Ela passou ao novo-fundacoes-institutos (metabusca de patrocínio e investimento social das empresas de Goiás).", "O patrocínio da Zurich (zurich.com.br), que só o Motor de Recorrência lia, fica para quando houver rota de patrocínio confirmada.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, html.duckduckgo.com, salic.cultura.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "Recebe como alvo o patrocínio da Zurich (zurich.com.br), que só o Motor de Recorrência lia.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
+bloqueios_conhecidos = ["goias.gov.br", "salic.cultura.gov.br", "html.duckduckgo.com"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["institutolocaliza.com.br e fundacaoarcelormittal.org.br (não existem mais)", "Instituto Coca-Cola e Instituto Unibanco (recusam a nuvem)"]
+rotas_que_falharam = ["institutolocaliza.com.br e fundacaoarcelormittal.org.br (não existem mais)", "Instituto Coca-Cola e Instituto Unibanco (recusam a nuvem)", "https://goias.gov.br/economia/wp-json/wp/v2/pages?search=maiores contribuintes (vazio: a lista é uma página com os PDFs)"]
 
 [metrica]
 cadencia_h = 24

@@ -680,6 +680,21 @@
     "testes/test_subpaginas_diaria.py::test_as_subpaginas_novas_pelo_mapa_do_site",
     "testes/test_subpaginas_diaria.py::test_o_mapa_sem_data_tem_a_primeira_leitura_como_base"
    ]
+  },
+  {
+   "id": "R50",
+   "data": "2026-11-09",
+   "tema": "a organização dos 43 motores",
+   "regra": "Os motores seguem a organização da titular de 09/11/2026: 43 motores (41 regulares e 2 pilotos), numerados de 1 a 43 na ordem e nos grupos dela — Diários oficiais; Legislativo; Judiciário; Ministério Público; Tribunais de Contas (TCM-GO, TCE-GO, TCU); Executivo municipal (Prefeitura de Goiânia, Região Metropolitana, as 50 maiores cidades); Executivo estadual; Executivo federal; Sistema S e bancos públicos (motores próprios); Leis de incentivo fiscal; Editais de empresas privadas; Editais de fundações (nacionais e internacionais); Sites de divulgação do terceiro setor e de cultura (um motor por site, medidos individualmente); Ferramentas transversais (o Espião e o Interceptador). As secretarias de cada esfera ficam num motor da esfera; o motor municipal lê o mapa do site completo, os subsites e os subdomínios. Os motores extintos são reunidos: o id vira nome anterior de UM só motor, que leva o histórico, e cada fonte reunida mantém o próprio léxico e o próprio destino. O Prosas só com o site do Prosas. Revoga a organização do estudo de 19/10/2026 (47 motores) como organização vigente.",
+   "porque": "titular, 09/11/2026: «Faça a reorganização da forma que eu projetei, com os 43 motores, organizando os existentes, agregando os extintos e criando os novos» — sobre a organização por grupos (diários municipais, legislativos, Judiciário, Executivo nas 3 esferas, empresas privadas, fundações, sites de divulgação), com «sites especializados de divulgação, um motor para cada», «secretarias agregadas em 1 motor da sua esfera», os motores do TCM, do TCE e do TCU, e as decisões: 7 e 8 num só (Congresso), TJ-GO e CNJ separados, o motor do Entorno removido, Sistema S e bancos separados, a Rouanet no Governo Federal, o motor-gife nos institutos empresariais, as fundações nacionais e as internacionais em um motor cada, o Prosas só com o site do Prosas.",
+   "onde": "config/motores_previstos.json (a ordem, o número e o grupo), eldorado/motores/canal/config/*.toml (motor.numero, motor.grupo, nomes_anteriores; fonte.lexico e fonte.destino), eldorado/motores/canal/motor.py (CfgMotor.numero/grupo, CfgFonte.lexico/destino, _lx), eldorado/base/motor_modelo/modelo.toml, config/modulos.toml, config/agenda.toml, config/pontuacao_motores.toml, config/comparacao.toml",
+   "travas": [
+    "testes/test_organizacao_43.py::test_os_43_motores_na_ordem_da_titular",
+    "testes/test_organizacao_43.py::test_cada_extinto_reunido_em_um_so_motor",
+    "testes/test_organizacao_43.py::test_os_grupos_e_os_tres_tribunais_de_contas",
+    "testes/test_organizacao_43.py::test_o_prosas_so_com_o_site_do_prosas",
+    "testes/test_organizacao_43.py::test_a_fonte_com_destino_especial_vai_a_base_especial"
+   ]
   }
  ]
 }

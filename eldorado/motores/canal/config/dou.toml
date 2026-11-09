@@ -1,13 +1,17 @@
-# Diário Oficial da União: a "Leitura do Jornal" de cada dia (seções 1 e 3), com o filtro calibrado pelo Eldorado0
-# com as 55.567 matérias de setembro/2026. A página pode ter até 12 MB; só vale o <script id="params"> EXATO.
+# Diário Oficial da União — organização dos 43 motores (titular, 09/11/2026): motor 04, grupo «Diários oficiais».
+# O mesmo motor, renumerado e renomeado.
+
 [motor]
 id = "dou"
+numero = 4
+grupo = "Diários oficiais"
 nome = "Diário Oficial da União"
 categoria = "Diários oficiais"
+categoria_estudo = "EXE"
 finalidade = "chamamentos, fomento, prêmios e programas federais para organizações da sociedade civil"
 canal = "diario"
 uf = "BR"
-categoria_estudo = "EXE"
+destino = "biblioteca"
 nomes_anteriores = []
 
 [[fonte]]
@@ -47,14 +51,33 @@ resumo = "content"
 orgao = "hierarchyStr"
 secao = "pubName"
 
-# ---- os alvos do estudo (19/10/2026): pontos de captação vigiados na janela prevista; endereços do cadastro.
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "DOU — base de dados mensal (XML, dados abertos)"
+url = "https://www.in.gov.br/acesso-a-informacao/dados-abertos/base-de-dados"
+tipo = "pagina"
+papel = "alternativa"
 
-[[alvo]]
-id = "f260-captacao-134"
-nome = "MDHC - editais de direitos humanos"
-enderecos = ["https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais", "https://www.in.gov.br/"]
-seletor = "#content-core"            # 08/11/2026: a página de editais do MDHC (respondeu 200); só a região do conteúdo
-orgao = "Diário Oficial da União — Seção 3 (avisos e editais)"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "INLABS — DOU em XML diário (exige cadastro gratuito)"
+url = "https://inlabs.in.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "DOU — busca avançada"
+url = "https://www.in.gov.br/consulta/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.in.gov.br"
+url = "https://www.in.gov.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [[alvo]]
 id = "f260-captacao-207"
@@ -67,7 +90,7 @@ degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "lo
 intervalo_s = 1.0
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na busca do DOU, frases compostas com aspas (\"A\" \"B\") e \"termo de fomento\" devolvem 0; o teto é 75 por consulta (75 resultados cobriram só ~10 dias) — fatiar o período ou consultar uma frase por vez (\"edital de chamamento público\", \"aviso de chamamento público\", s=do3). Nos 30 d: Goiandira, Funarte nº 7 e 8, Quirinópolis, Vianópolis, Piracanjuba, Mossâmedes, Rubiataba, FUNAI.", "08/11/2026 (parecer): 1.317 extratos de parceria já firmada descartados em 30 dias — o veto pelo título agora pega todo extrato, e o salvo só vale para o título que anuncia o chamamento.", "08/11/2026: a busca do DOU (como o Ro-DOU) é a rota alternativa: traz as edições extras e lê quando o script#params da Leitura do Jornal falha (14 de 108 leituras).", "08/11/2026: a prefeitura de outro estado (não capital) sai na entrada pelo hierarchyStr (R27); a federal e a de Goiás ficam."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 04, grupo «Diários oficiais»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na busca do DOU, frases compostas com aspas (\"A\" \"B\") e \"termo de fomento\" devolvem 0; o teto é 75 por consulta (75 resultados cobriram só ~10 dias) — fatiar o período ou consultar uma frase por vez (\"edital de chamamento público\", \"aviso de chamamento público\", s=do3). Nos 30 d: Goiandira, Funarte nº 7 e 8, Quirinópolis, Vianópolis, Piracanjuba, Mossâmedes, Rubiataba, FUNAI.", "08/11/2026 (parecer): 1.317 extratos de parceria já firmada descartados em 30 dias — o veto pelo título agora pega todo extrato, e o salvo só vale para o título que anuncia o chamamento.", "08/11/2026: a busca do DOU (como o Ro-DOU) é a rota alternativa: traz as edições extras e lê quando o script#params da Leitura do Jornal falha (14 de 108 leituras).", "08/11/2026: a prefeitura de outro estado (não capital) sai na entrada pelo hierarchyStr (R27); a federal e a de Goiás ficam."]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = ["DOU — busca por termo (a mesma base, outro endereço)"]
 rotas_que_falharam = ["os alvos na página inicial in.gov.br (sem conteúdo de oportunidade; 11 de 101 leituras no computador local)"]

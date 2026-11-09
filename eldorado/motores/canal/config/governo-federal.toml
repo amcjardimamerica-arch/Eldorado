@@ -1,0 +1,327 @@
+# Governo Federal — ministérios e órgãos (editais diretos e Lei Rouanet) — organização dos 43 motores (titular, 09/11/2026): motor 21, grupo «Executivo federal».
+# Criado a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml); as seções de acesso, leitura, léxico, canivete e métrica vêm do motor irmão site-funarte, com a finalidade própria.
+
+[motor]
+id = "governo-federal"
+numero = 21
+grupo = "Executivo federal"
+nome = "Governo Federal — ministérios e órgãos (editais diretos e Lei Rouanet)"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar os editais e chamamentos públicos dos ministérios e órgãos federais para OSC (Cultura, Funarte, Rouanet, CNPq, MDS, MDHC, Igualdade Racial, Mulheres, MMA, Palmares, IPHAN, Saúde, Anater, FDD)"
+tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
+nomes_anteriores = ["cnpq-extensao", "plat-cnpq-extensao", "site-finep", "site-funarte", "salic", "rouanet", "plat-salic", "f260-espalhado-rouanet-cultura-gov-br"]
+
+# 09/11/2026: veio do motor cnpq-extensao (organização dos 43 motores)
+
+# ---- rotas confirmadas (23/10/2026, testes/paginas/cnpq-extensao/): o gov.br do CNPq responde da nuvem hoje.
+
+[[fonte]]
+nome = "CNPq — chamadas abertas para submissão"
+url = "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+lexico = { termos = ["re:(chamada|edital|chamamento).{0,200}(extens[ãa]o|tecnolog\\w* socia|sociedade civil|organiza[çc][õo]es (sociais|da sociedade)|\\boscs?\\b|popular|solid[aá]ri|cooperativ|divulga[çc][ãa]o cient|feiras? de ci[êe]ncia|museus?)"], vetos = ["re:compartilhe|copiar|^faq|^anexo|plano de trabalho|declara[çc]|carta de|resultado|bolsa|mestrado|doutorado|p[óo]s-?doutor|produtividade|^busca|encerrad|coopera[çc][ãa]o (internacional|bilateral|afro)"], termos_em = "titulo" }   # 09/11/2026: o léxico do motor cnpq-extensao (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor cnpq-extensao (organização dos 43 motores)
+
+[[fonte]]
+nome = "CNPq — chamadas"
+url = "https://www.gov.br/cnpq/pt-br/chamadas"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "alternativa"
+lexico = { termos = ["re:(chamada|edital|chamamento).{0,200}(extens[ãa]o|tecnolog\\w* socia|sociedade civil|organiza[çc][õo]es (sociais|da sociedade)|\\boscs?\\b|popular|solid[aá]ri|cooperativ|divulga[çc][ãa]o cient|feiras? de ci[êe]ncia|museus?)"], vetos = ["re:compartilhe|copiar|^faq|^anexo|plano de trabalho|declara[çc]|carta de|resultado|bolsa|mestrado|doutorado|p[óo]s-?doutor|produtividade|^busca|encerrad|coopera[çc][ãa]o (internacional|bilateral|afro)"], termos_em = "titulo" }   # 09/11/2026: o léxico do motor cnpq-extensao (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor empresas-editais-incentivados (organização dos 43 motores)
+
+[[fonte]]
+nome = "MDH — editais da criança e do adolescente (CONANDA/SNDCA)"
+url = "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais"
+tipo = "pagina"
+papel = "alternativa"
+lexico = { termos = ["re:chamamento|chamada p[uú]blica|apresenta[çc][ãa]o de projetos|credenciamento|edital|projetos aptos|capta[çc][ãa]o|inscri[çc]|sele[çc][ãa]o de projetos"], vetos = ["re:resultado|homologa|habilitad|aprovad|ouvidoria|contatos?$|documenta[çc][ãa]o (geral|obrigat|espec)|marcos legais|encerrad|^inscri[çc][õo]es$|perguntas frequentes|\\bfaq\\b|manual|tutorial"], termos_em = "titulo", idade_maxima_dias = 365 }   # 09/11/2026: o léxico do motor empresas-editais-incentivados (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor estaduais-go-gov (organização dos 43 motores)
+
+[[fonte]]
+nome = "Anater — chamadas públicas"
+url = "https://www.anater.org/index.php/chamada-publica/"
+tipo = "pagina"
+papel = "alternativa"
+lexico = { termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"], termos_em = "titulo", vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"], idade_maxima_dias = 180 }   # 09/11/2026: o léxico do motor estaduais-go-gov (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor estaduais-go-gov (organização dos 43 motores)
+
+[[fonte]]
+nome = "Anater — editais do ano"
+url = "https://www.anater.org/editais-2/"
+tipo = "pagina"
+papel = "alternativa"
+lexico = { termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"], termos_em = "titulo", vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"], idade_maxima_dias = 180 }   # 09/11/2026: o léxico do motor estaduais-go-gov (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor estaduais-go-gov (organização dos 43 motores)
+
+# Anater: a página de chamadas tem texto de spam injetado no fim (site comprometido): só os links das chamadas contam.
+[[fonte]]
+nome = "Anater — chamadas públicas de ATER (só os blocos das chamadas)"
+url = "https://www.anater.org/chamada-publica/"
+tipo = "pagina"
+papel = "alternativa"
+filtro = { titulo = '(?i)chamada|edital|sele[cç][aã]o' }
+lexico = { termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"], termos_em = "titulo", vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"], idade_maxima_dias = 180 }   # 09/11/2026: o léxico do motor estaduais-go-gov (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor mpu-destinacao (organização dos 43 motores)
+
+[[fonte]]
+nome = "FDD (Fundo de Defesa de Direitos Difusos) — seleções em andamento"
+url = "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+lexico = { termos = ["re:edital|doa[çc][ãa]o|doacao|bens|sele[çc][ãa]o (de projetos|p[úu]blica|em andamento)|chamamento|chamada|cadastr|destina"], vetos = ["re:resultado|homologa|^despacho|certid[ãa]o|^informa[çc][ãa]o|e-?pgea|^anexo|concurso|est[áa]gio", "re:^veja|rela[çc][ãa]o de bens|^anexo|^clique|termo de doa[çc][ãa]o assinado|^\\d+[ºo]? termo"], termos_em = "titulo" }   # 09/11/2026: o léxico do motor mpu-destinacao (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor outros-agregadores (organização dos 43 motores)
+
+[[fonte]]
+nome = "busca aberta: edital chamamento público organizações da sociedade civil inscrições abertas"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "edital chamamento público organizações da sociedade civil inscrições abertas"
+lexico = { termos = ["re:edital|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|inscri[çc][õo]es|fomento|patroc[ií]nio|apoio a projetos|financiamento|programa de (apoio|acelera)"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|licita[çc]|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|concurso p[úu]blico|processo seletivo|vagas|est[áa]gio|resultado|homologa|^entrar$|^perguntar|editalai|planos|^setores|^modalidades|(^| )tese( |$)|mestrado|doutorado|produtividade|kaggle|^fomento e (bolsas|inova)|^competi[çc][õo]es e pr", "re:^confira editais|editais com inscri[çc][õo]es abertas (para|em|no|na)|^editais (abertos|de) (novembro|dezembro|janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro)"], termos_em = "titulo", idade_maxima_dias = 180, territorio = "goias" }   # 09/11/2026: o léxico do motor outros-agregadores (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor plataforma-mapas-culturais (organização dos 43 motores)
+
+[[fonte]]
+nome = "Ministério da Cultura — editais (gov.br)"
+url = "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas"    # 08/11/2026 (estudo Claude × motores): a subpágina das inscrições abertas (a página "editais" deu 0 pista em 126 leituras)
+tipo = "pagina"
+papel = "alternativa"
+seletor = "#content-core"
+lexico = { termos = ["re:edital|chamamento|chamada publica|premio|premiacao|fomento|selecao de (projetos|propostas|iniciativas)|subsidio|bolsa|pnab|aldir blanc|paulo gustavo|cultura viva|pontos? de cultura|pontos e pontoes|termo de execucao cultural"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|\\bvagas?\\b|\\bcurso\\b|\\boficinas?\\b|arte-?educador|contratacao|processo seletivo para|resultado|homologa|\\bteste\\b|ficha de avaliacao|prestacao de informac|\\bguia\\b|mapeamento|formulario|escuta"], termos_em = "titulo", territorio = "goias" }   # 09/11/2026: o léxico do motor plataforma-mapas-culturais (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor salic (organização dos 43 motores)
+
+[[fonte]]
+nome = "Lei Rouanet — página do programa (editais e normas)"
+url = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"
+tipo = "pagina"
+lexico = { termos = ["re:edital|chamada|chamamento|selecao|instrucao normativa|calendario|prazo|apresentacao de propostas"], vetos = ["re:resultado|homologa|aprovad|contemplad"], termos_em = "titulo" }   # 09/11/2026: o léxico do motor salic (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor salic (organização dos 43 motores)
+
+# ---- os alvos do estudo (19/10/2026): pontos de captação vigiados na janela prevista; endereços do cadastro.
+
+# 08/11/2026 (estudo Claude × motores): rota achada navegando pelo menu "Editais/Chamamentos" do próprio site
+[[fonte]]
+nome = "Ministério da Cultura — editais com inscrições abertas"
+url = "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas"
+tipo = "pagina"
+papel = "alternativa"
+seletor = "#content-core"
+lexico = { termos = ["re:edital|chamada|chamamento|selecao|instrucao normativa|calendario|prazo|apresentacao de propostas"], vetos = ["re:resultado|homologa|aprovad|contemplad"], termos_em = "titulo" }   # 09/11/2026: o léxico do motor salic (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor site-funarte (organização dos 43 motores)
+
+# ---- rotas confirmadas (23/10/2026, testes/paginas/site-funarte/): a Funarte organiza os editais em abertos, em andamento e por ano.
+
+[[fonte]]
+nome = "Funarte — editais abertos"
+url = "https://www.gov.br/funarte/pt-br/editais/editais-abertos"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+
+# 09/11/2026: veio do motor site-funarte (organização dos 43 motores)
+
+[[fonte]]
+nome = "Funarte — editais do ano corrente"
+url = "https://www.gov.br/funarte/pt-br/editais/{hoje:%Y}"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MDS — editais abertos"
+url = "https://www.gov.br/mds/pt-br/acesso-a-informacao/licitacoes-e-contratos/editais-abertos"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MDS — editais de chamada pública"
+url = "https://www.gov.br/mds/pt-br/servicos/modalidade-de-licitacoes/editais-de-chamada-publica"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MDHC — editais (participação social)"
+url = "https://www.gov.br/mdh/pt-br/navegue-por-temas/participacao-social/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Ministério da Igualdade Racial — editais"
+url = "https://www.gov.br/igualdaderacial/pt-br/assuntos/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Ministério das Mulheres — editais"
+url = "https://www.gov.br/mulheres/pt-br/acesso-a-informacao/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MMA — editais de chamamento público"
+url = "https://www.gov.br/mma/pt-br/acesso-a-informacao/participacao-social/3-5-editais-de-chamamento-publico"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Fundação Cultural Palmares — editais abertos e em andamento"
+url = "https://www.gov.br/palmares/pt-br/acesso-a-informacao/editais-abertos-e-em-andamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "IPHAN — editais e seleções"
+url = "https://www.gov.br/iphan/pt-br/acesso-a-informacao/editais-e-selecoes"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Cultura Viva — editais"
+url = "https://www.gov.br/culturaviva/pt-br/acesso-a-informacao/editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Ministério da Saúde — chamamentos públicos"
+url = "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Ministério da Saúde — editais de HIV/aids (OSC)"
+url = "https://edital.aids.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SRI — Portal das OSC: oportunidades"
+url = "https://www.gov.br/sri/pt-br/backup-secretaria-de-governo/articulacao-social/portal-organizacao-sociedade-civil/oportunidades"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Secretaria-Geral — CONFOCO (processo seletivo)"
+url = "https://www.gov.br/secretariageral/pt-br/confoco"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal CultBR"
+url = "https://portal.cultbr.cultura.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.gov.br"
+url = "https://www.gov.br/sitemap.xml.gz"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: veio do motor dou (organização dos 43 motores)
+
+# ---- os alvos do estudo (19/10/2026): pontos de captação vigiados na janela prevista; endereços do cadastro.
+
+[[alvo]]
+id = "f260-captacao-134"
+nome = "MDHC - editais de direitos humanos"
+enderecos = ["https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais", "https://www.in.gov.br/"]
+seletor = "#content-core"            # 08/11/2026: a página de editais do MDHC (respondeu 200); só a região do conteúdo
+orgao = "Diário Oficial da União — Seção 3 (avisos e editais)"
+
+# 09/11/2026: veio do motor mpu-destinacao (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-169"
+nome = "FDD/Pronasci - cultura e cidadania em territórios vulneráveis"
+enderecos = ["https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos"]   # corrigido: o cadastro antigo apontava o CONANDA e o CEDCA
+seletor = "#content-core"
+orgao = "Conanda — Fundo Nacional para a Criança e o Adolescente"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-072"
+nome = "Arte e Cultura na Educação Integral"
+enderecos = ["https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3", "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1", "https://www.goiania.go.gov.br/educacao/", "https://diariooficial.goiania.go.gov.br/", "https://www.in.gov.br/"]
+orgao = "Diário Oficial da União — Seção 3 (avisos e editais)"
+
+# 09/11/2026: veio do motor salic (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-035"
+nome = "Lei Rouanet - doação de pessoa física"
+enderecos = ["https://www.gov.br/cultura/pt-br/assuntos/editais"]
+orgao = "Ministério da Cultura / SALIC"
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|chamada|convocat|programa|pr[êe]mio|sele[çc][ãa]o|fomento|mostra|resid[êe]ncia"]
+vetos = ["re:resultado|homologa|habilita|selecionad|compartilhe|copiar"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 21, grupo «Executivo federal»; reúne cnpq-extensao, site-funarte, salic", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão site-funarte.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 5 chamadas abertas no CNPq (31 Petrobras inspirAÇÃO até 08/12; 36 biodiversidade; 34 eventos; 32 ANR; 33 produtividade) — 4 já estavam no motor.", "08/11/2026 (parecer): 2 achados em 36 execuções, ambos errados. Léxico estreitado para sociedade civil, extensão e tecnologia social; a decisão de fundir este motor num motor federal único ou desligá-lo é da titular (R19).", "O gov.br do CNPq respondeu da nuvem em 23/10/2026 (o Eldorado0 registrava bloqueio).", "Rota de acesso única para os domínios com bloqueio (www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): idem: os 4 abertos do MinC estão na lista /editais/inscricoes-abertas (sem data). O VerSalic migrou para aplicacoes.cultura.gov.br/comparar/salicnet/.", "08/11/2026 (parecer): 109 execuções em 30 dias para 5 livros — o mecanismo muda uma vez por ano (instrução normativa e janela do Salic); o programa só entrega quando o texto oficial muda.", "08/11/2026: as páginas do gov.br falharam em 16 de 109 leituras (computador local); a API do Salic (api.salic.cultura.gov.br) responde pela ponte e já é lida pelo motor-gife."]
+bloqueios_conhecidos = ["www.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["http://memoria2.cnpq.br/web/guest/chamadas-publicas (403)", "http://resultado.cnpq.br/chamadas (404)", "https://www.finep.gov.br/chamadas-publicas (responde, mas a lista não está numa região reconhecível: provável JavaScript; 23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
+
+# 09/11/2026: veio do motor salic
+
+[programa]
+titulo = "Lei Rouanet (Lei 8.313/1991) — apresentação de propostas culturais no Salic"
+orgao = "Ministério da Cultura"
+modalidade = "incentivo fiscal (mecenato)"
+link_divulgacao = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"
+link_oficial = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao"
+documentos = ["https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
+              "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"]
+
+# 09/11/2026: veio do motor salic
+
+[legislacao]
+leis = ["lei-8313-1991"]
+notas = "A janela anual de propostas, os limites e as regras vêm da instrução normativa vigente, lida na página oficial."

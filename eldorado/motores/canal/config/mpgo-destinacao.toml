@@ -1,16 +1,19 @@
-# MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# MP-GO — Programa Destina — organização dos 43 motores (titular, 09/11/2026): motor 11, grupo «Ministério Público».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
-orgao = "Ministério Público do Estado de Goiás"
 id = "mpgo-destinacao"
-nome = "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)"
+numero = 11
+grupo = "Ministério Público"
+nome = "MP-GO — Programa Destina"
 categoria = "Judiciário e Ministérios Públicos"
 categoria_estudo = "JUD"
 finalidade = "Destina do MP-GO (Edital de Chamamento 02/2024, cadastro contínuo): regra fixa — o site do MP-GO proíbe robôs. Leitura indireta semanal pelo Diário do Estado (quem recebe recurso DAAMP publica lá) e lembrete de conferência manual mensal"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+orgao = "Ministério Público do Estado de Goiás"
+destino = "biblioteca"
 nomes_anteriores = []
 
 # ---- rotas (23/10/2026): o site do MP-GO não responde à nuvem (tempo esgotado na página e no robots): vai pelo
@@ -23,28 +26,37 @@ tipo = "pagina"
 papel = "principal"
 exige_brasil = true
 
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
 [[fonte]]
-nome = "Diário Oficial do Estado — as matérias do Ministério Público, da destinação e do TAC"
-url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
-tipo = "cadeia"
+nome = "MP-GO — Projeto Destina (página do programa)"
+url = "https://www.mpgo.mp.br/portal/conteudo/projeto-destina"
+tipo = "pagina"
 papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
-[[fonte.cadeia]]
-formato = "json"
-itens = "itens"
-campos = { edicao = "id", numero = "numero" }
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MP-GO — notícias (editais de cadastro de entidades)"
+url = "https://www.mpgo.mp.br/portal/noticia/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
-[[fonte.cadeia]]
-formato = "html"
-url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
-itens = "a.linkMateria"
-campos = { materia = "attr:data-materia-id", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
-filtro = { titulo = '(?i)minist[ée]rio p[úu]blico|mpgo|destina[çc][ãa]o|\btac\b|ajustamento de conduta|compor' }
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MP-GO — atos e normas (atos PGJ de destinação)"
+url = "https://www.mpgo.mp.br/portal/atos_normas/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
-[fonte.pista]
-titulo = "{titulo}"
-link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
-resumo = "{caminho} · edição {numero}"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "MP-GO — termos de ajustamento de conduta (transparência)"
+url = "https://www.mpgo.mp.br/transparencia/atividade_fim/termos_de_ajustamento_de_conduta"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
 [[alvo]]
 id = "f260-captacao-196"
@@ -65,7 +77,7 @@ vetos = ["re:concurso|est[áa]gio|licita|preg[ãa]o|resultado final|nomea|exoner
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 28 notícias do MP-GO nos 30 d, nenhuma de destinação/cadastro; o menu tem a área \"Terceiro Setor\" (rota a conferir). Os 13 avisos que a comparação atribui a este motor vêm do DOE-GO (fonte comum) e não são de destinação do MP.", "08/11/2026 (parecer): 0 acertos em 5 — notícias do portal (capacitações, credenciamento de bacharéis) entravam pelo texto todo; vetadas pelo título. O Destina é cadastro contínuo: a pendência é o cadastro da associação.", "PENDÊNCIA DA TITULAR: pedir o cadastro da associação no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo); contato COMPOR, (62) 3243-8116.", "O robots.txt do MP-GO proíbe robôs: é informação (regra da titular); o motor lê devagar, pelo computador local.", "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br, www.mpgo.mp.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 9 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).", "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.", "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).", "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.", "O site do MP-GO proíbe robôs (robots.txt 'Disallow: /'): o motor não lê o site; a conferência é manual, uma vez por mês.", "Histórico de 3 anos: só 2 registros públicos. Para completar, pedir ao COMPOR, pela Lei de Acesso à Informação, as destinações de 2023 a 2025 (área, valor, entidade)."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 11, grupo «Ministério Público»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): 28 notícias do MP-GO nos 30 d, nenhuma de destinação/cadastro; o menu tem a área \"Terceiro Setor\" (rota a conferir). Os 13 avisos que a comparação atribui a este motor vêm do DOE-GO (fonte comum) e não são de destinação do MP.", "08/11/2026 (parecer): 0 acertos em 5 — notícias do portal (capacitações, credenciamento de bacharéis) entravam pelo texto todo; vetadas pelo título. O Destina é cadastro contínuo: a pendência é o cadastro da associação.", "PENDÊNCIA DA TITULAR: pedir o cadastro da associação no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo); contato COMPOR, (62) 3243-8116.", "O robots.txt do MP-GO proíbe robôs: é informação (regra da titular); o motor lê devagar, pelo computador local.", "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br, www.mpgo.mp.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 9 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).", "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.", "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).", "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.", "O site do MP-GO proíbe robôs (robots.txt 'Disallow: /'): o motor não lê o site; a conferência é manual, uma vez por mês.", "Histórico de 3 anos: só 2 registros públicos. Para completar, pedir ao COMPOR, pela Lei de Acesso à Informação, as destinações de 2023 a 2025 (área, valor, entidade)."]
 bloqueios_conhecidos = ["mpt.mp.br", "www.gov.br", "www.mpgo.mp.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://www.mpgo.mp.br/portal/ e o robots.txt pela nuvem (tempo esgotado, 23/10/2026)"]

@@ -1,19 +1,58 @@
-# Transferegov (dados abertos): os programas federais com recebimento de propostas aberto que aceitam entidades
-# privadas sem fins lucrativos. Uma leitura por dia (o arquivo é atualizado diariamente).
+# Transferegov — programas abertos a OSC — organização dos 43 motores (titular, 09/11/2026): motor 22, grupo «Executivo federal».
+# O mesmo motor, renumerado e renomeado.
+
 [motor]
 id = "site-transferegov"
+numero = 22
+grupo = "Executivo federal"
 nome = "Transferegov — programas abertos a OSC"
 categoria = "Plataformas federais"
+categoria_estudo = "EXE"
 finalidade = "programas federais com propostas abertas para organizações da sociedade civil"
 canal = "api"
 uf = "BR"
-categoria_estudo = "EXE"
+destino = "biblioteca"
 nomes_anteriores = ["transferegov"]
 
 [[fonte]]
 nome = "Transferegov — programas (dados abertos)"
 url = "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
 tipo = "siconv"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Transferegov — consulta de programas (atos preparatórios)"
+url = "https://cadastro.transferegov.sistema.gov.br/ep-atos-prep-web/atos-prep/programa/consulta"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Transferegov — fundo a fundo: consulta de programas"
+url = "https://fundos.transferegov.sistema.gov.br/transferencia/programa/consulta"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Transferegov — portal"
+url = "https://portal.transferegov.sistema.gov.br/portal/home"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Transferegov — download de dados abertos"
+url = "https://www.gov.br/transferegov/pt-br/ferramentas-gestao/dados-abertos/download-dados"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.gov.br"
+url = "https://www.gov.br/sitemap.xml.gz"
+tipo = "mapa"
+papel = "alternativa"
 
 # ---- os alvos do estudo (19/10/2026): pontos de captação vigiados na janela prevista; endereços do cadastro.
 
@@ -47,12 +86,6 @@ degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "lo
 [leitura]
 documentos = false
 
-# 08/11/2026 (parecer: 895 decididos, 5 acertos — o maior ruído do sistema). Duas causas, as duas corrigidas no motor genérico:
-# (1) os 4 alvos não têm léxico e entregavam TODOS os links dos portais dos ministérios (2.316 de 2.324 achados em 30 dias:
-#     "Carômetro", "Saiba mais sobre..."): sem léxico, o alvo agora entrega só a própria página quando ela muda;
-# (2) a rota boa (o arquivo de programas, 11 MB) passa pela ponte BR, que cortava em 6 MB ("Callback aborted" em 108 de 118
-#     leituras): a ponte agora pede até 15 MB e, se falhar, tenta o pedido direto.
-# O leitor do arquivo (descoberta/dados_abertos.py) já filtra o recebimento de propostas aberto e a natureza privada/OSC.
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): capa do Transferegov: comunicado 33/2026 (2º cronograma das emendas individuais RP6, 2º ciclo) — sinal para a associação procurar parlamentar; programas abertos ficam no sistema, não na capa.", "08/11/2026 (parecer): 2.316 dos 2.324 achados de 30 dias eram links dos menus dos ministérios colhidos pelos alvos sem léxico; o alvo sem léxico agora entrega só a própria página.", "08/11/2026: o arquivo siconv_programa.zip (11 MB) era cortado pela ponte em 6 MB (108 de 118 leituras em erro); a ponte agora pede até 15 MB e cai no pedido direto se falhar."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 22, grupo «Executivo federal»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): capa do Transferegov: comunicado 33/2026 (2º cronograma das emendas individuais RP6, 2º ciclo) — sinal para a associação procurar parlamentar; programas abertos ficam no sistema, não na capa.", "08/11/2026 (parecer): 2.316 dos 2.324 achados de 30 dias eram links dos menus dos ministérios colhidos pelos alvos sem léxico; o alvo sem léxico agora entrega só a própria página.", "08/11/2026: o arquivo siconv_programa.zip (11 MB) era cortado pela ponte em 6 MB (108 de 118 leituras em erro); a ponte agora pede até 15 MB e cai no pedido direto se falhar."]
 rotas_que_falharam = ["a leitura dos links dos portais www.gov.br/mds, /esporte, /mma e bndes.gov.br como oportunidades (menus)"]

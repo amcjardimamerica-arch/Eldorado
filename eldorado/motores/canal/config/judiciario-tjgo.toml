@@ -1,16 +1,19 @@
-# TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# TJ-GO — editais das comarcas e Banco de Projetos Sociais — organização dos 43 motores (titular, 09/11/2026): motor 08, grupo «Judiciário».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "portal"
-orgao = "Tribunal de Justiça do Estado de Goiás (Corregedoria-Geral)"
 id = "judiciario-tjgo"
-nome = "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO"
+numero = 8
+grupo = "Judiciário"
+nome = "TJ-GO — editais das comarcas e Banco de Projetos Sociais"
 categoria = "Judiciário e Ministérios Públicos"
 categoria_estudo = "JUD"
 finalidade = "editais das comarcas do TJ-GO (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+orgao = "Tribunal de Justiça do Estado de Goiás (Corregedoria-Geral)"
+destino = "biblioteca"
 nomes_anteriores = ["dje-tjgo", "judiciario-cnj-tjgo"]
 
 # ---- diagnóstico (23/10/2026, testes/paginas/judiciario-sondagem/): o zero do Eldorado0 era BLOQUEIO: o site do TJ-GO
@@ -47,7 +50,6 @@ tipo = "metabusca"
 papel = "alternativa"
 termos = "comarca Goiás edital cadastramento entidades prestação pecuniária"
 
-
 # 08/11/2026 (passada no Chrome): os foros publicam a seleção de projetos de prestação pecuniária como notícia
 # ("Foro de Itapuranga abre seleção de projetos…", Edital nº 1/2026, 06/11) e os PDFs ficam em /files/AAAA/NN - Mês/.
 [[fonte]]
@@ -57,6 +59,67 @@ tipo = "pagina"
 papel = "alternativa"
 exige_brasil = true
 filtro = { titulo = '(?i)presta[cç][oõ]es? pecuni|sele[cç][aã]o de projetos|destina[cç][aã]o de recursos|cadastramento de entidades' }
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TJGO — editais publicados"
+url = "https://www.tjgo.jus.br/index.php/editais-publicados"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TJGO — arquivos de editais (PDF) do ano"
+url = "https://www.tjgo.jus.br/files/2026/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Corregedoria — SIPEC (penas pecuniárias)"
+url = "https://corregedoria.tjgo.jus.br/sipec/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Transparência — arrecadação de penas pecuniárias"
+url = "https://transparencia-adm.tjgo.jus.br/gestao-orcamentaria/arrecadacao-penas-pecuniarias"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TJGO — Diário da Justiça Eletrônico"
+url = "https://www.tjgo.jus.br/index.php/processos/dj-eletronico"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Projudi — consulta de publicações"
+url = "https://projudi.tjgo.jus.br/ConsultaPublicacao"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TJDocs — documentos públicos"
+url = "https://tjdocs.tjgo.jus.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.tjgo.jus.br/templates/tjgo"
+url = "https://www.tjgo.jus.br/templates/tjgo/sitemap.txt"
+tipo = "mapa"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
 
 [[alvo]]
 id = "f260-captacao-190"
@@ -80,7 +143,7 @@ idade_maxima_dias = 365                # 08/11/2026: a busca aberta traz o acerv
 territorio = "goias"                   # a busca aberta pode trazer comarcas de outros estados
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): achado só pelo Claude: \"Foro de Itapuranga abre seleção de projetos para destinação de recursos de prestações pecuniárias\" (Edital 1/2026, 06/11). O Banco de Projetos Sociais da CGJ (basesocial/projects) é cadastro CONTÍNUO, sem data. Os PDFs dos editais das comarcas ficam em tjgo.jus.br/files/2026/<NN - Mês>/.", "08/11/2026 (conferido pelo Chrome, do Brasil): o RSS de notícias do TJGO responde do Brasil (14 itens) e o tjgo.jus.br tem mapa do site (502 páginas): a segunda etapa (R49) o lê pela ponte; o endereço antigo do Banco de Projetos (/index.php/banco-de-projetos-sociais) dá 404.", "08/11/2026 (parecer): 1 achado em 59 execuções — o Banco de Projetos lista projetos, não editais; entrou a busca aberta restrita ao TJ-GO e às comarcas de Goiás. A pendência da titular continua: cadastrar a associação no Banco de Projetos Sociais da CGJ-GO.", "PENDÊNCIA DA TITULAR: cadastrar a associação no Banco de Projetos Sociais da Corregedoria do TJ-GO (corregedoria.tjgo.jus.br/basesocial; regras no Provimento: tjdocs.tjgo.jus.br/documentos/504488).", "O zero do Eldorado0 (235 leituras) era bloqueio da nuvem, não fonte errada (diagnóstico de 23/10/2026).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 235 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 08, grupo «Judiciário»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): achado só pelo Claude: \"Foro de Itapuranga abre seleção de projetos para destinação de recursos de prestações pecuniárias\" (Edital 1/2026, 06/11). O Banco de Projetos Sociais da CGJ (basesocial/projects) é cadastro CONTÍNUO, sem data. Os PDFs dos editais das comarcas ficam em tjgo.jus.br/files/2026/<NN - Mês>/.", "08/11/2026 (conferido pelo Chrome, do Brasil): o RSS de notícias do TJGO responde do Brasil (14 itens) e o tjgo.jus.br tem mapa do site (502 páginas): a segunda etapa (R49) o lê pela ponte; o endereço antigo do Banco de Projetos (/index.php/banco-de-projetos-sociais) dá 404.", "08/11/2026 (parecer): 1 achado em 59 execuções — o Banco de Projetos lista projetos, não editais; entrou a busca aberta restrita ao TJ-GO e às comarcas de Goiás. A pendência da titular continua: cadastrar a associação no Banco de Projetos Sociais da CGJ-GO.", "PENDÊNCIA DA TITULAR: cadastrar a associação no Banco de Projetos Sociais da Corregedoria do TJ-GO (corregedoria.tjgo.jus.br/basesocial; regras no Provimento: tjdocs.tjgo.jus.br/documentos/504488).", "O zero do Eldorado0 (235 leituras) era bloqueio da nuvem, não fonte errada (diagnóstico de 23/10/2026).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 235 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None"]
 bloqueios_conhecidos = ["pncp.gov.br", "www.cnj.jus.br", "www.tjgo.jus.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://www.tjgo.jus.br pela nuvem (403, 23/10/2026)", "https://comunicaapi.pje.jus.br (a API do Diário de Justiça Eletrônico Nacional; 403 da nuvem: candidata para o computador local)"]

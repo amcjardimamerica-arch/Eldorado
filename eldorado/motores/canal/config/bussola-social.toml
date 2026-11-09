@@ -1,0 +1,79 @@
+# Bússola Social — Bússola Editais — organização dos 43 motores (titular, 09/11/2026): motor 38, grupo «Sites de divulgação — terceiro setor».
+# Criado a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml); as seções de acesso, leitura, léxico, canivete e métrica vêm do motor irmão outros-agregadores, com a finalidade própria.
+
+[motor]
+id = "bussola-social"
+numero = 38
+grupo = "Sites de divulgação — terceiro setor"
+nome = "Bússola Social — Bússola Editais"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "encontrar as oportunidades divulgadas na Bússola Editais e nas páginas de editais dos investidores da Bússola, medido sozinho como site independente"
+tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
+nomes_anteriores = []
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Bússola Editais"
+url = "https://bussolasocial.com.br/bussola-editais"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Bússola — páginas de investidores (investidor.bussolasocial.com.br/empresa/editais)"
+url = "https://investidor.bussolasocial.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Radar Bússola"
+url = "https://lp.bussolasocial.com.br/radar-bussola"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.bussolasocial.com.br"
+url = "https://www.bussolasocial.com.br/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: veio do motor outros-agregadores (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-captacao-217"
+nome = "Bússola Social - Bússola Editais"
+enderecos = ["https://bussolasocial.com.br/"]
+orgao = "Bússola Social — Bússola Editais"
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|inscri[çc][õo]es|fomento|patroc[ií]nio|apoio a projetos|financiamento|programa de (apoio|acelera)"]
+vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|licita[çc]|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|concurso p[úu]blico|processo seletivo|vagas|est[áa]gio|resultado|homologa|^entrar$|^perguntar|editalai|planos|^setores|^modalidades|(^| )tese( |$)|mestrado|doutorado|produtividade|kaggle|^fomento e (bolsas|inova)|^competi[çc][õo]es e pr", "re:^confira editais|editais com inscri[çc][õo]es abertas (para|em|no|na)|^editais (abertos|de) (novembro|dezembro|janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro)"]
+termos_em = "titulo"
+# 08/11/2026: edital antigo (7) e página de listagem (12) descartados em 30 d
+idade_maxima_dias = 180
+# 08/11/2026: a metabusca aberta trazia chamamento municipal de todo o país: a municipal de outro estado sai na entrada (R27)
+territorio = "goias"
+
+[aprendizado]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 38, grupo «Sites de divulgação — terceiro setor»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão outros-agregadores."]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

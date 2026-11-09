@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 import pytest
 
 from eldorado.motores.canal.motor import MotorCanal
+from recorte_motor import recorte   # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 PASTA = Path("testes/paginas/do-goiania")
 INDICE = json.loads((PASTA / "indice.json").read_text(encoding="utf-8"))
@@ -37,7 +38,7 @@ def prefeitura():
 
 
 def motor(base, tmp_path):
-    texto = Path("eldorado/motores/canal/config/do-goiania.toml").read_text(encoding="utf-8")
+    texto = recorte("do-goiania")
     for d in ("https://www.goiania.go.gov.br", "https://queridodiario.ok.org.br", "https://diariooficial.goiania.go.gov.br", "https://goiania.go.gov.br"):
         texto = texto.replace(d, base)
     (tmp_path / "do-goiania.toml").write_text(texto, encoding="utf-8")

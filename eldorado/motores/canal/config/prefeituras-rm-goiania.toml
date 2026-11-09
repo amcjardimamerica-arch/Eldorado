@@ -1,0 +1,845 @@
+# Prefeituras da Região Metropolitana de Goiânia — Aparecida, Senador Canedo, Trindade e Inhumas — organização dos 43 motores (titular, 09/11/2026): motor 18, grupo «Executivo municipal».
+# Criado a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml); as seções de acesso, leitura, léxico, canivete e métrica vêm do motor irmão prefeituras-50-go, com a finalidade própria.
+
+[motor]
+id = "prefeituras-rm-goiania"
+numero = 18
+grupo = "Executivo municipal"
+nome = "Prefeituras da Região Metropolitana de Goiânia — Aparecida, Senador Canedo, Trindade e Inhumas"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar chamamentos, editais e programas para OSC nas secretarias, conselhos, portais de transparência e subdomínios de Aparecida, Senador Canedo, Trindade e Inhumas"
+tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "GO"
+destino = "biblioteca"
+nomes_anteriores = []
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Aparecida de Goiânia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://aparecida.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Aparecida de Goiânia — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://aparecida.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Trindade — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.trindade.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Trindade — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.trindade.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Senador Canedo — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.senadorcanedo.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Senador Canedo — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.senadorcanedo.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Inhumas — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.inhumas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[fonte]]
+nome = "Prefeitura de Inhumas — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.inhumas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Aparecida — credenciamentos e chamadas públicas"
+url = "https://acessoainformacao.aparecida.go.gov.br/cidadao/informacao/mp/id=2"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Aparecida — Plataforma de Cultura (oportunidades)"
+url = "https://portaldacultura.aparecida.go.gov.br/oportunidades/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Aparecida — CMDCA"
+url = "https://cmdca.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Senador Canedo — parcerias"
+url = "https://parcerias.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Senador Canedo — editais (arquivos do site)"
+url = "https://senadorcanedo.go.gov.br/wp-content/uploads/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Trindade — chamamento público"
+url = "https://acessoainformacao.trindade.go.gov.br/cidadao/informacao/mp/id=12"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Inhumas — publicações de edital de chamamento"
+url = "https://www.inhumas.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Aparecida de Goiânia — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://aparecida.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Aparecida de Goiânia — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://aparecida.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Secretarias"
+url = "https://aparecida.go.gov.br/secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Ação integrada"
+url = "https://aparecida.go.gov.br/secretarias/acao-integrada/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Administração"
+url = "https://aparecida.go.gov.br/secretarias/administracao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Aparecidaprev"
+url = "https://aparecida.go.gov.br/secretarias/aparecidaprev/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Articulação metropolitana"
+url = "https://aparecida.go.gov.br/secretarias/articulacao-metropolitana/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Articulação política"
+url = "https://aparecida.go.gov.br/secretarias/articulacao-politica/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Assistência social"
+url = "https://aparecida.go.gov.br/secretarias/assistencia-social/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Ciência tecnologia e inovação"
+url = "https://aparecida.go.gov.br/secretarias/ciencia-tecnologia-e-inovacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Companhia de desenvolvimento de aparecida"
+url = "https://aparecida.go.gov.br/secretarias/companhia-de-desenvolvimento-de-aparecida/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Comunicação"
+url = "https://aparecida.go.gov.br/secretarias/comunicacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Cultura"
+url = "https://aparecida.go.gov.br/secretarias/cultura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Defesa do consumidor"
+url = "https://aparecida.go.gov.br/secretarias/defesa-do-consumidor/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Desenvolvimento urbano"
+url = "https://aparecida.go.gov.br/secretarias/desenvolvimento-urbano/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Educação"
+url = "https://aparecida.go.gov.br/secretarias/educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Esporte lazer e juventude"
+url = "https://aparecida.go.gov.br/secretarias/esporte-lazer-e-juventude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Fazenda"
+url = "https://aparecida.go.gov.br/secretarias/fazenda/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Governo e casa civil"
+url = "https://aparecida.go.gov.br/secretarias/governo-e-casa-civil/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Habitação"
+url = "https://aparecida.go.gov.br/secretarias/habitacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Indústria e comércio"
+url = "https://aparecida.go.gov.br/secretarias/industria-e-comercio/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Infraestrutura"
+url = "https://aparecida.go.gov.br/secretarias/infraestrutura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Meio ambiente e sustentabilidade"
+url = "https://aparecida.go.gov.br/secretarias/meio-ambiente-e-sustentabilidade/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Planejamento e regulação urbana"
+url = "https://aparecida.go.gov.br/secretarias/planejamento-e-regulacao-urbana/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Políticas para as mulheres"
+url = "https://aparecida.go.gov.br/secretarias/politicas-para-as-mulheres/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Procuradoria geral do município"
+url = "https://aparecida.go.gov.br/secretarias/procuradoria-geral-do-municipio/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Relações institucionais"
+url = "https://aparecida.go.gov.br/secretarias/relacoes-institucionais/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Saúde"
+url = "https://aparecida.go.gov.br/secretarias/saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Segurança pública"
+url = "https://aparecida.go.gov.br/secretarias/seguranca-publica/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Trabalho"
+url = "https://aparecida.go.gov.br/secretarias/trabalho/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Aparecida de Goiânia — Transparência fiscalização e controle"
+url = "https://aparecida.go.gov.br/secretarias/transparencia-fiscalizacao-e-controle/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Aparecida de Goiânia — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.aparecida.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Aparecida de Goiânia — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.aparecida.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Aparecida de Goiânia — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.aparecida.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Aparecida de Goiânia — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.aparecida.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Aparecida de Goiânia — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.aparecida.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio cultura"
+url = "https://cultura.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio doe"
+url = "https://doe.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio educacao"
+url = "https://educacao.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio eventos"
+url = "https://eventos.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio portaldacultura"
+url = "https://portaldacultura.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio saude"
+url = "https://saude.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio trabalho"
+url = "https://trabalho.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Aparecida de Goiânia — Subdomínio transparencia"
+url = "https://transparencia.aparecida.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Senador Canedo — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.senadorcanedo.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Senador Canedo — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.senadorcanedo.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Senador Canedo — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.senadorcanedo.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Senador Canedo — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.senadorcanedo.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Senador Canedo — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.senadorcanedo.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Senador Canedo — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.senadorcanedo.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Senador Canedo — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.senadorcanedo.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio bemestaranimal"
+url = "https://bemestaranimal.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio canedomais"
+url = "https://canedomais.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio diario"
+url = "https://diario.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio habitacao"
+url = "https://habitacao.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio mulhersegura"
+url = "https://mulhersegura.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Senador Canedo — Subdomínio selecao"
+url = "https://selecao.senadorcanedo.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Trindade — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.trindade.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — fonte
+[[fonte]]
+nome = "Trindade — Busca do WordPress por \"chamamento\" (todas as publicações)"
+url = "https://www.trindade.go.gov.br/?s=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Trindade — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.trindade.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Trindade — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.trindade.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Trindade — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.trindade.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Trindade — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.trindade.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Trindade — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.trindade.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio biblioteca"
+url = "https://biblioteca.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio casacivil"
+url = "https://casacivil.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio leis"
+url = "https://leis.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio secit"
+url = "https://secit.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio secom"
+url = "https://secom.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Trindade — Subdomínio turismo"
+url = "https://turismo.trindade.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa
+[[fonte]]
+nome = "Inhumas — mapa do site completo (o índice e todos os mapas filhos)"
+url = "https://www.inhumas.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Governo e secretarias"
+url = "https://inhumas.go.gov.br/governo-e-secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria da educação"
+url = "https://inhumas.go.gov.br/secretaria-da-educacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria da saúde"
+url = "https://inhumas.go.gov.br/secretaria-da-saude/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria de finanças"
+url = "https://inhumas.go.gov.br/secretaria-de-financas/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria de gestão e planejamento"
+url = "https://inhumas.go.gov.br/secretaria-de-gestao-e-planejamento/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria de governo"
+url = "https://inhumas.go.gov.br/secretaria-de-governo/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria de infraestrutura"
+url = "https://inhumas.go.gov.br/secretaria-de-infraestrutura/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria de obras e serviços públicos"
+url = "https://inhumas.go.gov.br/secretaria-de-obras-e-servicos-publicos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretaria de serviços urbanos"
+url = "https://inhumas.go.gov.br/secretaria-de-servicos-urbanos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — secretaria
+[[fonte]]
+nome = "Inhumas — Secretarias"
+url = "https://inhumas.go.gov.br/secretarias/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Inhumas — Acesso à Informação — Parcerias, acordos e outros ajustes (termos de fomento/colaboração)"
+url = "https://acessoainformacao.inhumas.go.gov.br/cidadao/informacao/parcerias_acordos"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Inhumas — Acesso à Informação — Convênios e transferências concedidas"
+url = "https://acessoainformacao.inhumas.go.gov.br/cidadao/informacao/convenios_tc"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Inhumas — Acesso à Informação — Emendas municipais"
+url = "https://acessoainformacao.inhumas.go.gov.br/cidadao/informacao/emendas_municipais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Inhumas — Acesso à Informação — Emendas estaduais"
+url = "https://acessoainformacao.inhumas.go.gov.br/cidadao/informacao/emendas_estaduais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — transparência
+[[fonte]]
+nome = "Inhumas — Acesso à Informação — Emendas federais"
+url = "https://acessoainformacao.inhumas.go.gov.br/cidadao/informacao/emendas_federais"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — subdomínio
+[[fonte]]
+nome = "Inhumas — Subdomínio acessoainformacao"
+url = "https://acessoainformacao.inhumas.go.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — cmdca.aparecida.go.gov.br"
+url = "https://cmdca.aparecida.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — senadorcanedo.go.gov.br"
+url = "https://senadorcanedo.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: veio do motor prefeituras-50-go (organização dos 43 motores)
+
+[[alvo]]
+id = "f260-espalhado-senadorcanedo-go-gov-br"
+nome = "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado)"
+enderecos = ["https://senadorcanedo.go.gov.br/"]
+orgao = "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC"
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true               # a busca cega: do post de divulgação a um documento candidato à origem
+max_documentos = 30
+
+[lexico]
+# o léxico próprio dos portais municipais, calibrado com os títulos reais da sondagem de 23/10/2026:
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento .{0,30}(entidades|organiza|osc|institui|oficin|artistas|agentes culturais|projetos|espa[çc]os culturais|cultur)|termo de (fomento|colabora)|aldir blanc|pnab|paulo gustavo|cmdca|\\bfia\\b|fundo municipal|subven[çc]|pr[êe]mio .{0,50}(cultur|arte|projeto|inscri|edital|osc|entidade|associa)|(edital|inscri[çc][õo]es|sele[çc][ãa]o) .{0,60}pr[êe]mio|premia[çc][ãa]o (de |para )?(projetos|iniciativas|agentes|artistas|cultur)|patroc[ií]n|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades|artistas))|(lan[çc]a|abre|publica)\\w* (o |os )?edita|inscri[çc][õo]es abertas|edital (de|n[ºo°.]|para|do|da)"]
+vetos = ["re:resultado|homologa|inexigibilidade|dispensa|extrato|lista de (inscri|inscritos|classifica)|inscritos|habilita[çc][ãa]o documental|concurso p[uú]blico|processo seletivo|contrata[çc][ãa]o tempor|convoca[çc][ãa]o|vacina|regulariza[çc][ãa]o fundi|permiss[ãa]o de uso|barracas|atividades comerciais|moradias|empresas que constru|licita[çc]|preg[ãa]o|audi[êe]ncia p[uú]blica|sess[ãa]o ordin|reuni[ãa]o|curso gratuito|aulas|matr[ií]cula|vagas|agentes de combate|sorteio|notifica[çc][ãa]o de lan[çc]amento|tabela de temporalidade|\\b(aluno|alunos|alunas|estudante|escola municipal|escola estadual|servidor|servidora)s?\\b|conquista|vence\\b|vencedor|pontua[çc][ãa]o t[ée]cnica|recebe(u)? (o )?pr[êe]mio|ganha(dor)?\\b|agrinho|infosfera|elimina[çc][ãa]o de documentos|cita[çc][ãa]o|\\bconcurso\\b|chamada p[uú]blica escolar|matr[íi]cula|ingresso na rede|transa[çc][ãa]o|guias de turismo|comerciantes|ambulantes|feirantes|campeonato|\\bcursos?\\b|vestibular|empresas para|intima[çc][ãa]o|diretor(es)? (escola|da rede)|banco de diretores|casamento|reforma agr[áa]ria|processo eleitoral|plano anual|certificados|aprovad", "re:notifica[çc][ãa]o|intima[çc][ãa]o|constata[çc][ãa]o|lan[çc]amento fiscal|^edital de \\d+ de \\w+ de \\d{4}$"]
+termos_em = "titulo"
+# 08/11/2026: a notícia velha não reabre (o WordPress já pede 120 dias; vale também para o mapa do site original)
+idade_maxima_dias = 365
+
+[aprendizado]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 18, grupo «Executivo municipal»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão prefeituras-50-go."]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

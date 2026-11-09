@@ -1,16 +1,65 @@
-# Diário Oficial do Município de Goiânia — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Diário Oficial do Município de Goiânia — organização dos 43 motores (titular, 09/11/2026): motor 01, grupo «Diários oficiais».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "GO"
-canal = "diario"
 id = "do-goiania"
+numero = 1
+grupo = "Diários oficiais"
 nome = "Diário Oficial do Município de Goiânia"
 categoria = "Executivo — diários e portais do governo"
 categoria_estudo = "EXE"
 finalidade = "encontrar oportunidade aberta para OSC em diário oficial municipal — a fonte primária de Goiânia"
 tipo_finalidade = "descoberta"
+canal = "diario"
+uf = "GO"
+destino = "biblioteca"
 nomes_anteriores = []
+
+# 09/11/2026: veio do motor camara-goiania-pl (organização dos 43 motores)
+
+[[fonte]]
+nome = "Querido Diário — Goiânia: utilidade pública e Jardim América (a sanção do PL 288/2026)"
+url = "https://api.queridodiario.org.br/gazettes?territory_ids=5208707&querystring=%22utilidade%20p%C3%BAblica%22%20%2B%20%22Jardim%20Am%C3%A9rica%22&published_since={hoje-30:%Y-%m-%d}&size=10&excerpt_size=300&number_of_excerpts=1&sort_by=descending_date"
+tipo = "cadeia"
+papel = "alternativa"
+lexico = { termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|associa[çc][õo]es|entidades? (sociais|assistenciais|sem fins|beneficentes|filantr|culturais|esportivas)|voluntari|emendas? (parlamentar|impositiv|individua)|doa[çc][ãa]o (de|a) (bens|materiais|im[óo]veis|recursos)|chamamento p[úu]blico|cooperativas? (sociais|solid)|economia solid"], vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|decreto or[çc]ament|cr[ée]dito (suplementar|especial)|abre (ao|cr[ée]dito)|servid[ãa]o administrativa|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|licen[çc]a|dia (estadual|municipal) d", "re:termo de pagamento por indeniza|reconhecimento de d[íi]vida", "re:^\\s*(despacho|portaria)\\b"], termos_em = "tudo" }   # 09/11/2026: o léxico do motor camara-goiania-pl (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "gazettes"
+campos = { url = "url", data = "date", edicao = "edition", trecho = "excerpts[0]" }
+limite = 10
+
+[fonte.pista]
+titulo = "Diário de Goiânia de {data}: utilidade pública (Jardim América)"
+link = "{url}"
+resumo = "{trecho}"
+
+# 09/11/2026: veio do motor camara-goiania-pl (organização dos 43 motores)
+
+[[fonte]]
+nome = "Querido Diário — Goiânia: os atos do terceiro setor (utilidade pública, OSC, sem fins lucrativos, emendas impositivas), recortados em atos"
+url = "https://api.queridodiario.org.br/gazettes?territory_ids=5208707&querystring=%22utilidade%20p%C3%BAblica%22%20%7C%20%22terceiro%20setor%22%20%7C%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22%20%7C%20%22sem%20fins%20lucrativos%22%20%7C%20%22emenda%20impositiva%22%20%7C%20%22emendas%20impositivas%22&published_since={hoje-3:%Y-%m-%d}&size=5&sort_by=descending_date"
+tipo = "cadeia"
+papel = "alternativa"
+lexico = { termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|associa[çc][õo]es|entidades? (sociais|assistenciais|sem fins|beneficentes|filantr|culturais|esportivas)|voluntari|emendas? (parlamentar|impositiv|individua)|doa[çc][ãa]o (de|a) (bens|materiais|im[óo]veis|recursos)|chamamento p[úu]blico|cooperativas? (sociais|solid)|economia solid"], vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|decreto or[çc]ament|cr[ée]dito (suplementar|especial)|abre (ao|cr[ée]dito)|servid[ãa]o administrativa|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|licen[çc]a|dia (estadual|municipal) d", "re:termo de pagamento por indeniza|reconhecimento de d[íi]vida", "re:^\\s*(despacho|portaria)\\b"], termos_em = "tudo" }   # 09/11/2026: o léxico do motor camara-goiania-pl (cada fonte reunida mantém o próprio filtro)
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "gazettes"
+campos = { pdf = "url", edicao = "edition", data = "date" }
+limite = 5
+
+[[fonte.cadeia]]
+formato = "atos"
+url = "{pdf}"
+limite = 400
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{pdf}#ato-{ordem}"
+resumo = "{orgao} · {inicio}"
+texto = "{texto}"
 
 # ---- rotas confirmadas (23/10/2026, testes/paginas/do-goiania/): a lista oficial do ano responde da nuvem; o Querido
 # Diário voltou (9.061 edições de Goiânia). Cada edição em PDF é recortada em atos (leitura/atos.py).
@@ -60,17 +109,33 @@ link = "{pdf}#ato-{ordem}"
 resumo = "{orgao} · {inicio}"
 texto = "{texto}"
 
-[[alvo]]
-id = "f260-captacao-001"
-nome = "PNAB Goiânia - Audiovisual"
-enderecos = ["https://www.goiania.go.gov.br/secult/", "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/"]
-orgao = "Secretaria Municipal de Cultura de Goiânia"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Diário Oficial do Município — página oficial"
+url = "https://www.goiania.go.gov.br/casa-civil/diario-oficial/"
+tipo = "pagina"
+papel = "alternativa"
 
-[[alvo]]
-id = "f260-captacao-039"
-nome = "Editais de ocupação cultural municipal"
-enderecos = ["https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/", "https://www.goiania.go.gov.br/secult/"]
-orgao = "Secretaria Municipal de Cultura de Goiânia"
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal Expresso — consulta ao Diário Oficial (busca por texto)"
+url = "https://sileg.goiania.go.gov.br/diario/index3.html"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Legislação municipal (leis e decretos publicados)"
+url = "https://www.goiania.go.gov.br/casa-civil/legislacao-municipal/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goiania.go.gov.br"
+url = "https://www.goiania.go.gov.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -91,12 +156,10 @@ vetos = ["re:servid[ãa]o administrativa|\\bsaneago\\b|licen[çc]as? ambienta|re
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): varredura dos 19 PDFs do DOM em 30 d: Leis 11.724 e 11.725/2026 (utilidade pública do Instituto Catalise e do Instituto DESD), SEGENP Chamamento 001/2026 (OSC, Natal no Parque). A maioria de \"utilidade pública\" é servidão administrativa para a Saneago (imóvel, não entidade) — vetada.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (parecer): os despachos e resoluções que citam termo de colaboração já firmado entravam pelo corpo do ato (16 livros, 1 acerto); o título do ato de expediente agora veta, salvo quando anuncia o chamamento.", "08/11/2026: o Querido Diário é a rota que mais rende (128 de 187 achados em 30 d) e repete os atos da lista oficial; o Cartório une o mesmo título (R22).", "Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 01, grupo «Diários oficiais»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): varredura dos 19 PDFs do DOM em 30 d: Leis 11.724 e 11.725/2026 (utilidade pública do Instituto Catalise e do Instituto DESD), SEGENP Chamamento 001/2026 (OSC, Natal no Parque). A maioria de \"utilidade pública\" é servidão administrativa para a Saneago (imóvel, não entidade) — vetada.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (parecer): os despachos e resoluções que citam termo de colaboração já firmado entravam pelo corpo do ato (16 livros, 1 acerto); o título do ato de expediente agora veta, salvo quando anuncia o chamamento.", "08/11/2026: o Querido Diário é a rota que mais rende (128 de 187 achados em 30 d) e repete os atos da lista oficial; o Cartório une o mesmo título (R22).", "Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
 bloqueios_conhecidos = ["www.goiania.go.gov.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["a Carta de Serviços (endereço errado do motor antigo)", "https://www.goiania.go.gov.br/cultura/ (quebrada: 404 em 70 de 140 leituras de cada alvo até 08/11/2026; trocada por /secult/)",
-                      "'goiânia' no título do Querido Diário (misturava Aparecida de Goiânia: use territory_ids=5208707)",
-                      "o operador OR no Querido Diário (não existe: | é OU, + é E)"]
+rotas_que_falharam = ["a Carta de Serviços (endereço errado do motor antigo)", "https://www.goiania.go.gov.br/cultura/ (quebrada: 404 em 70 de 140 leituras de cada alvo até 08/11/2026; trocada por /secult/)", "'goiânia' no título do Querido Diário (misturava Aparecida de Goiânia: use territory_ids=5208707)", "o operador OR no Querido Diário (não existe: | é OU, + é E)"]
 
 [metrica]
 cadencia_h = 24

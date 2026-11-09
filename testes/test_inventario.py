@@ -1,4 +1,4 @@
-"""O inventário: todo arquivo do código no catálogo, na ordem do funcionamento, e os 47 motores do projeto."""
+"""O inventário: todo arquivo do código no catálogo, na ordem do funcionamento, e os 43 motores do projeto (a organização da titular de 09/11/2026, R50)."""
 from pathlib import Path
 
 from eldorado.base.cerebro.inventario import gerar, mapa
@@ -12,11 +12,11 @@ def test_inventario_do_sistema():
     assert codigo <= set(nomes)                                                           # nenhum arquivo fora do catálogo
     assert all({"arquivo", "parte", "componente", "ligacoes", "critico", "metrica"} <= set(a) for a in cat["arquivos"])   # o que a medição lê
     m = cat["motores"]
-    assert len(m) == 47 and sum(x["tipo"] == "regular" for x in m) == 45 and {x["id"] for x in m if x["tipo"] == "piloto"} == {"piloto-aberto", "piloto-interceptador"}
-    assert {x["categoria"] for x in m} == {"EXE", "JUD", "LEG", "POR", "IA"} and sum(len(x["alvos"]) for x in m) == 114
+    assert len(m) == 43 and sum(x["tipo"] == "regular" for x in m) == 41 and {x["id"] for x in m if x["tipo"] == "piloto"} == {"piloto-aberto", "piloto-interceptador"}
+    assert {x["categoria"] for x in m} == {"EXE", "JUD", "LEG", "POR", "IA"} and sum(len(x["alvos"]) for x in m) == 113
     ordem = {a["arquivo"]: a["ordem"] for a in cat["arquivos"]}
     assert ordem["eldorado/base/nucleo/contratos.py"] < ordem["eldorado/base/cartorio/cartorio.py"] < ordem["eldorado/base/cartorio/analise_externa.py"]
-    assert "## Os 47 motores" in mapa(cat)
+    assert "## Os 43 motores" in mapa(cat)
 
 
 def test_motores_conformes_ao_estudo_da_titular():

@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 import pytest
 
 from eldorado.motores.canal.motor import MotorCanal
+from recorte_motor import recorte   # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 PASTA = Path("testes/paginas/novo-diarios-municipais-go")
 INDICE = json.loads((PASTA / "indice.json").read_text(encoding="utf-8"))
@@ -43,7 +44,7 @@ def agm():
 
 
 def motor(base, tmp_path):
-    texto = Path("eldorado/motores/canal/config/novo-diarios-municipais-go.toml").read_text(encoding="utf-8")
+    texto = recorte("novo-diarios-municipais-go")
     texto = texto.replace("https://www.diariomunicipal.com.br", base).replace("https://queridodiario.ok.org.br", base)
     texto = texto.replace('degraus = ["api", "leve"]', 'degraus = ["api"]')
     (tmp_path / "d.toml").write_text(texto, encoding="utf-8")

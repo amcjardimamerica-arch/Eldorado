@@ -35,7 +35,8 @@ def servir(motor: str, dominios: list[str]):
 
 def motor(motor: str, base: str, dominios: list[str], tmp_path):
     from eldorado.motores.canal.motor import MotorCanal
-    texto = (Path("eldorado/motores/canal/config") / f"{motor}.toml").read_text(encoding="utf-8")
+    from recorte_motor import recorte                            # 09/11/2026 (R50): o motor reunido, recortado do que o reúne
+    texto = recorte(motor)
     for d in dominios:
         texto = texto.replace(d, base)
     texto = texto.replace("paginas_dos_achados = true", "paginas_dos_achados = false").replace("seguir_oficial = true", "seguir_oficial = false")

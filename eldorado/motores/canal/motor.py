@@ -61,6 +61,10 @@ class CfgMotor(_Base):
     tipo_finalidade: Literal["descoberta", "recorrencia"] = "descoberta"   # oportunidades novas, ou as edições de programas conhecidos
     destino: Literal["biblioteca", "especial"] = "biblioteca"   # especial: o motor entrega empresas e incentivos (a base Especial)
     nomes_anteriores: list[str] = Field(default_factory=list)
+    # 09/11/2026 (titular, a organização dos 43 motores, R50): a posição do motor (1 a 43, a ordem de config/motores_previstos.json)
+    # e o grupo (Diários oficiais, Legislativo, Judiciário, Ministério Público, Tribunais de Contas, Executivo municipal...)
+    numero: int | None = Field(None, ge=1, le=99)
+    grupo: str | None = None
 
 
 class CfgPaginacao(_Base):
@@ -108,6 +112,11 @@ class CfgFonte(_Base):
     # 08/11/2026: o filtro da fonte (campo → expressão): só seguem as pistas cujos campos casam — titulo, resumo, link ou
     # qualquer dado do item (orgao, uf, municipio, dono...). Ex.: o dono institucional de uma oportunidade do Mapa da Cultura.
     filtro: dict[str, str] = Field(default_factory=dict)
+    # 09/11/2026 (R50, os motores reunidos): o destino e o léxico DESTA fonte, que valem sobre os do motor — o motor que reúne
+    # outros mantém o filtro de cada fonte (o léxico do motor de origem) e a base de empresas (destino especial) dentro de
+    # um motor da Biblioteca (o motor-gife reunido nos institutos empresariais)
+    destino: Literal["biblioteca", "especial"] | None = None
+    lexico: CfgLexico | None = None
 
 
 class CfgAcesso(_Base):
@@ -146,6 +155,9 @@ class CfgLexico(_Base):
     # territorio: "goias" aplica na entrada a mesma regra territorial do portão (R27: a municipal PÚBLICA de cidade de outro
     # estado que não é capital não entra); "livre" não filtra (as privadas e as nacionais ficam sempre).
     territorio: Literal["livre", "goias"] = "livre"
+
+
+CfgFonte.model_rebuild()        # 09/11/2026: o léxico por fonte (CfgLexico é declarado depois de CfgFonte)
 
 
 class CfgNormas(_Base):
@@ -492,6 +504,7 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"tempo máximo ({self.cfg.acesso.tempo_maximo_s:.0f} s): as fontes restantes ficam para o próximo acionamento")
                 self.incompleto = True
                 return
+            self._lexico_fonte = fonte.lexico                     # 09/11/2026 (R50): o léxico desta fonte, quando ela tem o próprio
             if self._lida_hoje(fonte.nome):                      # R49: cada local uma vez por dia
                 self.relatorio.append(f"{fonte.nome}: já lida hoje (R49: uma leitura por dia em cada local)")
                 continue
@@ -514,7 +527,7 @@ class MotorCanal(Motor):
                 self.estado.leitura(fonte.nome, _agora(), sem_mudanca=True)
                 continue
             entregues = 0
-            if self.cfg.motor.destino == "especial":
+            if (fonte.destino or self.cfg.motor.destino) == "especial":     # 09/11/2026 (R50): o destino da fonte vale sobre o do motor
                 for pista in pistas:
                     a = self._registro_especial(fonte, pista)
                     if a is not None:
@@ -549,6 +562,7 @@ class MotorCanal(Motor):
                 return                                              # a fonte pela metade não é dada como lida: volta primeiro
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
+        self._lexico_fonte = None                                # os alvos e as subpáginas: o léxico do motor
         yield from self._alvos()
         yield from self._subpaginas()
         if self._barradas_na_entrada:
@@ -739,7 +753,7 @@ class MotorCanal(Motor):
                         extra={**({"documento_texto": formatar(f.pista.texto, i)} if f.pista.texto else {}),
                                **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho", "localidade",   # 08/11: e o prazo,
                                                     "uf", "municipio", "cidade", "inicio", "fim", "valor") if i.get(k)},   # o lugar e o valor
-                               **({"_item": {k: v for k, v in i.items() if k != "texto"}} if self.cfg.motor.destino == "especial" else {})})
+                               **({"_item": {k: v for k, v in i.items() if k != "texto"}} if (f.destino or self.cfg.motor.destino) == "especial" else {})})
                   for i in itens]
         pistas = [p for p in pistas if p.titulo.strip() and p.link.startswith("http")]
         ass = hashlib.sha256("\n".join(sorted(p.link for p in pistas)).encode()).hexdigest()
@@ -993,11 +1007,15 @@ class MotorCanal(Motor):
         foi entregue)."""
         return any(self.estado.ja_entregue(v) for v in _variantes_do_endereco(link))
 
+    def _lx(self) -> CfgLexico:
+        """09/11/2026 (R50): o léxico em uso — o da fonte que está sendo lida, quando ela tem o próprio, ou o do motor."""
+        return getattr(self, "_lexico_fonte", None) or self.cfg.lexico
+
     def _velha_pela_pagina(self, pista: Pista, documento: dict | None) -> bool:
         """08/11/2026 (parecer): a idade também depois da leitura, quando a pista veio sem data e a data foi lida na página
         (a notícia de 2019 achada pela busca HTML). Não vale para o alvo vigiado (o portal muda e a data dele é a do
         portal) nem quando o texto cita uma data dentro da janela (o prazo de agora): a data da página pode estar errada."""
-        lx = self.cfg.lexico
+        lx = self._lx()
         extra = pista.extra or {}
         if not (lx.idade_maxima_dias and extra.get("data_lida_na_pagina") and pista.data) or str(pista.origem or "").startswith("alvo "):
             return False
@@ -1030,7 +1048,7 @@ class MotorCanal(Motor):
             return "título genérico de link (menu ou chamada de notícia)"
         if (pista.extra or {}).get("situacao") == "encerrada":    # 08/11/2026: o rótulo ao lado do link ("Encerrado")
             return "situação encerrada no item da lista"
-        lx = self.cfg.lexico
+        lx = self._lx()
         if lx.idade_maxima_dias:
             # sem a data da fonte, a data no começo do título ("05/12/2023 | EDITAL ...", comum nas tabelas das prefeituras)
             inicio = re.match(r"\s*(\d{2}/\d{2}/\d{4})", pista.titulo or "")
@@ -1050,7 +1068,7 @@ class MotorCanal(Motor):
         return None
 
     def _passa_lexico(self, titulo: str, resumo: str = "") -> bool:
-        lx = self.cfg.lexico
+        lx = self._lx()
         t, tudo = _sem_acento(titulo), _sem_acento(f"{titulo} {resumo}")
         if lx.termos and not self._casa(t if lx.termos_em == "titulo" else tudo, lx.termos):
             return False

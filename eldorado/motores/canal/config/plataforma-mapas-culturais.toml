@@ -1,12 +1,17 @@
-# Mapa da Cultura (Ministério da Cultura): as oportunidades com inscrição aberta, pela API padrão do Mapas Culturais.
+# Mapas Culturais — Mapa da Cultura, Mapa Goiano, CultBR e Editais Goiás — organização dos 43 motores (titular, 09/11/2026): motor 39, grupo «Sites de divulgação — cultura».
+# Reúne: site-mapas-culturais.
+
 [motor]
 id = "plataforma-mapas-culturais"
-nome = "Mapa da Cultura — oportunidades com inscrição aberta"
+numero = 39
+grupo = "Sites de divulgação — cultura"
+nome = "Mapas Culturais — Mapa da Cultura, Mapa Goiano, CultBR e Editais Goiás"
 categoria = "Plataformas de cultura"
+categoria_estudo = "POR"
 finalidade = "editais e chamadas culturais de órgãos federais, estaduais e municipais publicados no Mapa da Cultura"
 canal = "api"
-categoria_estudo = "POR"
-nomes_anteriores = ["mapas-culturais"]
+destino = "biblioteca"
+nomes_anteriores = ["mapas-culturais", "site-mapas-culturais"]
 
 [[fonte]]
 nome = "Mapa da Cultura — API de oportunidades"
@@ -25,13 +30,97 @@ fim = "registrationTo.date || registrationTo"
 resumo = "shortDescription"
 orgao = "join(' · ', [owner.name || '', ownerEntity.name || ''])"
 
+# 09/11/2026: veio do motor site-mapas-culturais (organização dos 43 motores)
+
+# ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
+
+# 08/11/2026 (parecer): o motor lia só o Ceará (57 livros, 1 acerto; 22 fora da abrangência). O Mapa Goiano da Cultura
+# (Secult-GO) é uma instância do Mapas Culturais e responde da nuvem: o Goyazes, o FAC e os editais dos municípios goianos
+# (ex.: Alto Paraíso de Goiás) passam a ser as rotas principais. O Ceará fica como alternativa (R38: outros estados por
+# último), com a regra territorial na entrada (a municipal cearense sai; a estadual fica — R27).
+[[fonte]]
+nome = "Mapa Goiano da Cultura — oportunidades com inscrição aberta (API do Mapas Culturais)"
+url = "https://mapagoiano.cultura.go.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo,singleUrl,owner.name&registrationTo=GTE({hoje:%Y-%m-%d})&@order=registrationTo%20ASC&@limit=100"
+tipo = "api"
+papel = "principal"
+caminhos = { itens = "@", titulo = "name", link = "singleUrl", resumo = "shortDescription", data = "registrationFrom.date || registrationFrom", inicio = "registrationFrom.date || registrationFrom", fim = "registrationTo.date || registrationTo", orgao = "owner.name", uf = "'GO'" }
+lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor site-mapas-culturais (organização dos 43 motores)
 
 [[fonte]]
-nome = "Ministério da Cultura — editais (gov.br)"
-url = "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas"    # 08/11/2026 (estudo Claude × motores): a subpágina das inscrições abertas (a página "editais" deu 0 pista em 126 leituras)
+nome = "Mapa Goiano da Cultura — as oportunidades mais recentes (API do Mapas Culturais)"
+url = "https://mapagoiano.cultura.go.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo,singleUrl,owner.name&@order=id%20DESC&@limit=30"
+tipo = "api"
+papel = "alternativa"
+caminhos = { itens = "@", titulo = "name", link = "singleUrl", resumo = "shortDescription", data = "registrationFrom.date || registrationFrom", inicio = "registrationFrom.date || registrationFrom", fim = "registrationTo.date || registrationTo", orgao = "owner.name", uf = "'GO'" }
+lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor site-mapas-culturais (organização dos 43 motores)
+# PROPOSTO SAIR em 09/11/2026 (outro estado (R27)): fica até a decisão da titular (R19)
+
+[[fonte]]
+nome = "Mapa Cultural do Ceará — oportunidades (API do Mapas Culturais)"
+url = "https://mapacultural.secult.ce.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo,singleUrl,owner.name,ownerEntity.name&@order=id%20DESC&@limit=50"
+tipo = "api"
+papel = "alternativa"
+caminhos = { itens = "@", titulo = "name", link = "singleUrl", resumo = "shortDescription", data = "registrationFrom.date || registrationFrom", fim = "registrationTo.date || registrationTo", orgao = "join(' · ', [owner.name || '', ownerEntity.name || ''])", uf = "'CE'" }
+# quase tudo no Mapa do Ceará é de secretaria municipal do interior ou de pessoa (a regra territorial não vê pelo título):
+# só segue o que é do Estado do Ceará ou da capital (R27)
+filtro = { orgao = '(?i)estado do cear|secultc|c[ée]lula d[oa]|coordenadoria de economia criativa|fortaleza|secultfor' }
+lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor site-mapas-culturais (organização dos 43 motores)
+# PROPOSTO SAIR em 09/11/2026 (outro estado (R27)): fica até a decisão da titular (R19)
+
+[[fonte]]
+nome = "Mapa Cultural do Ceará — página de oportunidades"
+url = "https://mapacultural.secult.ce.gov.br/oportunidades/"
 tipo = "pagina"
 papel = "alternativa"
-seletor = "#content-core"
+lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: local novo (proposto (v2)) — fonte
+[[fonte]]
+nome = "CultBR Editais — oportunidades da PNAB nacional (API do Mapas Culturais)"
+url = "https://culteditais.cultura.gov.br/api/opportunity/find"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (proposto (v2)) — fonte
+[[fonte]]
+nome = "Editais Goiás — editais dos municípios goianos (API do Mapas Culturais, sem www)"
+url = "https://editaisgoias.com.br/api/opportunity/find"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Mapa Goiano — oportunidades"
+url = "https://mapagoiano.cultura.go.gov.br/oportunidades/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Mapa Cultura Goiás (instância nova)"
+url = "https://mapa.culturagoias.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Aparecida — Plataforma de Cultura (Mapas)"
+url = "https://portaldacultura.aparecida.go.gov.br/oportunidades/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Mapas Culturais SaaS — instâncias da plataforma"
+url = "https://mapassaas.cultura.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -49,4 +138,7 @@ termos_em = "titulo"
 territorio = "goias"
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a lista \"Editais abertos\" do MinC tem 4 (Ciclo de Saberes, 2º Cultura Viva Pontões, Biblioteca Comunitária é Cultura Viva, Rouanet nas Favelas 2), sem data: estar na lista é o sinal de aberto.", "08/11/2026 (estudo Claude × motores): a página \"editais\" do MinC deu 0 pista em 126 leituras; navegando, a rota certa é a subpágina \"inscrições abertas\" — trocada.", "08/11/2026 (parecer): 130 execuções para dois livros da Bahia; das 62 oportunidades abertas na API, a maioria é de pessoas (oficina, consultoria, show, \"TESTE EDITAL\"). Agora só seguem as de dono institucional (o filtro da fonte sobre owner.name e ownerEntity.name) e a municipal de outro estado sai na entrada.", "23/10/2026: o Mapa da Cultura não tem WordPress nem mapa do site (404); a única rota conhecida é a API; a segunda rota fica pendente."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 39, grupo «Sites de divulgação — cultura»; reúne site-mapas-culturais", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a lista \"Editais abertos\" do MinC tem 4 (Ciclo de Saberes, 2º Cultura Viva Pontões, Biblioteca Comunitária é Cultura Viva, Rouanet nas Favelas 2), sem data: estar na lista é o sinal de aberto.", "08/11/2026 (estudo Claude × motores): a página \"editais\" do MinC deu 0 pista em 126 leituras; navegando, a rota certa é a subpágina \"inscrições abertas\" — trocada.", "08/11/2026 (parecer): 130 execuções para dois livros da Bahia; das 62 oportunidades abertas na API, a maioria é de pessoas (oficina, consultoria, show, \"TESTE EDITAL\"). Agora só seguem as de dono institucional (o filtro da fonte sobre owner.name e ownerEntity.name) e a municipal de outro estado sai na entrada.", "23/10/2026: o Mapa da Cultura não tem WordPress nem mapa do site (404); a única rota conhecida é a API; a segunda rota fica pendente.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): Mapa Goiano: ZERO oportunidades criadas em 30 d (a Secult GO passou para o Baru 2.0, com login); Mapa CE: 40 novas, quase todas municipais do Ceará (R27 barra) e 2 estaduais (Frei Tito, Artista Presente!).", "08/11/2026 (parecer): o motor lia só o Ceará (57 livros, 1 acerto). Localizado o Mapa Goiano da Cultura (mapagoiano.cultura.go.gov.br, Mapas Culturais, API pública): rota principal pelas inscrições abertas e alternativa pelas mais recentes; o Ceará virou alternativa, com a regra territorial e a idade na entrada.", "Outras redes estaduais do Mapas Culturais entram aqui quando o endereço for confirmado na sondagem.", "Ler primeiro pela API do Mapas Culturais (20 de 20); as páginas ficam como reserva.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["mapa.cultura.go.gov.br, mapacultural.go.gov.br e mapadacultura.go.gov.br (não existem, 23/10/2026); localizado em 08/11/2026: mapagoiano.cultura.go.gov.br"]

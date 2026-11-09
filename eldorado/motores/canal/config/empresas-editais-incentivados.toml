@@ -1,15 +1,18 @@
-# Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
-# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+# Leis e fundos de incentivo — empresas participantes (FIA, Idoso, Esporte, Pronas, Pronon e Goyazes) — organização dos 43 motores (titular, 09/11/2026): motor 26, grupo «Leis de incentivo fiscal».
+# O mesmo motor, renumerado e renomeado.
 
 [motor]
-uf = "BR"
-canal = "portal"
 id = "empresas-editais-incentivados"
-nome = "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes"
+numero = 26
+grupo = "Leis de incentivo fiscal"
+nome = "Leis e fundos de incentivo — empresas participantes (FIA, Idoso, Esporte, Pronas, Pronon e Goyazes)"
 categoria = "Executivo — diários e portais do governo"
 categoria_estudo = "EXE"
-finalidade = "encontrar as chamadas dos mecanismos de incentivo em que a OSC apresenta projeto para receber recurso de empresas e pessoas (Pronas/PCD, Pronon, Lei de Incentivo ao Esporte, fundos da criança e do idoso)"
+finalidade = "achar as empresas que participam das leis e fundos de incentivo (FIA, Idoso, Esporte, Pronas, Pronon, Goyazes) e, no site de cada uma, o edital de patrocínio ou investimento social"
 tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
 nomes_anteriores = ["empresas-incentivadas", "plat-empresas-editais-incentivados"]
 
 # ---- rotas confirmadas (23/10/2026, testes/paginas/empresas-editais-incentivados/): o canal são os MECANISMOS de
@@ -38,11 +41,142 @@ seletor = "#content"
 papel = "principal"
 exige_brasil = true                 # a nuvem recebe 401 (sondagem de 23/10/2026)
 
+# 09/11/2026: veio do motor estaduais-go-gov (organização dos 43 motores)
 
 [[fonte]]
-nome = "MDH — editais da criança e do adolescente (CONANDA/SNDCA)"
-url = "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais"
+nome = "Programa Goyazes — página do programa"
+url = "https://goias.gov.br/cultura/programa-goyazes/"
 tipo = "pagina"
+lexico = { termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"], termos_em = "titulo", vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"], idade_maxima_dias = 180 }   # 09/11/2026: o léxico do motor estaduais-go-gov (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor estaduais-go-gov (organização dos 43 motores)
+
+[[fonte]]
+nome = "Secult — publicações sobre o Goyazes"
+url = "https://goias.gov.br/cultura/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "goyazes"
+lexico = { termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"], termos_em = "titulo", vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"], idade_maxima_dias = 180 }   # 09/11/2026: o léxico do motor estaduais-go-gov (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: veio do motor estaduais-go-gov (organização dos 43 motores)
+
+[[fonte]]
+nome = "Programa Goyazes — inscrições (a página das inscrições do ano)"
+url = "https://goias.gov.br/cultura/programa-goyazes/inscricoes-2/"
+tipo = "pagina"
+papel = "alternativa"
+lexico = { termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"], termos_em = "titulo", vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"], idade_maxima_dias = 180 }   # 09/11/2026: o léxico do motor estaduais-go-gov (cada fonte reunida mantém o próprio filtro)
+
+# 09/11/2026: local novo (proposto (v2)) — fonte
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de todo o Brasil (a lista nacional de empresas da Lei Rouanet)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?tipo_pessoa=juridica"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Lei de Incentivo ao Esporte — acesso aos sistemas (projetos aptos)"
+url = "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte/acesso-aos-sistemas"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "SISPRON — serviços e dados abertos (Pronon/Pronas)"
+url = "https://sispron.saude.gov.br/ords/f"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "FIA Municipal (CNM) — fundos municipais da criança"
+url = "https://fia.cnm.org.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Goyazes — portal do programa"
+url = "https://goyazes.org/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Goyazes — empresas incentivadoras"
+url = "https://goyazes.org/empresas"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Programa Goyazes — projetos captados no ano"
+url = "https://goias.gov.br/cultura/programa-goyazes/projetos-captados-2026/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Incentiva Goiás — portal empresarial"
+url = "https://incentiva.goias.gov.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Pró-Goiás Esporte — lei estadual de incentivo ao esporte"
+url = "https://goias.gov.br/esporte/pro-esporte/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Salic — projetos (API pública)"
+url = "https://api.salic.cultura.gov.br/api/v1/projetos/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Portal do Incentivo — leis federais"
+url = "https://portaldoincentivo.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.gov.br"
+url = "https://www.gov.br/sitemap.xml.gz"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — www.goyazes.org"
+url = "https://www.goyazes.org/sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/cultura"
+url = "https://goias.gov.br/cultura/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — goias.gov.br/esporte"
+url = "https://goias.gov.br/esporte/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
+[[fonte]]
+nome = "Mapa do site — portaldoincentivo.com.br"
+url = "https://portaldoincentivo.com.br/sitemap_location.xml"
+tipo = "mapa"
 papel = "alternativa"
 
 [[alvo]]
@@ -94,13 +228,10 @@ termos_em = "titulo"
 idade_maxima_dias = 365
 
 [aprendizado]
-licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): alvos mortos na passada: CONANDA e CNDI no MDH (redirecionam para login), participamaisbrasil/conanda (404), CMDCA Goiânia (404), CEDCA GO (404) — a rota viva é a página de editais do MDH por tema (/navegue-por-temas/*/editais), que mostrou a retificação do Edital CONANDA/SNDCA 01/2026 em 21/10. Decisão da titular para trocar/retirar (R19).", "08/11/2026 (parecer): 'Inscrições encerradas' e 'Projetos aptos à captação' (prazo de 2024) viraram livro; o alvo do Conanda no Participa+ dava captcha (26 de 106 leituras) e o do Pronas lia a página inicial do Ministério da Saúde. Vetos de encerrado/FAQ/manual, idade de 365 dias e os alvos nas páginas dos mecanismos.", "Rota de acesso única para os domínios com bloqueio (captadores.org.br, go.equatorialenergia.com.br, goias.gov.br, paraquemdoar.org, www.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 30 rota(s) que funcionaram: entram como rotas do motor.", "Os 5 alvos são vigiados só na janela prevista da próxima edição."]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 26, grupo «Leis de incentivo fiscal»", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): alvos mortos na passada: CONANDA e CNDI no MDH (redirecionam para login), participamaisbrasil/conanda (404), CMDCA Goiânia (404), CEDCA GO (404) — a rota viva é a página de editais do MDH por tema (/navegue-por-temas/*/editais), que mostrou a retificação do Edital CONANDA/SNDCA 01/2026 em 21/10. Decisão da titular para trocar/retirar (R19).", "08/11/2026 (parecer): 'Inscrições encerradas' e 'Projetos aptos à captação' (prazo de 2024) viraram livro; o alvo do Conanda no Participa+ dava captcha (26 de 106 leituras) e o do Pronas lia a página inicial do Ministério da Saúde. Vetos de encerrado/FAQ/manual, idade de 365 dias e os alvos nas páginas dos mecanismos.", "Rota de acesso única para os domínios com bloqueio (captadores.org.br, go.equatorialenergia.com.br, goias.gov.br, paraquemdoar.org, www.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 30 rota(s) que funcionaram: entram como rotas do motor.", "Os 5 alvos são vigiados só na janela prevista da próxima edição."]
 bloqueios_conhecidos = ["go.equatorialenergia.com.br", "paraquemdoar.org", "www.saneago.com.br", "captadores.org.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["https://www.gov.br/esporte/... (401 da nuvem, 23/10/2026: exige o Brasil)",
-                      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndpi (404)",
-                      "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte/projetos-aptos-a-captacao (404)",
-                      "os sites institucionais das maiores contribuintes do ICMS (Equatorial, Saneago, JBS): nenhum edital reconhecido no Eldorado0"]
+rotas_que_falharam = ["https://www.gov.br/esporte/... (401 da nuvem, 23/10/2026: exige o Brasil)", "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndpi (404)", "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte/projetos-aptos-a-captacao (404)", "os sites institucionais das maiores contribuintes do ICMS (Equatorial, Saneago, JBS): nenhum edital reconhecido no Eldorado0"]
 
 [metrica]
 cadencia_h = 24

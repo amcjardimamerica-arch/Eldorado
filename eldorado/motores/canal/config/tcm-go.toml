@@ -1,0 +1,84 @@
+# TCM-GO — Tribunal de Contas dos Municípios de Goiás — organização dos 43 motores (titular, 09/11/2026): motor 14, grupo «Tribunais de Contas».
+# Criado a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml); as seções de acesso, leitura, léxico, canivete e métrica vêm do motor irmão judiciario-cnj, com a finalidade própria.
+
+[motor]
+id = "tcm-go"
+numero = 14
+grupo = "Tribunais de Contas"
+nome = "TCM-GO — Tribunal de Contas dos Municípios de Goiás"
+categoria = "Tribunais de Contas — controle externo"
+categoria_estudo = "LEG"
+finalidade = "acompanhar as orientações, instruções normativas, notícias e decisões do TCM-GO sobre transferências e parcerias municipais com OSC (regras de prestação de contas e oportunidades)"
+tipo_finalidade = "descoberta"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
+nomes_anteriores = []
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TCM-GO — portal"
+url = "https://www.tcmgo.tc.br/site/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TCM-GO — comunicação (notícias e orientações)"
+url = "https://www.tcmgo.tc.br/site/comunicacao/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TCM-GO — instruções e resoluções normativas"
+url = "https://www.tcmgo.tc.br/site/legislacao/atos-normativos-do-tcm/in/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TCM-GO — acesso à informação"
+url = "https://acessoainformacao.tcmgo.tc.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "TCM-GO — Escola de Contas (cursos para gestores e OSC)"
+url = "https://www.tcm.go.gov.br/escolatcm/"
+tipo = "pagina"
+papel = "alternativa"
+
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Atos Oficiais — últimos atos do TCM-GO"
+url = "https://www.atosoficiais.com.br/tcmgo/ultimas-atualizacoes"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|sele[çc]|projetos|destina|cadastr|entidade|recursos de presta"]
+vetos = ["re:encontro de apenados|^continue lendo|resultados da pesquisa|(^| )curso( |$)|semin[áa]rio|webin|pr[êe]mio cnj", "re:repass(a|ou|aram)\\b|repasse de R\\$|destin(a|ou|am) R\\$|entreg(a|ou|am) (R\\$|recursos)|balan[çc]o|relat[óo]rio|auditori|a[çc][õo]es coordenadas|gest[ãa]o e destina[çc][ãa]o de valores|(juizado|vara|comarca|tribunal|justi[çc]a) .{0,40}\\bfinancia(m|ram|ou)?\\b"]
+termos_em = "titulo"
+# 08/11/2026: a notícia de edital de vara com mais de um ano sai na entrada (a data é lida na página da notícia)
+idade_maxima_dias = 365
+
+[aprendizado]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 14, grupo «Tribunais de Contas»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão judiciario-cnj."]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+[metrica]
+esporadica = true   # R48 (titular, 08/11/2026): o Judiciário e os MPs publicam raramente; a vigilância sem erro cumpre a finalidade
+cadencia_h = 24
+periodo_dias = 14

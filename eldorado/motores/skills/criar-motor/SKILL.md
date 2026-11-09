@@ -239,3 +239,21 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
 - o teste nas páginas gravadas passa (o que entrega e o que veta);
 - o motor está em `config/modulos.toml`;
 - nos 14 dias seguintes, a métrica da finalidade diz que ele atinge.
+
+## A organização dos 43 motores (titular, 09/11/2026 — R50)
+
+- A ordem, o número (1 a 43) e o grupo de cada motor estão em `config/motores_previstos.json` e em `[motor] numero` e
+  `[motor] grupo` de cada configuração. Motor novo entra no grupo certo, com o número seguinte do grupo (e a renumeração
+  dos seguintes é decisão da titular).
+- Motor extinto não some: o id vira **nome anterior de um só motor** (o que o reúne, que leva o histórico). Os motores
+  reunidos em 09/11/2026: cnpq-extensao, site-funarte e salic (no governo-federal); motor-gife (no
+  novo-fundacoes-institutos); site-rede-comua, site-fundo-baoba, site-fundo-casa, site-cese, site-fundo-brasil e
+  site-brazilfoundation (no fundacoes-nacionais); site-undef (no novo-internacional); site-mapa-osc (no site-prosas);
+  site-mapas-culturais (no plataforma-mapas-culturais); outros-agregadores (no editais-do-brasil).
+- Ao reunir motores, **cada fonte mantém o próprio léxico** (`lexico = { ... }` na fonte) e o próprio **destino**
+  (`destino = "especial"` na fonte de empresas): o motor que reúne não perde o filtro de nenhum.
+- Os testes das páginas gravadas de um motor reunido usam `testes/recorte_motor.py` (o motor antigo recortado do que o
+  reúne, pela marca «veio do motor <id>»).
+- Sites especializados de divulgação: um motor por site. Secretarias: um motor por esfera. O motor municipal lê o mapa
+  do site completo, os subsites e os subdomínios, e o portal de Acesso à Informação (parcerias, convênios, emendas e
+  chamamentos).
