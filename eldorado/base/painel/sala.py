@@ -80,13 +80,19 @@ RELOGIOS = {
     "externa": ["ve_para_o_chrome", "ve_importado"],
     "repositorio": ["ab_link_oficial", "hi_crescimento"],
     "biblioteca": ["es_orfaos"],
-    "aprendizado": ["rn_auc", "rn_precisao", "cm_comparacao"],
+    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "cm_decisoes"],
     "farol": ["fa_fecham_7d"],
 }
 
 
 def _relogios(inst: dict) -> None:
-    """Marca o relógio (com a escala, se faltar) só no instrumento com a faixa numérica do bom e do ruim."""
+    """Marca o relógio: (1) todo instrumento que já tinha escala própria continua relógio, como antes de 09/11 (a titular:
+    «mantenha os que existiam antes»); (2) os parâmetros importantes de cada etapa com a faixa numérica do bom e do ruim
+    ganham o relógio (com a escala calculada, se faltar)."""
+    for x in inst.values():
+        e = x.get("escala")
+        if e and len(e) == 2 and e[1] > e[0] and isinstance(x.get("valor"), (int, float)):
+            x["relogio"] = True
     for ids in RELOGIOS.values():
         for i in ids:
             x = inst.get(i)

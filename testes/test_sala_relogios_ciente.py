@@ -34,3 +34,14 @@ def test_o_farol_tem_o_ciente_e_as_licoes_nos_alertas():
     h = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert '<div class="medidas">${medidas(et)}${pulso(et)}</div>' in h and "med-rel" in h and "med-num" in h
     assert 'ghDispatch("ciente.yml"' in h and Path(".github/workflows/ciente.yml").exists()
+
+
+def test_os_relogios_que_existiam_continuam():
+    """09/11/2026 (titular: «mantenha os que existiam antes»): todo instrumento com escala própria continua relógio — a
+    etapa 8 com os seis (discernimento, precisão, revocação, Brier, o Comandante contra a ordem fixa e as decisões)."""
+    d = _sala()
+    for x in d["instrumentos"]:
+        e = x.get("escala")
+        if e and e[1] > e[0] and isinstance(x.get("valor"), (int, float)):
+            assert x.get("relogio"), x["id"]
+    assert {"rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "cm_decisoes"} <= set(sala.RELOGIOS["aprendizado"])
