@@ -161,12 +161,12 @@ Pc.radarAt = function (x, v, agora) { var S = x.radar, ang = (agora / 700) % 6.2
 /* ---------- funil de vidro (topo da 3), versão luminosa; com radar na boca (opção 5) ---------- */
 var PERFIL = [[2, 92], [9, 90], [11, 84], [20, 70], [34, 52], [48, 30], [58, 8], [60, 5]];
 function raioEm(y) { return y < 30 ? 58 - (y - 8) * 10 / 22 : y < 52 ? 48 - (y - 30) * 14 / 22 : y < 70 ? 34 - (y - 52) * 14 / 18 : Math.max(2, 20 - (y - 70) * 9 / 14); }
-var EST = [0xD17600, 0xE3AB00, 0x85C1EA, 0x4C75B4];   /* 09/11/2026 (titular): achados, aceitos, livros, estrelas */
+var EST = [0xD17600, 0xE3AB00, 0x85C1EA, 0xFFFFFF];   /* 09/11/2026 (titular): achados, aceitos, livros, estrelas */
 Pc.funil = function (x, M, g, o) { var esc = o.esc || 1, dy = o.dy || 0, F = new T.Group(); P(F, o.cx, dy, 6); F.scale.setScalar(esc); F.rotation.x = o.incl || 0; g.add(F); var S = { F: F, part: [], prox: 0, esc: esc, o: o }; x.funil = S;
   F.add(new T.Mesh(new T.LatheGeometry(PERFIL.map(function (p) { return new T.Vector2(p[0], -p[1]); }), 48), new T.MeshPhysicalMaterial({ color: 0xBFD7FF, roughness: 0.05, transparent: true, opacity: 0.16, clearcoat: 1, depthWrite: false, side: T.DoubleSide })));
   var bocal = new T.Mesh(new T.TorusGeometry(60, 1.2, 10, 64), K.luz(0x9B8CFF)); bocal.rotation.x = Math.PI / 2; bocal.position.y = -5; F.add(bocal);
   S.aneis = []; [14, 36, 58, 80].forEach(function (y, i) { var a = new T.Mesh(new T.TorusGeometry(raioEm(y), 1.3, 10, 64), new T.MeshBasicMaterial({ color: EST[i], transparent: true, opacity: 0.9, toneMapped: false })); a.rotation.x = Math.PI / 2; a.position.y = -y; F.add(a); S.aneis.push(a); });
-  var rot = [['ach', ' achados'], ['acc', ' aceitos'], ['livros', ' livros'], ['estrelas', ' ★']], cores = ['#D17600', '#E3AB00', '#85C1EA', '#6F95D2'];   /* 09/11/2026: achados, aceitos, livros, estrelas (o azul médio clareado para ler na placa escura) */
+  var rot = [['ach', ' achados'], ['acc', ' aceitos'], ['livros', ' livros'], ['estrelas', ' ★']], cores = ['#D17600', '#E3AB00', '#85C1EA', '#FFFFFF'];   /* 09/11/2026: achados, aceitos, livros, estrelas (a estrela em branco, em destaque) */
   [14, 36, 58, 80].forEach(function (y, i) { M.rotulo(0, o.cx, dy + y * esc * Math.cos(o.incl || 0), 'c sala pq forte placaEsc', function (v) { return '<span style="color:' + cores[i] + '">' + v[rot[i][0]] + rot[i][1] + '</span>'; }); });
   var geo = new T.SphereGeometry(1.4, 8, 6); for (var i = 0; i < 40; i++) { var s = new T.Mesh(geo, new T.MeshBasicMaterial({ color: EST[0], toneMapped: false })); s.visible = false; F.add(s); S.part.push({ s: s, vivo: false, t: 0, ang: 0, fim: 0, est: -1 }); }
   if (o.radar) { S.var = new T.Group(); S.var.position.y = -5; S.var.rotation.x = -Math.PI / 2; F.add(S.var);
@@ -216,7 +216,7 @@ Pc.aneisAt = function (x, v, agora) { x.aneis.forEach(function (a) { var f = Mat
     a.g.rotation.y = Math.sin(agora / 1800 + a.ult) * 0.3; }); };
 /* ---------- baixo: colunas dos dias com varredura (8) ---------- */
 Pc.colunas = function (x, M, g) { var S = { c: [] }; x.colunas = S; for (var i = 0; i < 8; i++) { var c = new T.Mesh(new T.CylinderGeometry(2.6, 2.6, 1, 14), new T.MeshBasicMaterial({ color: 0x85C1EA, transparent: true, toneMapped: false })); g.add(c); S.c.push(c); var base = new T.Mesh(new T.CylinderGeometry(4, 4, 1, 16), K.mat(0x2A3355, { metalness: 0.7, roughness: 0.3 })); P(base, 16 + i * 22, 216.5, 3); g.add(base); }
-  S.brilho = K.brilho(0x85C1EA, 46, 0.35); g.add(S.brilho); S.linha = new T.Mesh(new T.BoxGeometry(1, 44, 0.5), new T.MeshBasicMaterial({ color: 0xDCEEFA, transparent: true, opacity: 0.6 })); g.add(S.linha);
+  S.brilho = K.brilho(0x85C1EA, 46, 0.7); S.brilho.material.blending = T.NormalBlending; g.add(S.brilho); S.linha = new T.Mesh(new T.BoxGeometry(1.6, 44, 0.5), K.luz(0xE3AB00)); g.add(S.linha);   /* 09/11/2026: a linha em amarelo ouro, o brilho azul claro */
   M.rotulo(2, 202, 178, 'd sala q claro', function (v) { return 'HOJE ' + v.hl + '× · ' + v.ha + ' achados'; }); M.rotulo(2, 8, 178, 'sala pq suave', function (v) { return v.diasRot || ''; }); };
 Pc.colunasAt = function (x, v, agora) { var S = x.colunas, mx = maxDia(v), sx = 8 + ((agora / 14) % 196);
   v.dias.forEach(function (d, i) { var h = 3 + 26 * d[1] / mx, c = S.c[i], cx = 16 + i * 22, cor = Z.DIA_SALA[d[0]]; c.scale.y = Z.ease(c.scale.y, h, 0.1); c.position.set(cx, -(216 - c.scale.y / 2), 3); c.material.color.setHex(cor); c.material.opacity = 0.55 + 0.45 * Math.max(0, 1 - Math.abs(sx - cx) / 18); });

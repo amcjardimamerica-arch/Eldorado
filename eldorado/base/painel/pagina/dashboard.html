@@ -271,6 +271,14 @@ box-shadow:0 1px 3px #0002}
 .m3d-r.placaEsc{background:rgba(6,10,26,.72);padding:1px 5px;border-radius:5px}
 .m3d-r.pisca{animation:pisca 1.4s ease-in-out infinite}@keyframes pisca{50%{opacity:.35}}
 .m3d-vaga{position:relative;flex:0 0 210px;width:210px;height:229px;border-radius:8px;overflow:hidden;background:transparent;cursor:pointer}
+/* 09/11/2026: a janela do motor — o mostrador ampliado (2×) e os números por extenso */
+.m3d-janela{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;margin-top:10px}
+.m3d-grande{width:420px;height:458px;flex:0 0 420px;position:relative}.m3d-grande .m3d-vaga{transform:scale(2);transform-origin:0 0;cursor:default}
+.m3d-numeros{flex:1 1 240px;min-width:220px}.m3d-numeros h4{margin:10px 0 4px;color:#001D7E;font-size:13px}
+.m3d-dt{display:grid;grid-template-columns:1fr auto 44px;gap:8px;font-size:13px;padding:2px 0;border-bottom:1px dashed #E3E8F0}.m3d-dt small{color:#6B7280;text-align:right}
+.m3d-dias{display:flex;gap:4px}.m3d-dia{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:22px;border-radius:5px;font-size:11px;font-weight:700;color:#211915}
+.m3d-dia.verde{background:#4C75B4;color:#fff}.m3d-dia.amarelo{background:#E3AB00}.m3d-dia.azul{background:#85C1EA}.m3d-dia.vermelho{background:#C0392B;color:#fff}.m3d-dia.cinza{background:#D5DBE5}
+.m3d-leg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11px;color:#5F6470;margin-top:6px}.m3d-leg i{display:inline-block;min-width:12px;height:12px;margin-right:4px;vertical-align:-2px}
 /* 09/11/2026: o mostrador de vidro sobre a página clara — os textos em tinta escura */
 .m3d-vaga .m3d-r.claro,.m3d-vaga .escuro .m3d-r.claro{color:#001D7E}.m3d-vaga .m3d-r.suave{color:#5F6470}
 .m3d-vaga .escuro .m3d-r.q:not(.ambar):not(.claro){color:#211915}.m3d-vaga .m3d-r.ambar{color:#B07A00}
@@ -5139,9 +5147,9 @@ const PM_ROT={excelente:"excelente",bom:"bom",atencao:"atenção",critico:"crít
    dados de cima, acima do calendário, encostado ao fósforo). Os números são os reais de cada motor (dados/pontuacao_motores.json:
    a nota e a faixa da Bússola, os acertos e erros, os 30 dias, hoje e os 8 dias); a biblioteca 3D (m3d-motores.js) só carrega
    quando a lista dos motores aparece, e só os mostradores visíveis são desenhados. */
-function m3dVaga(id){ return `<div class="m3d-vaga" data-motor="${esc(id)}" onclick="pmDetalhe('${esc(id)}')" title="a pontuação do motor: clique para os componentes e as melhorias"></div>`; }
+function m3dVaga(id){ return `<div class="m3d-vaga" data-motor="${esc(id)}" onclick="m3dJanela('${esc(id)}')" title="clique para abrir o motor: os mostradores ampliados e os detalhes"></div>`; }
 (function(){
-  const vivos=new Map(); let carregando=null, visiveis=new Set(), io=null, ult=0;
+  const vivos=new Map(); let carregando=null, visiveis=new Set(), io=null, ult=0, grande=null;
   function carregar(){ if(window.M3D) return Promise.resolve(); if(carregando) return carregando;
     carregando=new Promise((ok,erro)=>{ const sc=document.createElement("script"); sc.src="m3d-motores.js?v="+(((typeof D!=="undefined")&&D&&D.gerado_em)||Date.now()); sc.onload=ok; sc.onerror=erro; document.head.appendChild(sc); }); return carregando; }
   function valores(id){ const P=window._PONT||{}, x=(P.motores||{})[id]; if(!x||!x.m3d) return null;
@@ -5149,18 +5157,40 @@ function m3dVaga(id){ return `<div class="m3d-vaga" data-motor="${esc(id)}" oncl
     const FX={excelente:["excelente","#001D7E"],bom:["bom","#4C75B4"],atencao:["atenção","#D17600"],critico:["crítico","#211915"],formacao:["em formação","#5F6470"]};
     v.nota=Math.round(x.nota); v.faixa=x.faixa; v.faixaTxt=(FX[x.faixa]||FX.formacao)[0]; v.cor=(FX[x.faixa]||FX.formacao)[1]; v.pct=Math.round(100*(x.precisao||0)); v.prec=x.precisao||0;
     v.diasRot=x.m3d.diasRot||""; return v; }
-  function escala(vaga,host,H){ const k=H/229; vaga.style.height=H+"px"; vaga.style.width=vaga.style.flexBasis=Math.round(210*k)+"px"; host.style.transform=`scale(${k})`; host.style.transformOrigin="0 0"; }
-  function altura(vaga){ const d=vaga.parentElement&&vaga.parentElement.querySelector(".mt-topo-dados"); const h=d?d.getBoundingClientRect().height:229; return Math.max(99,Math.min(286,Math.round(h))); }
   function montar(){ if(!window.M3D||!window._PONT) return;
     document.querySelectorAll(".m3d-vaga[data-motor]").forEach(vaga=>{ if(vivos.has(vaga)) return; const v=valores(vaga.dataset.motor); if(!v){ vaga.remove(); return; }
       const host=document.createElement("div"); host.className="m3d-host"; host.setAttribute("role","img"); host.setAttribute("aria-label",`nota ${v.nota} de 100 · ${v.faixaTxt} · ${v.pct}% de acerto`); vaga.appendChild(host);
       /* 09/11/2026 (titular): as três partes sempre (radar e funil, tubos, colunas dos dias) — desenhado inteiro em 229 px e
          reduzido em escala até a altura do espaço (o bloco de dados ao lado), sem mudar o tamanho do cartão */
-      const motor={v}, mo=new M3D.Mostrador(M3D.opcoes[0],host,motor), H=altura(vaga); mo.altura(229); escala(vaga,host,H);
-      vivos.set(vaga,{mo,motor,H,host}); if(io) io.observe(vaga); });
+      const motor={v}, mo=new M3D.Mostrador(M3D.opcoes[0],host,motor); mo.altura(229);
+      vivos.set(vaga,{mo,motor,H:229,host}); if(io) io.observe(vaga); });
     for(const [vaga] of vivos){ if(!vaga.isConnected){ vivos.delete(vaga); visiveis.delete(vaga); } } }
   function laco(agora){ requestAnimationFrame(laco); if(agora-ult<33) return; const dt=Math.min(64,agora-ult); ult=agora;
-    for(const vaga of visiveis){ const r=vivos.get(vaga); if(!r) continue; const H=altura(vaga); if(H!==r.H){ r.H=H; escala(vaga,r.host,H); } r.mo.quadro(agora,dt); } }
+    for(const vaga of visiveis){ const r=vivos.get(vaga); if(!r) continue; r.mo.quadro(agora,dt); }
+    if(grande){ if(!grande.vaga.isConnected||!$("modal").open){ grande=null; M3D.escala(1); } else grande.mo.quadro(agora,dt); } }
+  /* 09/11/2026 (titular): ao clicar no motor, a janela com os mostradores ampliados (renderizados em alta resolução) e os
+     números por extenso — a pontuação, os 30 dias, hoje, os 8 dias — e as indicações de melhoria */
+  window.m3dJanela=function(id){ const P=window._PONT||{}, x=(P.motores||{})[id]; if(!x) return; const y=x.m3d||{}, W=P.pesos||{};
+    const pc=(a,b)=>b?Math.round(100*a/b)+"%":"—", FX={excelente:"excelente",bom:"bom",atencao:"atenção",critico:"crítico",formacao:"em formação"};
+    const DIA={verde:"livro com os 12 itens",amarelo:"achado aceito (parcial)",azul:"leu, sem oportunidade",vermelho:"falha",cinza:"não executou"};
+    const linha=(r,v,aj)=>`<div class="m3d-dt"><span>${r}</span><b>${v}</b>${aj?`<small>${aj}</small>`:""}</div>`;
+    const comp=[["precisao","Precisão"],["rendimento","Rendimento"],["local","Local da pesca"],["saude","Saúde"]].map(([k,r])=>linha(r,`${(x.componentes||{})[k]??0} / ${W[k]||"—"}`)).join("");
+    const dias=(y.dias||[]).map((d,i)=>`<span class="m3d-dia ${d[0]}" title="${DIA[d[0]]||d[0]}">${d[1]||""}</span>`).join("");
+    const mel=(x.melhorias||[]).map(m=>`<li>${m.parcela?`<b>${Math.round(100*m.parcela)}% dos erros</b> · `:""}${esc(m.indicacao)}</li>`).join("");
+    abreModal(`<h3 style="margin:0">${esc(id)} — os mostradores do motor</h3><div class=meta>nota <b>${Math.round(x.nota)}</b> de 100 · ${FX[x.faixa]||x.faixa} · ${Math.round(100*(x.precisao||0))}% de acerto</div>`,
+      `<div class="m3d-janela"><div class="m3d-grande"><div class="m3d-vaga m3d-g" data-grande="${esc(id)}"></div></div>
+        <div class="m3d-numeros"><h4>Pontuação</h4>${linha("Acertos",y.a)}${linha("Erros",y.e)}${linha("Em curso",y.curso)}${comp}
+          <h4>Últimos 30 dias</h4>${linha("Execuções (leituras)",y.exec)}${linha("Falhas",y.falhas,pc(y.falhas,y.exec))}${linha("Achados",y.ach)}${linha("Aceitos",y.acc,pc(y.acc,y.ach))}
+          ${linha("Viraram livro",y.livros,pc(y.livros,y.ach))}${linha("Livros com estrela",y.estrelas)}
+          <h4>Hoje</h4>${linha("Leituras",y.hl)}${linha("Achados (24 h)",y.ha)}
+          <h4>Os 8 dias · ${esc(y.diasRot||"")}</h4><div class="m3d-dias">${dias}</div>
+          <div class="m3d-leg">${Object.entries(DIA).map(([k,t])=>`<span><i class="m3d-dia ${k}"></i>${t}</span>`).join("")}</div></div></div>
+       ${mel?`<h4 style="margin:12px 0 4px">Indicações de busca e de configuração</h4><ul style="margin:0 0 0 18px">${mel}</ul>`:""}`);
+    carregar().then(()=>{ const vaga=document.querySelector('.m3d-g[data-grande]'); if(!vaga) return; const v=valores(id); if(!v) return;
+      M3D.escala(2.6); const host=document.createElement("div"); host.className="m3d-host"; vaga.appendChild(host);
+      const mo=new M3D.Mostrador(M3D.opcoes[0],host,{v}); mo.altura(229); grande={vaga,mo};
+      if(!io){ io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) visiveis.add(e.target); else visiveis.delete(e.target); }),{rootMargin:"120px"}); requestAnimationFrame(laco); } }); };
+  window.pmDetalhe=window.m3dJanela;
   function iniciar(){ if(!document.querySelector(".m3d-vaga[data-motor]")) return;
     carregar().then(()=>{ if(!io){ io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) visiveis.add(e.target); else visiveis.delete(e.target); }),{rootMargin:"120px"}); requestAnimationFrame(laco); }
       montar(); }).catch(()=>{}); }
