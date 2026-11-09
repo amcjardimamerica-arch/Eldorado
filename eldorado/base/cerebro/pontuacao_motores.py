@@ -68,7 +68,7 @@ def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: da
     hoje = agora.date()
     d30, dias8 = (hoje - timedelta(days=29)).isoformat(), [(hoje - timedelta(days=k)).isoformat() for k in range(7, -1, -1)]
     A: dict[str, dict[str, Any]] = defaultdict(lambda: {"exec": 0, "falhas": 0, "ach": 0, "acc": 0, "livros": 0, "estrelas": 0, "hl": 0, "ha": 0,
-                                                         "rodou": set(), "por_dia": defaultdict(lambda: [0, 0, 0, 0])})   # execuções, falhas, aceitos, livros ouro
+                                                         "rodou": set(), "por_dia": defaultdict(lambda: [0, 0, 0, 0])})   # por dia: leituras, falhas, aceitos, ouro
     def _q(con, sql, args):   # a coluna ausente (um banco antigo ou de teste) zera só aquela parte da atividade
         try:
             return con.execute(sql, args).fetchall() if con is not None else []
