@@ -666,6 +666,20 @@
     "testes/test_comparacao_motor_dia.py::test_decisoes_repetidas_nao_inflam_o_comandante"
    ],
    "revoga": "na R24, «o Comandante decide com a política aprendida (Vowpal Wabbit)»: passa a ser a amostragem de Thompson sobre o resultado real (a trava testes/test_comandante_fase2.py::test_o_comandante_decide_registra_e_reaprende_do_cerebro confere «thompson»); e a régua 0,85/0,70 do discernimento afirmada em testes/test_parecer_sala_2910.py::test_so_grava_o_que_muda_e_a_copia_dos_livros (R33), agora 0,80/0,70 na janela de 7 dias"
+  },
+  {
+   "id": "R49",
+   "data": "2026-11-08",
+   "tema": "cada local de busca uma vez por dia, com a segunda etapa das subpáginas novas",
+   "regra": "Nenhum local de busca é lido em intervalos: cada fonte e cada alvo de cada motor é lido uma vez por dia, todo dia, e o resultado de cada local é analisado diariamente (a janela prevista da edição não impede a leitura; o local lido sem erro não se lê de novo no mesmo dia; o que falhou tenta de novo; o acionamento à mão da titular lê sempre). Cada local tem a segunda etapa: as subpáginas novas do domínio, pelo mapa do site (as páginas com data dos últimos dias; sem data, as que não estavam na leitura anterior) ou, sem mapa, pelo feed do domínio — a verificação por dois caminhos.",
+   "porque": "titular, 08/11/2026: «Não quero que nenhum local de busca seja buscado em intervalos. Cada dia deve buscar uma vez em cada local, analisando o resultado diariamente»; e validar se cada site tem subpáginas novas e se os motores têm ferramenta no canivete suíço para identificá-las, com a busca por mais de um caminho (verificação em 2 etapas). A planilha MOTORES-POR-AREA mostrou 172 das 374 pontas em «vigilância» (lidas só na janela prevista).",
+   "onde": "eldorado/motores/canal/motor.py (_lida_hoje, _alvos, _subpaginas), eldorado/motores/descoberta/subpaginas.py, eldorado/base/motor_modelo/modelo.toml ([canivete] subpaginas)",
+   "travas": [
+    "testes/test_subpaginas_diaria.py::test_cada_local_uma_vez_por_dia",
+    "testes/test_subpaginas_diaria.py::test_a_janela_nao_impede_a_leitura_diaria",
+    "testes/test_subpaginas_diaria.py::test_as_subpaginas_novas_pelo_mapa_do_site",
+    "testes/test_subpaginas_diaria.py::test_o_mapa_sem_data_tem_a_primeira_leitura_como_base"
+   ]
   }
  ]
 }

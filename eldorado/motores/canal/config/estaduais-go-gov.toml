@@ -107,6 +107,36 @@ url = "https://www.ovg.org.br/"
 tipo = "pagina"
 papel = "alternativa"
 
+# 08/11/2026 (estudo Claude × motores): rota achada navegando pelo menu "Editais/Chamamentos" do próprio site
+[[fonte]]
+nome = "Secult GO — chamamentos públicos (a página oficial dos editais da Secult)"
+url = "https://goias.gov.br/cultura/chamamentos-publicos-secult/"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "Programa Goyazes — inscrições (a página das inscrições do ano)"
+url = "https://goias.gov.br/cultura/programa-goyazes/inscricoes-2/"
+tipo = "pagina"
+papel = "alternativa"
+
+
+# 08/11/2026 (passada no Chrome): a PNAB Goiás mostra a SITUAÇÃO de cada edital ("Inscrições abertas", "Habilitação para
+# Pagamento", "Encerrado") em vez da data — Editais 20 e 21/2026 (Ocupa Goiás) abertos. A ferramenta nova lê o rótulo do item.
+[[fonte]]
+nome = "Secult GO — Editais PNAB 2026 (situação de cada edital)"
+url = "https://goias.gov.br/cultura/pnab/edital-2026-pnab/"
+tipo = "pagina"
+papel = "alternativa"
+
+# Anater: a página de chamadas tem texto de spam injetado no fim (site comprometido): só os links das chamadas contam.
+[[fonte]]
+nome = "Anater — chamadas públicas de ATER (só os blocos das chamadas)"
+url = "https://www.anater.org/chamada-publica/"
+tipo = "pagina"
+papel = "alternativa"
+filtro = { titulo = '(?i)chamada|edital|sele[cç][aã]o' }
+
 [[alvo]]
 id = "f260-captacao-018"
 nome = "PNAB Goiás - Audiovisual"
@@ -206,4 +236,4 @@ nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalida
 "Objeto" = ['(Programa Estadual de Incentivo [àa] Cultura\s*[–-]\s*GOYAZES)', '((?:incentivo|apoio) (?:fiscal )?(?:a|à|aos) projetos culturais[^.;]{10,200})']
 
 [aprendizado]
-licoes = ["08/11/2026 (parecer): a página do Edital PNAB 2026 rende muito (63 aceitas pelo motor em 30 d), mas cada anexo, errata, lista e formulário virava livro (27 erros anexo/lista): agora vetados pelo título.", "08/11/2026: a busca do WordPress ordena por relevância e trazia posts de anos (32 erros de edição encerrada): a pista com mais de 180 dias não entra.", "08/11/2026: a FAPEG é de pesquisa (19 de 43 achados num experimento eram chamadas para pesquisadores); a busca dela passou a ser por associações."]
+licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): Secult GO passou a abrir editais no Baru 2.0 (editaiscultura.sistemas.go.gov.br, com Login Único — sem lista pública); o Mapa Goiano não teve nenhuma oportunidade nova em 30 d. A página PNAB 2026 traz a situação (\"Inscrições abertas\") — lida pela ferramenta nova. A página de chamadas da Anater tem SPAM injetado (apostas, indonésio): ler só os blocos das chamadas. Alvos mortos: goias.gov.br/social/cedca/ (404), goiania.go.gov.br/sme/cmdca/ (404), páginas CONANDA e CNDI no MDH (pedem login) — decisão da titular para trocar/retirar (R19).", "08/11/2026 (estudo Claude × motores, 30 d): navegando pelo menu da Secult, o Claude chegou à página oficial dos chamamentos (goias.gov.br/cultura/chamamentos-publicos-secult/) e à das inscrições do Goyazes: entraram como rotas. O Ocupa Goiás (MITsp, Brasilidades & Futuros, Virada) foi achado pelo motor e pelo Claude.", "08/11/2026 (conferido pelo Chrome, do Brasil): a página de editais da Anater responde do Brasil com as chamadas públicas 005 e 006/2026 e a seleção dos Quintais Produtivos — rota boa pela ponte.", "08/11/2026 (parecer): a página do Edital PNAB 2026 rende muito (63 aceitas pelo motor em 30 d), mas cada anexo, errata, lista e formulário virava livro (27 erros anexo/lista): agora vetados pelo título.", "08/11/2026: a busca do WordPress ordena por relevância e trazia posts de anos (32 erros de edição encerrada): a pista com mais de 180 dias não entra.", "08/11/2026: a FAPEG é de pesquisa (19 de 43 achados num experimento eram chamadas para pesquisadores); a busca dela passou a ser por associações."]

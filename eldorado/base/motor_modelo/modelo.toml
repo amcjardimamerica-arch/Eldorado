@@ -143,6 +143,9 @@ texto_principal = true                      # trafilatura: o texto sem menus e r
 arquivar = true                             # waybackpy: arquivar no Wayback a página da oportunidade com prazo
 arquivar_por_execucao = 3
 ponte_br = true                             # a ponte da HostGator (o IP brasileiro): na escada, depois dos degraus da nuvem; um site que a nuvem não abre é tentado pela ponte
+subpaginas = true                           # R49: a 2ª etapa de cada local — as subpáginas novas do domínio (mapa do site; sem ele, o feed), 1x por dia
+subpaginas_janela_dias = 3                  # as páginas do mapa com data dos últimos N dias (sem data: as que não estavam na última leitura)
+subpaginas_por_dominio = 10                 # o máximo de subpáginas novas entregues por domínio por dia
 
 # A EXTRAÇÃO PRÓPRIA (opcional): itens que o motor extrai do documento por padrão próprio.
 [extracao]
@@ -193,3 +196,15 @@ esporadica = false                          # fonte esporádica (abre chamadas p
 [alvos]
 [metas]
 [agenda]
+
+# ---- 08/11/2026 (passada completa no Chrome, Claude × motores 30 d) — ferramentas novas do motor genérico (R04):
+# • páginas comuns: quando o link diz "abrir/salvar", "Saiba mais", "Leia mais", o título vem do item (cabeçalho do cartão
+#   ou a linha da tabela); o rótulo de situação do item ("Inscrições abertas" / "Encerrado" / "Habilitação para Pagamento")
+#   vai em extra.situacao e "encerrada" é barrada na entrada; numa linha com início e fim, a data é o prazo (a maior).
+# • JSON tolerante: aviso do PHP antes do JSON (WordPress de prefeitura) não derruba a leitura.
+# • cadeia "linhas" sobre um campo já lido: campos = { de = "conteudo" } recorta registros do texto de um elo anterior
+#   sem baixar de novo (ex.: a busca de texto completo do DOE-GO devolve a página e o aviso é recortado dela):
+# [[fonte.cadeia]]
+# formato = "linhas"
+# itens = '(?i)(?P<titulo>aviso de chamamento p[uú]blico[^.]{0,220})'
+# campos = { de = "conteudo" }

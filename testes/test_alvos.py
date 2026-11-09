@@ -45,12 +45,15 @@ termos = ["re:edital|chamamento"]
     return m
 
 
-def test_alvo_mudou_entrega_e_aprende_o_mes(site, tmp_path):
+def test_alvo_mudou_entrega_e_aprende_o_mes(site, tmp_path, monkeypatch):
     base, paginas = site
     m = config(tmp_path, base)
     achados = list(m.buscar(None))
     assert [a.titulo for a in achados] == ["Edital de chamamento público nº 7/2026 — inscrições abertas"]
     assert len(m.estado.meses_do_alvo("f260-teste-001")) == 1
+    # 08/11/2026 (R49): no mesmo dia, o alvo já lido não se lê de novo; a releitura (o dia seguinte, ou forçada) vê "sem mudança"
+    assert list(m.buscar(None)) == [] and any("já lido hoje" in r for r in m.relatorio)
+    monkeypatch.setenv("ELDORADO_FORCAR", "1")
     assert list(m.buscar(None)) == [] and any("sem mudança" in r for r in m.relatorio)                    # a vigilância
 
 

@@ -38,7 +38,7 @@ papel = "alternativa"
 # ---- os projetos de lei do terceiro setor nas duas casas, por termo (titular, 23/10/2026)
 [[fonte]]
 nome = "Câmara dos Deputados — proposições do ano: terceiro setor (API de dados abertos)"
-url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=terceiro%20setor&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=terceiro%20setor&dataInicio={hoje-1:%Y-%m-%d}&dataFim={hoje:%Y-%m-%d}&itens=50&ordem=DESC&ordenarPor=id"
 tipo = "cadeia"
 papel = "alternativa"
 
@@ -55,7 +55,7 @@ resumo = "Câmara dos Deputados · apresentada em {data}"
 
 [[fonte]]
 nome = "Câmara dos Deputados — proposições do ano: organizações da sociedade civil (API de dados abertos)"
-url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&dataInicio={hoje-1:%Y-%m-%d}&dataFim={hoje:%Y-%m-%d}&itens=50&ordem=DESC&ordenarPor=id"
 tipo = "cadeia"
 papel = "alternativa"
 
@@ -72,7 +72,7 @@ resumo = "Câmara dos Deputados · apresentada em {data}"
 
 [[fonte]]
 nome = "Câmara dos Deputados — proposições do ano: Lei 13.019 (API de dados abertos)"
-url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=13.019&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=Marco%20Regulat%C3%B3rio&dataInicio={hoje-1:%Y-%m-%d}&dataFim={hoje:%Y-%m-%d}&itens=50&ordem=DESC&ordenarPor=id"
 tipo = "cadeia"
 papel = "alternativa"
 
@@ -89,7 +89,7 @@ resumo = "Câmara dos Deputados · apresentada em {data}"
 
 [[fonte]]
 nome = "Câmara dos Deputados — proposições do ano: entidades filantrópicas (API de dados abertos)"
-url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=filantr%C3%B3picas&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=sem%20fins%20lucrativos&dataInicio={hoje-1:%Y-%m-%d}&dataFim={hoje:%Y-%m-%d}&itens=50&ordem=DESC&ordenarPor=id"
 tipo = "cadeia"
 papel = "alternativa"
 
@@ -191,7 +191,7 @@ vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|come
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["08/11/2026 (parecer): o motor é de acompanhamento (R14): os atos vão à tela Legislativo e ficam na Biblioteca (R35); a recusa \"ato legislativo\" do portão é o caminho certo, não erro. A saída principal é o prazo das emendas da CMO (ex.: \"LOA 2027 — MANUAL DE EMENDAS e ORIENTAÇÕES\", 06/11/2026). O RSS do Senado repetia cada notícia em \"Áudio: …\": vetado pelo título.", "O prazo das emendas da LOA sai nos comunicados da CMO (por exemplo, 21/10/2026: Matérias Novas/Relatórios Entregues e prazo de emendas).", "Ler primeiro pela dados abertos da Câmara e do Senado; as páginas ficam como reserva.", "O afinador já achou 3 rota(s) que funcionaram: entram como rotas do motor.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): na API da Câmara, ano=AAAA&ordenarPor=id devolve as proposições mais novas pela numeração (as de 2026 com os termos são de jul–ago: nada nos 30 d); dataInicio/dataFim filtram o que TRAMITOU no período (sociedade civil 8, sem fins lucrativos 12 nos 30 d). Trocado para dataInicio=ontem&dataFim=hoje; \"13.019\" e \"filantrópicas\" não casam como palavra-chave → \"Marco Regulatório\" e \"sem fins lucrativos\".", "08/11/2026 (parecer): o motor é de acompanhamento (R14): os atos vão à tela Legislativo e ficam na Biblioteca (R35); a recusa \"ato legislativo\" do portão é o caminho certo, não erro. A saída principal é o prazo das emendas da CMO (ex.: \"LOA 2027 — MANUAL DE EMENDAS e ORIENTAÇÕES\", 06/11/2026). O RSS do Senado repetia cada notícia em \"Áudio: …\": vetado pelo título.", "O prazo das emendas da LOA sai nos comunicados da CMO (por exemplo, 21/10/2026: Matérias Novas/Relatórios Entregues e prazo de emendas).", "Ler primeiro pela dados abertos da Câmara e do Senado; as páginas ficam como reserva.", "O afinador já achou 3 rota(s) que funcionaram: entram como rotas do motor.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=sociedade civil (vazio desde 01/09/2026: a palavra-chave da Câmara precisa de outro termo)"]

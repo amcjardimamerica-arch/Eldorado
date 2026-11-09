@@ -16,7 +16,8 @@ nome = "ABCR — publicações (API do WordPress; sondagem de 22/10/2026)"
 url = "https://captadores.org.br/wp-json/wp/v2/posts?categories=162&orderby=date"
 tipo = "wordpress"
 papel = "principal"
-termos = "edital"
+# 08/11/2026 (estudo Claude × motores): sem a busca "edital" — a categoria Editais já é a curadoria; a busca deixava de fora
+# "Plan Brasil lança fundo de R$ 600 mil para projetos…" (o Claude achou navegando; o motor, não)
 
 
 # a rota alternativa (sondagem de 23/10/2026): o mapa do site, outro tipo de rota no mesmo órgão (o léxico filtra pelos endereços)
@@ -35,11 +36,11 @@ seguir_oficial = true               # a busca cega: do post de divulgação a um
 max_documentos = 20
 
 [lexico]
-termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)"]
+termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|lanca fundo|fundo de r\\$|abre (edital|inscric|chamada)|recebe (inscric|projetos|propostas)|apoiar projetos|financiar projetos|apoio a (projetos|iniciativas|organizac)"]
 termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
 vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]
 # 08/11/2026: 25 editais de ano anterior em 30 d, quase todos do mapa do site — a idade (do mapa ou lida na página) barra o acervo
 idade_maxima_dias = 120
 
 [aprendizado]
-licoes = ["08/11/2026 (parecer): 144 de 217 pistas vinham do mapa do site (o acervo) e 25 eram editais de ano anterior. Agora a rota principal é a categoria Editais do WordPress (categories=162), pelos mais novos, e a idade máxima é de 120 dias."]
+licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): wp-json 30 d: 8 editais (Cerbranorte, SP idosos, Floresta Viva, Pague Menos, Plan, Brasilcap, BB reciclagem, apoio em comunicação) — 6 casaram com o motor depois do ajuste de léxico.", "08/11/2026 (estudo Claude × motores, 30 d): navegando, o Claude achou 5 editais recentes na categoria Editais e o motor achou 4; o que faltou (Plan Brasil, \"lança fundo de R$ 600 mil\") caía pela busca \"edital\" da API e pelo léxico: a busca saiu (a categoria já é a curadoria) e o léxico ganhou \"lança fundo\", \"abre edital/inscrições\", \"recebe projetos\".", "08/11/2026 (parecer): 144 de 217 pistas vinham do mapa do site (o acervo) e 25 eram editais de ano anterior. Agora a rota principal é a categoria Editais do WordPress (categories=162), pelos mais novos, e a idade máxima é de 120 dias."]

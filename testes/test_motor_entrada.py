@@ -1,7 +1,7 @@
 """08/11/2026 (parecer individual dos motores): os filtros de ENTRADA do motor genérico — a idade da pista, o território
 (a regra do portão já na entrada), o título genérico de link e o alvo sem léxico — e o título tirado do documento."""
 import json
-from datetime import date, timedelta
+from datetime import timedelta
 
 import pymupdf
 import pytest
@@ -15,6 +15,7 @@ from eldorado.motores.canal.motor import (
     _prazo_no_titulo,
     _titulo_do_documento,
     _variantes_do_endereco,
+    hoje_local,
 )
 
 
@@ -25,7 +26,7 @@ def pdf(texto):
     return d.tobytes()
 
 
-HOJE = date.today()
+HOJE = hoje_local()   # 09/11/2026: o mesmo relógio do motor (o dia de Goiânia); date.today() é o dia do servidor, e entre 21 h e 24 h as datas diferem
 POSTS = json.dumps([
     {"title": {"rendered": "Edital de chamamento para OSC de Goiânia"}, "link": "/p/novo", "date": (HOJE - timedelta(days=10)).isoformat() + "T10:00:00",
      "excerpt": {"rendered": "inscrições abertas"}},

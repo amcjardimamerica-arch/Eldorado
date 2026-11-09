@@ -59,7 +59,9 @@ def test_entrega_o_chamamento_com_o_texto_integral_e_veta_o_ruido(diario, tmp_pa
     assert len(titulos) == len(set(titulos))                                                        # hoje e ontem não duplicam
 
 
-def test_sem_mudanca_na_segunda_leitura(diario, tmp_path):
+def test_sem_mudanca_na_segunda_leitura(diario, tmp_path, monkeypatch):
     m = motor(diario, tmp_path)
     list(m.buscar(None))
+    assert list(m.buscar(None)) == [] and any("já lida hoje" in r for r in m.relatorio)      # R49: uma leitura por dia em cada local
+    monkeypatch.setenv("ELDORADO_FORCAR", "1")                                               # a releitura forçada vê "sem mudança"
     assert list(m.buscar(None)) == [] and any("sem mudança" in r for r in m.relatorio)

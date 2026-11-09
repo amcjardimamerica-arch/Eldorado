@@ -10,7 +10,6 @@ elemento). Campos de JSON: uma expressão jmespath relativa ao item.
 """
 from __future__ import annotations
 
-import json
 import re
 from dataclasses import dataclass, field
 from typing import Any, Callable
@@ -74,7 +73,9 @@ def _itens_html(conteudo: bytes, base: str, elo: Elo) -> list[dict[str, Any]]:
 
 def _itens_json(conteudo: bytes, elo: Elo) -> list[dict[str, Any]]:
     import jmespath
-    doc = json.loads(conteudo)
+
+    from .estrutura_site import json_tolerante
+    doc = json_tolerante(conteudo)
     lista = jmespath.search(elo.itens, doc) or []
     saida = []
     for x in lista[:elo.limite]:
@@ -92,6 +93,17 @@ def percorrer(buscar: Callable[[str], Any], url: str, elos: list[Elo], relatorio
             endereco = pai["_url"] if n == 0 else formatar(elo.url or "", pai)
             corpo = {formatar(k, pai): formatar(v, pai) for k, v in elo.corpo.items()} if elo.corpo else None
             try:
+                if elo.formato == "linhas" and elo.campos.get("de"):
+                    # 08/11/2026 (DOE-GO): os registros dentro de um campo já lido (o texto de cada resultado da busca),
+                    # sem baixar de novo — ex.: os avisos de chamamento no "conteudo" de cada página do diário
+                    texto = str(pai.get(elo.campos["de"]) or "")
+                    filhos = [{k: re.sub(r"\s+", " ", v or "").strip() for k, v in m.groupdict().items()}
+                              for m in re.finditer(elo.itens, texto)][:elo.limite]
+                    for f in filhos:
+                        item = {**{k: v for k, v in pai.items() if k not in ("_url", elo.campos["de"])}, **f, "_url": pai["_url"]}
+                        if all(re.search(rx, str(item.get(campo) or ""), re.I) for campo, rx in elo.filtro.items()):
+                            proximos.append(item)
+                    continue
                 r = buscar(endereco, corpo) if corpo is not None else buscar(endereco)
                 if elo.formato == "linhas":                         # registros de uma tabela: um padrão com grupos nomeados
                     from ..leitura import leitores

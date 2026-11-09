@@ -39,7 +39,7 @@ texto = "{texto}"
 
 [[fonte]]
 nome = "Querido Diário — Goiânia pelo código do município (5208707), as edições dos últimos 3 dias → os atos"
-url = "https://queridodiario.ok.org.br/api/gazettes?territory_ids=5208707&published_since={hoje-3:%Y-%m-%d}&size=3&sort_by=descending_date"
+url = "https://api.queridodiario.org.br/gazettes?territory_ids=5208707&published_since={hoje-3:%Y-%m-%d}&size=3&sort_by=descending_date"
 tipo = "cadeia"
 papel = "alternativa"
 
@@ -86,12 +86,12 @@ seguir_oficial = false
 # pelo corpo do ato. O ato de oportunidade tem título de edital/aviso/chamada; os atos de expediente (despacho, resolução,
 # decreto, lei, termo, errata) saem pelo título.
 termos = ["re:chamamento|chamada p[uú]blica|credenciamento de (entidades|organiza|institui|osc)|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|organiza[çc][ãa]o social|organiza[çc][õo]es da sociedade civil|fundo municipal"]
-vetos = ["re:licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreta|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa de (licita|chamamento)|ado[çc][ãa]o de logradouro|programa adote|cita[çc][ãa]o|intima[çc][ãa]o|designa gestor|comiss[ãa]o de monitoramento",
+vetos = ["re:servid[ãa]o administrativa|\\bsaneago\\b|licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreta|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa de (licita|chamamento)|ado[çc][ãa]o de logradouro|programa adote|cita[çc][ãa]o|intima[çc][ãa]o|designa gestor|comiss[ãa]o de monitoramento",
          "re:^\\s*(despacho|resolu[çc][ãa]o|decreto|lei\\b|lei complementar|ata\\b|of[íi]cio|instru[çc][ãa]o normativa|termo de|ordem de servi[çc]o|errata|retifica)"]
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["08/11/2026 (parecer): os despachos e resoluções que citam termo de colaboração já firmado entravam pelo corpo do ato (16 livros, 1 acerto); o título do ato de expediente agora veta, salvo quando anuncia o chamamento.", "08/11/2026: o Querido Diário é a rota que mais rende (128 de 187 achados em 30 d) e repete os atos da lista oficial; o Cartório une o mesmo título (R22).", "Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
+licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): varredura dos 19 PDFs do DOM em 30 d: Leis 11.724 e 11.725/2026 (utilidade pública do Instituto Catalise e do Instituto DESD), SEGENP Chamamento 001/2026 (OSC, Natal no Parque). A maioria de \"utilidade pública\" é servidão administrativa para a Saneago (imóvel, não entidade) — vetada.", "08/11/2026 (passada completa no Chrome, Claude × motores 30 d): o Querido Diário mudou de endereço (queridodiario.ok.org.br/api → 302 → api.queridodiario.org.br/gazettes) e estava 503 em 08/11 no Chrome e na nuvem; endereço trocado e rotas alternativas mantidas.", "08/11/2026 (parecer): os despachos e resoluções que citam termo de colaboração já firmado entravam pelo corpo do ato (16 livros, 1 acerto); o título do ato de expediente agora veta, salvo quando anuncia o chamamento.", "08/11/2026: o Querido Diário é a rota que mais rende (128 de 187 achados em 30 d) e repete os atos da lista oficial; o Cartório une o mesmo título (R22).", "Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
 bloqueios_conhecidos = ["www.goiania.go.gov.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["a Carta de Serviços (endereço errado do motor antigo)", "https://www.goiania.go.gov.br/cultura/ (quebrada: 404 em 70 de 140 leituras de cada alvo até 08/11/2026; trocada por /secult/)",

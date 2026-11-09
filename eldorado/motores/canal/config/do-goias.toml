@@ -58,6 +58,35 @@ titulo = "{titulo}"
 link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
 resumo = "{caminho} · edição {numero} · protocolo {protocolo}"
 
+
+# 08/11/2026 (passada no Chrome): a busca de texto completo do próprio DOE (a mesma do formulário "Buscar no ABC", Elasticsearch)
+# com período — nos 30 d achou 13 chamamentos para OSC e cultura (Santo Antônio do Descoberto, DGPP, SEDS, CMDCA Catalão, PNAB de
+# Quirinópolis, Vianópolis, Mossâmedes, Piracanjuba, Panamá…) que a leitura da edição do dia trazia com título genérico ("Edital").
+[[fonte]]
+nome = "Diário Oficial de Goiás — busca de texto completo: avisos de chamamento público (ontem e hoje)"
+url = "https://diariooficial.abc.go.gov.br/busca/busca/buscar/query/1/di:{hoje-1:%Y-%m-%d}/df:{hoje:%Y-%m-%d}/?1=1&q=%22{termo}%22"
+tipo = "cadeia"
+papel = "alternativa"
+valores = { termo = ["chamamento%20p%C3%BAblico", "termo%20de%20fomento", "termo%20de%20colabora%C3%A7%C3%A3o", "organiza%C3%A7%C3%A3o%20da%20sociedade%20civil"] }
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "hits.hits"
+campos = { id = "_id", conteudo = "_source.conteudo" }
+limite = 50
+
+[[fonte.cadeia]]
+formato = "linhas"
+itens = '(?i)(?P<titulo>(?:aviso|edital) de chamamento p[uú]blico[^.]{0,220}|torna p[uú]blic[oa] (?:a abertura|o edital)[^.]{0,220})'
+campos = { de = "conteudo" }
+filtro = { titulo = '^(?!.*(credenciamento (de|para) (pessoas|empresas|profissionais|cl[ií]nicas|restaurantes|fornec)|para o credenciamento|resultado|errata|suspens|retifica|lista de classificados|inexigibilidade))' }
+limite = 40
+
+[fonte.pista]
+titulo = "DOE-GO: {titulo}"
+link = "https://diariooficial.abc.go.gov.br/buscanova/#/p=1&q={id}"
+resumo = "Diário Oficial do Estado de Goiás — aviso achado pela busca de texto completo (página {id})"
+
 [[alvo]]
 id = "f260-captacao-034"
 nome = "Fundo de Arte e Cultura de Goiás - projeto cultural geral"
@@ -89,7 +118,7 @@ vetos = ["re:cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o|penalidade|co
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["08/11/2026 (parecer): a edição 'de hoje' rende mais (30 pistas acumuladas) que a 'de ontem' (8); a de ontem fica para os suplementos.", "08/11/2026: o 'edital de comunicação/publicação' é aviso de licença ambiental de empresa e o 'edital de convocação' é assembleia: vetados pelo título; o credenciamento só o de entidades e agentes culturais.", "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
+licoes = ["08/11/2026 (passada completa no Chrome, Claude × motores 30 d): a edição do dia (JSON) dá títulos genéricos (\"Edital\", \"Chamamentos Públicos\") que não casam com nada; a busca de texto completo do DOE (/busca/busca/buscar/query/{p}/di:/df:/?q=\"…\") devolve a página inteira e o aviso de chamamento é recortado dela (ferramenta nova: cadeia \"linhas\" sobre um campo já lido). 30 d: 13 avisos para OSC/cultura, nenhum casou com os 55 achados do motor.", "08/11/2026 (parecer): a edição 'de hoje' rende mais (30 pistas acumuladas) que a 'de ontem' (8); a de ontem fica para os suplementos.", "08/11/2026: o 'edital de comunicação/publicação' é aviso de licença ambiental de empresa e o 'edital de convocação' é assembleia: vetados pelo título; o credenciamento só o de entidades e agentes culturais.", "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
 bloqueios_conhecidos = ["diariooficial.abc.go.gov.br", "goias.gov.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://diariooficial.abc.go.gov.br/apifront/portal/visualizacoes/view_html_diario/{edicao} (404, 23/10/2026)",

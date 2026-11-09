@@ -188,6 +188,10 @@ class CfgCanivete(_Base):
     arquivar: bool = True                   # arquivar no Wayback a página da oportunidade com prazo (a prova guardada)
     arquivar_por_execucao: int = Field(3, ge=0, le=20)
     ponte_br: bool = True                   # a ponte da HostGator (o IP brasileiro): na escada, depois dos degraus da nuvem
+    # 08/11/2026 (R49): a segunda etapa de cada local — as subpáginas novas do domínio (o mapa do site; sem ele, o feed)
+    subpaginas: bool = True
+    subpaginas_janela_dias: int = Field(3, ge=1, le=30)
+    subpaginas_por_dominio: int = Field(10, ge=1, le=50)
 
     def habilidades(self) -> tuple[str, ...]:
         return tuple(h for h in ("idioma", "publicacao", "datas", "valores", "metadados", "texto_principal") if getattr(self, h))
@@ -488,6 +492,9 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"tempo máximo ({self.cfg.acesso.tempo_maximo_s:.0f} s): as fontes restantes ficam para o próximo acionamento")
                 self.incompleto = True
                 return
+            if self._lida_hoje(fonte.nome):                      # R49: cada local uma vez por dia
+                self.relatorio.append(f"{fonte.nome}: já lida hoje (R49: uma leitura por dia em cada local)")
+                continue
             try:
                 pistas = self._descobrir(fonte)
             except Pendente as e:
@@ -543,6 +550,7 @@ class MotorCanal(Motor):
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
         yield from self._alvos()
+        yield from self._subpaginas()
         if self._barradas_na_entrada:
             self.relatorio.append("barradas na entrada: " + "; ".join(f"{k} ({v})" for k, v in sorted(self._barradas_na_entrada.items(), key=lambda x: -x[1])))
 
@@ -582,9 +590,11 @@ class MotorCanal(Motor):
                         or _prefeitura_de_outro_estado(alvo.enderecos[0]):
                     self.relatorio.append(f"alvo {alvo.nome}: fora do território (município de outro estado, R27) — não lido")
                     continue
-            if not self._na_janela(alvo, mes):
-                self.relatorio.append(f"alvo {alvo.nome}: fora da janela prevista")
+            if self._lida_hoje(f"alvo · {alvo.id}"):                 # R49: cada local uma vez por dia
+                self.relatorio.append(f"alvo {alvo.nome}: já lido hoje (R49)")
                 continue
+            if not self._na_janela(alvo, mes):                     # R49 (titular, 08/11/2026): a janela prevista não impede a
+                self.relatorio.append(f"alvo {alvo.nome}: fora da janela prevista — lido assim mesmo (R49)")   # leitura diária
             for n, url in enumerate(alvo.enderecos):
                 fonte = CfgFonte(nome=f"alvo · {alvo.id}", url=url, tipo="pagina", papel="principal" if n == 0 else "alternativa", seletor=alvo.seletor)
                 try:
@@ -887,6 +897,96 @@ class MotorCanal(Motor):
             return c["url"], pista.link, doc
         return None
 
+    def _lida_hoje(self, nome: str) -> bool:
+        """R49 (titular, 08/11/2026): o local lido HOJE (no dia de Brasília) sem erro não se lê de novo no mesmo dia; com erro
+        (bloqueio, pendente no computador local), tenta de novo."""
+        import os
+        if os.environ.get("ELDORADO_FORCAR") == "1":                # o acionamento à mão (a titular força a leitura) vale sempre
+            return False
+        f = self.estado._fonte(nome)
+        ultima = f.get("ultima")
+        if not ultima or f.get("situacao") == "erro":
+            return False
+        try:
+            dia = datetime.fromisoformat(str(ultima)).astimezone(ZoneInfo("America/Sao_Paulo")).date()
+        except ValueError:
+            return False
+        return dia == hoje_local()
+
+    def _subpaginas(self) -> Iterable[Achado]:
+        """R49: a segunda etapa de cada local — as subpáginas novas do domínio de cada fonte e de cada alvo, uma vez por dia
+        (descoberta/subpaginas.py). As que o léxico aceita viram achado como qualquer pista."""
+        cv = self.cfg.canivete
+        if not cv.subpaginas:
+            return
+        from urllib.parse import urlsplit
+
+        from ..descoberta import subpaginas as S
+        def base(u: str) -> str:
+            s = urlsplit(preencher(u, hoje_local()) if "{hoje" in u else u)
+            return f"{s.scheme}://{s.netloc}".lower() if s.netloc else ""
+
+        com_mapa = {base(f.url) for f in self.cfg.fonte if f.tipo == "mapa" and f.url}
+        bases = [base(f.url) for f in self.cfg.fonte if f.tipo in ("pagina", "feed", "wordpress") and f.url]
+        for a in self.cfg.alvo:
+            if not a.enderecos:
+                continue
+            if self.cfg.lexico.territorio == "goias":              # o alvo fora do território (R27) não tem a segunda etapa
+                from ...base.missao.regras_portao import municipal_fora_de_goias
+                if municipal_fora_de_goias({"titulo": a.nome, "orgao": a.orgao or "", "url": a.enderecos[0], "uf": None}) \
+                        or _prefeitura_de_outro_estado(a.enderecos[0]):
+                    continue
+            bases.append(base(a.enderecos[0]))
+        vistos: set[str] = set()
+        unicas = []
+        for b in bases:                                            # o mesmo domínio com e sem www. é um só
+            chave = (urlsplit(b).hostname or "").removeprefix("www.")
+            if b and chave not in vistos and b not in com_mapa and not S.SEM_DOMINIO.search(urlsplit(b).hostname or ""):
+                vistos.add(chave)
+                unicas.append(b)
+        bases = unicas
+
+        def ler(url: str) -> bytes | None:
+            try:
+                return self.escada.buscar(url).conteudo
+            except Exception:  # noqa: BLE001 — o mapa ou o feed que não abre só não dá a segunda etapa
+                return None
+
+        for raiz in bases:
+            host = urlsplit(raiz).netloc
+            nome = f"subpáginas · {host}"
+            if self._lida_hoje(nome):
+                continue
+            try:
+                vistas = self.estado.mapa_visto(host)
+                pistas, memorizar, rota = S.novas(ler, raiz, hoje_local(), vistas, cv.subpaginas_janela_dias)
+            except Exception as e:  # noqa: BLE001 — a segunda etapa nunca derruba o motor
+                self.estado.leitura(nome, _agora(), erro=f"{type(e).__name__}: {str(e)[:200]}")
+                continue
+            if memorizar:
+                self.estado.marcar_mapa(host, memorizar, _agora())
+            entregues = 0
+            for pista in pistas:
+                idade = _idade_dias(pista.data)
+                if idade is not None and idade > cv.subpaginas_janela_dias:
+                    continue
+                if entregues >= cv.subpaginas_por_dominio:
+                    break
+                if not self._passa_entrada(pista) or self._ja_entregue(pista.link):
+                    continue
+                fonte = CfgFonte(nome=nome, url=raiz + "/", tipo="mapa", papel="alternativa")
+                try:
+                    a = self._achado(fonte, pista, entregues)
+                except Exception as e:  # noqa: BLE001
+                    self.relatorio.append(f"{nome}: o achado {pista.link[:100]} falhou ({type(e).__name__})")
+                    continue
+                if a is not None:
+                    entregues += 1
+                    self.estado.marcar_entregue(pista.link, _agora(), a.id, nome)
+                    yield a
+            self.estado.leitura(nome, _agora(), achados=entregues, sem_mudanca=not pistas)
+            self.relatorio.append(f"{nome}: {rota}; {len(pistas)} página(s) nova(s), {entregues} achado(s)")
+
     def _ja_entregue(self, link: str) -> bool:
         """08/11/2026 (parecer): o mesmo edital pelo RSS (www.) e pela página (sem www., com ou sem a barra final) entrava duas
         vezes. Confere o endereço e as variantes dele no registro de entregues (o registro não muda: compatível com o que já
@@ -928,6 +1028,8 @@ class MotorCanal(Motor):
             return "léxico"
         if TITULO_GENERICO.search(pista.titulo or "") and not NOME_DE_ARQUIVO.search(pista.titulo or "") and not DOCUMENTO.search(pista.link or ""):
             return "título genérico de link (menu ou chamada de notícia)"
+        if (pista.extra or {}).get("situacao") == "encerrada":    # 08/11/2026: o rótulo ao lado do link ("Encerrado")
+            return "situação encerrada no item da lista"
         lx = self.cfg.lexico
         if lx.idade_maxima_dias:
             # sem a data da fonte, a data no começo do título ("05/12/2023 | EDITAL ...", comum nas tabelas das prefeituras)
@@ -996,7 +1098,7 @@ class MotorCanal(Motor):
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
         titulo = pista.titulo
-        if TITULO_GENERICO.search(titulo or ""):                   # 08/11/2026: o título vem do próprio documento
+        if TITULO_GENERICO.search(titulo or "") or (pista.extra or {}).get("titulo_do_endereco"):   # 08/11: do próprio documento
             titulo = _titulo_do_documento(documento) or titulo
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
                       titulo=titulo[:300], publicado_em=_data_iso(pista.data),

@@ -6,6 +6,7 @@ de acesso; o feedparser continua, porque recebe os bytes já obtidos pela escada
 from __future__ import annotations
 
 import json
+import re
 import xml.etree.ElementTree as ET
 from urllib.parse import urljoin, urlsplit
 
@@ -46,7 +47,7 @@ def wordpress(buscar: Buscar, api: str, busca: str | None = None, por_pagina: in
     url = f"{api}{'&' if '?' in api else '?'}per_page={por_pagina}"
     if busca:
         url += f"&search={quote(busca)}"
-    itens = json.loads(buscar(url).conteudo)
+    itens = json_tolerante(buscar(url).conteudo)
     return [Pista(titulo=_texto(i.get("title")), link=i.get("link", ""), origem="API do WordPress", data=i.get("date"),
                   resumo=_texto(i.get("excerpt"))[:500]) for i in itens if i.get("link")]
 
@@ -72,6 +73,18 @@ def _regiao(html: str, url: str, seletor: str) -> str | None:
     except Exception:  # noqa: BLE001 — sem o Scrapling (ou sem impressão guardada), só o CSS
         pass
     return no.html if no is not None else None
+
+
+def json_tolerante(conteudo: bytes | str):
+    """08/11/2026 (Cristalina): o WordPress com aviso do PHP ("<br />…") antes do JSON. Lê a partir do primeiro [ ou {."""
+    t = conteudo.decode("utf-8", errors="replace") if isinstance(conteudo, bytes) else conteudo
+    try:
+        return json.loads(t)
+    except ValueError:
+        i = min((k for k in (t.find("["), t.find("{")) if k >= 0), default=-1)
+        if i <= 0:
+            raise
+        return json.loads(t[i:])
 
 
 def links(buscar: Buscar, url: str, mesmo_dominio: bool = True, seletor: str | None = None) -> list[Pista]:
@@ -105,8 +118,107 @@ def links(buscar: Buscar, url: str, mesmo_dominio: bool = True, seletor: str | N
         posicao[u] = len(saida)
         if not texto:
             sem_texto.add(u)
-        saida.append(Pista(titulo=texto or u.rstrip("/").rsplit("/", 1)[-1], link=u, origem="links da página"))
+        titulo = texto or u.rstrip("/").rsplit("/", 1)[-1]
+        if not texto or TEXTO_GENERICO.search(texto):           # 08/11/2026 (passada no Chrome): "abrir/salvar", "Saiba mais"
+            titulo = titulo_do_bloco(a) or titulo
+        extra = {}
+        situ = situacao_do_bloco(a)
+        if situ:
+            extra["situacao"] = situ
+        saida.append(Pista(titulo=titulo, link=u, origem="links da página", data=data_do_bloco(a), extra=extra))
     return saida
+
+
+# 08/11/2026 (passada completa no Chrome, Claude × motores): o que uma pessoa lê no item da lista e o motor não lia.
+TEXTO_GENERICO = re.compile(r"(?i)^\s*(abrir|abrir/salvar|baixar|download|saiba mais|leia mais|acesse|acessar|clique aqui|"
+                            r"veja mais|ver mais|mais informa[cç][oõ]es|confira|inscreva-se|visualizar|ver edital)\W*$")
+_ABERTA = re.compile(r"(?i)inscri[cç][oõ]es abertas|inscri[cç][oõ]es prorrogadas|recebendo propostas|\bem aberto\b|\baberto\b|em andamento")
+_ENCERRADA = re.compile(r"(?i)\bencerrad[oa]s?\b|inscri[cç][oõ]es encerradas|resultado final|homologa[cç][aã]o|"
+                        r"habilita[cç][aã]o para pagamento|avalia[cç][aã]o de m[eé]rito|\bconclu[ií]d[oa]\b")
+
+
+def _item_da_lista(a):
+    """O item da lista onde o link está (li, tr, article, dd, dt, p ou um cartão), subindo até 5 níveis."""
+    no = a
+    for _ in range(5):
+        no = no.parent
+        if no is None or no.tag in ("ul", "ol", "table", "tbody", "body", "main", "section", "nav"):
+            return None
+        classe = (no.attributes.get("class") or "") if hasattr(no, "attributes") else ""
+        if no.tag in ("li", "tr", "article", "dd", "dt", "p") or re.search(r"(?i)card|item|post|entry|edital", classe or ""):
+            return no
+    return None
+
+
+def titulo_do_bloco(a) -> str | None:
+    """O título que a pessoa lê quando o link tem texto genérico: o cabeçalho do cartão (h1–h4/strong) ou, numa linha de
+    tabela, as células juntas (ex.: MPT "GOIÂNIA 27/10/2026 094312.2026 … abrir/salvar")."""
+    no = _item_da_lista(a)
+    if no is None:
+        return None
+    for sel in ("h1", "h2", "h3", "h4", "h5", "strong", "b"):
+        h = no.css_first(sel)
+        if h is not None and len(h.text(strip=True)) >= 8:
+            return h.text(separator=" ", strip=True)[:160]
+    texto = re.sub(r"\s+", " ", no.text(separator=" ")).strip()
+    texto = TEXTO_GENERICO.sub("", texto).replace("abrir/salvar", "").strip(" |-")
+    return texto[:160] if len(texto) >= 8 else None
+
+
+def situacao_do_bloco(a) -> str | None:
+    """O rótulo de situação ao lado do link ("Inscrições abertas", "Encerrado", "Habilitação para Pagamento") — na página
+    da PNAB Goiás, da Funarte e do Prosas é ele, e não a data, que diz se o edital está aberto."""
+    no = _item_da_lista(a)
+    if no is None:
+        return None
+    texto = no.text(separator=" ")[:600]
+    if _ENCERRADA.search(texto):
+        return "encerrada"
+    if _ABERTA.search(texto):
+        return "aberta"
+    return None
+
+
+_MESES = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro")
+_DATA = re.compile(r"\b(\d{1,2})/(\d{1,2})/(20\d\d)\b|\b(\d{1,2})º? de (" + "|".join(_MESES) + r") de (20\d\d)\b", re.I)
+
+
+def _iso(m) -> str | None:
+    from datetime import date
+    try:
+        if m.group(1):
+            return date(int(m.group(3)), int(m.group(2)), int(m.group(1))).isoformat()
+        return date(int(m.group(6)), _MESES.index(m.group(5).lower()) + 1, int(m.group(4))).isoformat()
+    except ValueError:
+        return None
+
+
+def data_do_bloco(a) -> str | None:
+    """08/11/2026 (estudo Claude × motores): a data que uma pessoa vê ao lado do link — no próprio item da lista (li, tr,
+    article, dt/dd, p), quando ele traz UMA data só. Sem ela, a pista vinha sem data e a idade não se aplicava na entrada."""
+    no = a
+    for _ in range(4):
+        no = no.parent
+        if no is None or no.tag in ("ul", "ol", "table", "tbody", "body", "main", "section"):
+            return None
+        if no.tag in ("li", "tr", "article", "dd", "dt", "p"):
+            texto = no.text(separator=" ")[:600]
+            datas = {m.group(0) for m in _DATA.finditer(texto)}
+            if len(datas) > 1 and re.search(r"(?i)\bfim\b|at[eé]|encerra|prazo|inscri[cç]", texto):
+                # 08/11/2026: linha com início e fim (Valparaíso "06/11/2026 … 11/11/2026"): a data que vale é o prazo
+                todas = sorted(_iso(m) for m in _DATA.finditer(texto) if _iso(m))
+                return todas[-1] if todas else None
+            if len(datas) != 1:
+                return None
+            m = _DATA.search(next(iter(datas)))
+            try:
+                from datetime import date
+                if m.group(1):
+                    return date(int(m.group(3)), int(m.group(2)), int(m.group(1))).isoformat()
+                return date(int(m.group(6)), _MESES.index(m.group(5).lower()) + 1, int(m.group(4))).isoformat()
+            except ValueError:
+                return None
+    return None
 
 
 def _texto(v) -> str:
