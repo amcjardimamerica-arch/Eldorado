@@ -57,29 +57,7 @@ caminhos = { itens = "@", titulo = "name", link = "singleUrl", resumo = "shortDe
 lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
 
 # 09/11/2026: veio do motor site-mapas-culturais (organização dos 43 motores)
-# PROPOSTO SAIR em 09/11/2026 (outro estado (R27)): fica até a decisão da titular (R19)
-
-[[fonte]]
-nome = "Mapa Cultural do Ceará — oportunidades (API do Mapas Culturais)"
-url = "https://mapacultural.secult.ce.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo,singleUrl,owner.name,ownerEntity.name&@order=id%20DESC&@limit=50"
-tipo = "api"
-papel = "alternativa"
-caminhos = { itens = "@", titulo = "name", link = "singleUrl", resumo = "shortDescription", data = "registrationFrom.date || registrationFrom", fim = "registrationTo.date || registrationTo", orgao = "join(' · ', [owner.name || '', ownerEntity.name || ''])", uf = "'CE'" }
-# quase tudo no Mapa do Ceará é de secretaria municipal do interior ou de pessoa (a regra territorial não vê pelo título):
-# só segue o que é do Estado do Ceará ou da capital (R27)
-filtro = { orgao = '(?i)estado do cear|secultc|c[ée]lula d[oa]|coordenadoria de economia criativa|fortaleza|secultfor' }
-lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
-
 # 09/11/2026: veio do motor site-mapas-culturais (organização dos 43 motores)
-# PROPOSTO SAIR em 09/11/2026 (outro estado (R27)): fica até a decisão da titular (R19)
-
-[[fonte]]
-nome = "Mapa Cultural do Ceará — página de oportunidades"
-url = "https://mapacultural.secult.ce.gov.br/oportunidades/"
-tipo = "pagina"
-papel = "alternativa"
-lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"], vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"], termos_em = "titulo", idade_maxima_dias = 120, territorio = "goias" }   # 09/11/2026: o léxico do motor site-mapas-culturais (cada fonte reunida mantém o próprio filtro)
-
 # 09/11/2026: local novo (proposto (v2)) — fonte
 [[fonte]]
 nome = "CultBR Editais — oportunidades da PNAB nacional (API do Mapas Culturais)"

@@ -80,7 +80,7 @@ def test_o_registro_recusa_motor_sem_rota_ou_sem_finalidade():
 
 def test_a_fabrica_segue_a_orientacao(tmp_path):
     from eldorado.motores.canal.fabrica import criar, ficha, validar
-    assert "Diário Oficial do Estado de Goiás" in ficha("do-goias") and "alvos (2)" in ficha("do-goias")
+    assert "Diário Oficial de Goiás" in ficha("do-goias") and "alvos (2)" in ficha("do-goias")
     p = criar("do-goias", pasta=tmp_path)
     texto = p.read_text(encoding="utf-8")
     assert 'id = "do-goias"' in texto and 'categoria_estudo = "EXE"' in texto and "[[alvo]]" in texto and "bloqueios_conhecidos" in texto

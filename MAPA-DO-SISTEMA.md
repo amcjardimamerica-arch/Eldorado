@@ -330,12 +330,12 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 228 | `eldorado/base/cartorio/manutencao_expurgo.py` | A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro | em funcionamento | __init__, expurgo_claude, leitura_efemera | passagem, nó 21 «manutencao_expurgo» | 2 |
 | 229 | `eldorado/base/cerebro/ciclo_pilotos.py` | O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetro | em funcionamento | aprendizado, pontuacao_motores, eventos | aprendizado, encaminhamento, pilotos, sala, espiao | 0 |
 
-## Os 43 motores (a organização da titular de 09/11/2026: 41 regulares e 2 pilotos, em grupos)
+## Os 61 motores (a organização da titular de 09/11/2026: 59 regulares e 2 pilotos, em grupos)
 
 | # | Categoria | Motor | Nome | Agrega | Alvos | Motor no sistema | Situação | Observação |
 |---|---|---|---|---|---|---|---|---|
 | 1 | EXE | do-goiania | Diário Oficial de Goiânia | 0 | 0 | do-goiania | conforme | criado pela orientação: a lista oficial → o PDF → os atos; o Querido Diário pelo código do município como alternativa |
-| 2 | EXE | novo-diarios-municipais-go | Diários Municipais de Goiás | 0 | 1 | novo-diarios-municipais-go | conforme | refeito pela orientação: a edição diária da AGM (atos de dezenas de municípios, com o município de cada ato) e o Querido Diário de Aparecida; o QD só tem texto completo de Goiânia e Aparecida em Goiás |
+| 2 | EXE | novo-diarios-municipais-go | Diários Municipais de Goiás | 0 | 0 | novo-diarios-municipais-go | conforme | refeito pela orientação: a edição diária da AGM (atos de dezenas de municípios, com o município de cada ato) e o Querido Diário de Aparecida; o QD só tem texto completo de Goiânia e Aparecida em Goiás |
 | 3 | EXE | do-goias | Diário Oficial de Goiás | 0 | 2 | do-goias | conforme | criado pela orientação: a cadeia edições → sumário → matéria; páginas gravadas em 23/10 |
 | 4 | EXE | dou | Diário Oficial da União | 0 | 1 | dou | conforme |  |
 | 5 | LEG | camara-goiania-pl | Câmara de Goiânia | 0 | 4 | camara-goiania-pl | conforme | todo ato do terceiro setor: o Querido Diário recortado em atos com o léxico estrito; experimento: edital de chamamento, termo de fomento, utilidade pública, PL 288/2026 |
@@ -356,13 +356,13 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 20 | EXE | estaduais-go-gov | Governo de Goiás | 7 | 10 | estaduais-go-gov | conforme | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
 | 21 | EXE | governo-federal | Governo Federal | 7 | 4 | governo-federal | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
 | 22 | EXE | site-transferegov | Transferegov | 0 | 4 | site-transferegov | conforme | faltam os 4 alvos |
-| 23 | EXE | pncp-api | PNCP | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
+| 23 | EXE | pncp-api | PNCP | 0 | 0 | pncp-api | conforme | faltam os 17 alvos |
 | 24 | EXE | sistema-s | Sistema S | 0 | 1 | sistema-s | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 25 | EXE | novo-bancos-publicos | Bancos Públicos | 1 | 4 | novo-bancos-publicos | conforme | criado pela orientação: os editais sociais do Banco do Nordeste, o BNDES Periferias, o Sebrae Goiás pelo Brasil; os 5 alvos |
+| 25 | EXE | novo-bancos-publicos | Bancos Públicos | 1 | 3 | novo-bancos-publicos | conforme | criado pela orientação: os editais sociais do Banco do Nordeste, o BNDES Periferias, o Sebrae Goiás pelo Brasil; os 5 alvos |
 | 26 | EXE | empresas-editais-incentivados | Leis de Incentivo | 2 | 5 | empresas-editais-incentivados | conforme | criado pela orientação: os chamamentos do Pronas/PCD e do Pronon, a apresentação de projetos e o credenciamento; a Lei de Incentivo ao Esporte pelo Brasil; os 5 alvos |
-| 27 | POR | novo-fundacoes-institutos | Institutos Empresariais | 4 | 18 | — | conforme |  |
+| 27 | POR | novo-fundacoes-institutos | Institutos Empresariais | 4 | 14 | — | conforme |  |
 | 28 | POR | fundacoes-nacionais | Fundações Nacionais | 6 | 7 | fundacoes-nacionais | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 29 | POR | novo-internacional | Fundações Internacionais | 4 | 21 | — | conforme |  |
+| 29 | POR | novo-internacional | Fundações Internacionais | 4 | 17 | — | conforme |  |
 | 30 | POR | gife | GIFE | 1 | 0 | gife | conforme |  |
 | 31 | POR | site-abcr | ABCR | 1 | 0 | site-abcr | conforme |  |
 | 32 | POR | site-observatorio-terceiro-setor | Observatório do Terceiro Setor | 1 | 0 | site-observatorio-terceiro-setor | conforme | RSS e página de editais; experimento: 19 (Pague Menos, Smart Fit, Brasilcap, Pretas Potências) |
@@ -377,3 +377,21 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 41 | POR | site-editais-culturais | Editais Culturais | 0 | 0 | — | conforme |  |
 | 42 | IA | piloto-aberto | Piloto - Espião — busca aberta no terceiro setor | 1 | 0 | espiao | conforme | corrigido em 23/10/2026: o Espião nunca recebia missão (a ociosidade não chegava com 45 motores); agora há o mínimo garantido (uma missão a cada 6 h) |
 | 43 | IA | piloto-interceptador | Piloto - Interceptador — comprova na fonte oficial | 0 | 0 | interceptador | conforme |  |
+| 44 | POR | site-capta | Capta | 0 | 0 | site-capta | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 45 | POR | site-alteditais | AltEditais | 0 | 0 | site-alteditais | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 46 | POR | site-licitario | Licitário | 0 | 0 | site-licitario | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 47 | POR | site-editalong | EditalONG | 0 | 0 | site-editalong | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 48 | POR | site-escola-aberta-3setor | Escola Aberta do 3º Setor | 0 | 0 | site-escola-aberta-3setor | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 49 | POR | site-vagas-terceiro-setor | Vagas Terceiro Setor | 0 | 0 | site-vagas-terceiro-setor | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 50 | POR | site-i3s | Instituto Terceiro Setor | 0 | 0 | site-i3s | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 51 | POR | site-conjunta | Plataforma Conjunta | 0 | 0 | site-conjunta | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 52 | POR | site-rit | RIT | 0 | 0 | site-rit | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 53 | POR | site-radar-editais | Radar de Editais | 0 | 0 | site-radar-editais | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 54 | POR | site-utarget | Utarget | 0 | 0 | site-utarget | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 55 | POR | site-exitos | Êxitos | 0 | 0 | site-exitos | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 56 | POR | site-mapa-osc | Mapa das OSC | 0 | 0 | site-mapa-osc | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 57 | POR | site-agente-cultural | Agente Cultural | 0 | 0 | site-agente-cultural | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 58 | POR | site-radar-editais-culturais | Radar de Editais Culturais | 0 | 0 | site-radar-editais-culturais | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 59 | POR | site-editais-de-cultura | Editais de Cultura | 0 | 0 | site-editais-de-cultura | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 60 | POR | site-editaisculturais-com | Editais Culturais (.com) | 0 | 0 | site-editaisculturais-com | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |
+| 61 | POR | site-fundingcalls | FundingCalls | 0 | 0 | site-fundingcalls | criado em 09/11/2026 | 09/11/2026 (titular, R51): um motor por site de divulgação |

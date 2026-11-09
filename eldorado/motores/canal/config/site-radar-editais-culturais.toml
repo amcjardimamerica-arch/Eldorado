@@ -1,0 +1,52 @@
+# 09/11/2026 (titular, R51): um motor por site de divulgação — criado com a sondagem de 09/11 (API do WordPress).
+[motor]
+id = "site-radar-editais-culturais"
+numero = 58
+grupo = "Sites de divulgação — cultura"
+nome = "Radar de Editais Culturais"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "os editais de cultura do Radar de Editais Culturais (Clube Emma)"
+canal = "api"
+uf = "BR"
+destino = "biblioteca"
+nomes_anteriores = []
+
+[[fonte]]
+nome = "Radar de Editais Culturais — publicações (API do WordPress)"
+url = "https://radareditais.clubemma.com.br/wp-json/wp/v2/posts?orderby=date&per_page=50"
+tipo = "wordpress"
+papel = "principal"
+
+[[fonte]]
+nome = "Radar de Editais Culturais — página de editais"
+url = "https://radareditais.clubemma.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "mapa do site (radareditais.clubemma.com.br)"
+url = "https://radareditais.clubemma.com.br/wp-sitemap.xml"
+tipo = "mapa"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
+vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio", "re:contrata[çc][ãa]o|presta[çc][ãa]o de servi[çc]os|prestadores de servi|microempreendedor|\\bmei\\b|pessoas? jur[íi]dicas? especializad|ocupa[çc][ãa]o de estandes|^of[íi]cio|pol[íi]tica de cotas"]
+termos_em = "titulo"
+# 08/11/2026: a municipal de outro estado sai na entrada, pela UF do item (R27)
+territorio = "goias"
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
+
+[aprendizado]
+licoes = ["09/11/2026: criado pela decisão da titular (R51) — motor 58, grupo «Sites de divulgação — cultura»; site de divulgação (replicador): o motor segue até o edital oficial"]

@@ -17,10 +17,13 @@ ORDEM = ["do-goiania", "novo-diarios-municipais-go", "do-goias", "dou", "camara-
          "gife", "site-abcr", "site-observatorio-terceiro-setor", "site-rede-filantropia", "site-idis", "site-capitaai", "site-prosas",
          "editais-do-brasil", "bussola-social", "plataforma-mapas-culturais", "site-farol-cultural", "site-editais-culturais",
          "piloto-aberto", "piloto-interceptador"]
+# R51 (titular, 09/11/2026): um motor por site de divulgação — os 18 sites achados viram os motores 44 a 61 (o Mapa das OSC
+# volta a ter motor próprio: sai dos nomes anteriores do Prosas)
+NOVOS_R51 = ["site-capta", "site-alteditais", "site-licitario", "site-editalong", "site-escola-aberta-3setor", "site-vagas-terceiro-setor", "site-i3s", "site-conjunta", "site-rit", "site-radar-editais", "site-utarget", "site-exitos", "site-mapa-osc", "site-agente-cultural", "site-radar-editais-culturais", "site-editais-de-cultura", "site-editaisculturais-com", "site-fundingcalls"]
 EXTINTOS = {"cnpq-extensao": "governo-federal", "site-funarte": "governo-federal", "salic": "governo-federal", "motor-gife": "novo-fundacoes-institutos",
             "site-rede-comua": "fundacoes-nacionais", "site-fundo-baoba": "fundacoes-nacionais", "site-fundo-casa": "fundacoes-nacionais",
             "site-cese": "fundacoes-nacionais", "site-fundo-brasil": "fundacoes-nacionais", "site-brazilfoundation": "fundacoes-nacionais",
-            "site-undef": "novo-internacional", "site-mapa-osc": "site-prosas", "site-mapas-culturais": "plataforma-mapas-culturais",
+            "site-undef": "novo-internacional", "site-mapas-culturais": "plataforma-mapas-culturais",
             "outros-agregadores": "editais-do-brasil"}
 
 
@@ -30,8 +33,8 @@ def _cfg(mid: str) -> dict:
 
 def test_os_43_motores_na_ordem_da_titular():
     m = ESTUDO["motores"]
-    assert [x["id"] for x in m] == ORDEM and [x["numero"] for x in m] == list(range(1, 44))
-    assert {p.stem for p in PASTA.glob("*.toml")} == set(ORDEM[:41])                       # 41 regulares, um arquivo cada
+    assert [x["id"] for x in m] == ORDEM + NOVOS_R51 and [x["numero"] for x in m] == list(range(1, 62))   # R51: 44 a 61
+    assert {p.stem for p in PASTA.glob("*.toml")} == set(ORDEM[:41]) | set(NOVOS_R51)       # 59 regulares, um arquivo cada
     for i, mid in enumerate(ORDEM[:41], 1):
         c = _cfg(mid)["motor"]
         assert c["id"] == mid and c["numero"] == i and c["grupo"] == m[i - 1]["grupo"], mid
@@ -57,7 +60,7 @@ def test_os_grupos_e_os_tres_tribunais_de_contas():
     assert grupos == ["Diários oficiais", "Legislativo", "Judiciário", "Ministério Público", "Tribunais de Contas", "Executivo municipal",
                       "Executivo estadual", "Executivo federal", "Sistema S e bancos públicos", "Leis de incentivo fiscal",
                       "Editais de empresas privadas", "Editais de fundações", "Sites de divulgação — terceiro setor",
-                      "Sites de divulgação — cultura", "Ferramentas transversais"]
+                      "Sites de divulgação — cultura", "Ferramentas transversais", "Sites de divulgação — internacional"]   # R51
     for mid, dom in (("tcm-go", "tcmgo.tc.br"), ("tce-go", "tce.go.gov.br"), ("tcu", "tcu.gov.br")):
         c = _cfg(mid)
         assert c["motor"]["grupo"] == "Tribunais de Contas" and any(dom in f["url"] for f in c["fonte"]), mid

@@ -12,11 +12,11 @@ def test_inventario_do_sistema():
     assert codigo <= set(nomes)                                                           # nenhum arquivo fora do catálogo
     assert all({"arquivo", "parte", "componente", "ligacoes", "critico", "metrica"} <= set(a) for a in cat["arquivos"])   # o que a medição lê
     m = cat["motores"]
-    assert len(m) == 43 and sum(x["tipo"] == "regular" for x in m) == 41 and {x["id"] for x in m if x["tipo"] == "piloto"} == {"piloto-aberto", "piloto-interceptador"}
-    assert {x["categoria"] for x in m} == {"EXE", "JUD", "LEG", "POR", "IA"} and sum(len(x["alvos"]) for x in m) == 113
+    assert len(m) == 61 and sum(x["tipo"] == "regular" for x in m) == 59   # R51 (09/11/2026): os 18 sites de divulgação and {x["id"] for x in m if x["tipo"] == "piloto"} == {"piloto-aberto", "piloto-interceptador"}
+    assert {x["categoria"] for x in m} == {"EXE", "JUD", "LEG", "POR", "IA"} and sum(len(x["alvos"]) for x in m) == 86   # 09/11/2026 (titular): os 27 alvos «propostos para sair» saíram
     ordem = {a["arquivo"]: a["ordem"] for a in cat["arquivos"]}
     assert ordem["eldorado/base/nucleo/contratos.py"] < ordem["eldorado/base/cartorio/cartorio.py"] < ordem["eldorado/base/cartorio/analise_externa.py"]
-    assert "## Os 43 motores" in mapa(cat)
+    assert "## Os 61 motores" in mapa(cat)
 
 
 def test_motores_conformes_ao_estudo_da_titular():

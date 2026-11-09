@@ -1,0 +1,43 @@
+# 09/11/2026 (titular, R51): um motor por site de divulgação — criado com a sondagem de 09/11 (página).
+[motor]
+id = "site-utarget"
+numero = 54
+grupo = "Sites de divulgação — terceiro setor"
+nome = "Utarget"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "as oportunidades divulgadas pelo Conecta Oportunidades (Utarget)"
+canal = "portal"
+uf = "BR"
+destino = "biblioteca"
+nomes_anteriores = []
+
+[[fonte]]
+nome = "Utarget — página de editais"
+url = "https://utarget.com.br/conecta-oportunidades/"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "Utarget — página inicial"
+url = "https://utarget.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true               # a busca cega: do post de divulgação a um documento candidato à origem
+max_documentos = 20
+
+[lexico]
+termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|lanca fundo|fundo de r\\$|abre (edital|inscric|chamada)|recebe (inscric|projetos|propostas)|apoiar projetos|financiar projetos|apoio a (projetos|iniciativas|organizac)"]
+termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
+vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]
+# 08/11/2026: 25 editais de ano anterior em 30 d, quase todos do mapa do site — a idade (do mapa ou lida na página) barra o acervo
+idade_maxima_dias = 120
+
+[aprendizado]
+licoes = ["09/11/2026: criado pela decisão da titular (R51) — motor 54, grupo «Sites de divulgação — terceiro setor»; site de divulgação (replicador): o motor segue até o edital oficial"]

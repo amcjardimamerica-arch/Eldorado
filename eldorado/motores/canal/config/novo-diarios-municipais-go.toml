@@ -81,13 +81,14 @@ url = "https://www.diarioficialdosmunicipios.org/consulta/ConPublicacaoGeral/Con
 tipo = "pagina"
 papel = "alternativa"
 
-# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
-# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
-# [[fonte]]
-# nome = "DOFEM — Diário Oficial Eletrônico dos Municípios"
-# url = "https://goeb.dofem.com.br/"
-# tipo = "pagina"
-# papel = "alternativa"
+# 09/11/2026 (titular): ligado — lido todo dia pela ponte BR (IP do Brasil); não abriu na nuvem nem no Chrome em 09/11
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "DOFEM — Diário Oficial Eletrônico dos Municípios"
+url = "https://goeb.dofem.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
 
 # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
 [[fonte]]
@@ -110,13 +111,14 @@ url = "https://publicacoes.goias.go.gov.br/editais"
 tipo = "pagina"
 papel = "alternativa"
 
-# EM OBSERVAÇÃO (09/11/2026): não abriu na nuvem nem no Chrome; ligar quando responder
-# # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
-# [[fonte]]
-# nome = "Querido Diário — busca por termo em todos os municípios goianos cobertos (territory_ids = códigos IBGE de GO)"
-# url = "https://api.queridodiario.org.br/gazettes?querystring=chamamento"
-# tipo = "pagina"
-# papel = "alternativa"
+# 09/11/2026 (titular): ligado — lido todo dia pela ponte BR (IP do Brasil); não abriu na nuvem nem no Chrome em 09/11
+# 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+[[fonte]]
+nome = "Querido Diário — busca por termo em todos os municípios goianos cobertos (territory_ids = códigos IBGE de GO)"
+url = "https://api.queridodiario.org.br/gazettes?querystring=chamamento"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
 
 # 09/11/2026: local novo (novo — sondagem 09/11) — mapa do site do local
 [[fonte]]
@@ -124,14 +126,6 @@ nome = "Mapa do site — www.diarioficialdosmunicipios.com.br"
 url = "https://www.diarioficialdosmunicipios.com.br/sitemap.xml"
 tipo = "mapa"
 papel = "alternativa"
-
-# PROPOSTO SAIR em 09/11/2026 (município do Paraná): fica até a decisão da titular (R19)
-
-[[alvo]]
-id = "f260-espalhado-www-arapongas-pr-gov-br"
-nome = "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)"
-enderecos = ["https://www.arapongas.pr.gov.br/"]
-orgao = "Querido Diário — diários oficiais municipais"
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
