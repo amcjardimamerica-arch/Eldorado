@@ -100,8 +100,13 @@ def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: da
         x["ach"] += n
         x["acc"] += a or 0
         x["por_dia"][dia][2] += a or 0
-        if dia == dias8[-1]:
-            x["ha"] = n
+
+    # 09/11/2026: os pontinhos do radar — os achados das últimas 24 h (os do dia de calendário eram zero pela manhã)
+    for m, n in _q(bib, "SELECT motor, COUNT(*) FROM achado WHERE encontrado_em >= ? GROUP BY 1", ((agora - timedelta(hours=24)).isoformat(),)):
+        A[m]["ha"] = n
+    _ha_espiao = _q(cer, "SELECT COUNT(*) FROM espiao_missao WHERE em >= ? AND achados > 0", ((agora - timedelta(hours=24)).isoformat(),))
+    if _ha_espiao and _ha_espiao[0][0]:
+        A["espiao"]["ha"] = max(A["espiao"]["ha"], _ha_espiao[0][0])
     for m, dia, est in _q(
             bib, "SELECT a.motor, substr(l.criado_em, 1, 10), COALESCE(l.estrela, 'sem') FROM livro l JOIN (SELECT livro_id, motor, MIN(encontrado_em) "
             "FROM achado WHERE livro_id IS NOT NULL GROUP BY livro_id) a ON a.livro_id = l.id WHERE l.criado_em >= ?", (d30,)):

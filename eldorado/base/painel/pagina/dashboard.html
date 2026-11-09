@@ -271,6 +271,9 @@ box-shadow:0 1px 3px #0002}
 .m3d-r.placaEsc{background:rgba(6,10,26,.72);padding:1px 5px;border-radius:5px}
 .m3d-r.pisca{animation:pisca 1.4s ease-in-out infinite}@keyframes pisca{50%{opacity:.35}}
 .m3d-vaga{position:relative;flex:0 0 210px;width:210px;height:229px;border-radius:8px;overflow:hidden;background:transparent;cursor:pointer}
+/* 09/11/2026: o mostrador de vidro sobre a página clara — os textos em tinta escura */
+.m3d-vaga .m3d-r.claro,.m3d-vaga .escuro .m3d-r.claro{color:#001D7E}.m3d-vaga .m3d-r.suave{color:#5F6470}
+.m3d-vaga .escuro .m3d-r.q:not(.ambar):not(.claro){color:#211915}.m3d-vaga .m3d-r.ambar{color:#B07A00}
 .m3d-vaga .m3d-host{cursor:pointer}
 .mt-topo{display:flex;gap:14px;align-items:flex-start}.mt-topo-dados{flex:1 1 auto;min-width:0}
 .pm-comp{display:grid;grid-template-columns:110px 1fr 64px;gap:8px;align-items:center;font-size:12.5px;margin:4px 0}
@@ -5146,15 +5149,18 @@ function m3dVaga(id){ return `<div class="m3d-vaga" data-motor="${esc(id)}" oncl
     const FX={excelente:["excelente","#001D7E"],bom:["bom","#4C75B4"],atencao:["atenção","#D17600"],critico:["crítico","#211915"],formacao:["em formação","#5F6470"]};
     v.nota=Math.round(x.nota); v.faixa=x.faixa; v.faixaTxt=(FX[x.faixa]||FX.formacao)[0]; v.cor=(FX[x.faixa]||FX.formacao)[1]; v.pct=Math.round(100*(x.precisao||0)); v.prec=x.precisao||0;
     v.diasRot=x.m3d.diasRot||""; return v; }
+  function escala(vaga,host,H){ const k=H/229; vaga.style.height=H+"px"; vaga.style.width=vaga.style.flexBasis=Math.round(210*k)+"px"; host.style.transform=`scale(${k})`; host.style.transformOrigin="0 0"; }
   function altura(vaga){ const d=vaga.parentElement&&vaga.parentElement.querySelector(".mt-topo-dados"); const h=d?d.getBoundingClientRect().height:229; return Math.max(99,Math.min(286,Math.round(h))); }
   function montar(){ if(!window.M3D||!window._PONT) return;
     document.querySelectorAll(".m3d-vaga[data-motor]").forEach(vaga=>{ if(vivos.has(vaga)) return; const v=valores(vaga.dataset.motor); if(!v){ vaga.remove(); return; }
       const host=document.createElement("div"); host.className="m3d-host"; host.setAttribute("role","img"); host.setAttribute("aria-label",`nota ${v.nota} de 100 · ${v.faixaTxt} · ${v.pct}% de acerto`); vaga.appendChild(host);
-      const motor={v}, mo=new M3D.Mostrador(M3D.opcoes[0],host,motor), H=altura(vaga); mo.altura(H); vaga.style.height=H+"px";
-      vivos.set(vaga,{mo,motor,H}); if(io) io.observe(vaga); });
+      /* 09/11/2026 (titular): as três partes sempre (radar e funil, tubos, colunas dos dias) — desenhado inteiro em 229 px e
+         reduzido em escala até a altura do espaço (o bloco de dados ao lado), sem mudar o tamanho do cartão */
+      const motor={v}, mo=new M3D.Mostrador(M3D.opcoes[0],host,motor), H=altura(vaga); mo.altura(229); escala(vaga,host,H);
+      vivos.set(vaga,{mo,motor,H,host}); if(io) io.observe(vaga); });
     for(const [vaga] of vivos){ if(!vaga.isConnected){ vivos.delete(vaga); visiveis.delete(vaga); } } }
   function laco(agora){ requestAnimationFrame(laco); if(agora-ult<33) return; const dt=Math.min(64,agora-ult); ult=agora;
-    for(const vaga of visiveis){ const r=vivos.get(vaga); if(!r) continue; const H=altura(vaga); if(H!==r.H){ r.H=H; r.mo.altura(H); vaga.style.height=H+"px"; } r.mo.quadro(agora,dt); } }
+    for(const vaga of visiveis){ const r=vivos.get(vaga); if(!r) continue; const H=altura(vaga); if(H!==r.H){ r.H=H; escala(vaga,r.host,H); } r.mo.quadro(agora,dt); } }
   function iniciar(){ if(!document.querySelector(".m3d-vaga[data-motor]")) return;
     carregar().then(()=>{ if(!io){ io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) visiveis.add(e.target); else visiveis.delete(e.target); }),{rootMargin:"120px"}); requestAnimationFrame(laco); }
       montar(); }).catch(()=>{}); }

@@ -130,9 +130,10 @@ var Z = window.M3D, T = Z.T, K = Z.K, C = Z.C;
 function P(o, x, y, z) { o.position.set(x, -y, z || 0); return o; }
 function contorno(w, h, r, cor, op) { var s = new T.Shape(), x = -w / 2, y = -h / 2; s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h); s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
   return new T.LineLoop(new T.BufferGeometry().setFromPoints(s.getPoints(8)), new T.LineBasicMaterial({ color: cor, transparent: true, opacity: op })); }
-function laje(g, y, h) { var b = K.caixa(208, h, 6, 10, K.mat(0x060A1A, { roughness: 0.42, metalness: 0.65 })); P(b, 105, y + h / 2, -3); g.add(b);
-  var c = contorno(206, h - 2, 9, C.violeta, 0.5); P(c, 105, y + h / 2, 0.2); g.add(c); var s = K.estrelas(200, h - 6, Math.round(h / 3), 0.3); P(s, 105, y + h / 2, 0.3); g.add(s); }
-var SALA = { excelente: 0x85C1EA, bom: 0x85C1EA, atencao: 0xE3AB00, critico: 0xD17600, formacao: 0xDDE4FF };
+function laje(g, y, h) { /* 09/11/2026 (titular): sem o fundo azul — transparente para a página, estilo vidro (só o contorno e o brilho da borda) */
+  var c = contorno(206, h - 2, 9, 0x9FB0CC, 0.7); P(c, 105, y + h / 2, 0.2); g.add(c);
+  var luz = contorno(202, h - 6, 8, 0xFFFFFF, 0.55); P(luz, 105, y + h / 2 - 0.6, 0.3); g.add(luz); }
+var SALA = { excelente: 0x001D7E, bom: 0x4C75B4, atencao: 0xD17600, critico: 0xC0392B, formacao: 0x5F6470 };
 function hexS(n) { return '#' + ('000000' + n.toString(16)).slice(-6); }
 function melhTxt(v) { return v.melh ? v.melh + (v.melh > 1 ? ' melhorias ›' : ' melhoria ›') : ''; }
 function maxDia(v) { var mx = 1; v.dias.forEach(function (d) { mx = Math.max(mx, d[1]); }); return mx; }
@@ -144,13 +145,13 @@ Pc.colSala = function (M, x0, y0) { M.rotulo(0, x0, y0, 'mic g claro', function 
 
 /* ---------- radar (topo da 2) ---------- */
 Pc.radar = function (x, M, g, o) { var r = new T.Group(); P(r, o.cx, o.cy, 34); r.rotation.x = -0.62; r.scale.setScalar(o.esc || 0.92); g.add(r); var S = { r: r, blips: [], cy: o.cy }; x.radar = S;
-  var disco = new T.Mesh(new T.CylinderGeometry(40, 40, 3, 64), K.mat(0x061033, { roughness: 0.25, metalness: 0.6 })); disco.rotation.x = Math.PI / 2; r.add(disco);
-  r.add(new T.Mesh(new T.TorusGeometry(41, 2.2, 14, 72), K.mat(C.ouro, { metalness: 0.85, roughness: 0.25 }))); r.children[1].position.z = 1.6;
-  [13, 26, 39].forEach(function (rr) { var a = new T.Mesh(new T.RingGeometry(rr - 0.35, rr + 0.35, 72), new T.MeshBasicMaterial({ color: 0x85C1EA, transparent: true, opacity: 0.4, toneMapped: false })); a.position.z = 1.7; r.add(a); });
-  r.add(new T.LineSegments(new T.BufferGeometry().setFromPoints([new T.Vector3(-39, 0, 1.7), new T.Vector3(39, 0, 1.7), new T.Vector3(0, -39, 1.7), new T.Vector3(0, 39, 1.7)]), new T.LineBasicMaterial({ color: 0x85C1EA, transparent: true, opacity: 0.3 })));
-  S.var = new T.Group(); S.var.position.z = 1.9; r.add(S.var); S.var.add(new T.Mesh(new T.CircleGeometry(39, 32, 0, 0.8), new T.MeshBasicMaterial({ color: 0x85C1EA, transparent: true, opacity: 0.22, depthWrite: false, toneMapped: false })));
-  var borda = new T.Mesh(new T.BoxGeometry(39, 0.9, 0.5), K.luz(0xDCEEFA)); borda.position.set(19.5, 0, 0.2); S.var.add(borda);
-  for (var i = 0; i < 14; i++) { var a = i * 2.4, rr2 = (o.nota ? 17 : 9) + (i * 7) % (o.nota ? 21 : 29), s = new T.Mesh(new T.SphereGeometry(1.7, 10, 8), K.luz(0x85C1EA)); s.position.set(rr2 * Math.cos(a), rr2 * Math.sin(a), 2.4); var b = K.brilho(0x85C1EA, 10, 0.8); b.position.copy(s.position); r.add(s, b); S.blips.push({ s: s, b: b, a: ((a % 6.283) + 6.283) % 6.283 }); }
+  var disco = new T.Mesh(new T.CylinderGeometry(40, 40, 3, 64), K.vidro(0xDDE6F5, 0.14)); disco.rotation.x = Math.PI / 2; r.add(disco);
+  r.add(new T.Mesh(new T.TorusGeometry(41, 2.2, 14, 72), K.luz(0xE3AB00))); r.children[1].position.z = 1.6;
+  [13, 26, 39].forEach(function (rr) { var a = new T.Mesh(new T.RingGeometry(rr - 0.35, rr + 0.35, 72), new T.MeshBasicMaterial({ color: 0x4C75B4, transparent: true, opacity: 0.45, toneMapped: false })); a.position.z = 1.7; r.add(a); });
+  r.add(new T.LineSegments(new T.BufferGeometry().setFromPoints([new T.Vector3(-39, 0, 1.7), new T.Vector3(39, 0, 1.7), new T.Vector3(0, -39, 1.7), new T.Vector3(0, 39, 1.7)]), new T.LineBasicMaterial({ color: 0x4C75B4, transparent: true, opacity: 0.35 })));
+  S.var = new T.Group(); S.var.position.z = 1.9; r.add(S.var); S.var.add(new T.Mesh(new T.CircleGeometry(39, 32, 0, 0.8), new T.MeshBasicMaterial({ color: 0x4C75B4, transparent: true, opacity: 0.32, depthWrite: false, toneMapped: false })));
+  var borda = new T.Mesh(new T.BoxGeometry(39, 1.1, 0.5), K.luz(0x001D7E)); borda.position.set(19.5, 0, 0.2); S.var.add(borda);
+  for (var i = 0; i < 14; i++) { var a = i * 2.4, rr2 = (o.nota ? 17 : 9) + (i * 7) % (o.nota ? 21 : 29), s = new T.Mesh(new T.SphereGeometry(2.3, 12, 10), K.luz(0xD17600)); s.position.set(rr2 * Math.cos(a), rr2 * Math.sin(a), 2.4); var b = K.brilho(0xE3AB00, 12, 0.9);   /* 09/11/2026: os pontinhos em laranja (os achados), visíveis no vidro */ b.position.copy(s.position); r.add(s, b); S.blips.push({ s: s, b: b, a: ((a % 6.283) + 6.283) % 6.283 }); }
   if (o.nota) { S.holo = K.texto(44, 30, function (gc, v) { gc.textAlign = 'center'; gc.shadowColor = v.c; gc.shadowBlur = 4; gc.fillStyle = '#EAF2FF'; gc.font = '400 17px Michroma, sans-serif'; gc.fillText(v.n, 22, 17); gc.shadowBlur = 0; gc.fillStyle = v.c; gc.font = '600 9px "Saira Semi Condensed", sans-serif'; gc.fillText(v.f, 22, 27); }); P(S.holo, o.cx, o.cy - 2, 46); g.add(S.holo); S.holoB = K.brilho(0x85C1EA, 46, 0.18); P(S.holoB, o.cx, o.cy, 44); g.add(S.holoB); }
 };
 Pc.radarAt = function (x, v, agora) { var S = x.radar, ang = (agora / 700) % 6.283, n = Math.min(14, v.ha); S.var.rotation.z = ang; S.r.rotation.z = Math.sin(agora / 2600) * 0.06;
@@ -160,12 +161,12 @@ Pc.radarAt = function (x, v, agora) { var S = x.radar, ang = (agora / 700) % 6.2
 /* ---------- funil de vidro (topo da 3), versão luminosa; com radar na boca (opção 5) ---------- */
 var PERFIL = [[2, 92], [9, 90], [11, 84], [20, 70], [34, 52], [48, 30], [58, 8], [60, 5]];
 function raioEm(y) { return y < 30 ? 58 - (y - 8) * 10 / 22 : y < 52 ? 48 - (y - 30) * 14 / 22 : y < 70 ? 34 - (y - 52) * 14 / 18 : Math.max(2, 20 - (y - 70) * 9 / 14); }
-var EST = [0x4C75B4, 0x85C1EA, 0xE3AB00, 0xD17600];
+var EST = [0xD17600, 0xE3AB00, 0x85C1EA, 0x4C75B4];   /* 09/11/2026 (titular): achados, aceitos, livros, estrelas */
 Pc.funil = function (x, M, g, o) { var esc = o.esc || 1, dy = o.dy || 0, F = new T.Group(); P(F, o.cx, dy, 6); F.scale.setScalar(esc); F.rotation.x = o.incl || 0; g.add(F); var S = { F: F, part: [], prox: 0, esc: esc, o: o }; x.funil = S;
   F.add(new T.Mesh(new T.LatheGeometry(PERFIL.map(function (p) { return new T.Vector2(p[0], -p[1]); }), 48), new T.MeshPhysicalMaterial({ color: 0xBFD7FF, roughness: 0.05, transparent: true, opacity: 0.16, clearcoat: 1, depthWrite: false, side: T.DoubleSide })));
   var bocal = new T.Mesh(new T.TorusGeometry(60, 1.2, 10, 64), K.luz(0x9B8CFF)); bocal.rotation.x = Math.PI / 2; bocal.position.y = -5; F.add(bocal);
   S.aneis = []; [14, 36, 58, 80].forEach(function (y, i) { var a = new T.Mesh(new T.TorusGeometry(raioEm(y), 1.3, 10, 64), new T.MeshBasicMaterial({ color: EST[i], transparent: true, opacity: 0.9, toneMapped: false })); a.rotation.x = Math.PI / 2; a.position.y = -y; F.add(a); S.aneis.push(a); });
-  var rot = [['ach', ' achados'], ['acc', ' aceitos'], ['livros', ' livros'], ['estrelas', ' ★']], cores = ['#A9C4E8', '#85C1EA', '#E3AB00', '#E08A2E'];
+  var rot = [['ach', ' achados'], ['acc', ' aceitos'], ['livros', ' livros'], ['estrelas', ' ★']], cores = ['#D17600', '#E3AB00', '#85C1EA', '#6F95D2'];   /* 09/11/2026: achados, aceitos, livros, estrelas (o azul médio clareado para ler na placa escura) */
   [14, 36, 58, 80].forEach(function (y, i) { M.rotulo(0, o.cx, dy + y * esc * Math.cos(o.incl || 0), 'c sala pq forte placaEsc', function (v) { return '<span style="color:' + cores[i] + '">' + v[rot[i][0]] + rot[i][1] + '</span>'; }); });
   var geo = new T.SphereGeometry(1.4, 8, 6); for (var i = 0; i < 40; i++) { var s = new T.Mesh(geo, new T.MeshBasicMaterial({ color: EST[0], toneMapped: false })); s.visible = false; F.add(s); S.part.push({ s: s, vivo: false, t: 0, ang: 0, fim: 0, est: -1 }); }
   if (o.radar) { S.var = new T.Group(); S.var.position.y = -5; S.var.rotation.x = -Math.PI / 2; F.add(S.var);
@@ -202,13 +203,13 @@ Pc.barras = function (x, M, g) { var S = []; x.barras = S; [['achados', 'ach', 0
     M.rotulo(1, 8, y, 'sala q suave', function () { return d[0]; }); M.rotulo(1, 202, y, 'd mic p claro', function (v) { return d[1] === 'accPct' ? v.accPct + '%' : String(v[d[1]]); }); }); };
 Pc.barrasAt = function (x, v, agora) { var ref = Math.max(300, v.ach); x.barras.forEach(function (b) { var raw = b.k === 'accPct' ? v.accPct / 100 : Math.log(1 + v[b.k]) / Math.log(1 + ref), w = 4 + 104 * raw; b.val = Z.ease(b.val, w, 0.08); b.f.scale.x = b.val; b.f.position.x = 58 + b.val / 2; b.b.position.set(58 + b.val, -b.y, 3); b.b.material.opacity = 0.5 + 0.3 * Math.sin(agora / 350 + b.y); }); };
 /* ---------- meio: tubos luminosos (6) ---------- */
-Pc.tubos = function (x, M, g) { var S = []; x.tubos = S; [['aceitos', 'accPct', 0x85C1EA], ['viram livro', 'livPct', 0xE3AB00], ['falhas', 'falPct', 0xD17600]].forEach(function (d, i) { var cx = 24 + i * 68, vid = new T.Mesh(new T.CylinderGeometry(6.5, 6.5, 48, 24, 1, true), K.vidro(0xBFD7FF, 0.18)); P(vid, cx, 130, 2); g.add(vid);
+Pc.tubos = function (x, M, g) { var S = []; x.tubos = S; [['aceitos', 'accPct', 0xE3AB00], ['viram livro', 'livPct', 0x85C1EA], ['falhas', 'falPct', 0xC0392B]].forEach(function (d, i) { var cx = 20 + i * 62, vid = new T.Mesh(new T.CylinderGeometry(6.5, 6.5, 48, 24, 1, true), K.vidro(0xBFD7FF, 0.18)); P(vid, cx, 130, 2); g.add(vid);
     var tampa = new T.Mesh(new T.CylinderGeometry(7.5, 7.5, 3, 24), K.mat(0x8A93B8, { metalness: 0.8, roughness: 0.3 })); P(tampa, cx, 105, 2); var fundo = tampa.clone(); P(fundo, cx, 155, 2); g.add(tampa, fundo);
     var liq = new T.Mesh(new T.CylinderGeometry(5.2, 5.2, 1, 24), new T.MeshBasicMaterial({ color: d[2], transparent: true, opacity: 0.9, toneMapped: false })); g.add(liq); var bb = K.brilho(d[2], 26, 0.5); g.add(bb); S.push({ liq: liq, b: bb, k: d[1], cx: cx, h: 1 });
     M.rotulo(1, cx + 13, 124, 'mic p claro', function (v) { return v[d[1]] + '%'; }); M.rotulo(1, cx + 13, 140, 'sala pq suave', function () { return d[0]; }); }); };
 Pc.tubosAt = function (x, v, agora) { x.tubos.forEach(function (t) { var alvo = 2 + 44 * Math.min(1, v[t.k] / 100); t.h = Z.ease(t.h, alvo, 0.07); t.liq.scale.y = t.h; t.liq.position.set(t.cx, -(153 - t.h / 2), 2); t.b.position.set(t.cx, -(153 - t.h), 4); t.b.material.opacity = 0.35 + 0.2 * Math.sin(agora / 400 + t.cx); }); };
 /* ---------- meio: anéis neon (10) ---------- */
-Pc.aneis = function (x, M, g) { var S = []; x.aneis = S; [['aceitos', 'accPct', 0x85C1EA], ['viram livro', 'livPct', 0xE3AB00], ['falhas', 'falPct', 0xD17600]].forEach(function (d, i) { var cx = 34 + i * 70, gg = new T.Group(); P(gg, cx, 128, 3); g.add(gg);
+Pc.aneis = function (x, M, g) { var S = []; x.aneis = S; [['aceitos', 'accPct', 0xE3AB00], ['viram livro', 'livPct', 0x85C1EA], ['falhas', 'falPct', 0xC0392B]].forEach(function (d, i) { var cx = 34 + i * 70, gg = new T.Group(); P(gg, cx, 128, 3); g.add(gg);
     gg.add(new T.Mesh(new T.TorusGeometry(20, 2.6, 12, 64), new T.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.08 }))); var arc = new T.Group(); gg.add(arc); S.push({ arc: arc, k: d[1], cor: d[2], ult: -1, g: gg });
     M.rotulo(1, cx, 128, 'c mic pq claro', function (v) { return v[d[1]] + '%'; }); M.rotulo(1, cx, 155, 'c sala pq suave', function () { return d[0]; }); }); };
 Pc.aneisAt = function (x, v, agora) { x.aneis.forEach(function (a) { var f = Math.max(0, Math.min(1, v[a.k] / 100)); if (Math.round(f * 100) !== a.ult) { a.ult = Math.round(f * 100); a.arc.clear(); var L = Math.max(0.06, 2 * Math.PI * f), m = K.arco(20, 2.8, 0, L, K.luz(a.cor), 64); m.rotation.z = Math.PI / 2 - L; a.arc.add(m); var bb = K.brilho(a.cor, 22, 0.7); bb.position.set(20 * Math.cos(Math.PI / 2 - L), 20 * Math.sin(Math.PI / 2 - L), 2); a.arc.add(bb); }
