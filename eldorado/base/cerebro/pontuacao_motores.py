@@ -68,15 +68,26 @@ def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: da
     hoje = agora.date()
     d30, dias8 = (hoje - timedelta(days=29)).isoformat(), [(hoje - timedelta(days=k)).isoformat() for k in range(7, -1, -1)]
     A: dict[str, dict[str, Any]] = defaultdict(lambda: {"exec": 0, "falhas": 0, "ach": 0, "acc": 0, "livros": 0, "estrelas": 0, "hl": 0, "ha": 0,
-                                                         "por_dia": defaultdict(lambda: [0, 0, 0, 0])})   # execuções, falhas, aceitos, livros ouro
+                                                         "rodou": set(), "por_dia": defaultdict(lambda: [0, 0, 0, 0])})   # execuções, falhas, aceitos, livros ouro
     def _q(con, sql, args):   # a coluna ausente (um banco antigo ou de teste) zera só aquela parte da atividade
         try:
             return con.execute(sql, args).fetchall() if con is not None else []
         except sqlite3.Error:
             return []
-    for m, dia, n, f in _q(cer, "SELECT motor, substr(inicio, 1, 10), COUNT(*), SUM(erro IS NOT NULL AND erro <> '') FROM execucao_motor "
-                                "WHERE inicio >= ? GROUP BY 1, 2", (d30,)):
+    # 09/11/2026: a medida real é a LEITURA de fonte — cada execução registra as fontes lidas e as bloqueadas; a execução que
+    # não leu nada por não ter fonte devida (R49: cada local uma vez por dia) não é falha. Execuções = as leituras tentadas;
+    # falhas = as leituras bloqueadas e as execuções com erro. Os pilotos: o Espião pelas missões (a busca sem resposta é a
+    # falha) e o Interceptador pelas tentativas (a tentativa sem item obtido é a falha)
+    _execs = _q(cer, "SELECT motor, substr(inicio, 1, 10), SUM(COALESCE(fontes_lidas, 0) + COALESCE(bloqueios, 0)), "
+                     "SUM(COALESCE(bloqueios, 0) + ((erro IS NOT NULL AND erro <> '') * 1)) FROM execucao_motor WHERE inicio >= ? GROUP BY 1, 2", (d30,))
+    _execs += [("espiao", d, n, f) for d, n, f in _q(cer, "SELECT substr(em, 1, 10), COUNT(*), SUM(COALESCE(resultados, 0) = 0) FROM espiao_missao "
+                                                          "WHERE em >= ? GROUP BY 1", (d30,))]
+    _execs += [("interceptador", d, n, f) for d, n, f in _q(bib, "SELECT substr(em, 1, 10), COUNT(*), SUM(resultado LIKE '%\"aceitas\": 0%' "
+                                                                 "OR resultado LIKE '%\"trouxe\": false%') FROM tentativa WHERE em >= ? GROUP BY 1", (d30,))]
+    for m, dia, n, f in _execs:
         x = A[m]
+        x["rodou"].add(dia)
+        n, f = n or 0, f or 0
         x["exec"] += n
         x["falhas"] += f or 0
         x["por_dia"][dia][0] += n
@@ -103,10 +114,11 @@ def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: da
         cols = []
         for dia in dias8:
             e, f, acc, ouro = x["por_dia"].get(dia, [0, 0, 0, 0])
-            cols.append(["cinza", 0] if not e else ["vermelho", 0] if f >= e else ["verde", ouro] if ouro else ["amarelo", acc] if acc else ["azul", 0])
+            cols.append(["cinza", 0] if dia not in x["rodou"] else ["vermelho", 0] if e and f >= e else ["verde", ouro] if ouro
+                        else ["amarelo", acc] if acc else ["azul", 0])
         x["dias"] = cols
         x["diasRot"] = rotulo_dias(agora)
-        del x["por_dia"]
+        del x["por_dia"], x["rodou"]
     return A
 
 
