@@ -122,11 +122,8 @@ def APELIDO(motor: str) -> str:   # noqa: N802
     """09/11/2026 (R50): o motor extinto → o motor que o reúne (os nomes anteriores); os demais, iguais."""
     global _AP
     if _AP is None:
-        try:
-            from ...motores.canal.motor import apelidos
-            _AP = apelidos()
-        except Exception:  # noqa: BLE001
-            _AP = {}
+        from ..cerebro.pontuacao_motores import apelidos_leves  # sem importar o motor genérico (as bibliotecas de acesso)
+        _AP = apelidos_leves()
     return _AP.get(motor, motor)
 
 

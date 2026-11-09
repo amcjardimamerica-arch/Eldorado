@@ -50,6 +50,21 @@ def _semana(iso: str | None) -> str | None:
     return (d - timedelta(days=d.weekday())).isoformat()
 
 
+def apelidos_leves(pasta: Path | None = None) -> dict[str, str]:
+    """Os nomes anteriores (o motor extinto → o que o reúne), lidos direto das configurações — sem importar o motor genérico,
+    que depende das bibliotecas de acesso (ausentes na publicação do painel: lá a importação falhava em silêncio)."""
+    pasta = pasta or (RAIZ / "eldorado" / "motores" / "canal" / "config")
+    mapa: dict[str, str] = {}
+    for p in sorted(pasta.glob("*.toml")):
+        try:
+            m = tomllib.loads(p.read_text(encoding="utf-8")).get("motor", {})
+        except (OSError, tomllib.TOMLDecodeError):
+            continue
+        for antigo in m.get("nomes_anteriores", []):
+            mapa[antigo] = m.get("id", p.stem)
+    return mapa
+
+
 MESES = ("jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez")
 
 
@@ -136,11 +151,7 @@ def calcular(bib: sqlite3.Connection, cer: sqlite3.Connection | None = None, rai
     pesos, faixas, minimos = prm["pesos"], prm["faixas"], prm["minimos"]
     regras = [(r["tipo"], re.compile(r["padrao"], re.I), r["indicacao"]) for r in prm["melhoria"]["regra"]]
     ver = _vereditos(raiz)
-    try:   # 09/11/2026 (R50): o motor extinto conta no motor que o reúne (os nomes anteriores)
-        from ...motores.canal.motor import apelidos as _ap
-        AP = _ap()
-    except Exception:  # noqa: BLE001
-        AP = {}
+    AP = apelidos_leves()   # 09/11/2026 (R50): o motor extinto conta no motor que o reúne (os nomes anteriores)
     origem = {lid: AP.get(m, m) for lid, m, _ in bib.execute(
         "SELECT livro_id, motor, MIN(encontrado_em) FROM achado WHERE livro_id IS NOT NULL GROUP BY livro_id")}
     estado = {r[0]: r[1:] for r in bib.execute(

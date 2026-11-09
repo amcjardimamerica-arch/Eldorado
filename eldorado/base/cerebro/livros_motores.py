@@ -7,8 +7,8 @@ import sqlite3
 
 def motores_do_livro(con: sqlite3.Connection, livro: str) -> list[str]:
     """Os motores que trouxeram o livro, pelo nome de hoje (o nome anterior aponta para o motor que o reúne)."""
-    from ...motores.canal.motor import apelidos
-    ap = apelidos()
+    from .pontuacao_motores import apelidos_leves  # 09/11/2026: sem importar o motor genérico (a publicação do painel não o tem)
+    ap = apelidos_leves()
     nomes = [ap.get(r[0], r[0]) for r in con.execute("SELECT DISTINCT motor FROM achado WHERE livro_id=? AND motor NOT IN ('interceptador', 'espiao') "
                                                      "ORDER BY motor", (livro,))]
     return list(dict.fromkeys(nomes))

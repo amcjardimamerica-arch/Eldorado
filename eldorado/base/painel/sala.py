@@ -1215,10 +1215,10 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
         return (round(sum(r[1] for r in rows) / len(rows), 2) if rows else None), len(rows)
 
     try:  # os nomes antigos (no histórico migrado) de cada motor novo: os apelidos do sistema
-        from ...motores.canal.motor import apelidos
+        from ..cerebro.pontuacao_motores import apelidos_leves  # 09/11: sem importar o motor genérico (a publicação não o tem)
 
         antigos: dict[str, set[str]] = {}
-        for velho, atual in apelidos().items():
+        for velho, atual in apelidos_leves().items():
             antigos.setdefault(atual, set()).add(velho)
     except Exception:  # noqa: BLE001 — sem os apelidos, só os nomes do arquivo
         antigos = {}
