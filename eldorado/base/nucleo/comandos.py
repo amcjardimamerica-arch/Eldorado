@@ -802,6 +802,34 @@ if __name__ == "__main__":
     app()
 
 
+@app.command("ciente")
+def ciente(
+    tipo: str = typer.Option(..., "--tipo", help="farol (o prazo próximo) ou aprendizado (a lição de um alerta)"),
+    chave: str = typer.Option(..., "--chave", help="o instrumento (farol) ou a chave do alerta (aprendizado)"),
+    ids: str = typer.Option("", "--ids", help="farol: os livros vistos, separados por vírgula"),
+    texto: str = typer.Option("", "--texto", help="aprendizado: a lição validada"),
+    eventos: str = typer.Option("operacao", "--eventos"),
+):
+    """09/11/2026 (titular): o «ciente» do painel, gravado no Cérebro. FAROL: a lista dos livros vistos — o alerta do prazo
+    próximo apaga e volta quando surge um livro fora dela. APRENDIZADO: a lição do alerta, validada pela titular, entra no
+    aprendizado permanente; o «ciente» fica registrado pela chave do alerta."""
+    import json as _json
+
+    from .eventos import Diario
+    from .eventos import agora as _agora
+
+    em = _agora()
+    d = Diario(Path(eventos), "titular-ciente")
+    lista = [x for x in ids.split(",") if x.strip()]
+    if tipo == "aprendizado" and texto.strip():
+        d.emitir("aprendizado.promovido", "titular", {"modulo": "comandante", "o_que": texto.strip()[:1500], "promovido_em": em,
+                                                      "origem_temporario": None, "medicao_que_provou": f"validado pela titular (ciente do alerta {chave})",
+                                                      "arquivado": 0})
+    d.emitir("medicao.registrada", "titular", {"marcador": f"ciente:{tipo}:{chave}", "nivel": "componente", "em": em,
+                                               "valor": len(lista), "motivo": _json.dumps({"ids": lista, "texto": texto[:500]}, ensure_ascii=False)})
+    typer.echo(f"ciente registrado: {tipo} · {chave} · {len(lista)} livro(s)")
+
+
 @app.command("arquivar")
 def arquivar(
     livro: str = typer.Option(..., "--livro"),

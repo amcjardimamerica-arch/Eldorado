@@ -2469,6 +2469,15 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
 #v-neural .holo .conteudo,#nv-portal .holo .conteudo{opacity:0;transition:opacity .22s .2s}#v-neural .holo.pronta .conteudo{opacity:1}
 #v-neural .holo h3,#nv-portal .holo h3{margin:4px 0 6px;font:400 26px "Michroma",sans-serif}
 #v-neural .holo .fechar,#nv-portal .holo .fechar{float:right;border:1px solid rgba(94,230,200,.5);background:transparent;color:var(--aurora);border-radius:999px;padding:7px 16px;font:600 14px "Saira Semi Condensed",sans-serif;cursor:pointer}
+#v-neural .medidas{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+#v-neural .med-rel{display:flex;flex-wrap:wrap;gap:10px}
+#v-neural .med-num{display:flex;flex-wrap:wrap;gap:6px}
+#v-neural .cnt-c{display:flex;flex-direction:column;justify-content:center;min-width:104px;max-width:180px;padding:5px 9px;border:0;border-left:3px solid var(--c);border-radius:8px;background:rgba(155,140,255,.07);color:inherit;text-align:left;cursor:pointer}
+#v-neural .cnt-c b{font:400 16px/1.15 "Michroma",sans-serif}#v-neural .cnt-c small{font-size:11px;color:#AEB5D6;margin-top:3px;line-height:1.25}
+#v-neural .medidas .pulso{margin-left:0;flex:none;width:auto}
+.ciente-b{margin-top:10px;padding:8px 10px;border-radius:10px;background:rgba(224,123,0,.10);border:1px solid rgba(224,123,0,.35);font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ciente-b.licao{background:rgba(94,230,200,.07);border-color:rgba(94,230,200,.35)}
+.bt-ciente{border:0;border-radius:8px;padding:6px 10px;background:#E07B00;color:#fff;font-weight:600;cursor:pointer}.ciente-ok{color:#5EE6C8;font-weight:600}
 #v-neural .holo .grade,#nv-portal .holo .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:16px;margin-top:18px}
 #v-neural .holo .inst,#nv-portal .holo .inst{background:rgba(255,255,255,.04);border:1px solid rgba(155,140,255,.18);border-radius:18px;padding:16px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;overflow:hidden}
 #v-neural .holo .inst h4,#nv-portal .holo .inst h4{margin:0 0 4px;font:600 16px "Saira Semi Condensed",sans-serif}
@@ -2710,12 +2719,17 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
       case "externa": return c(M[6]?.valor,"na verificação externa")+c(Object.values(SC.detalhes?.reprocessar||{}).reduce((s,x)=>s+(x||0),0),"a reprocessar");
       case "farol": return c(M[7]?.valor,"prontas para o Farol");
     } return ""; }
+  function estadoVisto(x){ return x.id==="fa_fecham_7d"&&x.estado!=="verde"&&(x.novos||[]).length&&cienteSala("farol",x.novos)?"verde":x.estado; }
   function pulso(et){ const L=et.ids.map(I).filter(Boolean); const q=L.filter(x=>x.quando).sort((a,b)=>String(b.quando).localeCompare(String(a.quando)))[0];
     const base=L.find(x=>typeof x.valor==="number");
     return `<div class="pulso cam" style="--d:.8"><div>último sinal <b>${q?idade(q.idade_h):"—"}</b></div><div class="faint" style="margin:3px 0 6px">${q?e(q.nome)+" · a cada "+n(q.cadencia_h)+" h":"aguardando a primeira leitura"}</div>${base?trilha(base.id,170):""}</div>`; }
-  function medidas(et){ return et.ids.map(I).filter(Boolean).map(x=>x.escala&&typeof x.valor==="number"
-      ?`<button class="med cam" style="--d:1.6" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')">${mostrador(x,112)}<small>${e(CURTO[x.id]||x.nome)}</small></button>`
-      :`<button class="cnt cam" style="--d:1.2;border:0;border-left:1px solid rgba(155,140,255,.25);background:none;color:inherit;text-align:left;cursor:pointer" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')"><b class="mx">${n(x.valor)}</b><small>${e(CURTO[x.id]||x.nome)}</small></button>`).join(""); }
+  /* 09/11/2026 (titular): o cartão de cada etapa em três linhas — os RELÓGIOS dos parâmetros mais importantes (só com a faixa
+     do bom e do ruim) no topo; os demais NÚMEROS compactos na linha de baixo; o ÚLTIMO SINAL na última linha */
+  const ehRelogio=x=>x.relogio&&x.escala&&typeof x.valor==="number";
+  function medidas(et){ const L=et.ids.map(I).filter(Boolean), R=L.filter(ehRelogio), N=L.filter(x=>!ehRelogio(x));
+    const rel=R.map(x=>`<button class="med cam" style="--d:1.6" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')">${mostrador(x,104)}<small>${e(CURTO[x.id]||x.nome)}</small></button>`).join("");
+    const num=N.map(x=>`<button class="cnt-c cam" style="--d:1.2;--c:${COR[x.estado]||COR.cinza}" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')" title="${e(x.motivo||"")}"><b class="mx">${n(x.valor)}</b><small>${e(CURTO[x.id]||x.nome)}</small></button>`).join("");
+    return `${rel?`<div class="med-rel">${rel}</div>`:""}<div class="med-num">${num}${contadores(et)}</div>`; }
   /* holograma: nasce do elemento clicado (morph do retângulo de origem até o centro) */
   function completo(et){ const D=SC.detalhes||{}; let h="";
     if(et.id==="regencia") h=`<div class="bloco"><h4>Plano do maestro · ${n((D.maestro||[]).length)} motores</h4><div class="matriz">${(D.maestro||[]).map(m=>`<span data-det="maestro|${e(m.motor)}" title="${e(m.motor)} · ${e(m.cobertura)} · tentativas ${n(m.tentativas)}"><i style="background:${m.cobertura==="completa"?COR.verde:m.cobertura==="parcial"?COR.amarelo:m.cobertura==="pendente_local"?COR.violeta||"#9B8CFF":COR.cinza}"></i>${e(m.motor)}</span>`).join("")}</div></div>`;
@@ -2727,11 +2741,30 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
       <div class="bloco"><h4>Famílias de busca do Espião</h4><div class="lista">${Object.entries(D.espiao_familias||{}).sort((a,b)=>(b[1].usos||0)-(a[1].usos||0)).map(([k,v])=>`<div data-det="familia|${e(k)}"><span>${e(k.replace(/_/g," "))}</span><b>${n(v.usos)} voos · ${n(v.achados)} achados · ${n(v.empresas)} empresas</b></div>`).join("")}</div></div>`;
     if(et.id==="externa") h=`<div class="bloco"><h4>Fila de reprocessamento</h4><div class="lista">${linhas(D.reprocessar,14,null,"reproc")}</div></div>`;
     return h; }
-  function instrumentoHtml(x){ return `<div class="inst" id="nv-i-${x.id}" data-det="hist|${x.id}" title="clique para ver o histórico das leituras">${x.escala&&typeof x.valor==="number"?mostrador(x,120):`<div class="mx" style="font-size:26px;align-self:center;text-align:center">${n(x.valor)}<div class="faint" style="font:500 13px Saira Semi Condensed">${e(x.unidade||"")}</div></div>`}
+  function instrumentoHtml(x){ return `<div class="inst" id="nv-i-${x.id}" data-det="hist|${x.id}" title="clique para ver o histórico das leituras">${ehRelogio(x)?mostrador(x,120):`<div class="mx" style="font-size:26px;align-self:center;text-align:center">${n(x.valor)}<div class="faint" style="font:500 13px Saira Semi Condensed">${e(x.unidade||"")}</div></div>`}
       <div><h4>${e(x.nome)}</h4><span style="color:${COR[x.estado]};font-weight:600;font-size:13.5px">${EST[x.estado]}</span> <span class="faint" style="font-size:13px">· ${e(x.motivo)}</span>
       <dl><dt>O que faz</dt><dd>${e(x.faz)}</dd><dt>Acionado</dt><dd>${x.quando?dm(x.quando)+" · "+idade(x.idade_h):"sem registro"} (a cada ${n(x.cadencia_h)} h)</dd>
       <dt>Efeito</dt><dd>${e(x.efeito)}</dd><dt>Resultado</dt><dd><b>${n(x.valor)} ${e(x.unidade||"")}</b> — ${e(x.resultado)}</dd><dt>Faixa</dt><dd>${e(faixaTxt(x.faixa,x.unidade))}</dd>
-      <dt>Tendência</dt><dd>${trilha(x.id)}</dd></dl></div></div>`; }
+      <dt>Tendência</dt><dd>${trilha(x.id)}</dd></dl>${cienteHtml(x)}</div></div>`; }
+  /* 09/11/2026 (titular): o «ciente» — o do Farol (o alerta apaga e volta só com um livro novo) e o da lição de cada alerta
+     (a lição é validada e entra no aprendizado permanente). Grava no Cérebro pelo fluxo ciente.yml; o navegador já reflete */
+  function cienteHtml(x){
+    if(x.id==="fa_fecham_7d"&&(x.novos||[]).length&&!cienteSala("farol",x.novos))
+      return `<div class="ciente-b"><b>${x.novos.length}</b> validada(s) fechando em até 7 dias ainda não vistas. <button class="bt-ciente" onclick="event.stopPropagation();nvCienteFarol(this)">Ciente — retirar o alerta</button></div>`;
+    if(x.licao){ const L=x.licao, ok=L.validada||cienteSala("aprendizado",[L.chave]);
+      return `<div class="ciente-b licao"><div><b>Aprendizado deste alerta</b> — ${e(L.texto)}</div>${ok?`<span class="ciente-ok">validado${L.validada_em?" em "+e(String(L.validada_em).slice(0,16).replace("T"," ")):" (registrando)"}</span>`
+        :`<button class="bt-ciente" onclick="event.stopPropagation();nvCienteLicao('${e(x.id)}',this)">Ciente — validar o aprendizado</button>`}</div>`; }
+    return ""; }
+  function cienteSala(tipo,lista){ try{ const C=JSON.parse(localStorage.getItem("eldorado_ciente_"+tipo)||"[]"); return lista.every(k=>C.includes(k)); }catch(e){ return false; } }
+  function marcaCienteSala(tipo,lista){ try{ const k="eldorado_ciente_"+tipo, C=JSON.parse(localStorage.getItem(k)||"[]"); localStorage.setItem(k,JSON.stringify([...new Set([...C,...lista])].slice(-500))); }catch(e){} }
+  window.nvCienteFarol=async function(bt){ const x=I("fa_fecham_7d"); if(!x) return; bt.disabled=true; bt.textContent="registrando…";
+    const r=await ghDispatch("ciente.yml",{tipo:"farol",chave:"fa_fecham_7d",ids:(x.ids||[]).join(",")});
+    if(r&&r.ok){ marcaCienteSala("farol",x.ids||[]); bt.outerHTML=`<span class="ciente-ok">ciente registrado — o alerta volta só com uma oportunidade nova</span>`; }
+    else { bt.disabled=false; bt.textContent="Ciente — retirar o alerta"; alert("O ciente não chegou ao sistema ("+((r&&r.motivo)||"sem resposta")+")."); } };
+  window.nvCienteLicao=async function(id,bt){ const x=I(id); if(!x||!x.licao) return; bt.disabled=true; bt.textContent="registrando…";
+    const r=await ghDispatch("ciente.yml",{tipo:"aprendizado",chave:x.licao.chave,texto:x.licao.texto});
+    if(r&&r.ok){ marcaCienteSala("aprendizado",[x.licao.chave]); bt.outerHTML=`<span class="ciente-ok">validado — entra no aprendizado permanente</span>`; }
+    else { bt.disabled=false; bt.textContent="Ciente — validar o aprendizado"; alert("O ciente não chegou ao sistema ("+((r&&r.motivo)||"sem resposta")+")."); } };
   const SIGN={estante:{ouro:"livro com recorrência comprovada: dá para prever a próxima edição com segurança",prata:"há histórico anterior, mas falta prova para prever com segurança",
       bronze:"só a edição atual: o livro ainda precisa de histórico",sem_livro:"oportunidade aberta ainda sem livro na Biblioteca"},
     origem:{agregador:"veio de um agregador de editais (pista; a prova é no site oficial)",interceptador:"veio da investigação do Interceptador",site_oficial:"lida direto no site oficial",
@@ -2912,7 +2945,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
       return `<div class="faixa vidro" data-et="${et.id}" tabindex="0" role="button" aria-label="Etapa ${k+1}: ${e(et.nome)}, ${EST[p]}" onclick="nvHolo('${et.id}',this)" onkeydown="if(event.key==='Enter')nvHolo('${et.id}',this)">
         <div class="etq cam" style="--d:.6"><span class="num">${String(k+1).padStart(2,"0")}</span><div><h3>${e(et.nome)}</h3><p>${e(et.faz)}</p>
           <span class="est" style="background:${COR[p]}22;color:${COR[p]}">${EST[p]}</span></div></div>
-        <div class="medidas">${medidas(et)}${contadores(et)}${pulso(et)}</div>
+        <div class="medidas">${medidas(et)}${pulso(et)}</div>
         <div class="lista cam" style="--d:1">${estrelasMotores(et)}${resumo(et)}</div></div>`; }).join("");
     $("nv-fluxos").innerHTML=(d.fluxos||[]).map((f,i)=>{const k=luzFluxo(f);
       return `<button class="fl" onclick="nvFluxo(${i},this)" title="abrir o detalhe do fluxo"><span class="luz ${k}"></span><span>${e(f.nome)}<br><small class="faint">${idade(f.idade_h)} · ${e(PT[f.conclusao||f.situacao]||f.situacao)}</small></span></button>`;}).join("")||`<div class="fl">a leitura dos fluxos acontece na próxima passagem do maestro</div>`;

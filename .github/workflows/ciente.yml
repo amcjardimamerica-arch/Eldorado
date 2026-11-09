@@ -1,0 +1,53 @@
+name: Ciente (pela titular, na Sala de controle)
+# 09/11/2026 (titular): o botão «Ciente» da Sala grava no Cérebro — o do Farol (o prazo próximo: o alerta volta só com um livro
+# novo) e o da lição de um alerta (validada, entra no aprendizado permanente). Só grava eventos e republica o painel.
+on:
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: "farol ou aprendizado"
+        required: true
+      chave:
+        description: "o instrumento ou a chave do alerta"
+        required: true
+      ids:
+        description: "farol: os livros vistos, separados por vírgula"
+        required: false
+        default: ""
+      texto:
+        description: "aprendizado: a lição validada"
+        required: false
+        default: ""
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: ciente
+  cancel-in-progress: false
+jobs:
+  ciente:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - name: O ciente no Cérebro
+        env:
+          TIPO: ${{ inputs.tipo }}
+          CHAVE: ${{ inputs.chave }}
+          IDS: ${{ inputs.ids }}
+          TEXTO: ${{ inputs.texto }}
+        run: eldorado ciente --tipo "$TIPO" --chave "$CHAVE" --ids "$IDS" --texto "$TEXTO"
+      - name: Gravar
+        run: |
+          git config user.name "eldorado-titular"; git config user.email "titular@eldorado.local"
+          git add operacao
+          git commit -m "A titular deu ciente: ${{ inputs.tipo }} · ${{ inputs.chave }} (pela Sala)" || exit 0
+          for i in 1 2 3 4 5; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
+      - name: Republicar o painel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run painel.yml || true

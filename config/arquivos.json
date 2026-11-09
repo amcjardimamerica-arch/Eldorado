@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 12033,
+   "linhas": 12075,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -230,6 +230,7 @@
     "test_sala_ceu_estrelado.py",
     "test_sala_externa_sinal.py",
     "test_sala_mostradores.py",
+    "test_sala_relogios_ciente.py",
     "test_seguranca.py",
     "test_sinais_motores.py",
     "test_site_sem_vazio.py",
@@ -346,6 +347,7 @@
     "test_revisao_alarmes.py",
     "test_sala_alertas_claude.py",
     "test_sala_mostradores.py",
+    "test_sala_relogios_ciente.py",
     "test_seguranca.py",
     "test_sinais_motores.py",
     "test_site_sem_vazio.py",
@@ -363,7 +365,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 825,
+   "linhas": 853,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/banco/consolidar.py",
@@ -400,6 +402,7 @@
     "eldorado/motores/pilotos/otimizacao.py"
    ],
    "eventos": [
+    "aprendizado.promovido",
     "livro.passagem",
     "livro.situacao",
     "medicao.registrada"
@@ -1716,6 +1719,7 @@
     "eldorado/base/cerebro/completude.py"
    ],
    "usado_por": [
+    ".github/workflows/ciente.yml",
     ".github/workflows/eldorado.yml",
     ".github/workflows/implantar.yml",
     ".github/workflows/painel.yml",
@@ -6049,6 +6053,7 @@
     "test_rede_parametros.py",
     "test_sala_alertas_claude.py",
     "test_sala_mostradores.py",
+    "test_sala_relogios_ciente.py",
     "test_site_sem_vazio.py"
    ],
    "situacao": "pacote",
@@ -6203,12 +6208,13 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 1335,
+   "linhas": 1416,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
     "eldorado/base/cartorio/expurgo_claude.py",
     "eldorado/base/cartorio/regua.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/sinais_motores.py",
     "eldorado/motores/canal/motor.py"
@@ -6239,6 +6245,7 @@
     "eldorado/base/aprendizado/avaliar.py",
     "eldorado/base/cartorio/expurgo_claude.py",
     "eldorado/base/cartorio/regua.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/sinais_motores.py",
     "eldorado/motores/canal/motor.py"
@@ -6494,6 +6501,27 @@
    "ordem": 214
   },
   {
+   "arquivo": ".github/workflows/ciente.yml",
+   "etapa": "18 Outros",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "name: Ciente (pela titular, na Sala de controle) 09/11/2026 (titular): o botão «Ciente» da Sala grava no Cérebro — o do Farol (o prazo próximo: o alerta volta só com um livro novo) e o da lição de um ",
+   "depende_de": [
+    "eldorado/base/nucleo/comandos.py",
+    "workflows/passagem.toml"
+   ],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 53,
+   "situacao": "em funcionamento",
+   "ordem": 215
+  },
+  {
    "arquivo": ".github/workflows/vigia.yml",
    "etapa": "18 Outros",
    "parte": "OPERACAO",
@@ -6509,7 +6537,7 @@
    "testes": [],
    "linhas": 59,
    "situacao": "em funcionamento",
-   "ordem": 215
+   "ordem": 216
   },
   {
    "arquivo": "config/cartorio.toml",
@@ -6529,7 +6557,7 @@
    "testes": [],
    "linhas": 11,
    "situacao": "em funcionamento",
-   "ordem": 216
+   "ordem": 217
   },
   {
    "arquivo": "config/pontuacao_motores.toml",
@@ -6549,7 +6577,7 @@
    "testes": [],
    "linhas": 150,
    "situacao": "em funcionamento",
-   "ordem": 217
+   "ordem": 218
   },
   {
    "arquivo": "eldorado/base/cartorio/historia.py",
@@ -6571,7 +6599,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 218
+   "ordem": 219
   },
   {
    "arquivo": "eldorado/base/cartorio/leitura_efemera.py",
@@ -6602,7 +6630,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 219
+   "ordem": 220
   },
   {
    "arquivo": "eldorado/base/cartorio/localizacao.py",
@@ -6624,7 +6652,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 220
+   "ordem": 221
   },
   {
    "arquivo": "eldorado/base/cartorio/migrados.py",
@@ -6647,7 +6675,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 221
+   "ordem": 222
   },
   {
    "arquivo": "eldorado/base/cartorio/regua.py",
@@ -6670,7 +6698,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 222
+   "ordem": 223
   },
   {
    "arquivo": "eldorado/base/cerebro/retencao.py",
@@ -6696,7 +6724,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 223
+   "ordem": 224
   },
   {
    "arquivo": "eldorado/base/cerebro/sinais_motores.py",
@@ -6722,7 +6750,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 224
+   "ordem": 225
   },
   {
    "arquivo": "eldorado/base/cartorio/expurgo_claude.py",
@@ -6752,7 +6780,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 225
+   "ordem": 226
   },
   {
    "arquivo": "eldorado/base/cerebro/pontuacao_motores.py",
@@ -6779,7 +6807,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 226
+   "ordem": 227
   },
   {
    "arquivo": "eldorado/base/cartorio/manutencao_expurgo.py",
@@ -6815,7 +6843,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 227
+   "ordem": 228
   },
   {
    "arquivo": "eldorado/base/cerebro/ciclo_pilotos.py",
@@ -6835,6 +6863,7 @@
     "eldorado/base/cerebro/aprendizado.py",
     "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/comandante/pilotos.py",
+    "eldorado/base/painel/sala.py",
     "eldorado/motores/pilotos/espiao.py"
    ],
    "testes": [],
@@ -6849,7 +6878,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 228
+   "ordem": 229
   }
  ],
  "motores": [

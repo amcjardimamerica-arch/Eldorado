@@ -24,7 +24,8 @@ ETAPAS = {
     "externa": ["ve_para_o_chrome", "de_decisoes", "es_expurgo", "ve_bloqueadas", "ve_importado", "al_externa"],
     "repositorio": ["ab_link_oficial", "es_banco_unico", "hi_crescimento"],
     "biblioteca": ["hi_uso", "es_orfaos"],
-    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "rn_treino", "cm_comparacao", "cm_decisoes"],
+    # 09/11/2026 (titular): «O Comandante contra a ordem fixa» no lugar da idade do modelo
+    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "rn_treino", "cm_decisoes"],
     "farol": ["fa_fecham_7d"],
 }
 ORDEM = {"vermelho": 0, "amarelo": 1, "cinza": 2, "verde": 3}
@@ -54,6 +55,76 @@ def _alerta_claude(itens: int | None, idade_h: float | None) -> str:
 
 
 SEM_MEDIDA = {"regra": "sem medida: o instrumento fica cinza até haver a leitura"}
+
+
+def _ciente(cer: sqlite3.Connection, tipo: str, chave: str) -> dict:
+    """09/11/2026: o último «ciente» da titular (medicao «ciente:<tipo>:<chave>»): os livros vistos e quando."""
+    try:
+        r = cer.execute("SELECT em, motivo FROM medicao WHERE marcador = ? ORDER BY em DESC LIMIT 1", (f"ciente:{tipo}:{chave}",)).fetchone()
+    except sqlite3.Error:
+        return {}
+    if not r:
+        return {}
+    try:
+        return {"em": r[0], **json.loads(r[1] or "{}")}
+    except ValueError:
+        return {"em": r[0]}
+
+
+# 09/11/2026 (titular): os relógios de cada etapa — os parâmetros mais importantes, e só com a faixa do bom e do ruim
+RELOGIOS = {
+    "regencia": ["rg_regencia", "ma_cobertura", "dg_finalidade"],
+    "coleta": ["mo_saude", "mo_sinais", "mo_pendentes_local"],
+    "certificacao": ["ca_12", "es_esteira_parada"],
+    "investigacao": ["pi_interceptador", "pi_missoes"],
+    "externa": ["ve_para_o_chrome", "ve_importado"],
+    "repositorio": ["ab_link_oficial", "hi_crescimento"],
+    "biblioteca": ["es_orfaos"],
+    "aprendizado": ["rn_auc", "rn_precisao", "cm_comparacao"],
+    "farol": ["fa_fecham_7d"],
+}
+
+
+def _relogios(inst: dict) -> None:
+    """Marca o relógio (com a escala, se faltar) só no instrumento com a faixa numérica do bom e do ruim."""
+    for ids in RELOGIOS.values():
+        for i in ids:
+            x = inst.get(i)
+            f = (x or {}).get("faixa") or {}
+            nums = [v for k in ("normal", "alarme") for v in (f.get(k) or []) if isinstance(v, (int, float))]
+            if not x or not nums or not isinstance(x.get("valor"), (int, float)):
+                continue
+            x["relogio"] = True
+            if not x.get("escala") or x["escala"][1] <= x["escala"][0]:
+                pct = "%" in x.get("nome", "") or (max(nums) <= 100 and x["valor"] <= 100 and "(%)" in x.get("nome", ""))
+                topo = 100 if pct else max([x["valor"], *nums]) * 1.3 or 1
+                x["escala"] = [0, round(topo, 2) if topo < 10 else int(round(topo))]
+
+
+def _licoes(inst: dict, cer: sqlite3.Connection) -> None:
+    """09/11/2026 (titular): a cada alerta da Investigação, a lição do alerta (pelos dados que o explicam) e o «ciente» que a
+    valida — a chave é o instrumento e o dia (um alerta novo, uma lição nova)."""
+    from ..cerebro.ciclo_pilotos import ultimo
+    hoje = datetime.now(timezone.utc).date().isoformat()
+    _ci, oi = ultimo(cer, "interceptador")
+    _ce, oe = ultimo(cer, "espiao")
+    rend = oi.get("rendimento") or {}
+    boas = [k for k, v in sorted(rend.items(), key=lambda t: -t[1]) if k.startswith("abordagem") and v > 0][:3]
+    sem = [k for k, v in rend.items() if k.startswith("abordagem") and not v]
+    for i in ETAPAS["investigacao"]:
+        x = inst.get(i)
+        if not x or x["estado"] not in ("amarelo", "vermelho"):
+            continue
+        if i == "pi_espiao":
+            licao = (f"O Espião em alerta ({x['motivo'][:120]}): o Comandante passa a autorizar as famílias de melhor resultado real "
+                     f"({', '.join(oe.get('preferir') or []) or 'sem ciclo ainda'}) e evitar {', '.join(oe.get('evitar') or []) or '—'}.")
+        else:
+            licao = (f"{x['nome']} em alerta ({x['motivo'][:120]}): o Interceptador começa pelas abordagens que rendem "
+                     f"({', '.join(boas) or 'sem ciclo ainda'})" + (f" e deixa por último as que não obtiveram item ({', '.join(sem)})" if sem else "")
+                     + "; a fila é a do Comandante (R43).")
+        chave = f"{i}:{hoje}"
+        c = _ciente(cer, "aprendizado", chave)
+        x["licao"] = {"chave": chave, "texto": licao, "validada": bool(c), "validada_em": c.get("em") if c else None}
 
 
 def _faixa(v: float | None, verde, amarelo, maior_melhor: bool = True) -> str:
@@ -399,7 +470,7 @@ def montar(
         f"{ext} livros na fila do Claude no Chrome · lote do dia: "
         + (f"{partes_dia} parte(s) de até 50" if partes_dia else ("1 arquivo" if tem_dia else "ainda não gerado")),
         iso,
-      faixa={"regra": "atenção acima de 50 itens ou com o mais antigo há mais de 168 h"},
+      faixa={"normal": [None, 50], "alarme": [None, 500], "regra": "atenção acima de 50 itens ou com o mais antigo há mais de 168 h"},
 
     )
     lotes = sorted((raiz / "verificacao" / "lotes").glob("*.json")) if (raiz / "verificacao" / "lotes").exists() else []
@@ -769,10 +840,20 @@ def montar(
     _pl = round(100 * _conf / abertas) if abertas else None
     I("ab_link_oficial", "Abertas com o link oficial confirmado (%)", _pl, _faixa(_pl, 80, 50),
       f"{_conf} de {abertas} abertas com a origem confirmada no site oficial", iso, faixa={"normal": [80, None], "alarme": [50, None]}, cadencia_h=0.25)
-    _7d = q(bib, f"SELECT COUNT(*) {AB} AND p_ab.fase = 'farol' AND d.inscricao_fim BETWEEN date('now') AND date('now', '+7 days')")
-    I("fa_fecham_7d", "Validadas no Farol que fecham em até 7 dias", _7d, "amarelo" if _7d else "verde",
-      f"{_7d} oportunidade(s) validada(s) com a inscrição terminando em até 7 dias: decidir", iso,
-      faixa={"regra": "atenção com alguma validada fechando em até 7 dias (a decisão da titular); verde sem nenhuma"}, cadencia_h=0.25)
+    # 09/11/2026 (titular): o «ciente» do Farol — o alerta apaga quando a titular declara ciente e volta só com um livro novo
+    _ids7 = sorted(r[0] for r in bib.execute(f"SELECT l.id {AB} AND p_ab.fase = 'farol' AND d.inscricao_fim BETWEEN date('now') AND date('now', '+7 days')"))
+    _7d = len(_ids7)
+    _cien = _ciente(cer, "farol", "fa_fecham_7d")
+    _novos7 = [x for x in _ids7 if x not in set(_cien.get("ids") or [])]
+    I("fa_fecham_7d", "Validadas no Farol que fecham em até 7 dias", _7d,
+      "verde" if not _novos7 else "amarelo",
+      (f"{_7d} validada(s) fechando em até 7 dias; ciente da titular em {str(_cien.get('em'))[:16]}"
+       + (f" — {len(_novos7)} nova(s) depois do ciente" if _novos7 else ""))
+      if _cien else f"{_7d} oportunidade(s) validada(s) com a inscrição terminando em até 7 dias: decidir", iso,
+      faixa={"normal": [None, 0], "alarme": [None, 30],
+             "regra": "atenção com alguma validada fechando em até 7 dias que a titular ainda não viu (o ciente apaga; um livro novo acende)"},
+      cadencia_h=0.25)
+    inst["fa_fecham_7d"].update({"ids": _ids7, "novos": _novos7, "ciente": _cien or None})
 
     # ---- os compartimentos e a Regência
     comp_ = []
@@ -997,7 +1078,7 @@ def montar(
         "maquina": maq,
         "regra": "cada mostrador ligado ao dado medido pelo sistema (titular, 24/10/2026)",
         "indice_saude": indice,
-        "instrumentos": list(inst.values()),
+        "instrumentos": (_relogios(inst), _licoes(inst, cer))[0] or list(inst.values()),
         "compartimentos": comp_,
         "regencia": {"cumpridos": len(cumpridos), "em_falha": len(em_falha)},
         "contagem": {k: contagem.get(k, 0) for k in ("verde", "amarelo", "vermelho", "cinza")},
