@@ -34,5 +34,16 @@ def test_os_pesos_somam_100_e_o_indicador_substitui_os_botoes():
     assert sum(parametros()["pesos"].values()) == 100
     h = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     # 05/11/2026 (titular): ao lado dos dados de cima, acima do calendário, encostado ao fósforo; azul e laranja
-    assert '</div>${pmIndicador(o.id)}</div>' in h and '<div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div>' in h
-    assert "mt-ico upload" not in h and "mt-ico link" not in h and 'stroke="#0B4EA2"' in h and 'stroke="#E07B00"' in h
+    # 09/11/2026 (titular): o mostrador 3D Radar + Funil no lugar do indicador anterior (o mesmo lugar, encostado ao fósforo)
+    assert '</div>${m3dVaga(o.id)}</div>' in h and '<div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div>' in h
+    assert "mt-ico upload" not in h and "mt-ico link" not in h and "pmIndicador" not in h
+    assert Path("eldorado/base/painel/pagina/m3d-motores.js").exists() and 'sc.src="m3d-motores.js?v="' in h
+
+
+def test_o_mostrador_3d_recebe_os_dados_reais_de_cada_motor(tmp_path):
+    from datetime import datetime, timezone
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "pontuacao_motores.toml").write_text(Path("config/pontuacao_motores.toml").read_text(encoding="utf-8"), encoding="utf-8")
+    r = calcular(_bib(), None, tmp_path, agora=datetime(2026, 11, 9, 12, tzinfo=timezone.utc))["site-rede-comua"]["m3d"]
+    assert {"a", "e", "curso", "local", "saude", "melh", "exec", "falhas", "ach", "acc", "livros", "estrelas", "hl", "ha", "dias", "diasRot"} <= set(r)
+    assert len(r["dias"]) == 8 and r["diasRot"] == "2–9 nov"

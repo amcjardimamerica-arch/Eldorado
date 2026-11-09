@@ -50,6 +50,66 @@ def _semana(iso: str | None) -> str | None:
     return (d - timedelta(days=d.weekday())).isoformat()
 
 
+MESES = ("jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez")
+
+
+def rotulo_dias(agora: datetime) -> str:
+    """O período das 8 colunas do mostrador («2–9 nov»), o mesmo para todos os motores."""
+    a1 = agora.date()
+    a0 = a1 - timedelta(days=7)
+    return f"{a0.day}–{a1.day} {MESES[a1.month - 1]}" if a0.month == a1.month else f"{a0.day} {MESES[a0.month - 1]}–{a1.day} {MESES[a1.month - 1]}"
+
+
+def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: datetime) -> dict[str, dict[str, Any]]:
+    """09/11/2026 (o mostrador 3D Radar + Funil): a atividade real de cada motor — em 30 dias (execuções, falhas, achados,
+    aceitos, livros trazidos e com estrela), hoje (leituras e achados) e os últimos 8 dias, classificados como no calendário
+    do motor: verde (livro com os 12 itens), amarelo (achado aceito, parcial), azul (leu e não havia oportunidade),
+    vermelho (todas as leituras falharam), cinza (não executou)."""
+    hoje = agora.date()
+    d30, dias8 = (hoje - timedelta(days=29)).isoformat(), [(hoje - timedelta(days=k)).isoformat() for k in range(7, -1, -1)]
+    A: dict[str, dict[str, Any]] = defaultdict(lambda: {"exec": 0, "falhas": 0, "ach": 0, "acc": 0, "livros": 0, "estrelas": 0, "hl": 0, "ha": 0,
+                                                         "por_dia": defaultdict(lambda: [0, 0, 0, 0])})   # execuções, falhas, aceitos, livros ouro
+    def _q(con, sql, args):   # a coluna ausente (um banco antigo ou de teste) zera só aquela parte da atividade
+        try:
+            return con.execute(sql, args).fetchall() if con is not None else []
+        except sqlite3.Error:
+            return []
+    for m, dia, n, f in _q(cer, "SELECT motor, substr(inicio, 1, 10), COUNT(*), SUM(erro IS NOT NULL AND erro <> '') FROM execucao_motor "
+                                "WHERE inicio >= ? GROUP BY 1, 2", (d30,)):
+        x = A[m]
+        x["exec"] += n
+        x["falhas"] += f or 0
+        x["por_dia"][dia][0] += n
+        x["por_dia"][dia][1] += f or 0
+        if dia == dias8[-1]:
+            x["hl"] = n
+    for m, dia, n, a in _q(bib, "SELECT motor, substr(encontrado_em, 1, 10), COUNT(*), SUM(decisao = 'aceito') FROM achado "
+                                "WHERE encontrado_em >= ? GROUP BY 1, 2", (d30,)):
+        x = A[m]
+        x["ach"] += n
+        x["acc"] += a or 0
+        x["por_dia"][dia][2] += a or 0
+        if dia == dias8[-1]:
+            x["ha"] = n
+    for m, dia, est in _q(
+            bib, "SELECT a.motor, substr(l.criado_em, 1, 10), COALESCE(l.estrela, 'sem') FROM livro l JOIN (SELECT livro_id, motor, MIN(encontrado_em) "
+            "FROM achado WHERE livro_id IS NOT NULL GROUP BY livro_id) a ON a.livro_id = l.id WHERE l.criado_em >= ?", (d30,)):
+        x = A[m]
+        x["livros"] += 1
+        x["estrelas"] += int(est != "sem")
+        if est == "ouro":
+            x["por_dia"][dia][3] += 1
+    for x in A.values():
+        cols = []
+        for dia in dias8:
+            e, f, acc, ouro = x["por_dia"].get(dia, [0, 0, 0, 0])
+            cols.append(["cinza", 0] if not e else ["vermelho", 0] if f >= e else ["verde", ouro] if ouro else ["amarelo", acc] if acc else ["azul", 0])
+        x["dias"] = cols
+        x["diasRot"] = rotulo_dias(agora)
+        del x["por_dia"]
+    return A
+
+
 def calcular(bib: sqlite3.Connection, cer: sqlite3.Connection | None = None, raiz: Path = RAIZ,
              agora: datetime | None = None, prm: dict[str, Any] | None = None) -> dict[str, dict[str, Any]]:
     prm = prm or parametros(raiz / "config/pontuacao_motores.toml")
@@ -97,6 +157,7 @@ def calcular(bib: sqlite3.Connection, cer: sqlite3.Connection | None = None, rai
                 sinais_de[m] = sinais(cer, m)
             except sqlite3.Error:
                 pass
+    atv = atividade(bib, cer, agora)
     saida: dict[str, dict[str, Any]] = {}
     medidos = set(prm.get("local", {})) | {"interceptador", "espiao"}   # os motores configurados e os dois pilotos
     for m in sorted(medidos):
@@ -127,7 +188,13 @@ def calcular(bib: sqlite3.Connection, cer: sqlite3.Connection | None = None, rai
                               "indicacao": "O motor lê e nunca entregou nada: corrigir a extração da página."})
         if prm.get("parecer", {}).get(m):
             melhorias.append({"tipo": "parecer", "erros": None, "parcela": None, "indicacao": prm["parecer"][m]})
-        saida[m] = {"nota": nota, "faixa": faixa, "acertos": a, "erros": e_, "andamento": n, "decididos": dec,
+        at = atv.get(m) or {}
+        vazio = [["cinza", 0]] * 8
+        m3d = {"a": a, "e": e_, "curso": n, "local": local, "saude": saude, "melh": len(melhorias), "luz": luz,
+               "exec": at.get("exec", 0), "falhas": at.get("falhas", 0), "ach": at.get("ach", 0), "acc": at.get("acc", 0),
+               "livros": at.get("livros", 0), "estrelas": at.get("estrelas", 0), "hl": at.get("hl", 0), "ha": at.get("ha", 0),
+               "hf": 0, "hs": 0, "dias": at.get("dias", vazio), "diasRot": rotulo_dias(agora)}
+        saida[m] = {"m3d": m3d, "nota": nota, "faixa": faixa, "acertos": a, "erros": e_, "andamento": n, "decididos": dec,
                     "precisao": round(precisao, 3), "em_formacao": dec < int(minimos["decididos"]),
                     "rendimento": round(rend, 3), "local": local, "saude": saude, "luz": luz,
                     "componentes": {"precisao": round(pesos["precisao"] * precisao, 1), "rendimento": round(pesos["rendimento"] * rend, 1),
