@@ -293,7 +293,7 @@ def cidade_no_slug(titulo: str, url: str | None = None) -> tuple[str, str] | Non
         if not t or any(t.startswith(e + " ") or t == e for e in _ESTADOS_NOMES):
             continue
         tok = t.split()
-        for i in range(1, min(len(tok), 7)):                          # «cidade uf»: a sigla logo depois do nome
+        for i in range(1, len(tok)):                                  # «cidade uf»: a sigla logo depois do nome (em qualquer ponto)
             if tok[i] in ufs_min:
                 for k in range(min(i, 5), 0, -1):
                     nome = " ".join(tok[i - k:i])
