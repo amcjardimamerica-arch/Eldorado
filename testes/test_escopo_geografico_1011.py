@@ -27,3 +27,22 @@ def test_a_revisao_do_escopo_a_cada_passagem():
         c.execute("INSERT INTO livro VALUES (?, ?, '', 'BR', '', '', 'em trabalho')", (lid, t))
         c.execute("INSERT INTO passaporte VALUES (?, ?)", (lid, fase))
     assert set(fora_do_escopo(c)) == {"A"}      # B é de Goiás; C está no Farol (a titular decide); o catálogo nunca sai (R44)
+
+
+def test_a_uf_do_replicador_nao_vale_contra_o_municipio_nomeado():
+    """10/11/2026: o replicador marca «GO»; o texto nomeia um município de outro estado — vale o município."""
+    assert fora({"titulo": "municipio de sao caetano edital de chamamento publico no 003 2026", "uf": "GO"})
+    assert not fora({"titulo": "municipio de senador canedo edital de chamamento 12 2026", "uf": "GO"})
+    assert not fora({"titulo": "municipio de goias edital de chamamento publico 2026", "uf": "GO"})
+
+
+def test_o_site_de_divulgacao_exige_prazo_vigente():
+    import tomllib
+    from pathlib import Path
+
+    from eldorado.motores.canal.motor import _prazo_vigente_no_texto as prazo
+    assert prazo("Inscrições até 30/11/2099") is None and prazo("o termo vigora até 14/02/2028") is None
+    for p in Path("eldorado/motores/canal/config").glob("*.toml"):
+        d = tomllib.loads(p.read_text(encoding="utf-8"))
+        if d["motor"].get("grupo", "").startswith("Sites de divulgação"):
+            assert d["lexico"].get("exige_prazo") and d["lexico"].get("territorio") == "goias" and d["leitura"].get("paginas_dos_achados"), p.stem

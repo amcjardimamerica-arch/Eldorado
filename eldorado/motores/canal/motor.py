@@ -155,6 +155,10 @@ class CfgLexico(_Base):
     # territorio: "goias" aplica na entrada a mesma regra territorial do portão (R27: a municipal PÚBLICA de cidade de outro
     # estado que não é capital não entra); "livre" não filtra (as privadas e as nacionais ficam sempre).
     territorio: Literal["livre", "goias"] = "livre"
+    # 10/11/2026 (titular): exige_prazo — o site de divulgação lido pelo mapa do site só vira livro quando a página lida traz um
+    # PRAZO DE INSCRIÇÃO VIGENTE (uma data perto de «inscrição/prazo/até/encerra», de hoje a ~1 ano); sem ele, a página não
+    # entra (o mapa do site trazia centenas de editais antigos, sem título nem prazo, e cada um virava livro)
+    exige_prazo: bool = False
 
 
 CfgFonte.model_rebuild()        # 09/11/2026: o léxico por fonte (CfgLexico é declarado depois de CfgFonte)
@@ -385,6 +389,25 @@ def _datar_pela_pagina(pista: Pista, html: bytes | str | None) -> None:
     data = _data_da_pagina(html, pista.link)
     if data:
         pista.data, pista.extra = data, {**(pista.extra or {}), "data_lida_na_pagina": True}
+
+
+def _prazo_vigente_no_texto(texto: str, horizonte_dias: int = 400) -> date | None:
+    """10/11/2026: o prazo de inscrição vigente no texto — a data (dd/mm/aaaa, «dd de mês de aaaa») que vem até 160 caracteres
+    depois de «inscrição/prazo/até/encerra/limite/período», de hoje a horizonte_dias (a vigência do projeto, anos à frente, não
+    conta). None se não houver."""
+    hoje = hoje_local()
+    s = _sem_acento(texto or "")[:200000]
+    melhor = None
+    for g in re.finditer(r"(inscri|prazo|\bate\b|encerr|limite|periodo)(.{0,160})", s):
+        for m in re.finditer(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b|\b(\d{1,2})o? de (" + "|".join(_MESES) + r") de (\d{4})\b", g.group(2), re.I):
+            try:
+                d = date(int(m.group(3)), int(m.group(2)), int(m.group(1))) if m.group(1) else \
+                    date(int(m.group(6)), _MESES[m.group(5).lower()], int(m.group(4)))
+            except ValueError:
+                continue
+            if 0 <= (d - hoje).days <= horizonte_dias and (melhor is None or d > melhor):
+                melhor = d
+    return melhor
 
 
 def _cita_data_recente(texto: str, limite_dias: int) -> bool:
@@ -1110,6 +1133,13 @@ class MotorCanal(Motor):
                     html_bruto = r.conteudo.decode("utf-8", errors="replace")
                     _datar_pela_pagina(pista, html_bruto)             # 08/11/2026: a data lida na própria página
         if self._velha_pela_pagina(pista, documento):
+            return None
+        if self._lx().exige_prazo and not str(pista.origem or "").startswith("alvo ") and \
+                not _prazo_vigente_no_texto("\n".join([pista.titulo or "", pista.resumo or "", *((documento or {}).get("paginas") or [])])):
+            motivo = "sem prazo de inscrição vigente na página lida (exige_prazo)"
+            if not hasattr(self, "_barradas_na_entrada"):
+                self._barradas_na_entrada = {}
+            self._barradas_na_entrada[motivo] = self._barradas_na_entrada.get(motivo, 0) + 1
             return None
         canivete = self._canivete(documento, texto_do_ato, html_bruto, pista.link)
         escada = {"motor": self.cfg.motor.id, "fonte": fonte.nome, "degrau": (r.degrau if ler and r is not None else None) or degrau_lista}

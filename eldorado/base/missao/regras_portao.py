@@ -349,6 +349,12 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
     uf = str(r.get("uf") or uf_agregador or "").upper()
     if uf == "BR":                                     # 17/10: "BR" é nacional, não é estado
         uf = ""
+    if uf == "GO":
+        # 10/11/2026 (titular): a UF «GO» que vem do replicador não vale contra o município nomeado — «Município de Gouveia»
+        # (MG), «Município de São Caitano» (PE): o texto nomeia uma cidade de outro estado (e nenhuma de Goiás, já conferido)
+        _u = uf_por_municipio(f"{r.get('titulo') or ''} {r.get('orgao') or ''}")
+        if _u and _u != "GO":
+            uf = _u
     if uf not in UFS:
         uf = uf_por_municipio(f"{r.get('titulo') or ''} {r.get('orgao') or ''}") or uf
     if uf not in UFS:
