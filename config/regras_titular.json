@@ -708,6 +708,18 @@
     "testes/test_organizacao_43.py::test_os_grupos_e_os_tres_tribunais_de_contas",
     "testes/test_inventario.py::test_inventario_do_sistema"
    ]
+  },
+  {
+   "id": "R52",
+   "data": "2026-11-10",
+   "tema": "o escopo geográfico também nos títulos de endereço, revisto a cada passagem",
+   "regra": "Ficam as oportunidades de Goiás, nacionais, internacionais, estaduais de outros estados e das capitais de outros estados (e o ato de vários municípios com a capital incluída); o município do interior de outro estado é expurgado. A regra reconhece o município também quando o título é o endereço da página («cidade uf edital…», o nome do município abrindo o título, o caminho do endereço) — só com o nome numa única UF; o título que começa pelo nome de um estado é estadual. A abrangência estadual declarada fica. A auditoria revê o escopo de todos os livros vivos a cada passagem (o catálogo, R44, e o Farol ficam de fora) e expurga pelo caminho normal; cada passagem com expurgo registra a lição por motor para o Comandante.",
+   "porque": "titular, 10/11/2026: os livros mais que dobraram (de ~1.700 para 3.885) — 2.370 entraram pela leitura dos mapas de site com o endereço no lugar do título, a maioria de municípios do interior de outros estados, e passavam pela regra antiga.",
+   "onde": "eldorado/base/missao/regras_portao.py (cidade_no_slug, municipal_fora_de_goias); eldorado/base/cartorio/auditoria.py (fora_do_escopo, _aprender_escopo, no_auditoria)",
+   "travas": [
+    "testes/test_escopo_geografico_1011.py::test_a_regra_nos_titulos_de_endereco",
+    "testes/test_escopo_geografico_1011.py::test_a_revisao_do_escopo_a_cada_passagem"
+   ]
   }
  ]
 }

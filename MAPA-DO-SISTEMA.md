@@ -30,8 +30,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 3 | `.github/workflows/visualizar.yml` | name: Visualizar a sala de controle | a construir |  |  | 0 |
 | 4 | `config/arquivos.json` | O catálogo dos arquivos do sistema (o inventário). | em funcionamento |  | inventario, mapa_arquivos, medicao, comandos | 0 |
 | 5 | `config/eldorado.toml` | Configuração do Eldorado. Validada na carga: chave desconhecida ou valor fora do limite impede a passagem. | em funcionamento |  | comandos, config | 0 |
-| 6 | `eldorado/__init__.py` |  | pacote |  |  | 129 |
-| 7 | `eldorado/base/__init__.py` |  | pacote |  |  | 98 |
+| 6 | `eldorado/__init__.py` |  | pacote |  |  | 130 |
+| 7 | `eldorado/base/__init__.py` |  | pacote |  |  | 99 |
 | 8 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | consolidar, copia_livros, drive, manutencao, memoria, analise_externa, releitura, fila, governador, inventario, pilotos, pilotos_permanentes, retencao, pilotos, agenda, definicao, executor, fila, nos, config, eventos, gravador, ia, dados, api, escada, leve, navegador, ponte_br, fabrica, motor, otimizacao | .github/workflows/eldorado.yml (eldorado permanente) | 2 |
 | 9 | `scripts/gravar.sh` | !/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por di | em funcionamento |  | eldorado | 0 |
 | 10 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 0 |
@@ -190,10 +190,10 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 133 | `config/missao/municipios_brasil.json` | Os 5.291 municípios do Brasil (IBGE), para localizar o órgão de cada oportunidade. | em funcionamento |  | auditoria, mapa_arquivos, biblioteca, regras_portao | 0 |
 | 134 | `config/missao/republicadores.json` | Sites que REPUBLICAM oportunidades para divulgação: são INDÍCIO e insumo de busca do Piloto - Interceptador, n | em funcionamento |  | origem, organizar, dados | 0 |
 | 135 | `config/missao/territorio_goias.json` | O território de Goiás: os 246 municípios (IBGE, código UF 52), para a regra de abrangência. | em funcionamento |  | auditoria, mapa_arquivos, regras_portao | 0 |
-| 136 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 14 |
+| 136 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 15 |
 | 137 | `eldorado/base/missao/chave.py` | A chave do livro nesta missão: o livro é o PROGRAMA, não a edição. | em funcionamento |  | indice, oportunidades | 0 |
 | 138 | `eldorado/base/missao/itens.py` | Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0. | em funcionamento |  | analise_externa, auditoria, cartorio, certificacao, selos, cartorio, organizar, oportunidades, cartorio, dados, pilotos, | 1 |
-| 139 | `eldorado/base/missao/regras_portao.py` | As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade. | em funcionamento |  | auditoria, portao, motor | 1 |
+| 139 | `eldorado/base/missao/regras_portao.py` | As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade. | em funcionamento |  | auditoria, portao, motor | 2 |
 | 140 | `eldorado/base/missao/portao.py` | O portão da missão das oportunidades (titular, 16/10/2026), com as regras aproveitadas do Eldorado0. | em funcionamento | organizar, regras_portao | auditoria, oportunidades | 1 |
 | 141 | `eldorado/base/missao/oportunidades.py` | A missão das oportunidades, no contrato da plataforma: itens, chave e portão. | em funcionamento | chave, itens, portao, contratos | passagem, nó «cartorio» (parâmetro); passagem, nó «comandante_cartorio» (parâmetro); passagem, nó «decidir_rede» (parâme | 9 |
 
@@ -201,7 +201,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 142 | `eldorado/base/cartorio/__init__.py` |  | pacote |  | manutencao_expurgo | 25 |
+| 142 | `eldorado/base/cartorio/__init__.py` |  | pacote |  | manutencao_expurgo | 26 |
 | 143 | `eldorado/base/cartorio/certificacao.py` | A certificação: cada item no texto oficial, com o valor, o trecho e a página. | em funcionamento | itens, eventos | auditoria, cartorio | 1 |
 | 144 | `eldorado/base/cartorio/identidade.py` | A identidade das oportunidades (titular, 24/10/2026): a mesma oportunidade não pode ter mais de um livro. O qu | em funcionamento | localizacao | passagem, nó 10 «unir_repetidos» | 1 |
 | 145 | `eldorado/base/cartorio/origem.py` | A origem da oportunidade, decidida POR LIVRO, com evidência (titular, 23/10/2026). | em funcionamento |  | auditoria, cartorio, interceptador | 0 |
@@ -248,26 +248,26 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 166 | `eldorado/base/aprendizado/avaliar.py` | O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a | em funcionamento | escolher | passagem, nó 35 «avaliar» | 3 |
 | 167 | `eldorado/base/aprendizado/curador.py` | O curador do Aprendizado (a etapa A5; o conceito do curador do Hermes Agent, titular, 25/10/2026). | em funcionamento |  | passagem, nó 36 «curar» | 1 |
 | 168 | `eldorado/base/aprendizado/memoria.py` | A memória do Aprendizado (a etapa A6): tudo o que o sistema viveu, pesquisável no Arquivo do Cérebro (titular, | em funcionamento | eventos | passagem, nó 38 «memorizar» | 2 |
-| 169 | `eldorado/base/cartorio/auditoria.py` | A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados). | em funcionamento | certificacao, origem, passaporte, selos, itens, portao, regras_portao, eventos, normalizar | passagem, nó 11 «auditar» | 6 |
-| 170 | `eldorado/base/cerebro/aprendizado.py` | O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai. | em funcionamento | ciclo_pilotos, eventos | passagem, nó 25 «aprender» | 3 |
-| 171 | `eldorado/base/cerebro/completude.py` | A completude do dia: o que estava devido foi lido? O que precisa ser reacionado? | em funcionamento | eventos | passagem, nó 26 «completude» | 2 |
-| 172 | `eldorado/base/cerebro/lote.py` | Os modelos em lote do Cérebro (plano C: scikit-learn): para cada pergunta da rede, um modelo treinado com o hi | em funcionamento |  | rede | 0 |
-| 173 | `eldorado/base/cerebro/mapa_arquivos.py` | O mapa REAL dos arquivos do sistema (titular, 24/10/2026: nada decorativo nem exemplificativo). | em funcionamento | sinais_motores, eventos | passagem, nó 30 «medir_arquivos» | 2 |
-| 174 | `eldorado/base/cerebro/medicao.py` | O motor de indicadores: ponto, círculo e linhas de cada arquivo, e a agregação por componente, parte e sistema | em funcionamento | eventos, sala | passagem, nó 27 «medir» | 3 |
-| 175 | `eldorado/base/cerebro/pertinencia.py` | A Pertinência: decide se cada achado é oportunidade (pelo portão da missão) e mede a saída de cada etapa. | em funcionamento | contratos, eventos, registro | passagem, nó 15 «decidir_rede»; passagem, nó 6 «decidir» | 4 |
-| 176 | `eldorado/base/cerebro/regras.py` | A tabela única de regras e decisões da titular (reativada em 25/10/2026: estava inativa, sem nó que a chamasse | em funcionamento | eventos | passagem, nó 1 «regras» | 2 |
-| 177 | `eldorado/base/cerebro/revisao_alarmes.py` | O ciclo de vida dos alarmes (titular, 25/10/2026: a sala mostrava alarmes antigos, de causas já corrigidas, po | em funcionamento |  | passagem, nó 2 «revisar_alarmes» | 1 |
-| 178 | `skills/aprendizado-avaliar-decisoes/SKILL.md` | A skill aprendizado-avaliar-decisoes: Avalia cada decisão do Comandante quando o resultado aparece (o motor tr | em funcionamento |  | curador | 0 |
-| 179 | `skills/aprendizado-curador/SKILL.md` | A skill aprendizado-curador: Mantém as skills pelo uso e pelo resultado (ativa, parada, arquivada; nunca apaga | em funcionamento |  | curador | 0 |
-| 180 | `skills/aprendizado-memoria/SKILL.md` | A skill aprendizado-memoria: Registra na memória pesquisável (FTS5) tudo o que é novo no Arquivo do Cérebro; o | em funcionamento |  | curador | 0 |
-| 181 | `skills/aprendizado-pertinencia/SKILL.md` | A skill aprendizado-pertinencia: Decide se cada achado é uma oportunidade do perfil, pelas regras da missão e  | em funcionamento |  | curador | 0 |
-| 182 | `skills/comandante-autorizar-espiao/SKILL.md` | A skill comandante-autorizar-espiao: Autoriza cada missão do Espião pelas quatro regras (3 segundos, a janela  | em funcionamento |  | curador | 0 |
-| 183 | `skills/comandante-autorizar-interceptador/SKILL.md` | A skill comandante-autorizar-interceptador: Autoriza cada voo do Interceptador pelas quatro regras e registra  | em funcionamento |  | curador | 0 |
-| 184 | `skills/comandante-conferir-20-minutos/SKILL.md` | A skill comandante-conferir-20-minutos: Confere, 20 minutos depois, cada mudança feita em funcionamento: se fo | em funcionamento |  | curador | 0 |
-| 185 | `skills/comandante-decidir-coleta/SKILL.md` | A skill comandante-decidir-coleta: Decide quais motores reacionar, pela política aprendida no Arquivo do Céreb | em funcionamento |  | curador | 0 |
-| 186 | `skills/comandante-parametrizar/SKILL.md` | A skill comandante-parametrizar: Ajusta os parâmetros de cada etapa no Arquivo do Cérebro, com a versão e a có | em funcionamento |  | curador | 0 |
-| 187 | `skills/espiao-missao/SKILL.md` | A skill espiao-missao: Uma missão de busca de oportunidades novas na web, na família de consultas escolhida pe | em funcionamento |  | curador | 0 |
-| 188 | `skills/interceptador-plano-de-voo/SKILL.md` | A skill interceptador-plano-de-voo: Um voo pelo plano de voo de um livro: as abordagens em ordem, até comprova | em funcionamento |  | curador | 0 |
+| 169 | `eldorado/base/cerebro/aprendizado.py` | O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai. | em funcionamento | ciclo_pilotos, eventos | passagem, nó 25 «aprender» | 3 |
+| 170 | `eldorado/base/cerebro/completude.py` | A completude do dia: o que estava devido foi lido? O que precisa ser reacionado? | em funcionamento | eventos | passagem, nó 26 «completude» | 2 |
+| 171 | `eldorado/base/cerebro/lote.py` | Os modelos em lote do Cérebro (plano C: scikit-learn): para cada pergunta da rede, um modelo treinado com o hi | em funcionamento |  | rede | 0 |
+| 172 | `eldorado/base/cerebro/mapa_arquivos.py` | O mapa REAL dos arquivos do sistema (titular, 24/10/2026: nada decorativo nem exemplificativo). | em funcionamento | sinais_motores, eventos | passagem, nó 30 «medir_arquivos» | 2 |
+| 173 | `eldorado/base/cerebro/medicao.py` | O motor de indicadores: ponto, círculo e linhas de cada arquivo, e a agregação por componente, parte e sistema | em funcionamento | eventos, sala | passagem, nó 27 «medir» | 3 |
+| 174 | `eldorado/base/cerebro/pertinencia.py` | A Pertinência: decide se cada achado é oportunidade (pelo portão da missão) e mede a saída de cada etapa. | em funcionamento | contratos, eventos, registro | passagem, nó 15 «decidir_rede»; passagem, nó 6 «decidir» | 4 |
+| 175 | `eldorado/base/cerebro/regras.py` | A tabela única de regras e decisões da titular (reativada em 25/10/2026: estava inativa, sem nó que a chamasse | em funcionamento | eventos | passagem, nó 1 «regras» | 2 |
+| 176 | `eldorado/base/cerebro/revisao_alarmes.py` | O ciclo de vida dos alarmes (titular, 25/10/2026: a sala mostrava alarmes antigos, de causas já corrigidas, po | em funcionamento |  | passagem, nó 2 «revisar_alarmes» | 1 |
+| 177 | `skills/aprendizado-avaliar-decisoes/SKILL.md` | A skill aprendizado-avaliar-decisoes: Avalia cada decisão do Comandante quando o resultado aparece (o motor tr | em funcionamento |  | curador | 0 |
+| 178 | `skills/aprendizado-curador/SKILL.md` | A skill aprendizado-curador: Mantém as skills pelo uso e pelo resultado (ativa, parada, arquivada; nunca apaga | em funcionamento |  | curador | 0 |
+| 179 | `skills/aprendizado-memoria/SKILL.md` | A skill aprendizado-memoria: Registra na memória pesquisável (FTS5) tudo o que é novo no Arquivo do Cérebro; o | em funcionamento |  | curador | 0 |
+| 180 | `skills/aprendizado-pertinencia/SKILL.md` | A skill aprendizado-pertinencia: Decide se cada achado é uma oportunidade do perfil, pelas regras da missão e  | em funcionamento |  | curador | 0 |
+| 181 | `skills/comandante-autorizar-espiao/SKILL.md` | A skill comandante-autorizar-espiao: Autoriza cada missão do Espião pelas quatro regras (3 segundos, a janela  | em funcionamento |  | curador | 0 |
+| 182 | `skills/comandante-autorizar-interceptador/SKILL.md` | A skill comandante-autorizar-interceptador: Autoriza cada voo do Interceptador pelas quatro regras e registra  | em funcionamento |  | curador | 0 |
+| 183 | `skills/comandante-conferir-20-minutos/SKILL.md` | A skill comandante-conferir-20-minutos: Confere, 20 minutos depois, cada mudança feita em funcionamento: se fo | em funcionamento |  | curador | 0 |
+| 184 | `skills/comandante-decidir-coleta/SKILL.md` | A skill comandante-decidir-coleta: Decide quais motores reacionar, pela política aprendida no Arquivo do Céreb | em funcionamento |  | curador | 0 |
+| 185 | `skills/comandante-parametrizar/SKILL.md` | A skill comandante-parametrizar: Ajusta os parâmetros de cada etapa no Arquivo do Cérebro, com a versão e a có | em funcionamento |  | curador | 0 |
+| 186 | `skills/espiao-missao/SKILL.md` | A skill espiao-missao: Uma missão de busca de oportunidades novas na web, na família de consultas escolhida pe | em funcionamento |  | curador | 0 |
+| 187 | `skills/interceptador-plano-de-voo/SKILL.md` | A skill interceptador-plano-de-voo: Um voo pelo plano de voo de um livro: as abordagens em ordem, até comprova | em funcionamento |  | curador | 0 |
+| 188 | `eldorado/base/cartorio/auditoria.py` | A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados). | em funcionamento | certificacao, origem, passaporte, selos, aprendizado, itens, portao, regras_portao, eventos, normalizar | passagem, nó 11 «auditar» | 7 |
 | 189 | `eldorado/base/cerebro/inventario.py` | O inventário do sistema (titular, 22/10/2026): todo arquivo, do primeiro ao último no caminho do funcionamento | em funcionamento | mapa_arquivos | comandos | 1 |
 | 190 | `eldorado/base/cerebro/rede.py` | A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas. | em funcionamento | lote, eventos, motor, interceptador | passagem, nó 24 «rede» | 7 |
 

@@ -154,6 +154,7 @@
     "test_entrega_completa.py",
     "test_enxugamento_0511.py",
     "test_escada_ponte_0511.py",
+    "test_escopo_geografico_1011.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
@@ -292,6 +293,7 @@
     "test_encaminhamento_isolado.py",
     "test_entrega_completa.py",
     "test_enxugamento_0511.py",
+    "test_escopo_geografico_1011.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
@@ -4331,6 +4333,7 @@
     "test_cartorio_tempo_real.py",
     "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
+    "test_escopo_geografico_1011.py",
     "test_espiao.py",
     "test_ia.py",
     "test_identidade.py",
@@ -4407,7 +4410,7 @@
   },
   {
    "arquivo": "eldorado/base/missao/regras_portao.py",
-   "linhas": 446,
+   "linhas": 500,
    "finalidade": "As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade.",
    "depende_de": [],
    "eventos": [],
@@ -4418,6 +4421,7 @@
     "eldorado/motores/canal/motor.py"
    ],
    "testes": [
+    "test_escopo_geografico_1011.py",
     "test_portao_aprendizado_0511.py"
    ],
    "situacao": "em funcionamento",
@@ -4519,6 +4523,7 @@
     "test_comandante_biblioteca.py",
     "test_comandante_expurgo.py",
     "test_entrega_completa.py",
+    "test_escopo_geografico_1011.py",
     "test_espiao.py",
     "test_expurgo_do_claude.py",
     "test_expurgo_enderecos.py",
@@ -5234,7 +5239,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 713,
+   "linhas": 725,
    "situacao": "em funcionamento",
    "ordem": 164
   },
@@ -5358,63 +5363,6 @@
    "ordem": 168
   },
   {
-   "arquivo": "eldorado/base/cartorio/auditoria.py",
-   "linhas": 513,
-   "finalidade": "A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados).",
-   "depende_de": [
-    "eldorado/base/cartorio/certificacao.py",
-    "eldorado/base/cartorio/origem.py",
-    "eldorado/base/cartorio/passaporte.py",
-    "eldorado/base/cartorio/selos.py",
-    "eldorado/base/missao/itens.py",
-    "eldorado/base/missao/portao.py",
-    "eldorado/base/missao/regras_portao.py",
-    "eldorado/base/nucleo/eventos.py",
-    "eldorado/motores/leitura/normalizar.py"
-   ],
-   "eventos": [
-    "certidao.contestada",
-    "livro.decupado",
-    "livro.excluido_logicamente",
-    "livro.prazo",
-    "relatorio.etapa",
-    "selo.calculado"
-   ],
-   "acionado_por": [
-    "passagem, nó 11 «auditar»"
-   ],
-   "usado_por": [
-    "eldorado/base/cartorio/cartorio.py",
-    "eldorado/base/comandante/organizar.py"
-   ],
-   "testes": [
-    "test_auditoria.py",
-    "test_comandante_expurgo.py",
-    "test_incentivos.py",
-    "test_linha_cartorio.py",
-    "test_regua_unica.py",
-    "test_travas_motores.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "13 Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
-   "parte": "BASE",
-   "componente": "Cartório · validação (auditoria e arquivo)",
-   "ligacoes": [
-    "eldorado/base/cartorio/certificacao.py",
-    "eldorado/base/cartorio/origem.py",
-    "eldorado/base/cartorio/passaporte.py",
-    "eldorado/base/cartorio/selos.py",
-    "eldorado/base/missao/itens.py",
-    "eldorado/base/missao/portao.py",
-    "eldorado/base/missao/regras_portao.py",
-    "eldorado/base/nucleo/eventos.py",
-    "eldorado/motores/leitura/normalizar.py"
-   ],
-   "critico": false,
-   "metrica": "testes verdes e uso registrado",
-   "ordem": 169
-  },
-  {
    "arquivo": "eldorado/base/cerebro/aprendizado.py",
    "linhas": 84,
    "finalidade": "O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai.",
@@ -5432,6 +5380,7 @@
     "passagem, nó 25 «aprender»"
    ],
    "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cerebro/ciclo_pilotos.py"
    ],
    "testes": [
@@ -5449,7 +5398,7 @@
    ],
    "critico": false,
    "metrica": "aprendizados promovidos e arquivados",
-   "ordem": 170
+   "ordem": 169
   },
   {
    "arquivo": "eldorado/base/cerebro/completude.py",
@@ -5478,7 +5427,7 @@
    ],
    "critico": false,
    "metrica": "cobertura do dia (meta 100%)",
-   "ordem": 171
+   "ordem": 170
   },
   {
    "arquivo": "eldorado/base/cerebro/lote.py",
@@ -5498,7 +5447,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 172
+   "ordem": 171
   },
   {
    "arquivo": "eldorado/base/cerebro/mapa_arquivos.py",
@@ -5533,7 +5482,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 173
+   "ordem": 172
   },
   {
    "arquivo": "eldorado/base/cerebro/medicao.py",
@@ -5565,7 +5514,7 @@
    ],
    "critico": true,
    "metrica": "arquivos com as três medições na passagem (meta 100%)",
-   "ordem": 174
+   "ordem": 173
   },
   {
    "arquivo": "eldorado/base/cerebro/pertinencia.py",
@@ -5603,7 +5552,7 @@
    ],
    "critico": true,
    "metrica": "achados aceitos e barrados com motivo; decisões contrariadas por veredito",
-   "ordem": 175
+   "ordem": 174
   },
   {
    "arquivo": "eldorado/base/cerebro/regras.py",
@@ -5632,7 +5581,7 @@
    ],
    "critico": false,
    "metrica": "decisões aplicadas; contradições abertas (devem ser zero)",
-   "ordem": 176
+   "ordem": 175
   },
   {
    "arquivo": "eldorado/base/cerebro/revisao_alarmes.py",
@@ -5656,7 +5605,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 177
+   "ordem": 176
   },
   {
    "arquivo": "skills/aprendizado-avaliar-decisoes/SKILL.md",
@@ -5676,7 +5625,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 178
+   "ordem": 177
   },
   {
    "arquivo": "skills/aprendizado-curador/SKILL.md",
@@ -5696,7 +5645,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 179
+   "ordem": 178
   },
   {
    "arquivo": "skills/aprendizado-memoria/SKILL.md",
@@ -5716,7 +5665,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 180
+   "ordem": 179
   },
   {
    "arquivo": "skills/aprendizado-pertinencia/SKILL.md",
@@ -5736,7 +5685,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 181
+   "ordem": 180
   },
   {
    "arquivo": "skills/comandante-autorizar-espiao/SKILL.md",
@@ -5756,7 +5705,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 182
+   "ordem": 181
   },
   {
    "arquivo": "skills/comandante-autorizar-interceptador/SKILL.md",
@@ -5776,7 +5725,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 183
+   "ordem": 182
   },
   {
    "arquivo": "skills/comandante-conferir-20-minutos/SKILL.md",
@@ -5796,7 +5745,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 184
+   "ordem": 183
   },
   {
    "arquivo": "skills/comandante-decidir-coleta/SKILL.md",
@@ -5816,7 +5765,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 185
+   "ordem": 184
   },
   {
    "arquivo": "skills/comandante-parametrizar/SKILL.md",
@@ -5836,7 +5785,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 186
+   "ordem": 185
   },
   {
    "arquivo": "skills/espiao-missao/SKILL.md",
@@ -5856,7 +5805,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 187
+   "ordem": 186
   },
   {
    "arquivo": "skills/interceptador-plano-de-voo/SKILL.md",
@@ -5876,6 +5825,66 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
+   "ordem": 187
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/auditoria.py",
+   "linhas": 554,
+   "finalidade": "A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados).",
+   "depende_de": [
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/origem.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/missao/regras_portao.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/leitura/normalizar.py"
+   ],
+   "eventos": [
+    "certidao.contestada",
+    "livro.decupado",
+    "livro.excluido_logicamente",
+    "livro.prazo",
+    "relatorio.etapa",
+    "selo.calculado"
+   ],
+   "acionado_por": [
+    "passagem, nó 11 «auditar»"
+   ],
+   "usado_por": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/comandante/organizar.py"
+   ],
+   "testes": [
+    "test_auditoria.py",
+    "test_comandante_expurgo.py",
+    "test_escopo_geografico_1011.py",
+    "test_incentivos.py",
+    "test_linha_cartorio.py",
+    "test_regua_unica.py",
+    "test_travas_motores.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "13 Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
+   "parte": "BASE",
+   "componente": "Cartório · validação (auditoria e arquivo)",
+   "ligacoes": [
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/origem.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/missao/regras_portao.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/leitura/normalizar.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
    "ordem": 188
   },
   {

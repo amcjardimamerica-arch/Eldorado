@@ -283,6 +283,25 @@ def _primeiro(certidoes: dict[str, dict], item: str) -> str | None:
     return c.get("valor") if c else None
 
 
+def fora_do_escopo(con: sqlite3.Connection) -> dict[str, str]:
+    """10/11/2026 (titular): a revisão do ESCOPO GEOGRÁFICO a cada passagem — a regra do portão aplicada aos livros vivos (os
+    que entraram pela leitura dos mapas de site, com o endereço no lugar do título, passavam pela regra antiga e não eram
+    reavaliados). Livro → o motivo. Ficam de fora o catálogo (R44) e os livros no Farol (validados: a decisão é da titular).
+    Fica: Goiás, nacional, internacional, estadual de outro estado, a capital de outro estado e o ato de vários municípios
+    com a capital incluída; sai: o município do interior de outro estado."""
+    from ..missao import regras_portao as R
+    con.row_factory = sqlite3.Row
+    saida = {}
+    for lv in con.execute("SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.link_divulgacao, d.abrangencia FROM livro l "
+                          "JOIN passaporte p ON p.livro_id = l.id LEFT JOIN livro_dados d ON d.livro_id = l.id "
+                          "WHERE l.situacao NOT IN ('excluido', 'unido') AND p.fase <> 'farol' AND l.id NOT LIKE 'captacao-%'"):
+        m = R.municipal_fora_de_goias({"titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"], "abrangencia": lv["abrangencia"],
+                                       "url": lv["link_oficial"] or lv["link_divulgacao"], "link_divulgacao": lv["link_divulgacao"]})
+        if m:
+            saida[lv["id"]] = m
+    return saida
+
+
 def pendentes(con: sqlite3.Connection) -> set[str]:
     """Os livros sem a validação, ou alterados depois dela."""
     return {r[0] for r in con.execute("SELECT l.id FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id "
@@ -318,7 +337,8 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
         conflitos = sorted({c["item"] for c in boas if c["item"] in I.CRITICOS and c.get("fase") in I.FASES_VALIDADAS
                             and _norm(str(c.get("valor"))) != _norm(str((validas.get(c["item"]) or {}).get("valor")))})
         abr, municipio = territorio(lv, validas)
-        motivo_portao = portao.motivo({"titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"], "url": lv["link_oficial"]}, hoje.isoformat())
+        motivo_portao = portao.motivo({"titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"],
+                                       "url": lv["link_oficial"] or lv.get("link_divulgacao")}, hoje.isoformat())
         sem_titulo = not lv["titulo"] or lv["titulo"] == lv["id"]
         if lv["situacao"] == "excluido":
             validacao = "expurgado"
@@ -456,6 +476,25 @@ def farol_so_com_prazo_aberto(con: sqlite3.Connection, diario: Diario) -> int:
     return n
 
 
+def _aprender_escopo(con: sqlite3.Connection, diario: Diario, fora: dict[str, str], res: list) -> None:
+    """O aprendizado do expurgo geográfico: quantos livros de cada motor saíram (municípios de outros estados), para o
+    Comandante e para a correção do motor — uma lição por passagem com expurgo."""
+    expurgados = {r.livro for r in res if r.validacao == "expurgado" and r.livro in fora}
+    if not expurgados:
+        return
+    from collections import Counter
+    marcas = ",".join("?" * len(expurgados))
+    origem: dict[str, str] = {}
+    for lid, mot in con.execute(f"SELECT livro_id, motor FROM achado WHERE livro_id IN ({marcas}) ORDER BY encontrado_em", sorted(expurgados)):
+        origem.setdefault(lid, mot)
+    por_motor = Counter(origem.values())
+    from ..cerebro.aprendizado import Aprendizado
+    Aprendizado(diario).registrar("comandante", f"Expurgo geográfico (titular, 10/11/2026): {len(expurgados)} livro(s) de municípios do interior de "
+                                  f"outros estados saíram — por motor: " + ", ".join(f"{m} {n}" for m, n in por_motor.most_common(12)),
+                                  "a regra barra também na entrada; o motor que mais trouxe deve limitar a leitura do mapa do site a Goiás, "
+                                  "às capitais e às oportunidades estaduais, nacionais e internacionais")
+
+
 def escada_do_livro(con: sqlite3.Connection, lid: str) -> str:
     """A escada no livro (titular, 24/10/2026): o motor e o degrau de acesso que obtiveram a oportunidade (o achado mais
     recente que os registra); os livros de antes do registro dizem isso, e os migrados do Eldorado0 também."""
@@ -501,8 +540,10 @@ def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         return []
     con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     try:
-        alvo = pendentes(con)
+        fora = fora_do_escopo(con)                     # 10/11/2026: a revisão do escopo geográfico a cada passagem
+        alvo = pendentes(con) | set(fora)
         res = list(auditar(con, date.today(), alvo)) if alvo else []
+        _aprender_escopo(con, contexto.diario, fora, res)
         arquivados = arquivar_encerrados(con, contexto.diario, date.today())
         devolvidos = devolver_abertas_do_arquivo(con, contexto.diario)
         arquivados += farol_so_com_prazo_aberto(con, contexto.diario)

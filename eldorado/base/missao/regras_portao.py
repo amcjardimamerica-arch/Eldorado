@@ -262,6 +262,51 @@ def uf_por_municipio(texto: str) -> str | None:
     return None
 
 
+# 10/11/2026 (titular): o município nos TÍTULOS E ENDEREÇOS dos mapas de site — «tupaciguara mg edital 01 2026…»,
+# «ribeirao pires pnab 006 2026…», «…/editais/jequie-ba-premiacao…» (os livros que entraram pela leitura dos mapas de site
+# chegavam sem «Prefeitura de X» e passavam pela regra). O título que começa pelo nome de um ESTADO é estadual (fica).
+_ESTADOS_NOMES = ("acre", "alagoas", "amapa", "amazonas", "bahia", "ceara", "distrito federal", "espirito santo", "goias", "maranhao",
+                  "mato grosso do sul", "mato grosso", "minas gerais", "para", "paraiba", "parana", "pernambuco", "piaui", "rio de janeiro",
+                  "rio grande do norte", "rio grande do sul", "rondonia", "roraima", "santa catarina", "sao paulo", "sergipe", "tocantins")
+
+
+def _sem_acento(s: str) -> str:
+    return unicodedata.normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode().lower()
+
+
+def cidade_no_slug(titulo: str, url: str | None = None) -> tuple[str, str] | None:
+    """O município (e a UF) num título de endereço ou no caminho do endereço: «cidade uf …» ou, no título todo em minúsculas
+    (o endereço feito título), o nome que abre o título — só quando o nome existe numa única UF. None se não houver."""
+    if not _MUN_BR:
+        _MUN_BR.update((_j(ROOT / "config/missao/municipios_brasil.json", {}) or {}).get("municipios") or {"-": []})
+    ufs_min = {u.lower() for u in UFS}
+    candidatos = []
+    tit = str(titulo or "")
+    if tit and tit == tit.lower():                                   # o título que é o endereço (todo em minúsculas)
+        candidatos.append(tit)
+    caminho = re.sub(r"https?://[^/]+", "", str(url or ""))
+    if caminho:
+        candidatos.append(caminho.rstrip("/").rsplit("/", 1)[-1])
+    for bruto in candidatos:
+        t = re.sub(r"[^a-z0-9 ]", " ", _sem_acento(bruto).replace("-", " ").replace("_", " "))
+        t = " ".join(t.split())
+        if not t or any(t.startswith(e + " ") or t == e for e in _ESTADOS_NOMES):
+            continue
+        tok = t.split()
+        for i in range(1, min(len(tok), 7)):                          # «cidade uf»: a sigla logo depois do nome
+            if tok[i] in ufs_min:
+                for k in range(min(i, 5), 0, -1):
+                    nome = " ".join(tok[i - k:i])
+                    if len(nome) >= 4 and tok[i].upper() in (_MUN_BR.get(nome) or []):
+                        return nome, tok[i].upper()
+        for k in range(min(len(tok), 5), 0, -1):                      # o nome que abre o título (numa só UF)
+            nome = " ".join(tok[:k])
+            ufs = _MUN_BR.get(nome) or []
+            if len(nome) >= 5 and len(ufs) == 1:
+                return nome, ufs[0]
+    return None
+
+
 # — repositorio_unico.py · municipal_fora_de_goias
 def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
     """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). 14/10/2026 (titular): roda a
@@ -280,6 +325,15 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
         return None
     if str(r.get("uf") or "").upper() == "DF" or re.search(r"(?i)\bdistrito federal\b|\bbras[íi]lia\b", t):
         return None
+    if str(r.get("nivel") or r.get("abrangencia") or "").lower() not in ("estadual", "federal", "nacional", "internacional"):
+        _sl = cidade_no_slug(str(r.get("titulo") or ""), r.get("url") or r.get("link_divulgacao"))
+        if _sl:
+            _nome, _uf = _sl
+            _texto = f"{r.get('orgao') or ''} {r.get('titulo') or ''} {r.get('url') or ''}"
+            # fica: Goiás, o DF, a capital de outro estado e o ato de vários municípios com a capital incluída
+            if _uf not in ("GO", "DF") and re.sub(r"[^a-z]", "", _nome) not in _CAPITAIS_SEM_ESPACO and not capital_citada(_texto) \
+                    and not _municipio_goiano(_texto):
+                return f"município de outro estado ({_uf}, não capital) — {_nome}"
     municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t)) or \
         any(municipio_pelo_endereco(u) for u in (r.get("url"), r.get("link_oficial")))   # 15/10: pelo endereço
     if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
