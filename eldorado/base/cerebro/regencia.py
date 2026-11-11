@@ -124,6 +124,7 @@ class Regencia:
                     # orçamento e a folga, os motores em andamento são abandonados (ficam para a próxima passagem) e a passagem segue
                     presos = [pendentes[f_][0] for f_ in vencidos]
                     adiados.extend(presos)
+                    self.presos = set(getattr(self, "presos", set())) | set(presos)   # 11/11/2026: não são «adiados pelo governador»
                     PENDENTES_DO_DIA.setdefault(_hoje(), set()).update(presos)   # o Comandante aciona de novo
                     self.diario.emitir("alarme.aberto", "regencia", {"gravidade": "media", "modulo": "regencia:coleta", "aberto_em": agora(),
                                                                     "mensagem": "motor(es) preso(s) além do orçamento da coleta, abandonado(s) nesta "
@@ -155,9 +156,11 @@ class Regencia:
                     if getattr(motor, "escada", None) is not None:  # 29/10/2026: a escada aprende e lembra (o degrau por site)
                         import os as _os
 
-                        from ...motores.acesso.escada import ler_aprendido
+                        from ...motores.acesso.escada import ler_aprendido, ler_pendentes
                         motor.escada.diario = self.diario
                         motor.escada.semear(ler_aprendido(_os.environ.get("ELDORADO_DADOS", "dados")))
+                        if hasattr(motor.escada, "semear_pendentes"):   # 11/11/2026: o domínio pendente não sobe a escada a cada fonte
+                            motor.escada.semear_pendentes(ler_pendentes(_os.environ.get("ELDORADO_DADOS", "dados")))
                     f = pool.submit(medir, lambda motor=motor, p=p: list(motor.buscar(p)), medir_memoria=False)
                     pendentes[f] = (modulo, agora())
                     _inicio_m[f] = _t.monotonic()
@@ -336,6 +339,11 @@ def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         a, adiados = r.acionar(item["plano"], contexto.execucao)
         achados.extend(a)
         for m in adiados:
+            # 11/11/2026 (reanálise da Sala): o motor PRESO além do orçamento já tem o seu alarme («preso, abandonado nesta
+            # passagem»); ele entrava também aqui, como «adiado pelo governador: carga 46% … sem folga até 85%» — um segundo
+            # alarme, com o motivo errado (a carga lida no fim da coleta), a cada passagem (10 do DOU numa manhã)
+            if m in getattr(r, "presos", set()):
+                continue
             contexto.diario.emitir("alarme.aberto", "regencia", {"gravidade": "baixa", "modulo": m, "aberto_em": agora(),
                                                                  "mensagem": f"motor adiado pelo governador: {r.governador.motivo()}"})
         # 04/11/2026: o motor que voltou a rodar fecha os seus alarmes de adiamento (eles nunca fechavam: 279 abertos)

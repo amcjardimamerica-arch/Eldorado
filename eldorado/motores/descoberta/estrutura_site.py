@@ -18,7 +18,7 @@ from .pistas import Buscar, Pista
 NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
 
 
-_LOC_INDICE = re.compile(r"<(?:\w+:)?sitemap\b[^>]*>.*?<(?:\w+:)?loc>\s*(.*?)\s*</(?:\w+:)?loc>", re.S | re.I)
+_BLOCO_INDICE = re.compile(r"<(?:\w+:)?sitemap\b[^>]*>(.*?)</(?:\w+:)?sitemap>", re.S | re.I)
 _LOC_URL = re.compile(r"<(?:\w+:)?url\b[^>]*>(.*?)</(?:\w+:)?url>", re.S | re.I)
 _LOC = re.compile(r"<(?:\w+:)?loc>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</(?:\w+:)?loc>", re.S | re.I)
 _LASTMOD = re.compile(r"<(?:\w+:)?lastmod>\s*(.*?)\s*</(?:\w+:)?lastmod>", re.S | re.I)
@@ -48,7 +48,8 @@ def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | N
         raiz = ET.fromstring(t.encode("utf-8"))
         nome = lambda el: el.tag.rsplit("}", 1)[-1]   # noqa: E731 — o nome sem o namespace
         if tipo == "indice":
-            itens = [((s_.find("./{*}loc").text if s_.find("./{*}loc") is not None else "") or "", None)
+            itens = [((s_.find("./{*}loc").text if s_.find("./{*}loc") is not None else "") or "",
+                      (s_.find("./{*}lastmod").text if s_.find("./{*}lastmod") is not None else None))
                      for s_ in raiz if nome(s_) == "sitemap"]
         else:
             itens = []
@@ -59,7 +60,11 @@ def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | N
                 itens.append(((loc.text if loc is not None else "") or "", (mod.text if mod is not None else None)))
     except ET.ParseError:
         if tipo == "indice":
-            itens = [(m.group(1), None) for m in _LOC_INDICE.finditer(t)]
+            itens = []
+            for m in _BLOCO_INDICE.finditer(t):
+                loc, mod = _LOC.search(m.group(1)), _LASTMOD.search(m.group(1))
+                if loc:
+                    itens.append((loc.group(1), mod.group(1) if mod else None))
         else:
             itens = []
             for bloco in _LOC_URL.finditer(t):
@@ -69,22 +74,48 @@ def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | N
     return tipo, [(html.unescape(loc.strip()), (mod or "").strip() or None) for loc, mod in itens if loc and loc.strip()]
 
 
-def mapa_do_site(buscar: Buscar, url: str, limite: int = 2000, profundidade: int = 2) -> list[Pista]:
+# 11/11/2026 (reanálise da Sala): o TETO da leitura do mapa do site. A leitura tolerante de 10/11 passou a abrir mapas que
+# antes quebravam na primeira linha — e o índice de www.in.gov.br tem 370 mapas internos, cada um buscado pela escada de
+# acesso: o motor do DOU ficou preso além do orçamento da coleta em todas as passagens (nenhuma leitura concluída desde a
+# implantação), o nó «acionar» foi de 12 s para 28 min e a passagem de 6 para 32 min. Agora cada leitura abre no máximo
+# MAPAS_INTERNOS mapas internos (os de modificação mais recente primeiro), dentro de ORCAMENTO_MAPA_S segundos, e para
+# depois de duas falhas seguidas. O que ficou de fora é lido nas leituras seguintes (os mais recentes vêm sempre primeiro).
+MAPAS_INTERNOS = 8
+ORCAMENTO_MAPA_S = 60.0
+FALHAS_SEGUIDAS = 2
+
+
+def mapa_do_site(buscar: Buscar, url: str, limite: int = 2000, profundidade: int = 2, mapas_internos: int = MAPAS_INTERNOS,
+                 orcamento_s: float = ORCAMENTO_MAPA_S, relogio=None) -> list[Pista]:
     """As URLs do mapa do site (e dos mapas internos, até a profundidade), com a data de modificação. O site sem mapa
-    devolve a lista vazia (não é erro); o mapa interno que falha não derruba os outros."""
+    devolve a lista vazia (não é erro). A leitura tem teto: no máximo `mapas_internos` mapas internos (os mais recentes
+    primeiro), `orcamento_s` segundos e `limite` endereços; o mapa interno que falha não derruba os outros, mas duas
+    falhas seguidas encerram a leitura."""
+    import time as _t
+    relogio = relogio or _t.monotonic
+    inicio = relogio()
     saida: list[Pista] = []
-    fila = [(url, 0)]
+    fila: list[tuple[str, int]] = [(url, 0)]
+    abertos = falhas = 0
     while fila and len(saida) < limite:
         atual, nivel = fila.pop(0)
+        if nivel > 0:
+            if abertos >= mapas_internos or relogio() - inicio > orcamento_s or falhas >= FALHAS_SEGUIDAS:
+                break
+            abertos += 1
         try:
             tipo, itens = ler_mapa(buscar(atual).conteudo)
+            falhas = 0
         except Exception:  # noqa: BLE001 — o primeiro mapa propaga o erro de acesso (a fonte falha); o interno, não
             if nivel == 0:
                 raise
+            falhas += 1
             continue
         if tipo == "indice":
             if nivel < profundidade:
-                fila += [(loc, nivel + 1) for loc, _ in itens]
+                # os mapas internos de modificação mais recente primeiro (sem a data, na ordem do índice)
+                ordenados = sorted(itens, key=lambda x: x[1] or "", reverse=True) if any(m for _l, m in itens) else itens
+                fila = [(loc, nivel + 1) for loc, _ in ordenados[:mapas_internos]] + fila
             continue
         for loc, mod in itens:
             saida.append(Pista(titulo=loc.rstrip("/").rsplit("/", 1)[-1].replace("-", " "), link=loc, origem="mapa do site", data=mod))

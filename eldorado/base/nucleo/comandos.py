@@ -82,11 +82,18 @@ def aplicar(config: Path = CONFIG):
     _, dados, eventos = _cfg(config)
     bancos = abrir_bancos(dados)
     try:
-        r = Gravador(bancos).aplicar(ler(eventos))
+        # 11/11/2026 (reanálise da Sala): só os arquivos de eventos NOVOS ou que cresceram. A reaplicação lia o histórico
+        # inteiro a cada vez (2,4 milhões de eventos: 10 min no Painel a cada publicação e mais 10 min no começo e no fim de
+        # cada ciclo); a marca dados/aplicados.json guarda o tamanho de cada arquivo já aplicado por inteiro, junto dos bancos.
+        from .eventos import MarcaAplicados
+        marca = MarcaAplicados(dados, bancos)
+        r = Gravador(bancos).aplicar(ler(eventos, pular=marca.ja, origem=marca.origem, lidos=marca.lidos))
+        marca.gravar(r.recusados)
     finally:
         for c in bancos.values():
             c.close()
-    typer.echo(f"aplicados {r.aplicados} · repetidos {r.repetidos} · recusados {len(r.recusados)}")
+    typer.echo(f"aplicados {r.aplicados} · repetidos {r.repetidos} · recusados {len(r.recusados)}"
+               f" · arquivos já aplicados (pulados) {marca.pulados} de {marca.pulados + len(marca.lidos)}")
     for ev, tipo, motivo in r.recusados[:20]:
         typer.echo(f"  recusado {tipo} ({ev}): {motivo}")
     raise typer.Exit(1 if r.recusados else 0)
@@ -551,6 +558,28 @@ def _registrar_gravacao(ok: bool, resumo: str) -> None:
         pass
 
 
+def cabe_outra_passagem(agora_s: float, duracoes: list[float], resta_no_laco_s: float, limite_job_min: float = 345,
+                        reserva_final_min: float = 25, inicio_job_s: float | None = None) -> bool:
+    """11/11/2026 (reanálise da Sala): outra passagem cabe nesta execução? A previsão é a mais longa das 3 últimas passagens.
+    Não cabe se ela passar do que resta no laço (o limite pedido) ou do que resta do TRABALHO inteiro no GitHub — contado
+    desde ELDORADO_INICIO_JOB (a instalação e a reaplicação vêm antes do laço), menos a reserva do fim."""
+    import os
+
+    if not duracoes:
+        return True
+    previsao = max(duracoes[-3:])
+    if previsao > resta_no_laco_s:
+        return False
+    if inicio_job_s is None:
+        try:
+            inicio_job_s = float(os.environ.get("ELDORADO_INICIO_JOB") or 0) or None
+        except ValueError:
+            inicio_job_s = None
+    if inicio_job_s is None:
+        return True
+    return (agora_s - inicio_job_s) + previsao + reserva_final_min * 60 <= limite_job_min * 60
+
+
 @app.command()
 def permanente(
     workflow: Path = Path("workflows/passagem.toml"),
@@ -559,6 +588,8 @@ def permanente(
     gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),
     espera_max_min: float = typer.Option(15, help="sem fila, olha de novo no máximo a cada tantos minutos"),
     gravar: bool = typer.Option(True, help="gravar no repositório (desligue fora do GitHub)"),
+    limite_job_min: float = typer.Option(345, help="o trabalho inteiro (desde ELDORADO_INICIO_JOB) nunca passa disto: o GitHub cancela aos 360"),
+    reserva_final_min: float = typer.Option(25, help="o tempo guardado para o fim da execução (os pilotos, a manutenção e a gravação)"),
 ):
     """FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário de trabalho e descanso. Uma passagem depois da outra
     enquanto houver fila; sem fila, espera só até a próxima ação prevista pelo Cérebro e volta."""
@@ -581,8 +612,11 @@ def permanente(
         marca.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
         os.utime(marca, (time.time() - 5, time.time() - 5))
 
+    ultima_gravacao = [0.0]
+
     def gravar_agora(esperar: bool = False) -> None:
         if gravar and trava_gravar.acquire(blocking=esperar):  # uma gravação de cada vez (a final espera a vez)
+            ultima_gravacao[0] = time.monotonic()
             try:
                 r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True, timeout=600)
                 resumo = (r.stdout or r.stderr).strip()
@@ -619,7 +653,8 @@ def permanente(
             passos += 1
             if passos * 5 >= gravar_min:
                 passos = 0
-                gravar_agora()
+                if time.monotonic() - ultima_gravacao[0] > 180:   # 11/11/2026: a Sala acabou de gravar? esta rodada não repete
+                    gravar_agora()
 
     threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
@@ -637,7 +672,9 @@ def permanente(
             try:
                 r = medir_e_gravar(Path("."), ciclo=ciclo_atual[0], com_mapa=(n % MAPA_A_CADA == 0))
                 typer.echo(f"  sala da produção: índice {r['indice_saude']} · {r['mudancas']} · medida em {r['duracao_s']} s")
-                # a gravação de segundo plano (a cada 5 min) envia painel_vivo/ e aciona a publicação do painel
+                # 11/11/2026 (reanálise): a medição é enviada NA HORA (a gravação aciona o painel). Antes esperava a gravação
+                # de segundo plano, até 5 min depois: a Sala chegava ao site com 15 a 25 min, acima do limite da titular
+                gravar_agora()
             except Exception as e:  # noqa: BLE001 — a medição da Sala nunca para o sistema; tenta de novo no próximo relógio
                 typer.echo(f"::warning::sala da produção: {type(e).__name__}: {str(e)[:200]}")
             n += 1
@@ -752,6 +789,7 @@ def permanente(
         except Exception:  # noqa: BLE001
             pass
 
+    duracoes: list[float] = []
     while True:
         ciclo += 1
         ciclo_atual[0] = ciclo
@@ -761,10 +799,12 @@ def permanente(
             _rodar(workflow, config, None, None, "leve")
             _sinal_passagem(f"ciclo {ciclo}: a passagem terminou em {(time.monotonic() - _t0) / 60:.1f} min")
             _depois_da_passagem()
+            duracoes.append(time.monotonic() - _t0)
         except typer.Exit as e:
             _como = "adiada pelo governador" if e.exit_code == ADIADO else "terminou"
             _sinal_passagem(f"ciclo {ciclo}: código {e.exit_code} ({_como}) em {(time.monotonic() - _t0) / 60:.1f} min")
             if e.exit_code != ADIADO:   # 01/11/2026: a passagem terminou de verdade (com sucesso ou falha): a manutenção roda
+                duracoes.append(time.monotonic() - _t0)
                 _depois_da_passagem()
             if e.exit_code == 75:   # 30/10/2026: adiada pelo governador (a máquina carregada): os voos cedem a vez e a
                 # passagem espera 60 s (antes recomeçava NA HORA: 13.746 vezes numa hora, 100 mil sinais por dia)
@@ -789,6 +829,13 @@ def permanente(
         )
         if decorrido > limite_min * 60:
             break
+        # 11/11/2026 (reanálise da Sala): a parada PREVISTA. O laço só conferia o limite depois de cada passagem: com as
+        # passagens em 30 min, a execução #381 saiu do laço aos 345 min do trabalho e o GitHub a cancelou aos 361 (o limite
+        # dele é de 6 h), no meio da gravação final — cancelada, a continuação não foi acionada e o sistema parou.
+        if not cabe_outra_passagem(time.time(), duracoes, limite_min * 60 - decorrido, limite_job_min, reserva_final_min):
+            typer.echo(f"  a próxima passagem (prevista em {max(duracoes[-3:]) / 60:.0f} min) não cabe no tempo desta execução: "
+                       "o sistema grava e passa a vez à continuação")
+            break
         from ..comandante.pilotos import REINICIAR
 
         if REINICIAR.is_set():  # o Comandante: a memória não cedeu em 15 minutos (26/10/2026)
@@ -807,6 +854,13 @@ def permanente(
     parar.set()
     for f in fios_pilotos:  # os pilotos terminam o livro ou a missão atual (até 4 min)
         f.join(timeout=240)
+    if gravar:   # 11/11/2026: a Sala diz que a produção está religando (a troca de ciclo leva ~20 min sem medição)
+        try:
+            from ..painel.vivo import marcar_religando
+
+            marcar_religando(Path("."), "implantação" if implantar.is_set() else "troca de ciclo (o limite de tempo da execução)")
+        except Exception as e:  # noqa: BLE001 — o aviso nunca impede a gravação final
+            typer.echo(f"  aviso de religação na Sala: {type(e).__name__}: {str(e)[:120]}")
     gravar_agora(esperar=True)  # tudo o que terminou é gravado; nada fica pela metade
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
 

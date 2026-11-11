@@ -39,6 +39,38 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -e .
+      - name: A semana da guarda (uma vez por semana os bancos são remontados do zero)
+        id: semana
+        run: echo "semana=$(date -u +%G-%V)" >> "$GITHUB_OUTPUT"
+      - name: Os bancos da publicação anterior (só os eventos novos são aplicados)
+        # 11/11/2026 (reanálise da Sala): cada publicação remontava os bancos do zero (2,4 milhões de eventos: 10 min dos 12
+        # de cada publicação), e a Sala medida pela produção chegava ao site com 15 a 25 min. Os bancos remontados e a marca
+        # dos arquivos já aplicados (dados/aplicados.json) ficam guardados de uma publicação para a outra: a seguinte aplica só
+        # os arquivos novos ou que cresceram (segundos). A chave muda com QUALQUER mudança do código e a cada semana: aí os
+        # bancos são remontados do zero, como antes. Sem a guarda, tudo é reaplicado — nada depende dela para estar certo.
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: painel-bancos-${{ hashFiles('eldorado/**/*.py') }}-${{ steps.semana.outputs.semana }}-${{ github.run_id }}
+          restore-keys: |
+            painel-bancos-${{ hashFiles('eldorado/**/*.py') }}-${{ steps.semana.outputs.semana }}-
+      - name: A guarda é renovada? (a cada 30 min, e nunca com um veredito que o ciclo ainda não importou)
+        # a guarda só tem o que veio dos eventos do repositório: o veredito importado só nesta publicação não entra nela
+        id: guarda
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import datetime, glob, json
+          try:
+              em = datetime.datetime.fromisoformat(json.load(open("dados/aplicados.json", encoding="utf-8"))["em"])
+              idade = (datetime.datetime.now(datetime.timezone.utc) - em).total_seconds() / 60
+          except Exception:
+              idade = 1e9
+          pendente = bool(glob.glob("verificacao/vereditos/*.json"))
+          print("renovar=" + ("true" if idade >= 30 and not pendente else "false"))
+          PY
       - name: Os vereditos que chegaram e ainda não foram importados (R40)
         # o veredito do Chrome enviado agora entra no banco desta publicação; o ciclo da máquina de casa o importa de vez
         run: |
@@ -50,6 +82,21 @@ jobs:
         # um evento recusado não pode deixar o site velho (25/10/2026: a republicação ficou parada pelas uniões repetidas):
         # avisa e segue, publicando com o que foi aplicado
         run: eldorado aplicar || echo "::warning::há eventos recusados; o site foi publicado com os eventos aplicados"
+      - name: Consolidar os bancos para a guarda (o que foi aplicado volta para o arquivo do banco)
+        if: steps.guarda.outputs.renovar == 'true'
+        run: |
+          python -c "import sqlite3,glob; [sqlite3.connect(p).execute('PRAGMA wal_checkpoint(TRUNCATE)') for p in glob.glob('dados/*.db')]" \
+            || echo "::warning::os bancos não foram consolidados; a próxima publicação reaplica o que faltar"
+      - name: Guardar os bancos para a próxima publicação
+        if: steps.guarda.outputs.renovar == 'true'
+        continue-on-error: true      # a guarda nunca impede a publicação
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: painel-bancos-${{ hashFiles('eldorado/**/*.py') }}-${{ steps.semana.outputs.semana }}-${{ github.run_id }}
       - name: Gerar o site do sistema (nenhum dado do Eldorado0)
         env:
           GITHUB_TOKEN: ${{ github.token }}

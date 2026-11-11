@@ -35,6 +35,7 @@ INTERVALO_MIN = 5           # o relógio da produção: a Sala a cada 5 minutos 
 MAPA_A_CADA = 3             # o mapa dos arquivos a cada 3 medições da Sala (15 min): é o arquivo grande (≈270 kB)
 ATRASO_ATENCAO_MIN = 30     # a página avisa a medição velha (medida + gravada + publicada passa de 15 min por pouco)
 ATRASO_ALARME_MIN = 60
+RELIGAR_ESPERA_MIN = 45     # a troca de ciclo leva ~20 min (17 a 24 medidos); além de 45 sem medição, a produção está parada
 ARQ_SALA, ARQ_MAPA = "sala_controle.json", "mapa_arquivos.json"
 
 
@@ -188,6 +189,24 @@ def medir_e_gravar(raiz: Path = Path("."), ciclo: int | None = None, diario=None
             pass
     return {"indice_saude": sc.get("indice_saude"), "contagem": sc.get("contagem"), "mudancas": sc["mudancas"]["resumo"],
             "duracao_s": fonte["duracao_s"], "arquivos": [str(pasta / ARQ_SALA), str(pasta / ARQ_MAPA)]}
+
+
+def marcar_religando(raiz: Path = Path("."), motivo: str = "troca de ciclo") -> bool:
+    """11/11/2026 (reanálise da Sala): ao encerrar a execução, a produção AVISA na própria medição que está religando (a
+    troca de ciclo e a implantação levam cerca de 20 min sem medição). A página mostra «a produção está religando desde
+    HH:MM» em vez de «medição atrasada»; a primeira medição do ciclo novo apaga o aviso. Passado o prazo esperado sem
+    medição nova, a página diz que a produção está PARADA (em vermelho)."""
+    caminho = Path(raiz) / PASTA / ARQ_SALA
+    try:
+        sc = json.loads(caminho.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    if (sc.get("fonte") or {}).get("origem") != "produção":
+        return False
+    sc["fonte"].update({"religando_desde": _agora().isoformat(timespec="seconds"), "religando_motivo": motivo,
+                        "religando_espera_min": RELIGAR_ESPERA_MIN})
+    _gravar(caminho, sc)
+    return True
 
 
 def aguardando(motivo: str) -> tuple[dict[str, Any], dict[str, Any]]:

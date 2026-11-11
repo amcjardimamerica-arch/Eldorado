@@ -2978,6 +2978,13 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   function nvFonte(){ const el=$("nv-leitura"); if(!el||!SC) return; const f=SC.fonte||{};
     if(f.origem!=="produção"){ el.innerHTML=`<b style="color:${COR.amarelo}">Aguardando a medição da produção</b> · ${e(f.motivo||"")}`; return; }
     const med=new Date(f.medido_em), idade=Math.max(0,Math.round((Date.now()-med.getTime())/60000));
+    /* 11/11/2026 (reanálise): a produção avisa quando encerra a execução — religando (âmbar) até o prazo; depois, PARADA */
+    if(f.religando_desde){ const r=new Date(f.religando_desde), ha=Math.max(0,Math.round((Date.now()-r.getTime())/60000)), esp=f.religando_espera_min||45,
+        hr=r.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}), hmed=med.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+      el.innerHTML= ha<=esp
+        ? `<span class="luz amarelo" style="width:9px;height:9px;margin-right:6px"></span><b style="color:${COR.amarelo}">A produção está religando</b> desde ${hr} (${e(f.religando_motivo||"troca de ciclo")}) · há ${ha} min · a medição volta em cerca de 20 min · última medição da produção às ${hmed}`
+        : `<span class="luz vermelho" style="width:9px;height:9px;margin-right:6px"></span><b style="color:${COR.vermelho}">A produção está PARADA há ${ha} min</b> (encerrou às ${hr}: ${e(f.religando_motivo||"troca de ciclo")}, e não voltou a medir) · religar em GitHub → Actions → Eldorado → Run workflow · última medição às ${hmed}`;
+      return; }
     const k=idade<=30?"verde":idade<=60?"amarelo":"vermelho", hm=x=>x.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
     el.innerHTML=`<span class="luz ${k}" style="width:9px;height:9px;margin-right:6px"></span><b style="color:#EAF2FF">Medida pela própria produção</b> às ${hm(med)}`
       +` (${dm(f.medido_em)}) · há ${idade} min${f.execucao?` · execução ${e(f.execucao)}`:""}${f.ciclo?` · ciclo ${e(f.ciclo)}`:""}`

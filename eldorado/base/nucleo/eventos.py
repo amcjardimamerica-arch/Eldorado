@@ -9,6 +9,7 @@ O diário guarda os eventos de cada execução num arquivo que só recebe acrés
 from __future__ import annotations
 
 import gzip
+import json
 import os
 import re
 import threading
@@ -387,7 +388,54 @@ def pasta_efemera(pasta_eventos: str | Path) -> Path:
     return Path(pasta_eventos).parent / "dados" / EFEMERO
 
 
-def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
+class MarcaAplicados:
+    """11/11/2026 (reanálise da Sala): a marca dos arquivos de eventos JÁ APLICADOS por inteiro (dados/aplicados.json):
+    o caminho e o tamanho de cada um. A reaplicação pula o arquivo com o mesmo tamanho e relê o que cresceu (o gravador
+    ignora o evento já aplicado, então reler nunca duplica). A marca só vale junto dos bancos em que foi feita: ela guarda
+    quantos eventos cada banco tinha aplicado; se o banco de agora tem menos (outro banco, ou um banco reposto), a marca é
+    ignorada e tudo é reaplicado. O arquivo com evento recusado não é marcado (é relido na próxima vez)."""
+
+    NOME = "aplicados.json"
+
+    def __init__(self, dados: str | Path, bancos: dict):
+        self.caminho, self.bancos = Path(dados) / self.NOME, bancos
+        self.ja: dict[str, int] = {}
+        self.origem: dict[str, str] = {}
+        self.lidos: dict[str, int] = {}
+        try:
+            m = json.loads(self.caminho.read_text(encoding="utf-8"))
+            if all(self._aplicados(n) >= int(q) for n, q in (m.get("bancos") or {"?": 1}).items()):
+                self.ja = {str(k): int(v) for k, v in (m.get("arquivos") or {}).items()}
+        except (OSError, ValueError, TypeError, KeyError):
+            self.ja = {}
+
+    def _aplicados(self, nome: str) -> int:
+        try:
+            return int(self.bancos[nome].execute("SELECT COUNT(*) FROM evento_aplicado").fetchone()[0])
+        except Exception:  # noqa: BLE001 — sem o banco ou sem a tabela, a marca não vale
+            return -1
+
+    @property
+    def pulados(self) -> int:
+        return len([a for a in self.ja if a not in self.lidos])
+
+    def gravar(self, recusados: list | None = None) -> None:
+        ruins = {self.origem.get(str(r[0]).split("/")[0]) for r in (recusados or [])}
+        arquivos = {**self.ja, **{a: t for a, t in self.lidos.items() if a not in ruins}}
+        for a in ruins:
+            arquivos.pop(a, None)
+        nomes = {id(c): n for n, c in self.bancos.items()}                      # (a Biblioteca aparece com dois nomes)
+        m = {"em": agora(), "bancos": {n: self._aplicados(n) for n in nomes.values()}, "arquivos": arquivos}
+        tmp = self.caminho.with_suffix(".tmp")
+        try:
+            tmp.write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+            os.replace(tmp, self.caminho)
+        except OSError:
+            pass
+
+
+def ler(pasta: str | Path, desde: float | None = None, pular: dict[str, int] | None = None, origem: dict[str, str] | None = None,
+        lidos: dict[str, int] | None = None) -> Iterator[Evento]:
     """Lê os eventos da pasta, na ordem de criação. Linha corrompida levanta EventoInvalido (nunca é ignorada).
     desde (29/10/2026): só os arquivos modificados a partir desse instante (a aplicação dentro da passagem lia o histórico
     inteiro — ~600 mil eventos — em cada etapa de aplicar: a memória ia de 1,1 GB a 2,9 GB numa etapa)."""
@@ -402,6 +450,15 @@ def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
                            and not (a.name.endswith(".jsonl") and a.with_name(a.name + ".gz").exists()) and (desde is None or a.stat().st_mtime >= desde))
     eventos: list[Evento] = []
     for a in arquivos:
+        if pular is not None or lidos is not None:              # 11/11/2026: só os arquivos novos ou que cresceram
+            try:
+                tam = a.stat().st_size                           # o tamanho ANTES da leitura (o que for escrito depois é relido)
+            except OSError:
+                continue
+            if pular and pular.get(str(a)) == tam:
+                continue
+            if lidos is not None:
+                lidos[str(a)] = tam
         bruto = gzip.decompress(a.read_bytes()) if a.name.endswith(".gz") else a.read_bytes()
         for n, linha in enumerate(bruto.splitlines(), 1):
             if not linha.strip():
@@ -412,6 +469,8 @@ def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
                 raise EventoInvalido(f"{a.name}, linha {n}: {e}") from e
             if ev.tipo not in CATALOGO:
                 raise EventoInvalido(f"{a.name}, linha {n}: tipo fora do catálogo: {ev.tipo}")
+            if origem is not None:
+                origem[ev.id] = str(a)
             eventos.append(ev)
     eventos.sort(key=lambda e: e.id)
     return iter(eventos)

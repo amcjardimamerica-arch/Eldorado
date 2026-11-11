@@ -28,6 +28,8 @@ jobs:
     env:
       TZ: America/Sao_Paulo
     steps:
+      - name: A hora do começo do trabalho (o GitHub cancela aos 360 min; o ciclo para antes, sozinho)
+        run: echo "ELDORADO_INICIO_JOB=$(date +%s)" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
@@ -93,7 +95,22 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
-        run: eldorado permanente --limite-min 320 --gravar-min 5
+        # 11/11/2026 (reanálise da Sala): o laço para aos 300 min OU quando a próxima passagem não couber no trabalho inteiro
+        # (345 min desde o começo, menos 25 de reserva para o fim) — a execução #381 passou das 6 h e foi cancelada
+        run: eldorado permanente --limite-min 300 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
+      - name: Continuar (o funcionamento é permanente) — a continuação entra na fila ANTES da manutenção e da gravação final
+        # 11/11/2026: acionada aqui, a continuação espera na fila (a mesma concorrência) e começa quando este trabalho
+        # terminar — mesmo que o fim dele seja cortado pelo limite de 6 h do GitHub. Antes ficava no último passo: a execução
+        # cancelada pelo limite não a acionava e o sistema parava até o vigia (que o GitHub só roda de 5 em 5 horas).
+        # 25/10/2026: só quando o ciclo termina por conta própria; interrompido por uma implantação, quem religa é o Implantar
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ job.status }}" != "success" ]; then echo "execução com falha: pausa de 5 minutos antes de continuar"; sleep 300; fi
+          curl -s -o /dev/null -w "continuação acionada: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/eldorado.yml/dispatches" \
+            -d '{"ref":"main","inputs":{"gravar_banco":"false","acionar_todos":"false"}}'
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
         run: eldorado aplicar || echo "::warning::há eventos recusados (viram alarme na sala; o ciclo segue)"
@@ -120,13 +137,3 @@ jobs:
           ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: bash scripts/gravar.sh "${{ inputs.gravar_banco }}"
-      - name: Continuar (o funcionamento é permanente)
-        # 25/10/2026: só quando o ciclo termina por conta própria; interrompido por uma implantação, quem religa é o Implantar
-        if: ${{ !cancelled() }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "${{ job.status }}" != "success" ]; then echo "execução com falha: pausa de 5 minutos antes de continuar"; sleep 300; fi
-          curl -s -o /dev/null -w "continuação acionada: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/eldorado.yml/dispatches" \
-            -d '{"ref":"main","inputs":{"gravar_banco":"false","acionar_todos":"false"}}'

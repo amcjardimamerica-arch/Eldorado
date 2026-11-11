@@ -124,6 +124,44 @@ def ler_aprendido(dados) -> dict[str, int]:
         return {}
 
 
+# 11/11/2026 (reanálise da Sala): o domínio que terminou a escada inteira «pendente no computador local» era subido de novo,
+# degrau por degrau, a cada fonte e a cada acionamento. No site que só abre no Brasil cada degrau esgota o tempo (2 tentativas
+# de 30 s): ~7 min por fonte. O motor das prefeituras gastava os 20 min do acionamento em 3 fontes de Luziânia, parava sem ler
+# nenhuma, e a Regência o acionava de novo na passagem seguinte («continua o trabalho do dia»): 26 de 30 acionamentos em
+# 10/11 (9,2 h do dia), e a passagem em mais de 20 min. Agora a escada lembra a hora em que o domínio terminou pendente:
+# por RESUBIR_PENDENTE_H horas, o pedido vai direto ao degrau do computador da titular (a resposta chegou? é lida; não chegou?
+# pendente, em milissegundos). Passado o prazo, a escada inteira é tentada de novo (o site pode ter voltado a abrir) — o
+# computador da titular continua sem ser o ponto de partida permanente (29/10/2026). O acionamento à mão sobe sempre.
+RESUBIR_PENDENTE_H = 6.0
+
+
+def ler_pendentes(dados) -> dict[str, float]:
+    """Os domínios que terminaram a escada pendentes no computador da titular (o Cérebro: a tabela dominio), domínio → a
+    hora da última subida inteira (segundos desde a época)."""
+    import sqlite3
+    from datetime import datetime
+    from pathlib import Path
+
+    arq = Path(dados) / "cerebro.db"
+    if not arq.exists():
+        return {}
+    saida: dict[str, float] = {}
+    try:
+        c = sqlite3.connect(f"file:{arq}?mode=ro", uri=True)
+        try:
+            for d, quando in c.execute("SELECT dominio, ultimo_bloqueio FROM dominio WHERE exige_local = 1 AND degrau_que_funciona IS NULL "
+                                       "AND ultimo_bloqueio IS NOT NULL"):
+                try:
+                    saida[d] = datetime.fromisoformat(str(quando)).timestamp()
+                except ValueError:
+                    continue
+        finally:
+            c.close()
+    except sqlite3.Error:
+        return {}
+    return saida
+
+
 class Escada:
     def __init__(self, degraus: list[Degrau], diario: Diario | None = None, governador=None, intervalo_padrao: float = 1.0,
                  tentativas: int = 2, aprendido: dict[str, int] | None = None, tempo_limite: float = 30.0, dormir=time.sleep):
@@ -135,6 +173,8 @@ class Escada:
         self._ultimo: dict[str, float] = {}
         self._trava = threading.Lock()
         self.bloqueios: dict[str, int] = {}
+        self.pendente_desde: dict[str, float] = {}                  # 11/11/2026: domínio → a hora da última subida que terminou pendente
+        self.relogio = time.time
 
     def definir_intervalo(self, dom: str, segundos: float) -> None:
         self.intervalos[dom] = max(self.intervalos.get(dom, 0.0), segundos)
@@ -162,6 +202,14 @@ class Escada:
         ponte = next((j for j, d in enumerate(self.degraus[:limite]) if str(getattr(d, "nome", "")).startswith("P ·")), None)
         if ponte is not None and ponte < inicio:
             ordem.insert(0, ponte)
+        # 11/11/2026: o domínio que terminou pendente há pouco vai direto ao degrau do computador da titular (ver RESUBIR_PENDENTE_H)
+        import os
+        local = next((j for j, d in enumerate(self.degraus[:limite]) if codigo(d) == 9), None)
+        desde = self.pendente_desde.get(dom)
+        atalho = (local is not None and desde is not None and corpo is None and 0 <= self.relogio() - desde < RESUBIR_PENDENTE_H * 3600
+                  and os.environ.get("ELDORADO_FORCAR") != "1" and not servico_local(url))
+        if atalho:
+            ordem = [local]
         for i in ordem:
             d = self.degraus[i]
             if d.pesado and self.governador is not None and not self.governador.pode_iniciar(f"degrau:{d.nome}", "pesado"):
@@ -194,11 +242,18 @@ class Escada:
             except Pendente as e:
                 # 29/10/2026: "pendente" não é sucesso: registra que o domínio exigiu o computador da titular, mas NÃO como o
                 # degrau por onde começar (antes, uma única falha mandava o domínio para sempre ao "pendente")
+                if atalho:                                          # 11/11/2026: sem subir a escada de novo (e sem renovar a hora)
+                    from datetime import datetime, timezone
+                    quando = datetime.fromtimestamp(desde, timezone.utc).strftime("%d/%m %H:%M UTC")
+                    raise Pendente(f"{e} — pedido já entregue: a escada inteira terminou pendente em {quando} e volta a ser "
+                                   f"tentada {RESUBIR_PENDENTE_H:.0f} h depois") from e
+                self.pendente_desde[dom] = self.relogio()
                 self._registrar_exige_local(dom)
                 # 05/11/2026 (R45): a pendência leva o motivo de cada degrau que falhou antes (antes só «pendente»)
                 raise Pendente(f"{e} — antes: {'; '.join(motivos)[:400]}" if motivos else str(e)) from e
             r.degrau = d.nome
             self.ultimo_degrau = d.nome                         # o degrau que serviu a última leitura (vai para o livro)
+            self.pendente_desde.pop(dom, None)                  # 11/11/2026: o domínio respondeu: deixa de ser pendente
             r.alertas = motivos + r.alertas
             if self.aprendido.get(dom) != i:
                 self._aprender(dom, i)
@@ -215,6 +270,16 @@ class Escada:
                 continue
             if cod in pos and dom not in self.aprendido:
                 self.aprendido[dom] = pos[cod]
+                n += 1
+        return n
+
+    def semear_pendentes(self, memoria: dict[str, float]) -> int:
+        """11/11/2026: a memória dos domínios que terminaram pendentes no computador da titular (domínio → a hora da última
+        subida inteira); vale a mais recente."""
+        n = 0
+        for dom, quando in memoria.items():
+            if quando > self.pendente_desde.get(dom, 0.0):
+                self.pendente_desde[dom] = float(quando)
                 n += 1
         return n
 

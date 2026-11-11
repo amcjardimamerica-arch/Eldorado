@@ -31,6 +31,12 @@ ETAPAS = {
 ORDEM = {"vermelho": 0, "amarelo": 1, "cinza": 2, "verde": 3}
 
 
+def _causa(mensagem: str | None) -> str:
+    """A causa de um alarme: a mensagem sem os números que variam de uma repetição para outra."""
+    import re as _re
+    return _re.sub(r"\d+", "#", str(mensagem or ""))[:90]   # troca os números ANTES de cortar («1%» e «17%»: a mesma causa)
+
+
 def _idade_h(quando: str | None, agora: datetime) -> float | None:
     if not quando:
         return None
@@ -868,8 +874,11 @@ def montar(
       faixa={"normal": [None, 10], "alarme": [None, 30]}, cadencia_h=0.25)
     # 10/11/2026 (parecer da Sala, passo 4): conta as CAUSAS abertas (o mesmo módulo e a mesma mensagem uma vez só); a mesma
     # recusa repetida a cada passagem eram 85 linhas iguais contadas como 85 alarmes. Os registros ficam no texto.
-    _al = q(cer, "SELECT COUNT(*) FROM (SELECT DISTINCT modulo, mensagem FROM alarme WHERE fechado_em IS NULL)")
-    _al_reg = q(cer, "SELECT COUNT(*) FROM alarme WHERE fechado_em IS NULL")
+    # 11/11/2026 (reanálise): a causa é a mensagem SEM OS NÚMEROS que variam («carga 46%», «carga 57%»: o mesmo adiamento
+    # do mesmo motor aparecia como 10 causas) — o mesmo módulo com a mesma mensagem, trocados os números, é uma causa só
+    _linhas_al = cer.execute("SELECT modulo, mensagem FROM alarme WHERE fechado_em IS NULL").fetchall()
+    _al = len({_causa(msg_ or m_) for m_, msg_ in _linhas_al})   # a mesma chave dos anunciadores do painel de alarmes
+    _al_reg = len(_linhas_al)
     I("al_abertos", "Alarmes abertos sem solução", _al, _faixa(_al, 0, 10, False),
       f"{_al} causa(s) de alarme aberta(s), sem solução ({_al_reg} registro(s), contadas as repetições)", iso,
       faixa={"normal": [None, 0], "alarme": [None, 10]}, cadencia_h=0.25)
@@ -970,7 +979,7 @@ def montar(
     ):
         m_no = _re.search(r"o nó ([a-z_]+) falhou", msg or "")
         resolvido = bool(m_no and volta.get(m_no.group(1), "") > (quando or ""))
-        chave = _re.sub(r"\d+", "#", (msg or mod or "")[:90])
+        chave = _causa(msg or mod)
         g = grupos.setdefault(
             chave,
             {
