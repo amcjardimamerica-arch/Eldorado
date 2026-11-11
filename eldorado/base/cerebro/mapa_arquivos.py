@@ -426,6 +426,7 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         motivo.setdefault(p, "sem leitura própria e sem usuário que tenha rodado em 24 h")
     # o círculo das bibliotecas: vermelho só pelo próprio erro (no rastro); verde se algum usuário cumpre a finalidade;
     # âmbar se todos os que o usam estão em falha (antes: o pior de quem usa, o que espalhava a falha de um nó por tudo)
+    herdado: set[str] = set()   # 10/11/2026 (passo 10): a R45 continua (âmbar se algum usuário falha); o mapa diz se é herança
     for p in vermelhos_do_erro:
         circ.setdefault(p, "r")
     for _ in range(6):
@@ -436,6 +437,7 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             if herd:   # R45: verde só se todos os usuários cumprem a finalidade (antes bastava um, e um verde escondia os outros)
                 circ[p] = "v" if all(h == "v" for h in herd) else "a" if any(h in ("a", "r") for h in herd) else "c"
                 if circ[p] == "a":
+                    herdado.add(p)   # 10/11/2026 (parecer da Sala, passo 10): o âmbar que veio de quem usa o arquivo
                     _m = f"⚠ {sum(1 for h in herd if h != 'v')} de {len(herd)} usuário(s) sem cumprir a finalidade"
                     motivo[p] = f"{motivo[p]}; {_m}" if motivo.get(p) and _m not in motivo[p] else motivo.get(p) or _m
     # os fluxos do GitHub (a raiz da herança): a última execução concluída (sucesso ou falha; as interrompidas pela
@@ -474,6 +476,7 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             if herd:   # R45: verde só se todos os usuários cumprem a finalidade (antes bastava um, e um verde escondia os outros)
                 circ[p] = "v" if all(h == "v" for h in herd) else "a" if any(h in ("a", "r") for h in herd) else "c"
                 if circ[p] == "a":
+                    herdado.add(p)   # 10/11/2026 (parecer da Sala, passo 10): o âmbar que veio de quem usa o arquivo
                     _m = f"⚠ {sum(1 for h in herd if h != 'v')} de {len(herd)} usuário(s) sem cumprir a finalidade"
                     motivo[p] = f"{motivo[p]}; {_m}" if motivo.get(p) and _m not in motivo[p] else motivo.get(p) or _m
     for p in sorted(nos, key=lambda x: -x.count("/")):            # os pacotes: pelos seus módulos e subpacotes (de baixo para cima)
@@ -492,7 +495,8 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         return "r" if "r" in cores else "a" if "a" in cores else "v" if all(c == "v" for c in cores) else "c"
     linhas = {f"{a['de']}>{a['para']}": _lig(a["de"], a["para"]) for a in mapa["arestas"]}
     return {"em": agora.isoformat(timespec="seconds"),
-            "arquivos": {p: {"p": ponto[p], "c": circ[p], "m": motivo.get(p, "")} for p in nos},
+            "arquivos": {p: {"p": ponto[p], "c": circ[p], "m": motivo.get(p, ""), **({"h": 1} if p in herdado and circ[p] == "a" else {})}
+                         for p in nos},
             "linhas": {k: v for k, v in linhas.items() if v != "v"}}
 
 

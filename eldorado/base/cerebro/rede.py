@@ -218,6 +218,29 @@ def metricas_janela(hist: list[tuple[str, bool, float]], limiar: float, dias: in
             "revocacao": round(float(rev.get()), 4), "brier": round(sum((p - y) ** 2 for _, y, p in j) / len(j), 4)}
 
 
+def metricas_por_contagem(hist: list[tuple[str, bool, float]], limiar: float, n: int = 500, minimo: int = 300) -> dict[str, float | None]:
+    """10/11/2026 (parecer da Sala, passo 9): as métricas dos ÚLTIMOS n RÓTULOS (prequencial, como a janela de 7 dias). Os
+    rótulos chegam em lotes do Chrome: na janela de 7 dias, 2.029 dos 2.198 casos eram de dois dias, e quando eles saem a
+    janela cai para ~170 casos e os mostradores saltam. Com menos de `minimo` rótulos, nada é medido (a Sala fica cinza com
+    o motivo). Traz também o ACERTO NOS 50 E NOS 200 DE MAIOR NOTA — o que a fila do Interceptador e do Chrome de fato usa
+    (a precisão no limiar 0,5 ninguém usa)."""
+    vazio = {"amostras": len(hist or []), "discernimento": None, "precisao": None, "revocacao": None, "brier": None,
+             "acerto_50": None, "acerto_200": None, "desde": None}
+    if not hist or len(hist) < minimo:
+        return vazio
+    j = sorted(hist, key=lambda h: str(h[0]))[-n:]
+    auc, pre, rev = metrics.ROCAUC(), metrics.Precision(), metrics.Recall()
+    for _, y, p in j:
+        auc.update(y, {True: p, False: 1 - p})
+        pre.update(y, p >= limiar)
+        rev.update(y, p >= limiar)
+    topo = sorted(j, key=lambda h: -h[2])
+    return {"amostras": len(j), "discernimento": round(float(auc.get()), 4), "precisao": round(float(pre.get()), 4),
+            "revocacao": round(float(rev.get()), 4), "brier": round(sum((p - y) ** 2 for _, y, p in j) / len(j), 4),
+            "acerto_50": round(sum(y for _, y, _p in topo[:50]) / min(50, len(topo)), 4),
+            "acerto_200": round(sum(y for _, y, _p in topo[:200]) / min(200, len(topo)), 4), "desde": str(j[0][0])[:19]}
+
+
 class RedeNeural:
     """A rede do Cérebro: reaprende a cada ciclo com o histórico inteiro dos bancos, em ordem cronológica (nada se
     perde entre as execuções), e responde às três perguntas que as decisões fazem."""
@@ -249,7 +272,8 @@ class RedeNeural:
 
     def metricas(self) -> dict[str, dict]:
         return {k: {"amostras": r.amostras, **r.metricas(), **({"lote": self.lote[k]} if k in self.lote else {}),
-                    "janela_7d": metricas_janela(getattr(r, "historico", []), getattr(r, "limiar", 0.5))} for k, r in self.p.items()}
+                    "janela_7d": metricas_janela(getattr(r, "historico", []), getattr(r, "limiar", 0.5)),
+                    "janela_500": metricas_por_contagem(getattr(r, "historico", []), getattr(r, "limiar", 0.5))} for k, r in self.p.items()}
 
     @classmethod
     def treinar(cls, biblioteca, cerebro) -> "RedeNeural":
@@ -267,7 +291,10 @@ class RedeNeural:
         rotulo: dict[str, bool] = {}
         aberta: dict[str, bool] = {}
         primeiro: dict[str, str] = {}
-        for r in biblioteca.execute("SELECT livro_id, decisao, em FROM veredito WHERE decisao <> 'pendente' ORDER BY em"):
+        # 10/11/2026 (parecer, passo 1): o descarte da triagem aprendida é a regra do próprio sistema, não uma resposta:
+        # fora dos rótulos (senão a rede aprende a própria regra e se reforça)
+        for r in biblioteca.execute("SELECT livro_id, decisao, em FROM veredito WHERE decisao <> 'pendente' "
+                                    "AND COALESCE(motivo, '') NOT LIKE '[triagem aprendida%' ORDER BY em"):
             if r["livro_id"] in livros:
                 rotulo[r["livro_id"]] = r["decisao"] not in ("descartar", "invalido", "excluir")
                 aberta[r["livro_id"]] = r["decisao"] in cls.ABERTA_SIM
@@ -356,6 +383,16 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
             contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:19]}", "treinado_em": agora(),
                                                                "arquivo": f"rede:{pergunta}", "discernimento": x["discernimento"],
                                                                "precisao": x["precisao"], "revocacao": x["revocacao"], "brier": x.get("brier")})
+            j5 = x.get("janela_500") or {}
+            if j5.get("discernimento") is not None:                  # 10/11/2026 (passo 9): os últimos 500 rótulos, que a Sala mostra
+                contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-500-{j5['amostras']:07d}-{agora()[:19]}",
+                                                                   "treinado_em": agora(), "arquivo": f"rede:{pergunta}:500",
+                                                                   "discernimento": j5["discernimento"], "precisao": j5["precisao"],
+                                                                   "revocacao": j5["revocacao"], "brier": j5.get("brier")})
+                for marca in ("acerto_50", "acerto_200"):
+                    contexto.diario.emitir("medicao.registrada", "rede", {
+                        "marcador": f"rede:{pergunta}:{marca}", "nivel": "componente", "em": agora(), "valor": j5[marca],
+                        "motivo": f"dos {marca.split('_')[1]} livros de maior nota entre os últimos {j5['amostras']} rótulos (desde {j5['desde']})"})
             j = x.get("janela_7d") or {}
             if j.get("amostras"):                                   # R48: a janela de 7 dias, que a Sala mostra
                 contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-7d-{j['amostras']:07d}-{agora()[:19]}",

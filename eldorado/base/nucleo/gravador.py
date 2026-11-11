@@ -38,9 +38,27 @@ class Relatorio:
         return not self.recusados
 
 
+# 10/11/2026 (parecer da Sala, passo 4): os livros cuja criação foi recusada por chave repetida (a chave já era de um livro
+# excluído ou unido) e os eventos dependentes deles dispensados nesta execução (o alarme aberto deles é fechado)
+LIVROS_RECUSADOS: set[str] = set()
+DEPENDENTES_DISPENSADOS: set[str] = set()
+
+
+def _livro_do_evento(ev: Evento) -> str | None:
+    d = ev.dados or {}
+    if d.get("livro_id"):
+        return str(d["livro_id"])
+    if ev.tipo.startswith(("livro.", "selo.")) and d.get("id"):
+        return str(d["id"])
+    return None
+
+
 # os dados recalculados a cada passagem: sem a ficha do livro (a linha), o evento é dispensado, não recusado (27/10/2026)
 DISPENSAVEIS = {"livro.codigo", "livro.base", "livro.esfera", "livro.localizado", "alarme.fechado",
-                "comandante.avaliada"}   # avaliar a decisão que saiu pela regra dos 30 dias não é erro (01/11/2026)
+                "comandante.avaliada",   # avaliar a decisão que saiu pela regra dos 30 dias não é erro (01/11/2026)
+                # 10/11/2026 (parecer da Sala, passo 3): o prazo é recalculado pela auditoria e vai junto no livro.decupado, que
+                # cria a ficha; o prazo que chega antes da ficha é dispensado (3 alarmes vermelhos de 09/11 ficavam acesos)
+                "livro.prazo"}
 
 
 class LinhaAusente(ValueError):
@@ -83,7 +101,7 @@ class Gravador:
             if not m:
                 continue
             tipo, eid = m.group(1), m.group(2)
-            resolvido = tipo in DISPENSAVEIS
+            resolvido = tipo in DISPENSAVEIS or eid in DEPENDENTES_DISPENSADOS
             if not resolvido:
                 for nome in {a.banco for a in CATALOGO.get(tipo, ())}:
                     try:
@@ -133,6 +151,18 @@ class Gravador:
                     con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
                     con.commit()
                     r.repetidos += 1
+                    continue
+                if ev.tipo == "livro.criado" and isinstance(e, sqlite3.IntegrityError) and "UNIQUE" in str(e) and ev.dados.get("id"):
+                    LIVROS_RECUSADOS.add(str(ev.dados["id"]))      # 10/11/2026 (parecer, passo 4): a criação recusada por chave repetida
+                lid = _livro_do_evento(ev)
+                if lid in LIVROS_RECUSADOS and ev.tipo != "livro.criado" and isinstance(e, (LinhaAusente, sqlite3.IntegrityError)) \
+                        and ("FOREIGN KEY" in str(e) or isinstance(e, LinhaAusente)):
+                    # 10/11/2026 (parecer, passo 4): o evento que depende de um livro que nunca existiu (a criação foi recusada
+                    # por chave repetida) é dispensado — antes, cada um virava um alarme vermelho (11 de um único livro, em 09/11)
+                    con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
+                    con.commit()
+                    r.dispensados += 1
+                    DEPENDENTES_DISPENSADOS.add(ev.id)
                     continue
                 self._recusar(ev, r, f"{alvo.banco}.{alvo.tabela}: {type(e).__name__}: {e}")
 

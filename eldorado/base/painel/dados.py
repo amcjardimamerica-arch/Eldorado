@@ -900,31 +900,6 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
     return {"motores.json": mo, "abertas.json": ab, "empresas.json": em}
 
 
-def _mapa_arquivos(sis: "Sistema", raiz: Path) -> dict[str, Any]:
-    """O mapa REAL dos arquivos (extraído do código e das configurações) com a medição mais recente de cada um."""
-    import json as _json
-
-    from ..cerebro.mapa_arquivos import finalidade, medir, montar
-    m = montar()
-    med = None
-    try:                                                             # mede na hora, com o código atual (25/10/2026: o site mostrava
-        med = medir(raiz / "dados", m)                               # a medição antiga da produção, e a correção só aparecia no ciclo seguinte)
-    except Exception:  # noqa: BLE001
-        med = None
-    if med is None:                                                  # a reserva: a medição gravada pela produção
-        try:
-            r = sis.cer.execute("SELECT dados FROM medicao_arquivos WHERE chave = 'atual'").fetchone()
-            med = _json.loads(r[0]) if r else None
-        except sqlite3.Error:
-            med = None
-    med = med or {"em": None, "arquivos": {}, "linhas": {}}
-    for n in m["nos"]:
-        n["f"] = finalidade(n["id"])
-        n.update(med["arquivos"].get(n["id"], {"p": "c", "c": "c", "m": "sem medição"}))
-    return {"gerado_em": _agora().isoformat(timespec="seconds"), "medido_em": med.get("em"), "nos": m["nos"], "arestas": m["arestas"],
-            "linhas": med.get("linhas", {})}
-
-
 # 01/11/2026 (titular: "os botões do pedido anterior não foram implantados; continuam iguais"): o site foi publicado com o
 # código novo, mas a página carregava amc-menu.css e amc-menu.js SEM marcador de versão, e o navegador (e o GitHub Pages,
 # que guarda por 10 minutos) seguia servindo a cópia antiga. Agora cada arquivo leva a impressão digital do conteúdo:
@@ -949,7 +924,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     sis = Sistema(raiz)
     agora = _agora().isoformat(timespec="seconds")
     D = _molde("dashboard-dados.json")
-    status, descricao, sala = _motores(sis)
+    status, descricao, _sala = _motores(sis)            # a Sala vem da produção (R53); aqui, os motores das outras abas
     editais, eventos, cal, fontes = _editais(sis)
     bussola, bussola_painel = _bussola(sis, D["bussola"], fontes, status)
     D.update({"gerado_em": agora, "editais": editais, "eventos": eventos, "calendario_decisao": cal, "bussola": bussola, "bussola_painel": bussola_painel})
@@ -1011,13 +986,11 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     am = _molde("achados_motores.json")
     am.update({"em": agora, "regra": "os achados registrados na Biblioteca, por motor", "motores": _achados_por_motor(sis)})
     arquivos["achados_motores.json"] = am
-    sc = _molde("sala_controle.json")
-    sc["detalhes"].update(sala)
-    from .sala import montar as sala_montar  # cada mostrador ligado ao dado medido (titular, 24/10/2026)
-    medido = sala_montar(sis.bib, sis.cer, raiz, sc["detalhes"].get("motores") or [])
-    detalhes = {**sc["detalhes"], **medido.pop("detalhes")}
-    sc.update(medido)
-    sc["detalhes"] = detalhes
+    # R53 (titular, 10/11/2026): a Sala de controle e o mapa dos arquivos publicados são os MEDIDOS PELA PRODUÇÃO (o próprio
+    # sistema em funcionamento, a cada 15 minutos no máximo, em painel_vivo/), como estão — o site não mede nada na cópia
+    # dos bancos que ele remonta. Sem a medição da produção, a Sala diz isso (cinza), sem trocar por outra fonte.
+    from .vivo import publicar as sala_da_producao
+    sc, mapa_vivo = sala_da_producao(raiz)
     # os pilotos ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala)
     from .pilotos import montar as pilotos_montar
     arq_pilotos, status_pilotos = pilotos_montar(sis.bib, sis.cer, _molde)
@@ -1027,9 +1000,6 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     arquivos["ranking_apoiadores.json"] = ranking_montar(sis.bib, _molde)
     for st in status_pilotos.values():                            # a hora no mesmo campo dos motores (os quadros leem ultima_leitura)
         st["ultima_leitura"] = st.get("ultima")
-    for m in sc["detalhes"].get("motores") or []:
-        if m.get("id") in status_pilotos:
-            m.update(status_pilotos[m["id"]])
     # os arquivos herdados do painel que nunca eram preenchidos (25/10/2026): os dos motores e dos pilotos
     # a apresentação do Comandante à titular (25/10/2026). 06/11/2026 (parecer de teste do site): só os relatórios do ciclo
     # (AAAA-MM-DD-HHMM.json) e o mais recente pelo «em» do conteúdo — antes, o último em ordem alfabética, e o relatório
@@ -1046,7 +1016,12 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     if _rels:
         arquivos["relatorio_titular.json"] = max(_rels, key=lambda t: t[0])[1]
     from .legado import montar as legado_montar
-    arquivos.update(legado_montar(sis.bib, sis.cer, sc["detalhes"].get("motores") or [], status_pilotos, _molde))
+    # as outras abas (não a Sala) seguem com a lista dos motores desta publicação, com os pilotos ligados
+    motores_abas = [dict(m) for m in (_sala.get("motores") or [])]
+    for m in motores_abas:
+        if m.get("id") in status_pilotos:
+            m.update(status_pilotos[m["id"]])
+    arquivos.update(legado_montar(sis.bib, sis.cer, motores_abas, status_pilotos, _molde))
     arquivos["sala_controle.json"] = sc
     # o Cartório ligado aos dados (titular, 25/10/2026: a página estava estática): os mostradores, a lista e a ficha de cada livro
     from .cartorio import montar as cartorio_montar
@@ -1076,7 +1051,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     arquivos["abas.json"] = {"em_andamento": sum(len(v) for v in (_f.get("itens_por_uf") or {}).values()), "encerrado": len(_f.get("arquivados") or []),
                              "ranking_empresas": sum((v or {}).get("total", 0) for v in (_r.get("listas") or {}).values()),
                              "legislativo": arquivos["legislativo.json"].get("total", 0)}
-    arquivos["mapa_arquivos.json"] = _mapa_arquivos(sis, raiz)
+    arquivos["mapa_arquivos.json"] = mapa_vivo                        # R53: o mapa medido pela produção, como está
     arquivos.update(_tabelas(sis, status, descricao, agora))
     for p in MOLDE.glob("*.json"):  # os demais arquivos: a estrutura, vazia (sem dado do Eldorado0)
         if p.name not in arquivos and p.name not in ("dashboard-dados.json", "itens.json"):

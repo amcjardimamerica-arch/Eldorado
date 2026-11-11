@@ -25,7 +25,7 @@ ETAPAS = {
     "repositorio": ["ab_link_oficial", "es_banco_unico", "hi_crescimento"],
     "biblioteca": ["hi_uso", "es_orfaos"],
     # 09/11/2026 (titular): «O Comandante contra a ordem fixa» no lugar da idade do modelo
-    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "rn_treino", "cm_decisoes"],
+    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "rn_treino", "cm_decisoes", "rn_acerto_50", "rn_rotulos"],
     "farol": ["fa_fecham_7d"],
 }
 ORDEM = {"vermelho": 0, "amarelo": 1, "cinza": 2, "verde": 3}
@@ -80,7 +80,7 @@ RELOGIOS = {
     "externa": ["ve_para_o_chrome", "ve_importado"],
     "repositorio": ["ab_link_oficial", "hi_crescimento"],
     "biblioteca": ["es_orfaos"],
-    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "cm_decisoes"],
+    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "cm_comparacao", "cm_decisoes", "rn_acerto_50", "rn_rotulos"],
     "farol": ["fa_fecham_7d"],
 }
 
@@ -294,7 +294,8 @@ def montar(
     _com_sinal = []
     for _m in reg:
         _s = _sinais(cer, _m)
-        if _s["luz"] in ("amarelo", "vermelho"):
+        # 10/11/2026 (parecer, passo 6): o motor só EM CARÊNCIA (novo, sem outro sinal) não é perda; aparece na estrela dele
+        if _s["luz"] in ("amarelo", "vermelho") and not all(x.startswith("em carência") for x in _s["sinais"]):
             _com_sinal.append(f"{_m}: {'; '.join(_s['sinais'])[:140]}")
     I("mo_sinais", "Motores com sinal de perda (fonte pendente ou abandonada, sem novidade há 7 dias, nunca entregou)", len(_com_sinal),
       "verde" if not _com_sinal else ("vermelho" if len(_com_sinal) > n // 2 else "amarelo"),
@@ -698,14 +699,25 @@ def montar(
         except sqlite3.Error:
             j7 = None
         acum = f" (acumulada desde o início: AUC {auc}, precisão {pre}, revocação {rev})"
+        jan = "7 dias"
         if j7 and j7[0] is not None:
             auc, pre, rev = j7
+        # 10/11/2026 (parecer da Sala, passo 9): a janela dos ÚLTIMOS 500 RÓTULOS, quando há (os rótulos chegam em lotes e a
+        # janela de 7 dias saltava quando um lote grande saía dela); a de 7 dias fica como reserva
+        try:
+            j5 = cer.execute("SELECT discernimento, precisao, revocacao FROM modelo WHERE arquivo = 'rede:oportunidade:500' "
+                             "ORDER BY treinado_em DESC LIMIT 1").fetchone()
+        except sqlite3.Error:
+            j5 = None
+        if j5 and j5[0] is not None:
+            auc, pre, rev = j5
+            jan = "últimos 500 rótulos"
         I(
             "rn_auc",
-            "Discernimento da rede (oportunidade, 7 dias)",
+            f"Discernimento da rede (oportunidade, {jan})",
             auc,
             _faixa(auc, 0.8, 0.7) if auc is not None else "cinza",
-            f"área sob a curva ROC nos últimos 7 dias: {auc} — prequencial sobre LIVROS, com os atributos que existem antes do "
+            f"área sob a curva ROC ({jan}): {auc} — prequencial sobre LIVROS, com os atributos que existem antes do "
             f"veredito (sem o link oficial){acum}",
             t,
             [0, 1],
@@ -713,20 +725,20 @@ def montar(
         )
         I(
             "rn_precisao",
-            "Precisão da rede (7 dias)",
+            f"Precisão da rede ({jan})",
             pre,
             _faixa(pre, 0.65, 0.5),
-            f"precisão nos últimos 7 dias: {pre}{acum}",
+            f"precisão ({jan}): {pre}{acum}",
             t,
             [0, 1],
             {"normal": [0.65, None], "alarme": [0.5, None]},
         )
         I(
             "rn_revocacao",
-            "Revocação da rede (7 dias)",
+            f"Revocação da rede ({jan})",
             rev,
             _faixa(rev, 0.5, 0.35),
-            f"revocação nos últimos 7 dias: {rev}{acum}",
+            f"revocação ({jan}): {rev}{acum}",
             t,
             [0, 1],
             {"normal": [0.5, None], "alarme": [0.35, None]},
@@ -771,6 +783,29 @@ def montar(
       faixa=SEM_MEDIDA,
 
         )
+    # ---- 10/11/2026 (parecer da Sala, passo 9): o que a fila usa — o acerto nos 50 livros de maior nota — e os RÓTULOS
+    # NOVOS em 24 h (sem rótulo novo, nenhuma métrica da rede se mexe: a queda da etapa 8 vinha dos lotes do Chrome parados)
+    try:
+        a50 = cer.execute("SELECT valor, em, motivo FROM medicao WHERE marcador = 'rede:oportunidade:acerto_50' ORDER BY em DESC LIMIT 1").fetchone()
+    except sqlite3.Error:
+        a50 = None
+    if a50 and a50[0] is not None:
+        I("rn_acerto_50", "Acerto nos 50 livros de maior nota (a fila)", round(a50[0], 3), _faixa(a50[0], 0.8, 0.6),
+          f"{a50[0]:.0%} {a50[2] or ''} — a ordem que o Interceptador e o Chrome recebem", a50[1], [0, 1],
+          {"normal": [0.8, None], "alarme": [0.6, None]})
+    else:
+        I("rn_acerto_50", "Acerto nos 50 livros de maior nota (a fila)", None, "cinza",
+          "aguardando 300 rótulos para medir (a rede mede os últimos 500)", None, faixa=SEM_MEDIDA)
+    try:
+        _rot = q(bib, "SELECT COUNT(DISTINCT livro_id) FROM veredito WHERE decisao <> 'pendente' AND em >= ? "
+                      "AND COALESCE(motivo, '') NOT LIKE '[triagem aprendida%'", h24)
+        _rot += q(bib, "SELECT COUNT(DISTINCT livro_id) FROM passagem WHERE para = 'farol' AND em >= ?", h24)
+    except sqlite3.Error:
+        _rot = None
+    I("rn_rotulos", "Rótulos novos para a rede em 24 h", _rot, "cinza" if _rot is None else ("verde" if _rot else "amarelo"),
+      f"{_rot} livro(s) com resposta nova em 24 h (veredito do Chrome ou da titular, ou chegada ao Farol); sem rótulo novo a rede "
+      "não aprende nada e os mostradores dela não se mexem" if _rot is not None else "sem leitura dos vereditos", iso,
+      faixa={"normal": [1, None], "alarme": [0, None]})
     # ---- o Comandante (a fase 2, 25/10/2026): as decisões dele, em paralelo, e o rendimento contra a ordem fixa
     try:
         from ..aprendizado.avaliar import comparacao
@@ -798,9 +833,11 @@ def montar(
             "O Comandante contra a ordem fixa",
             dif,
             _faixa(dif, 0, -5),
-            f"por motor-dia: as escolhas do Comandante renderam {cmp_['comandante']:.0%} (achado aceito no dia), a ordem fixa "
-            f"{cmp_['ordem_fixa']:.0%}, um sorteio {(cmp_.get('sorteio') or 0):.0%} e a regra simples (os 8 de maior taxa) "
-            f"{(cmp_.get('regra_simples') or 0):.0%} ({cmp_['decisoes']} motor-dias escolhidos em 7 dias)",
+            f"política em vigor (Thompson), por motor-dia: o Comandante rende {cmp_['comandante']:.0%} (valor esperado em "
+            f"{cmp_.get('dias_valor_esperado', 0)} de {cmp_.get('dias', 0)} dia(s); as escolhas sorteadas renderam "
+            f"{(cmp_.get('comandante_realizado') or 0):.0%}), a ordem fixa {cmp_['ordem_fixa']:.0%}, um sorteio "
+            f"{(cmp_.get('sorteio') or 0):.0%} e a regra simples (os 8 de maior taxa) {(cmp_.get('regra_simples') or 0):.0%} "
+            f"({cmp_['decisoes']} motor-dias escolhidos em 14 dias)",
             iso,
             [-50, 50],
             {"normal": [0, None], "alarme": [-5, None]},
@@ -829,8 +866,12 @@ def montar(
     I("pa_falhas", "Passagens que falharam em 24 h (%)", _pf, _faixa(_pf, 10, 30, False),
       f"{_fal24} de {_tot24} passagens falharam nas últimas 24 h" if _tot24 else "nenhuma passagem nas últimas 24 h", iso,
       faixa={"normal": [None, 10], "alarme": [None, 30]}, cadencia_h=0.25)
-    _al = q(cer, "SELECT COUNT(*) FROM alarme WHERE fechado_em IS NULL")
-    I("al_abertos", "Alarmes abertos sem solução", _al, _faixa(_al, 0, 10, False), f"{_al} alarme(s) registrado(s) e ainda não resolvido(s)", iso,
+    # 10/11/2026 (parecer da Sala, passo 4): conta as CAUSAS abertas (o mesmo módulo e a mesma mensagem uma vez só); a mesma
+    # recusa repetida a cada passagem eram 85 linhas iguais contadas como 85 alarmes. Os registros ficam no texto.
+    _al = q(cer, "SELECT COUNT(*) FROM (SELECT DISTINCT modulo, mensagem FROM alarme WHERE fechado_em IS NULL)")
+    _al_reg = q(cer, "SELECT COUNT(*) FROM alarme WHERE fechado_em IS NULL")
+    I("al_abertos", "Alarmes abertos sem solução", _al, _faixa(_al, 0, 10, False),
+      f"{_al} causa(s) de alarme aberta(s), sem solução ({_al_reg} registro(s), contadas as repetições)", iso,
       faixa={"normal": [None, 0], "alarme": [None, 10]}, cadencia_h=0.25)
     from ..cerebro.sinais_motores import sinais as _sn
     _pend = sum(len(_sn(cer, m)["pendentes_local"]) for m in reg)

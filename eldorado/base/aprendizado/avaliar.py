@@ -105,19 +105,33 @@ def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int
     return conta
 
 
-def comparacao(bib: sqlite3.Connection, cer: sqlite3.Connection, dias: int = 7) -> dict[str, Any]:
-    """O rendimento das escolhas do Comandante contra o da ordem fixa, nos mesmos dias (a sala mostra).
+def comparacao(bib: sqlite3.Connection, cer: sqlite3.Connection, dias: int = 14, k: int = 8) -> dict[str, Any]:
+    """O rendimento da POLÍTICA EM VIGOR do Comandante contra a ordem fixa, nos mesmos dias (a Sala mostra).
 
-    08/11/2026 (parecer da etapa 8): a unidade é o MOTOR-DIA, igual para os dois lados. Antes o Comandante era a média das
-    DECISÕES (31,6 decisões por motor-dia em média; até 484 do mesmo motor no mesmo dia) e a ordem fixa a média dos
-    motores lidos: os motores que a política repete pesavam dezenas de vezes e a Sala mostrava +25,5 pontos. Pelo
-    motor-dia distinto (25/10 a 08/11): Comandante 0,331, ordem fixa 0,326, sorteio de 8 motores 0,320. Entra também a
-    REGRA SIMPLES (os 8 motores de maior taxa histórica até a véspera), que no mesmo período rendeu 0,767: a referência que
-    a política aprendida precisa superar para merecer acionar."""
+    10/11/2026 (parecer da Sala, passo 8): só as decisões da política em vigor (Thompson, desde 09/11; antes, 225 dos 233
+    motor-dias da janela eram da política antiga e o mostrador mostrava −4 medindo o que já não decide) e, quando a decisão
+    traz a probabilidade de inclusão de todos os motores, o VALOR ESPERADO da política no dia: a soma de probabilidade ×
+    resultado sobre os motores lidos, dividida por 8 (todo motor lê todo dia, o resultado de cada um é conhecido) — a média
+    das 8 escolhas sorteadas oscilava 6 a 7 pontos por acaso. Mantém a unidade motor-dia (08/11) e as referências: o sorteio
+    de 8 motores e a REGRA SIMPLES (os 8 de maior taxa até a véspera), a que a política precisa superar para acionar."""
+    import json as _json
     desde = (datetime.now(timezone.utc) - timedelta(days=dias)).date().isoformat()
     try:
-        escolhas = {(a, d) for a, d in cer.execute(
-            "SELECT DISTINCT alvo, substr(em, 1, 10) FROM comandante_decisao WHERE etapa = 'coleta' AND recompensa IS NOT NULL AND em >= ?", (desde,))}
+        cols = {r[1] for r in cer.execute("PRAGMA table_info(comandante_decisao)")}
+        filtro = " AND politica = 'thompson'" if "politica" in cols else ""          # (o Arquivo antigo, sem a política)
+        decs = cer.execute(f"SELECT alvo, substr(em, 1, 10), {'contexto' if 'contexto' in cols else 'NULL'} FROM comandante_decisao "
+                           f"WHERE etapa = 'coleta'{filtro} AND recompensa IS NOT NULL AND em >= ?", (desde,)).fetchall()
+        escolhas = {(a, d) for a, d, _c in decs}
+        inclusao: dict[str, dict[str, float]] = {}
+        for _a, d, c in decs:
+            if d in inclusao:
+                continue
+            try:
+                inc = (_json.loads(c or "{}") or {}).get("inclusao") or {}
+            except ValueError:
+                inc = {}
+            if inc:
+                inclusao[d] = {m: float(p) for m, p in inc.items()}
         dias_ = sorted({d for _a, d in escolhas})
         lidos: dict[str, set[str]] = {}
         historico: dict[str, set[str]] = {}
@@ -127,28 +141,44 @@ def comparacao(bib: sqlite3.Connection, cer: sqlite3.Connection, dias: int = 7) 
                 lidos.setdefault(d, set()).add(m)
         com_achado = {(m, d) for m, d in bib.execute("SELECT DISTINCT motor, substr(encontrado_em, 1, 10) FROM achado WHERE decisao = 'aceito'")}
     except sqlite3.Error:
-        return {"comandante": None, "ordem_fixa": None, "decisoes": 0}
+        return {"comandante": None, "ordem_fixa": None, "decisoes": 0, "politica": "thompson", "unidade": "motor-dia"}
     cm = [(a, d) for a, d in escolhas if a in lidos.get(d, set())]
+    # o valor esperado por dia (com a inclusão de todos) ou, sem ela, o realizado (as escolhas do dia)
+    por_dia: list[float] = []
+    for d in dias_:
+        v = lidos.get(d, set())
+        inc = inclusao.get(d)
+        if inc and v:
+            tot = sum(inc.get(m, 0.0) for m in v)
+            if tot > 0:
+                por_dia.append(sum(inc.get(m, 0.0) * ((m, d) in com_achado) for m in v) / tot)
+                continue
+        esc = [(a, x) for a, x in cm if x == d]
+        if esc:
+            por_dia.append(sum((a, x) in com_achado for a, x in esc) / len(esc))
     fixa_n = sum(len(v) for v in lidos.values())
-    # a regra simples: a cada dia, os 8 motores lidos de maior taxa (achado aceito / dias lidos) ATÉ A VÉSPERA
     n_lido: dict[str, int] = {}
     n_ace: dict[str, int] = {}
     regra: list[bool] = []
     for d in sorted(historico):
         if d in lidos:
-            top = sorted(lidos[d], key=lambda m: -((n_ace.get(m, 0) + 1) / (n_lido.get(m, 0) + 2)))[:8]
+            top = sorted(lidos[d], key=lambda m: -((n_ace.get(m, 0) + 1) / (n_lido.get(m, 0) + 2)))[:k]
             regra += [(m, d) in com_achado for m in top]
         for m in historico[d]:
             n_lido[m] = n_lido.get(m, 0) + 1
             n_ace[m] = n_ace.get(m, 0) + int((m, d) in com_achado)
     sorteio = (sum(sum((m, d) in com_achado for m in v) / len(v) for d, v in lidos.items() if v) / len(lidos)) if lidos else None
     return {
-        "comandante": round(sum((a, d) in com_achado for a, d in cm) / len(cm), 3) if cm else None,
+        "comandante": round(sum(por_dia) / len(por_dia), 3) if por_dia else None,
+        "comandante_realizado": round(sum((a, d) in com_achado for a, d in cm) / len(cm), 3) if cm else None,
         "ordem_fixa": round(sum((m, d) in com_achado for d, v in lidos.items() for m in v) / fixa_n, 3) if fixa_n else None,
         "regra_simples": round(sum(regra) / len(regra), 3) if regra else None,
         "sorteio": round(sorteio, 3) if sorteio is not None else None,
         "decisoes": len(cm),
+        "dias": len(dias_),
+        "dias_valor_esperado": sum(1 for d in dias_ if d in inclusao),
         "unidade": "motor-dia",
+        "politica": "thompson",
     }
 
 

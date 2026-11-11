@@ -24,7 +24,7 @@ from ..nucleo.eventos import Diario, agora
 from ..nucleo.registro import instanciar
 from . import auditoria, origem, selos
 from .certificacao import Certificacao, Pagina
-from .indice import Indice
+from .indice import FORA, Indice
 from .passaporte import Passaporte
 
 _dz = zstandard.ZstdDecompressor()
@@ -131,6 +131,13 @@ class Cartorio:
                 self.diario.emitir("livro.vinculado", "cartorio", {"achado_id": a.id, "livro_id": livro})
             else:
                 livro, novo, como = self.indice.resolver(a)
+                if como.startswith(FORA):                                # 10/11/2026 (parecer, passo 2): a chave é de um livro excluído
+                    self.diario.emitir("achado.descartado", "cartorio", {
+                        "id": a.id, "motor": a.motor, "encontrado_em": a.encontrado_em, "decisao": "pendente", "link": a.link_divulgacao,
+                        "motivo": f"a chave é do livro {livro} ({como[len(FORA):]}): não se cria outro livro com a mesma chave",
+                        "descartado_em": agora()})
+                    saida.append({"achado": a.id, "livro_excluido": livro, "descartado": "chave de livro excluído"})
+                    continue
             fase = self.passaporte.fase(livro)
             antes = I.faltando({k: v for k, v in self._certidoes(livro).items() if I.resolvido(v)})
             if fase in (None, "arquivo"):                          # livro novo, ou nova oportunidade de um livro arquivado

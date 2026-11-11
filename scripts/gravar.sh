@@ -39,7 +39,7 @@ completo() { local f="$1"
   local b="${f%.jsonl}"; b="${b%-[0-9]*}"; local partes=("$b.jsonl" "$b"-[0-9]*.jsonl)
   ! cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.iniciada"' || cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.concluida"'; }
 LISTA=$(mktemp)
-for pasta in eventos operacao verificacao dados/ia backups; do   # backups: a cópia dos livros; operacao: a telemetria (30 dias)
+for pasta in eventos operacao verificacao dados/ia backups painel_vivo; do   # backups: a cópia dos livros; operacao: a telemetria (30 dias); painel_vivo: a Sala medida pela produção (R53)
   [ -d "$RAIZ/$pasta" ] || continue
   if [ -f "$RAIZ/.inicio_ciclo" ]; then
     find "$pasta" -type f -newer .inicio_ciclo

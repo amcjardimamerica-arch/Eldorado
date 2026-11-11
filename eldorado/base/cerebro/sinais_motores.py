@@ -58,6 +58,15 @@ def esporadica(motor: str) -> bool:
         return False
 
 
+def _estreia(cer: sqlite3.Connection, motor: str) -> datetime | None:
+    """A primeira leitura registrada do motor (a sua estreia)."""
+    try:
+        r = cer.execute("SELECT MIN(inicio) FROM execucao_motor WHERE motor = ?", (motor,)).fetchone()
+    except sqlite3.Error:
+        return None
+    return _dt(r[0]) if r else None
+
+
 def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None = None, especial: bool | None = None,
            agora: datetime | None = None, rara: bool | None = None) -> dict[str, Any]:
     agora = agora or datetime.now(timezone.utc)
@@ -104,13 +113,20 @@ def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None 
     # sem novidade por natureza: «sem oportunidade nova há 7 dias» não acende; «nunca entregou» acende em atenção, não em
     # vermelho (a vigilância sem erro cumpre a finalidade — a mesma régua do mapa dos arquivos)
     rara = esporadica(motor) if rara is None else rara
-    nunca = not especial and not ultima_nov and bool(linhas)
+    # 10/11/2026 (parecer da Sala, passo 6): «nunca entregou» só vale para o motor que LÊ HÁ MAIS DE 7 DIAS (o que o texto
+    # deste arquivo sempre disse); o motor novo fica EM CARÊNCIA, em atenção, com os dias contados — antes os 7 motores
+    # criados em 09/11 ficavam vermelhos com um dia de vida
+    estreia = _estreia(cer, motor)
+    em_carencia = estreia is not None and estreia > limite
+    nunca = not especial and not ultima_nov and bool(linhas) and not em_carencia
     if nunca:
         s.append("nunca entregou nenhuma oportunidade" + (" (fonte esporádica)" if rara else ""))
+    elif not especial and not ultima_nov and bool(linhas) and em_carencia:
+        s.append(f"em carência: lê há {(agora - estreia).days} dia(s), sem oportunidade ainda (o motor novo tem {DIAS} dias)")
     elif not especial and not rara and ultima_nov and _dt(ultima_nov) < limite:
         s.append(f"sem oportunidade nova há {(agora - _dt(ultima_nov)).days} dias (a última em {str(ultima_nov)[8:10]}/{str(ultima_nov)[5:7]})")
     todas_falham = bool(nomes) and len(falha) + len(aband) + len(pend) == len(nomes)
     luz = "vermelho" if (todas_falham or (nunca and not rara)) else ("amarelo" if s else "verde")
     return {"luz": luz, "sinais": s, "lidas": lidas, "sem_mudanca": sem_m, "ultima_novidade": ultima_nov,
             "pendentes_local": pend, "abandonadas": aband, "falhando": falha, "nunca_entregou": nunca,
-            "primeira_leitura": primeira_leitura.isoformat() if primeira_leitura else None}
+            "primeira_leitura": primeira_leitura.isoformat() if primeira_leitura else None, "em_carencia": em_carencia}

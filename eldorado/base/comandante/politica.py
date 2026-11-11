@@ -118,6 +118,10 @@ class Thompson:
         for _ in range(self.SORTEIOS_INCLUSAO):
             for o in self._sorteio()[:k]:
                 conta[o] += 1
+        # 10/11/2026 (parecer da Sala, passo 8): a probabilidade de inclusão de TODAS as opções, guardada com a decisão — a
+        # Sala mede o valor esperado da política (todo motor lê todo dia: o resultado de cada um é conhecido) em vez da
+        # média das 8 escolhas sorteadas, que oscilava 6 a 7 pontos por acaso
+        self.inclusao = {o: round(conta[o] / self.SORTEIOS_INCLUSAO, 4) for o in self.opcoes}
         return [(o, max(conta[o], 1) / self.SORTEIOS_INCLUSAO) for o in escolha]
 
 

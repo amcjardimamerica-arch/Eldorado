@@ -623,6 +623,29 @@ def permanente(
 
     threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
+    # R53 (titular, 10/11/2026): a SALA DE CONTROLE É A DA PRODUÇÃO. O próprio sistema em funcionamento mede a Sala nos
+    # bancos que ele usa, num relógio próprio (a cada 5 min; o limite da titular é 15), independente da duração da passagem,
+    # e grava em painel_vivo/; a gravação de 5 em 5 min envia e aciona o painel, que publica a medição como está.
+    ciclo_atual = [0]
+
+    def sala_viva() -> None:
+        from ..painel.vivo import INTERVALO_MIN, MAPA_A_CADA, medir_e_gravar
+
+        n = 0   # (o registro no Cérebro, sala.medida, continua no nó medir_sala da passagem: aqui não se repete o texto grande)
+        while not parar.is_set():
+            t0 = time.monotonic()
+            try:
+                r = medir_e_gravar(Path("."), ciclo=ciclo_atual[0], com_mapa=(n % MAPA_A_CADA == 0))
+                typer.echo(f"  sala da produção: índice {r['indice_saude']} · {r['mudancas']} · medida em {r['duracao_s']} s")
+                # a gravação de segundo plano (a cada 5 min) envia painel_vivo/ e aciona a publicação do painel
+            except Exception as e:  # noqa: BLE001 — a medição da Sala nunca para o sistema; tenta de novo no próximo relógio
+                typer.echo(f"::warning::sala da produção: {type(e).__name__}: {str(e)[:200]}")
+            n += 1
+            parar.wait(max(60.0, INTERVALO_MIN * 60 - (time.monotonic() - t0)))
+
+    if gravar:
+        threading.Thread(target=sala_viva, daemon=True, name="sala").start()
+
     # o pedido de implantação (a regra R09): o fluxo Implantar grava implantar/pedido.txt no repositório; o sistema o confere a
     # cada 2 minutos e, ao vê-lo, TERMINA a passagem em andamento, grava e para (o ciclo se religa com o código novo). Assim
     # a mudança entra sem cortar a passagem no meio (25/10/2026: os pilotos nunca voavam, a passagem era cortada antes deles)
@@ -731,6 +754,7 @@ def permanente(
 
     while True:
         ciclo += 1
+        ciclo_atual[0] = ciclo
         _t0 = time.monotonic()
         _sinal_passagem(f"ciclo {ciclo}: a passagem começou")
         try:

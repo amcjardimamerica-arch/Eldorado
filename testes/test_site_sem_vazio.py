@@ -19,6 +19,8 @@ def test_nenhum_arquivo_do_site_vazio(tmp_path):
     for d in ("config", "eldorado", "eventos", "workflows", "scripts", ".github"):
         (raiz / d).symlink_to(Path(d).resolve())
     from eldorado.base.painel.dados import gerar
+    from eldorado.base.painel.vivo import medir_e_gravar
+    medir_e_gravar(raiz)        # R53 (titular, 10/11/2026): a Sala e o mapa são medidos pela produção; o site os publica
     gerar(raiz / "site", raiz)
     molde = Path("eldorado/base/painel/molde")
     for f in LIGADOS:
@@ -31,4 +33,7 @@ def test_nenhum_arquivo_do_site_vazio(tmp_path):
     pilotos = [m for m in json.loads((raiz / "site/dados/sala_controle.json").read_text())["detalhes"]["motores"] if str(m["id"]).startswith("piloto")]
     assert pilotos and all(m.get("ultima_leitura") for m in pilotos)                    # a hora dos pilotos no campo dos motores
     mapa = json.loads((raiz / "site/dados/mapa_arquivos.json").read_text())
-    assert mapa["medido_em"] and mapa["medido_em"][:10] == mapa["gerado_em"][:10]       # medido na hora, com o código atual
+    # R53 (titular, 10/11/2026, revê esta linha da R19/R20): o mapa NÃO é medido pelo site na cópia dos bancos; é o medido
+    # pela produção (painel_vivo/), com o código que ela roda, publicado como está
+    vivo = json.loads((raiz / "painel_vivo" / "mapa_arquivos.json").read_text())
+    assert mapa["medido_em"] and mapa["medido_em"] == vivo["medido_em"] and mapa["fonte"]["origem"] == "produção"

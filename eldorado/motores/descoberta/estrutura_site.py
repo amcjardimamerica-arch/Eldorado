@@ -5,6 +5,7 @@ de acesso; o feedparser continua, porque recebe os bytes já obtidos pela escada
 """
 from __future__ import annotations
 
+import html
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -17,21 +18,76 @@ from .pistas import Buscar, Pista
 NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
 
 
+_LOC_INDICE = re.compile(r"<(?:\w+:)?sitemap\b[^>]*>.*?<(?:\w+:)?loc>\s*(.*?)\s*</(?:\w+:)?loc>", re.S | re.I)
+_LOC_URL = re.compile(r"<(?:\w+:)?url\b[^>]*>(.*?)</(?:\w+:)?url>", re.S | re.I)
+_LOC = re.compile(r"<(?:\w+:)?loc>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</(?:\w+:)?loc>", re.S | re.I)
+_LASTMOD = re.compile(r"<(?:\w+:)?lastmod>\s*(.*?)\s*</(?:\w+:)?lastmod>", re.S | re.I)
+
+
+def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | None]]]:
+    """10/11/2026 (parecer da Sala, passo 5): a leitura TOLERANTE do mapa do site — ("indice" | "urlset" | None, [(loc, lastmod)]).
+    Antes, o analisador XML estrito quebrava com espaço ou BOM antes da declaração, prefixo sem namespace (image:, news:)
+    ou resposta em HTML, e a fonte «Mapa do site» virava ERRO (16 fontes, 15 motores acesos na Sala). Agora: o .gz é
+    aberto; o BOM e os espaços saem; a página sem <urlset> nem <sitemapindex> é «site sem mapa» (None, sem erro); o XML
+    defeituoso é lido pelos <loc> (o mesmo recurso do índice das subpáginas)."""
+    import gzip
+    if isinstance(conteudo, str):
+        conteudo = conteudo.encode("utf-8", "replace")
+    b = conteudo or b""
+    if b[:2] == b"\x1f\x8b":
+        try:
+            b = gzip.decompress(b)
+        except OSError:
+            return None, []
+    t = b.decode("utf-8", "replace").lstrip("\ufeff \t\r\n")
+    baixo = t[:20000].lower()
+    tipo = "indice" if "<sitemapindex" in baixo else "urlset" if "<urlset" in baixo else None
+    if tipo is None:
+        return None, []
+    try:
+        raiz = ET.fromstring(t.encode("utf-8"))
+        nome = lambda el: el.tag.rsplit("}", 1)[-1]   # noqa: E731 — o nome sem o namespace
+        if tipo == "indice":
+            itens = [((s_.find("./{*}loc").text if s_.find("./{*}loc") is not None else "") or "", None)
+                     for s_ in raiz if nome(s_) == "sitemap"]
+        else:
+            itens = []
+            for u in raiz:
+                if nome(u) != "url":
+                    continue
+                loc, mod = u.find("./{*}loc"), u.find("./{*}lastmod")
+                itens.append(((loc.text if loc is not None else "") or "", (mod.text if mod is not None else None)))
+    except ET.ParseError:
+        if tipo == "indice":
+            itens = [(m.group(1), None) for m in _LOC_INDICE.finditer(t)]
+        else:
+            itens = []
+            for bloco in _LOC_URL.finditer(t):
+                loc, mod = _LOC.search(bloco.group(1)), _LASTMOD.search(bloco.group(1))
+                if loc:
+                    itens.append((loc.group(1), mod.group(1) if mod else None))
+    return tipo, [(html.unescape(loc.strip()), (mod or "").strip() or None) for loc, mod in itens if loc and loc.strip()]
+
+
 def mapa_do_site(buscar: Buscar, url: str, limite: int = 2000, profundidade: int = 2) -> list[Pista]:
-    """As URLs do mapa do site (e dos mapas internos, até a profundidade), com a data de modificação."""
+    """As URLs do mapa do site (e dos mapas internos, até a profundidade), com a data de modificação. O site sem mapa
+    devolve a lista vazia (não é erro); o mapa interno que falha não derruba os outros."""
     saida: list[Pista] = []
     fila = [(url, 0)]
     while fila and len(saida) < limite:
         atual, nivel = fila.pop(0)
-        raiz = ET.fromstring(buscar(atual).conteudo)
-        if raiz.tag == f"{NS}sitemapindex" and nivel < profundidade:
-            fila += [(s.findtext(f"{NS}loc", "").strip(), nivel + 1) for s in raiz.findall(f"{NS}sitemap")]
+        try:
+            tipo, itens = ler_mapa(buscar(atual).conteudo)
+        except Exception:  # noqa: BLE001 — o primeiro mapa propaga o erro de acesso (a fonte falha); o interno, não
+            if nivel == 0:
+                raise
             continue
-        for u in raiz.findall(f"{NS}url"):
-            loc = u.findtext(f"{NS}loc", "").strip()
-            if loc:
-                saida.append(Pista(titulo=loc.rstrip("/").rsplit("/", 1)[-1].replace("-", " "), link=loc, origem="mapa do site",
-                                   data=(u.findtext(f"{NS}lastmod") or None)))
+        if tipo == "indice":
+            if nivel < profundidade:
+                fila += [(loc, nivel + 1) for loc, _ in itens]
+            continue
+        for loc, mod in itens:
+            saida.append(Pista(titulo=loc.rstrip("/").rsplit("/", 1)[-1].replace("-", " "), link=loc, origem="mapa do site", data=mod))
     return saida[:limite]
 
 

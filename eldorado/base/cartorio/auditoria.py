@@ -454,7 +454,11 @@ def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> 
                                  {"gerou": f"oportunidade arquivada; a estrela {lv['estrela']} virou o selo do livro ({selo}); aguarda nova oportunidade",
                                   "faltou": ", ".join(I.faltando(validas)) or None})
         if ok:
-            diario.emitir("livro.prazo", "auditoria", {"livro_id": lv["id"], "situacao_prazo": "encerrada"})
+            # 10/11/2026 (parecer, passo 3): o prazo vai à ficha só se ela já existe; o livro recém-criado ainda não tem a
+            # ficha (livro_dados nasce no livro.decupado, logo depois, que já registra o prazo encerrado) — antes o evento
+            # era recusado e virava alarme (3 livros em 09/11)
+            if lv["id"] in fim:
+                diario.emitir("livro.prazo", "auditoria", {"livro_id": lv["id"], "situacao_prazo": "encerrada"})
             diario.emitir("selo.calculado", "auditoria", {"id": lv["id"], "estrela": "sem", "selo_livro": selo, "informacoes_validadas": len(validas),
                                                           "atualizado_em": agora()})
             n += 1

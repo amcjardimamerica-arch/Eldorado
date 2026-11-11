@@ -720,6 +720,21 @@
     "testes/test_escopo_geografico_1011.py::test_a_regra_nos_titulos_de_endereco",
     "testes/test_escopo_geografico_1011.py::test_a_revisao_do_escopo_a_cada_passagem"
    ]
+  },
+  {
+   "id": "R53",
+   "data": "2026-11-10",
+   "tema": "a Sala de controle é a do próprio sistema em funcionamento, medida a cada 15 minutos no máximo",
+   "regra": "A Sala de controle (e o mapa dos arquivos, que é parte dela) é a medida pelo PRÓPRIO SISTEMA EM FUNCIONAMENTO — o eldorado permanente, nos bancos que ele usa — e nunca uma imagem, espelho, réplica ou reconstrução dos bancos. A produção mede a Sala num relógio próprio, independente da duração da passagem, no máximo a cada 15 minutos (hoje a cada 5; o mapa a cada 15), grava a medição em painel_vivo/ com a origem (a execução, o ciclo e a hora) e o que mudou desde a anterior; a gravação de 5 em 5 minutos a envia e aciona o painel, que a publica COMO ESTÁ, sem recalcular nada. Sem a medição da produção, a Sala diz que aguarda a produção (cinza, sem número), sem trocar por outra fonte; com a medição velha, a página mostra a idade e o atraso. Revê a linha da trava da R19/R20 que pedia o mapa «medido na hora» pelo site (era a medição na réplica). Esclarece a R41: a triagem aprendida do próprio sistema não é entrega do Chrome e não passa pela conferência da entrega completa.",
+   "porque": "titular, 10/11/2026 (ao avaliar o parecer da Sala, do Comandante e da etapa 8): o site remontava uma cópia dos bancos a partir do repositório e media a Sala nela — um evento que só a cópia recusava acendia vermelho, e a Sala não era a do sistema funcionando. A triagem aprendida, chamada com a exigência da entrega completa do Chrome, era recusada a cada passagem desde 04/11 (85 alarmes).",
+   "onde": "eldorado/base/painel/vivo.py (montar, medir_e_gravar, publicar, mudancas); eldorado/base/nucleo/comandos.py (permanente: sala_viva); eldorado/base/painel/dados.py (gerar: publicar); scripts/gravar.sh (painel_vivo); eldorado/base/painel/pagina/dashboard.html (nvFonte, nvMudou); eldorado/base/cartorio/analise_externa.py (aplicar_triagem)",
+   "travas": [
+    "testes/test_sala_da_producao_1011.py::test_a_sala_publicada_e_a_medida_pela_producao",
+    "testes/test_sala_da_producao_1011.py::test_sem_a_medicao_da_producao_a_sala_diz_isso",
+    "testes/test_sala_da_producao_1011.py::test_o_relogio_da_sala_a_cada_15_minutos_no_maximo",
+    "testes/test_sala_da_producao_1011.py::test_a_pagina_mostra_a_origem_a_idade_e_o_que_mudou",
+    "testes/test_sala_da_producao_1011.py::test_a_triagem_do_sistema_nao_passa_pela_entrega_do_chrome"
+   ]
   }
  ]
 }

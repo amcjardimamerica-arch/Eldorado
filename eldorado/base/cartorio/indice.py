@@ -15,6 +15,7 @@ from ..nucleo.contratos import Achado, Missao
 from ..nucleo.eventos import Diario, agora
 
 LIMIAR = 0.8
+FORA = "fora da esteira: "   # o prefixo do «como» para a chave de um livro excluído (o Cartório não cria livro)
 
 
 def _minhash(texto: str) -> MinHash:
@@ -32,6 +33,8 @@ class Indice:
         self._por_titulo_link: dict[tuple[str, str], tuple[str, str | None]] = {}   # o mesmo título e o mesmo link: (livro, UF)
         self._uf: dict[str, str | None] = {}
         self._lsh = MinHashLSH(threshold=LIMIAR, num_perm=128)
+        self._fora: dict[str, tuple[str, str]] = {}                      # a chave de um livro excluído ou unido: (livro, situação)
+        self._uniao: dict[str, str] = {}                                  # o livro unido → o livro que ficou
         if biblioteca is not None:
             from .identidade import _link, titulo_normal
             for lid, t, lo, ld, uf in biblioteca.execute("SELECT id, titulo, link_oficial, link_divulgacao, uf FROM livro WHERE missao=? "
@@ -41,6 +44,16 @@ class Indice:
                         self._por_titulo_link.setdefault((titulo_normal(t), _link(u)), (lid, uf))
             for r in biblioteca.execute("SELECT id, chave, titulo, uf FROM livro WHERE missao=? AND situacao NOT IN ('excluido', 'unido')", (missao_id,)):
                 self._lembrar(r[0], r[1], r[2] or "", r[3])
+            # 10/11/2026 (parecer da Sala, passo 2): as chaves dos livros EXCLUÍDOS e UNIDOS também são lembradas. O banco
+            # exige a chave única entre TODOS os livros (UNIQUE (missao, chave)); o índice só olhava os vivos e criava de
+            # novo o livro com a chave de um excluído: o livro.criado era recusado e os 11 eventos seguintes caíam em cascata
+            for lid, ch, sit in biblioteca.execute("SELECT id, chave, situacao FROM livro WHERE missao=? AND situacao IN ('excluido', 'unido')",
+                                                   (missao_id,)):
+                self._fora[ch] = (lid, sit)
+            try:
+                self._uniao = dict(biblioteca.execute("SELECT livro_unido, livro_que_fica FROM uniao").fetchall())
+            except sqlite3.Error:
+                self._uniao = {}
 
     def _lembrar(self, livro: str, chave: str, titulo: str, uf: str | None) -> None:
         self._por_chave[chave] = livro
@@ -66,6 +79,15 @@ class Indice:
                 if self._uf.get(candidato) and self._uf.get(candidato) == d.get("uf"):
                     livro, como = candidato, "mesmo edital em outro canal (título semelhante, mesma UF)"
                     break
+        if livro is None and chave in self._fora:                     # 10/11/2026 (passo 2): a chave já tem livro, fora da esteira
+            fora, sit = self._fora[chave]
+            destino, passos = fora, 0
+            while destino in self._uniao and passos < 10:              # o unido: segue a união até o livro que ficou
+                destino, passos = self._uniao[destino], passos + 1
+            if sit == "unido" and destino in self._uf:                 # o livro que ficou está vivo: a informação vai a ele
+                livro, como = destino, f"mesma chave do livro unido {fora} (vai ao livro que ficou)"
+            else:                                                       # o excluído não renasce: quem decide é o Cartório
+                return fora, False, f"{FORA}{sit}"
         novo = livro is None
         if novo:
             livro, como = f"L-{chave[:16]}", "livro novo"

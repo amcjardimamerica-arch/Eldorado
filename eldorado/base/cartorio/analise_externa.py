@@ -114,6 +114,7 @@ TIPOS = {
     "licitação ou pregão": r"(?i)\b(preg[aã]o|licita[cç][aã]o|tomada de pre[cç]os|dispensa de licita)\b",
 }
 PREFIXO_TRIAGEM = "[triagem aprendida do Chrome]"
+TRIAGEM_MAXIMO = 200   # 10/11/2026: no máximo 200 descartes da triagem por passagem (a volta depois de dias parada)
 
 
 def tipo_do_livro(livro_id: str, titulo: str | None, link_oficial: str | None, link_divulgacao: str | None) -> str | None:
@@ -165,8 +166,12 @@ def aplicar_triagem(con: sqlite3.Connection, diario, cfg: dict[str, Any] | None 
             a = ativos[tp]
             alvo.append({"livro_id": i, "decisao": "descartar",
                          "motivo": f"{PREFIXO_TRIAGEM} tipo '{tp}': o Chrome descartou {a['precisao']:.0%} de {a['vereditos']} vereditos deste tipo"})
+    # 10/11/2026 (parecer da Sala, passo 1; R53): a triagem é do PRÓPRIO sistema, não uma entrega do Chrome — a conferência
+    # da entrega completa (R41) não se aplica a ela. Antes, cada passagem a chamava com a exigência do lote: o lote
+    # «triagem-aprendida» não existe em verificacao/lotes, a triagem era recusada por inteiro e abria um alarme (85 desde 04/11)
+    alvo = alvo[:TRIAGEM_MAXIMO]
     if alvo:
-        importar(json.dumps({"lote": "triagem-aprendida", "vereditos": alvo}, ensure_ascii=False), con, diario)
+        importar(json.dumps({"lote": "triagem-aprendida", "vereditos": alvo}, ensure_ascii=False), con, diario, exigir_completo=False)
     return [x["livro_id"] for x in alvo]
 
 

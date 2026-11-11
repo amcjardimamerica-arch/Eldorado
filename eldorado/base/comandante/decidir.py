@@ -90,7 +90,7 @@ def decidir(dados: Path, config: Path, diario, plano: dict | None = None, agora:
                         "nota": round(prob, 4),
                         "politica": "thompson",
                         "contexto": json.dumps({**ctx, "lista": pol.opcoes, "prob": prob, "na_ordem_fixa": alvo in ordem_fixa,
-                                                "contagem": [a_, e_]}, ensure_ascii=False),
+                                                "contagem": [a_, e_], "inclusao": getattr(pol, "inclusao", {})}, ensure_ascii=False),
                     },
                 )
             resumo["coleta"] = {"opcoes": len(opcoes), "escolhas": ESCOLHAS_MOTORES, "aprendidas": pol.aprendidas}
