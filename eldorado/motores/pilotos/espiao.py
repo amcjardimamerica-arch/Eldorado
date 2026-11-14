@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import random
 import re
+import sqlite3
 import tomllib
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -200,6 +201,9 @@ def _fator_real(con, familia: str) -> float:
         return 1.0
 
 
+# 14/11/2026 (R55, C19): o título de uma listagem (o mesmo critério do portão de entrada)
+LISTAGEM = re.compile(r"(?i)^\s*(?:convocat[óo]rias|editais|oportunidades|chamadas|programas|portal de (?:projetos|editais|oportunidades))\b")
+
 class Espiao:
     def __init__(
         self,
@@ -212,6 +216,7 @@ class Espiao:
         rnd: random.Random | None = None,
         descanso_h: float = 2.0,
         diario=None,
+        abrir_listagem: Callable[[str], list[str]] | None = None,
     ):
         from ...banco.cerebro_db.esquema import abrir  # dentro do Cérebro (as tabelas espiao_* são da versão 2)
         self.con = abrir(estado)
@@ -222,10 +227,20 @@ class Espiao:
         self.fams = familias(empresas or [])
         self.rnd = rnd or random.Random()
         self.descanso_h = descanso_h
+        self.abrir_listagem = abrir_listagem   # R55 (C19): os editais de uma listagem (os links dos documentos e das plataformas)
         # o aprendizado do Espião vai ao Cérebro PELOS EVENTOS (24/10/2026: ele gravava direto no arquivo, e a sala, que lê o
         # repositório e os eventos, nunca via as missões: o alarme "Missões do Espião em 24 h" ficava aceso); sem diário
         # (os testes), grava direto
         self.diario = diario
+        # 14/11/2026 (R55, C6): a memória das entregas — o achado do Espião tem identificador fixo por endereço («espiao-» +
+        # o resumo do link); o endereço que a Pertinência barrou nos últimos 30 dias não volta (10.740 entregas de 660 páginas)
+        try:
+            desde = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+            self.barrados = {r for (r,) in self.con.execute(
+                "SELECT referencia FROM decisao_pertinencia WHERE referencia LIKE 'espiao-%' AND em >= ? "
+                "AND lower(decisao) NOT IN ('aceito', 'aceita', 'aceitar', 'pertinente', 'manter')", (desde,))}
+        except sqlite3.Error:
+            self.barrados = set()
         existentes = {r[0] for r in self.con.execute("SELECT nome FROM espiao_familia")}
         for f in self.fams:
             if f not in existentes:
@@ -241,10 +256,11 @@ class Espiao:
 
     # ------------------------------------------------------------------ a escolha (Thompson) e o bloqueio
     def bloqueado(self) -> bool:
-        """Todas as rotas de busca descansando: não há missão possível agora (o Cérebro não envia)."""
+        """Todas as rotas de busca GERAL descansando (R55, C5): não há missão de busca possível agora."""
+        from ..descoberta.metabusca import ROTAS_GERAIS
         agora_ = datetime.now(timezone.utc).isoformat()
         rotas = dict(self.con.execute("SELECT nome, descansa_ate FROM espiao_rota"))
-        return bool(rotas) and all((v or "") > agora_ for v in rotas.values()) and len(rotas) >= 3
+        return not any((rotas.get(r) or "") <= agora_ for r in ROTAS_GERAIS)
 
     def escolher(self) -> tuple[str, str]:
         if getattr(self, "preferida", None) in self.fams:                        # a família escolhida pelo Comandante (25/10/2026)
@@ -289,10 +305,13 @@ class Espiao:
         fam, q = self.escolher()
         pistas, relato = self.consultar(q)
         for linha in relato:  # o descanso das rotas vale entre as execuções
-            if "descansa" in linha or "falhou" in linha:
-                ate = (datetime.now(timezone.utc) + timedelta(hours=self.descanso_h)).isoformat()
-                self._gravar("espiao.rota", {"nome": linha.split(":")[0], "descansa_ate": ate}, "INSERT OR REPLACE INTO espiao_rota VALUES (?, ?)",
-                             (linha.split(":")[0], ate))
+            # 14/11/2026 (R55, C1): só a linha «falhou» grava o descanso, com os minutos que a metabusca calculou (2 a 60; o
+            # SearXNG, 1) — a linha «descansando» regravava 2 h a cada missão e a rota nunca voltava (79.054 eventos)
+            m_falha = re.match(r"([^:]+): falhou .*?descansa (\d+) min", linha)
+            if m_falha:
+                ate = (datetime.now(timezone.utc) + timedelta(minutes=max(1, int(m_falha.group(2))))).isoformat()
+                self._gravar("espiao.rota", {"nome": m_falha.group(1), "descansa_ate": ate}, "INSERT OR REPLACE INTO espiao_rota VALUES (?, ?)",
+                             (m_falha.group(1), ate))
         motivos: dict[str, int] = {}
         achados: list[Achado] = []
         candidatos = 0
@@ -301,11 +320,40 @@ class Espiao:
             if not ok:
                 motivos[porque] = motivos.get(porque, 0) + 1
                 continue
+            if f"espiao-{__import__('hashlib').sha1(p.link.encode()).hexdigest()[:12]}" in self.barrados:   # C6
+                motivos["barrada pela Pertinência nos últimos 30 dias"] = motivos.get("barrada pela Pertinência nos últimos 30 dias", 0) + 1
+                continue
             lido = self.ler(p.link)
             if not lido:
                 motivos["página não lida"] = motivos.get("página não lida", 0) + 1
                 continue
             titulo, texto = lido
+            # 14/11/2026 (R55, C19): a listagem é aberta — cada edital entra separado (a Pertinência barrava 7.958 listagens)
+            if self.abrir_listagem and LISTAGEM.search(titulo or p.titulo or ""):
+                try:
+                    filhos = [u for u in self.abrir_listagem(p.link) if u.rstrip("/") != p.link.rstrip("/")][:5]
+                except Exception:  # noqa: BLE001 — a listagem que não abre segue como página comum (registrado)
+                    filhos = []
+                motivos["listagem aberta"] = motivos.get("listagem aberta", 0) + 1
+                for u in filhos:
+                    ok2, porque2 = self.fora_dos_motores(u)
+                    aid = f"espiao-{__import__('hashlib').sha1(u.encode()).hexdigest()[:12]}"
+                    if not ok2 or aid in self.barrados:
+                        chave = porque2 or "barrada pela Pertinência nos últimos 30 dias"
+                        motivos[chave] = motivos.get(chave, 0) + 1
+                        continue
+                    lido2 = self.ler(u)
+                    if not lido2 or not (OPORT.search(f"{lido2[0]} {lido2[1][:6000]}") and OSC.search(f"{lido2[0]} {lido2[1][:6000]}")):
+                        continue
+                    candidatos += 1
+                    h2 = urlsplit(u).hostname or ""
+                    achados.append(Achado(id=aid, motor="espiao", encontrado_em=date.today().isoformat(), link_divulgacao=p.link, link_oficial=u,
+                                          titulo=(lido2[0] or h2)[:200], dados={"familia": fam, "consulta": q, "dominio": h2,
+                                                                                "origem": "missão do piloto Espião (edital de uma listagem)"},
+                                          documento={"url": u, "sha256": __import__("hashlib").sha256(lido2[1].encode()).hexdigest(), "tipo": "html",
+                                                     "leitor": "espiao", "oficial": True, "paginas": [lido2[1]]}))
+                    self.conhecidos.add(u.rstrip("/"))
+                continue
             base = f"{p.titulo} {titulo} {texto[:6000]}"
             if not (OPORT.search(base) and OSC.search(base)):
                 motivos["sem sinal de oportunidade para OSC"] = motivos.get("sem sinal de oportunidade para OSC", 0) + 1
@@ -352,6 +400,46 @@ class Espiao:
                          tuple(cons.values()))
         self.con.commit()
         return {"familia": fam, "consulta": q, "resultados": len(pistas), "achados": achados, "motivos": motivos, "bloqueada": bloqueada}
+
+    CAMINHOS_VARREDURA = ("", "/editais", "/edital", "/patrocinio", "/patrocinios", "/responsabilidade-social", "/investimento-social",
+                          "/sustentabilidade", "/chamadas", "/instituto")
+
+    def varredura(self, sites: list[str], n: int = 6) -> dict[str, Any]:
+        """14/11/2026 (R55, C11 — a camada 1): a varredura direta das empresas e entidades do cadastro com site, sem buscador
+        (o freio das 5 missões sem pista e a janela fechada trazem o Espião para cá). Lê a página inicial e os caminhos comuns de
+        editais e de investimento social; vira achado a página com sinal de oportunidade para OSC, pelos mesmos filtros."""
+        fam, motivos, achados, lidas = "camada1_cadastro", {}, [], 0
+        escolhidos = self.rnd.sample(sites, min(n, len(sites))) if sites else []
+        for site in escolhidos:
+            base = site if site.startswith("http") else f"https://{site}"
+            for cam in self.CAMINHOS_VARREDURA:
+                url = base.rstrip("/") + cam
+                ok, porque = self.fora_dos_motores(url)
+                if not ok or f"espiao-{__import__('hashlib').sha1(url.encode()).hexdigest()[:12]}" in self.barrados:
+                    motivos[porque or "barrada"] = motivos.get(porque or "barrada", 0) + 1
+                    break
+                lido = self.ler(url)
+                lidas += 1
+                if not lido:
+                    continue
+                titulo, texto = lido
+                if not (OPORT.search(f"{titulo} {texto[:8000]}") and OSC.search(f"{titulo} {texto[:8000]}")):
+                    continue
+                h = urlsplit(url).hostname or ""
+                achados.append(Achado(id=f"espiao-{__import__('hashlib').sha1(url.encode()).hexdigest()[:12]}", motor="espiao",
+                                      encontrado_em=date.today().isoformat(), link_divulgacao=url, link_oficial=url, titulo=(titulo or h)[:200],
+                                      dados={"familia": fam, "consulta": site, "dominio": h, "origem": "varredura do cadastro (camada 1)"},
+                                      documento={"url": url, "sha256": __import__("hashlib").sha256(texto.encode()).hexdigest(), "tipo": "html",
+                                                 "leitor": "espiao", "oficial": True, "paginas": [texto]}))
+                self.conhecidos.add(url.rstrip("/"))
+                break
+        em = datetime.now(timezone.utc).isoformat()
+        linha_m = {"em": em, "familia": fam, "consulta": ", ".join(escolhidos)[:500], "resultados": lidas, "candidatos": len(achados),
+                   "achados": len(achados), "motivos": json.dumps(motivos, ensure_ascii=False), "rotas": json.dumps(["varredura direta"]), "bloqueada": 0}
+        self._gravar("espiao.missao", linha_m, "INSERT INTO espiao_missao(em, familia, consulta, resultados, candidatos, achados, motivos, rotas, "
+                     "bloqueada) VALUES (?,?,?,?,?,?,?,?,?)", tuple(linha_m.values()))
+        self.con.commit()
+        return {"familia": fam, "consulta": linha_m["consulta"], "resultados": lidas, "achados": achados, "motivos": motivos, "bloqueada": False}
 
     def recorrencia(self, horas: int = 72) -> dict[str, Any]:
         """O que o Cérebro mede: as missões recentes, quantas tiveram resultado, e o rendimento de cada família."""

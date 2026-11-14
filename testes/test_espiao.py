@@ -53,7 +53,9 @@ def test_thompson_e_consulta_aposentada(tmp_path):
 
 
 def test_bloqueio_e_ociosidade(tmp_path, bancos):
-    falha = lambda q: ([], ["searxng: falhou (Erro); descansa 60 min", "ddgs: falhou (Limite); descansa 60 min", "marginalia: falhou (Erro); descansa 60 min"])  # noqa: E731
+    # 14/11/2026 (R55, C5): o bloqueio é o de todas as rotas de busca GERAL, pelos nomes que a metabusca usa
+    from eldorado.motores.descoberta.metabusca import ROTAS_GERAIS
+    falha = lambda q: ([], [f"{r}: falhou (Erro); descansa 60 min" for r in ROTAS_GERAIS])  # noqa: E731
     e = espiao(tmp_path, falha)
     assert e.missao()["bloqueada"] and e.bloqueado()
     achados, rel = missoes(tmp_path, bancos["biblioteca"], None, ociosidade=True, consultar=falha, ler=lambda u: None)

@@ -861,6 +861,18 @@ def permanente(
             marcar_religando(Path("."), "implantação" if implantar.is_set() else "troca de ciclo (o limite de tempo da execução)")
         except Exception as e:  # noqa: BLE001 — o aviso nunca impede a gravação final
             typer.echo(f"  aviso de religação na Sala: {type(e).__name__}: {str(e)[:120]}")
+    try:   # 14/11/2026 (R55, C9): o relatório de turno do Espião, na reserva final, antes da gravação
+        import sqlite3 as _sq
+
+        from ..cerebro.relatorio_turno import gerar as _gerar_turno
+        _c = _sq.connect(f"file:{Path('dados/cerebro.db')}?mode=ro", uri=True)
+        _b = _sq.connect(f"file:{Path('dados/biblioteca.db')}?mode=ro", uri=True)
+        _ini = datetime.fromtimestamp(float(os.environ.get("ELDORADO_INICIO_JOB") or time.time() - 6 * 3600), timezone.utc).isoformat()
+        typer.echo(f"  relatório de turno do Espião: {_gerar_turno(_c, _b, Path('.'), _ini)}")
+        _c.close()
+        _b.close()
+    except Exception as e:  # noqa: BLE001 — o relatório nunca impede a gravação final
+        typer.echo(f"  relatório de turno: {type(e).__name__}: {str(e)[:160]}")
     gravar_agora(esperar=True)  # tudo o que terminou é gravado; nada fica pela metade
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
 

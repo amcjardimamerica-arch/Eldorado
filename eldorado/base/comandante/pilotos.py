@@ -149,9 +149,12 @@ def pousou(piloto: str) -> None:
 
 
 def _janela_espiao(cer: sqlite3.Connection) -> bool:
+    """14/11/2026 (R55, C5): a janela conta só as rotas de busca GERAL — a do PNCP nunca descansava e mantinha a janela aberta
+    (1.406 missões vazias de 12 a 14/11). Aberta se alguma rota geral não está descansando."""
+    from ...motores.descoberta.metabusca import ROTAS_GERAIS
     agora_ = datetime.now(timezone.utc).isoformat()
     rotas = dict(cer.execute("SELECT nome, descansa_ate FROM espiao_rota"))
-    return not (len(rotas) >= 3 and all((v or "") > agora_ for v in rotas.values()))
+    return any((rotas.get(r) or "") <= agora_ for r in ROTAS_GERAIS)
 
 
 def _familia(dados: Path, cer: sqlite3.Connection) -> tuple[str | None, float, int]:

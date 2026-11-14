@@ -32,6 +32,7 @@ def test_o_espiao_falhando_nao_apaga_os_outros(bancos, gravador, diario, tmp_pat
 
 def test_a_escada_dos_pilotos_e_a_completa():
     from eldorado.motores.acesso.completa import ORDEM
-    assert ORDEM == ("api", "leve", "ponte", "lightpanda", "patchright", "arquivo", "local")   # 29/10/2026 (titular): sem o Camoufox nos pilotos
+    # 29/10/2026 (titular): sem o Camoufox nos pilotos; 14/11/2026 (R55, C16): sem o degrau do computador da titular
+    assert ORDEM == ("api", "leve", "ponte", "lightpanda", "patchright", "arquivo")
     import inspect
     assert "escada_completa" in inspect.getsource(E._contexto_pilotos)

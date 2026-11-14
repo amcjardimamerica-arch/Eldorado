@@ -76,7 +76,10 @@ def avaliar(r: Resposta) -> None:
     if r.status >= 400:
         raise Bloqueado(f"status {r.status}")
     amostra = r.conteudo[:20000]
-    if SINAIS_BLOQUEIO.search(amostra) and len(r.conteudo) < 200_000:
+    # 14/11/2026 (R55, C2): a resposta JSON (a busca do SearXNG próprio, as APIs) é dado — a palavra «captcha» no texto de um
+    # resultado não é página de desafio (o «Bloqueado» falso cegava o Espião); a página de desafio é HTML
+    eh_json = "json" in (r.tipo or "").lower() or amostra.lstrip()[:1] in (b"{", b"[")
+    if not eh_json and SINAIS_BLOQUEIO.search(amostra) and len(r.conteudo) < 200_000:
         raise Bloqueado("página de desafio ou captcha")
     # o código executável não conta como conteúdo; os blocos de DADOS (JSON, JSON-LD) contam (lição do DOU, 22/10)
     sem_codigo = re.sub(rb"(?is)<script\b(?![^>]*type=[\"']application/(?:ld\+)?json)[^>]*>.*?</script>|<(style|noscript)\b.*?</\1>", b"", amostra)

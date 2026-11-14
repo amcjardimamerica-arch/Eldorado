@@ -6,11 +6,11 @@
  * linha  const CHAVE = '...';  do arquivo antigo para este (ou deixe a chave na variável de ambiente ELDORADO_PONTE_CHAVE).
  */
 /*
- * PONTE BRASIL do Eldorado — lê páginas PÚBLICAS com o IP brasileiro desta hospedagem e devolve ao GitHub.
+ * PONTE BRASIL do Eldorado — lê páginas PÚBLICAS com o IP brasileiro desta hospedagem e devolve ao sistema.
  *
  * Para que serve: alguns portais (TJGO, Câmara e Prefeitura de Goiânia, Diário de Goiás...) recusam endereço
- * estrangeiro. O GitHub fica nos EUA; esta página, numa hospedagem no Brasil (Hostgator, Locaweb, KingHost...),
- * empresta o endereço brasileiro. Todo o trabalho continua no GitHub.
+ * estrangeiro. O sistema roda fora do Brasil; esta página, numa hospedagem no Brasil (Hostgator, Locaweb, KingHost...),
+ * empresta o endereço brasileiro. Todo o trabalho continua no sistema.
  *
  * Segurança — NÃO é um proxy aberto:
  *   - só aceita pedido assinado com a CHAVE (HMAC-SHA256 de "ts\nurl"), com no máximo 5 minutos de idade;
@@ -21,7 +21,7 @@
  * Instalação (5 minutos):
  *   1. No painel da hospedagem (Gerenciador de Arquivos), crie a pasta public_html/ponte/ e envie este arquivo.
  *   2. Troque a CHAVE abaixo por uma frase longa e aleatória (40+ caracteres).
- *   3. No GitHub (Settings → Secrets and variables → Actions) crie dois segredos:
+ *   3. Nos segredos do sistema, crie dois:
  *        ELDORADO_PONTE_URL   = https://SEU-DOMINIO/ponte/ponte.php
  *        ELDORADO_PONTE_CHAVE = a mesma frase da CHAVE
  *   Pronto: as rodadas dos motores indexadores passam a usar a ponte para os sites que recusam IP estrangeiro.
@@ -32,6 +32,8 @@ const CHAVE = 'TROQUE-POR-UMA-FRASE-LONGA-E-ALEATORIA';
 const MAX_BYTES = 16000000;   // 03/10: as edições do Diário de Goiânia têm de 8 a 11 MB
 const TIMEOUT = 90;
 const LIMITE_POR_MINUTO = 120;
+// 14/11/2026: o modo do Espião (sites privados fora da lista), com o teto por janela de 6 horas
+const TETO_ESPIAO = 300;
 const DOMINIOS = [
     'agilicloud.com.br',
     'al.gov.br',
@@ -203,15 +205,25 @@ $assinatura = (string) ($p['assinatura'] ?? '');
 if (abs(time() - $ts) > 300) {
     sair(['ok' => false, 'erro' => 'pedido expirado'], 403);
 }
-if (!hash_equals(hash_hmac('sha256', $ts . "\n" . $url, $chave), $assinatura)) {
+$modo = (string) ($p['modo'] ?? '');
+$mensagem = $modo === 'espiao' ? $ts . "\n" . $modo . "\n" . $url : $ts . "\n" . $url;   // o modo entra na assinatura
+if (!hash_equals(hash_hmac('sha256', $mensagem, $chave), $assinatura)) {
     sair(['ok' => false, 'erro' => 'assinatura inválida'], 403);
 }
 $u = parse_url($url);
 if (!$u || !in_array($u['scheme'] ?? '', ['https', 'http'], true) || empty($u['host'])) {
     sair(['ok' => false, 'erro' => 'endereço inválido'], 400);
 }
-if (!permitido($u['host'])) {
+if ($modo !== 'espiao' && !permitido($u['host'])) {
     sair(['ok' => false, 'erro' => 'dominio fora da lista da ponte: ' . $u['host']], 403);
+}
+if ($modo === 'espiao') {   // o Espião lê sites privados: no máximo TETO_ESPIAO pedidos a cada 6 horas
+    $janela = sys_get_temp_dir() . '/eldorado_ponte_espiao_' . intdiv(time(), 21600);
+    $ne = intval(@file_get_contents($janela)) + 1;
+    @file_put_contents($janela, (string) $ne);
+    if ($ne > TETO_ESPIAO) {
+        sair(['ok' => false, 'erro' => 'teto do Espião na janela de 6 horas'], 429);
+    }
 }
 $ip = gethostbyname($u['host']);
 if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
@@ -238,7 +250,7 @@ curl_setopt_array($ch, [
     CURLOPT_MAXREDIRS => 5,
     CURLOPT_TIMEOUT => TIMEOUT,
     CURLOPT_CONNECTTIMEOUT => 15,
-    CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; EldoradoIndexadores/1.0; +https://github.com/amcjardimamerica-arch/Eldorado; ponte Brasil)',
+    CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; EldoradoIndexadores/1.0; ponte Brasil)',
     CURLOPT_HTTPHEADER => $cab_pedido,
     CURLOPT_ENCODING => '',
     CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
@@ -262,7 +274,9 @@ if ($corpo === false) {
 $status = intval(curl_getinfo($ch, CURLINFO_RESPONSE_CODE));
 $final = (string) curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 $fu = parse_url($final);
-if (!$fu || empty($fu['host']) || !permitido($fu['host'])) {
+$ipf = ($fu && !empty($fu['host'])) ? gethostbyname($fu['host']) : '';
+if (!$fu || empty($fu['host']) || ($modo !== 'espiao' && !permitido($fu['host']))
+    || !filter_var($ipf, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
     sair(['ok' => false, 'erro' => 'redirecionou para domínio fora da lista: ' . ($fu['host'] ?? '?')], 403);
 }
 $guardar = array_intersect_key($cab_resp, array_flip(['content-type', 'etag', 'last-modified', 'server', 'cf-ray', 'x-wp-totalpages', 'x-wp-total']));

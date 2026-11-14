@@ -26,6 +26,9 @@ class Metabusca:
         self.searxng = self.searxng or os.environ.get("ELDORADO_SEARXNG")   # o SearXNG do próprio fluxo (scripts/instalar.sh)
     marginalia: str | None = "https://api.marginalia.nu/public"
     usar_ddgs: bool = True
+    # 14/11/2026 (R55, C4): as rotas temáticas (PNCP, Querido Diário) são dos motores e do Interceptador; o Espião busca na
+    # internet o que os motores não alcançam — com tematicas=False ele não as chama (a rota do PNCP era a mais usada)
+    tematicas: bool = True
     descanso_s: int = 3600
     _descansando: dict[str, float] = field(default_factory=dict)
     _falhas: dict[str, int] = field(default_factory=dict)
@@ -50,7 +53,7 @@ class Metabusca:
         r = [("searxng", self._searxng)]
         r += [(f"ddgs-{b}", (lambda t, lim, b=b: self._ddgs(t, lim, b))) for b in self.MOTORES_DDGS]
         r.append(("marginalia", self._marginalia))
-        if "site:" not in termos:                       # as rotas temáticas de editais (não aceitam a restrição a um site)
+        if self.tematicas and "site:" not in termos:    # as rotas temáticas de editais (não aceitam a restrição a um site)
             r += [("querido-diario", self._querido_diario), ("pncp", self._pncp)]
         return r
 
@@ -125,6 +128,10 @@ class Metabusca:
         d = json.loads(self.buscar(f"{self.marginalia.rstrip('/')}/search/{quote(termos)}?count={limite}").conteudo)
         return [Pista(titulo=r.get("title", ""), link=r["url"], origem="metabusca (Marginalia)", resumo=r.get("description"))
                 for r in d.get("results", []) if r.get("url")]
+
+
+# as rotas de busca GERAL (as que contam para a janela do Espião — R55, C5)
+ROTAS_GERAIS = ("searxng", "marginalia", *(f"ddgs-{b}" for b in Metabusca.MOTORES_DDGS))
 
 
 class _Desligada(Exception):

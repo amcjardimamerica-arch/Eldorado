@@ -757,6 +757,35 @@
    "historico": [
     "14/11/2026: a fonte de licitações do Sesc retirada pela evidência da análise externa em 3 grupos (a decisão 6 do parecer: restringir ou retirar)"
    ]
+  },
+  {
+   "id": "R55",
+   "data": "2026-11-14",
+   "tema": "os pilotos: a função do Espião e do Interceptador, a infraestrutura, as rotas de busca",
+   "regra": "Espião: busca na internet o que os motores não alcançam — editais e apoios de empresas e entidades privadas de todos os níveis, fundos internacionais, embaixadas, projetos globais, ações de instituições do terceiro setor abertas a outras associações, parcerias e prêmios; verifica as empresas do cadastro com atuação social; a busca é diferente a cada tentativa; não usa a rota do PNCP; é medido pelo resultado trazido (os achados aceitos), não pelas missões. Interceptador: acha os links oficiais do edital e os documentos de publicação e completa o checklist, cruzando fontes diferentes, antes de o livro ir ao Chrome. Infraestrutura: nada sai pelo computador da titular; as ferramentas são gratuitas e sem conta; o sistema para a cada turno de até 6 horas para o relatório.",
+   "porque": "titular, 14/11/2026: o parecer das rotas de acesso e busca dos pilotos — o Espião estava cego (86% das missões sem pista, 94% de entregas repetidas, a rota do PNCP como a mais usada, o descanso que se renovava a cada missão, o falso bloqueio na resposta da própria busca) e a Sala media missões, não resultado. Com as correções, o reset das missões dos pilotos: os ciclos de 100 recomeçam.",
+   "revoga": {
+    "R38": "«não se busca a oportunidade sem link oficial» (o Interceptador passa a trabalhar o livro sem link oficial — correção I8, envio 3) e «as buscas do Espião seguem a mesma ordem» (o Espião busca o privado e o internacional, não a ordem dos motores)",
+    "R42": "«o livro sem dados vai direto à verificação externa» — antes do Chrome, uma rodada do Interceptador (correção I8, envio 3)"
+   },
+   "onde": "eldorado/motores/pilotos/espiao.py; eldorado/motores/descoberta/metabusca.py; eldorado/base/cerebro/pilotos.py; eldorado/base/comandante/pilotos.py; eldorado/motores/acesso/escada.py, completa.py, ponte_br.py; ponte/ponte.php; eldorado/base/cerebro/relatorio_turno.py, ciclo_pilotos.py; eldorado/base/painel/sala.py; eldorado/base/nucleo/comandos.py",
+   "travas": [
+    "testes/test_pilotos_rotas_1411.py::test_o_espiao_nao_chama_a_rota_do_pncp",
+    "testes/test_pilotos_rotas_1411.py::test_o_degrau_9_nao_esta_na_escada_dos_pilotos",
+    "testes/test_pilotos_rotas_1411.py::test_o_relatorio_de_turno_e_gerado",
+    "testes/test_pilotos_rotas_1411.py::test_o_descanso_so_na_falha_com_os_minutos_da_metabusca",
+    "testes/test_pilotos_rotas_1411.py::test_o_verificador_nao_ve_captcha_na_resposta_json",
+    "testes/test_pilotos_rotas_1411.py::test_a_janela_conta_so_as_rotas_gerais",
+    "testes/test_pilotos_rotas_1411.py::test_a_pagina_barrada_nao_volta_por_30_dias",
+    "testes/test_pilotos_rotas_1411.py::test_a_listagem_e_aberta_e_cada_edital_entra_separado",
+    "testes/test_pilotos_rotas_1411.py::test_a_varredura_do_cadastro",
+    "testes/test_pilotos_rotas_1411.py::test_a_ponte_do_espiao_assina_o_modo_e_nao_menciona_o_github",
+    "testes/test_pilotos_rotas_1411.py::test_a_sala_mede_os_achados_aceitos_do_espiao",
+    "testes/test_ciclo_pilotos.py::test_o_reset_das_missoes_dos_pilotos_uma_vez"
+   ],
+   "travas_pendentes": [
+    "a fila do Interceptador aceita livro sem link oficial (correção I8, envio 3)"
+   ]
   }
  ]
 }

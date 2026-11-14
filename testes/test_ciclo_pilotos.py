@@ -40,6 +40,8 @@ def test_o_fator_real_inverte_a_familia_dos_candidatos(tmp_path):
 
 def test_o_ciclo_roda_a_cada_100_e_o_comandante_usa(tmp_path):
     b, c = _bancos(120)
+    # 14/11/2026 (R55): os ciclos contam desde o reset das missões dos pilotos — o reset antes das 120 missões do ensaio
+    c.execute("INSERT INTO medicao VALUES ('ciclo:reset', '2000-01-01', 0, '{}')")
     d = D()
     feito = C.ciclo(b, c, d, tmp_path)
     assert "espiao" in feito and any(t == "medicao.registrada" and x["marcador"] == "ciclo:espiao" for t, x in d.ev)
@@ -48,3 +50,14 @@ def test_o_ciclo_roda_a_cada_100_e_o_comandante_usa(tmp_path):
     assert C.ciclo(b, c, D(), tmp_path).get("espiao") is None                 # menos de 100 desde o último: não roda
     s = Path("eldorado/base/comandante/pilotos.py").read_text(encoding="utf-8")
     assert "fator_familia(cer, a)" in s and "_fator_real(self.con, f)" in Path("eldorado/motores/pilotos/espiao.py").read_text(encoding="utf-8")
+
+
+def test_o_reset_das_missoes_dos_pilotos_uma_vez(tmp_path):
+    """14/11/2026 (R55): o reset volta as famílias ao começo e marca o recomeço dos ciclos; só uma vez."""
+    b, c = _bancos(120)
+    d = D()
+    assert C.ciclo(b, c, d, tmp_path) == {"reset": "R55"}
+    assert any(t == "medicao.registrada" and x["marcador"] == "ciclo:reset" for t, x in d.ev)
+    assert any(t == "espiao.familia" and x["a"] == 1.0 and x["usos"] == 0 for t, x in d.ev)
+    c.execute("INSERT INTO medicao VALUES ('ciclo:reset', '2099-01-01', 0, '{}')")
+    assert C.resetar(c, D()) is False                                          # só uma vez

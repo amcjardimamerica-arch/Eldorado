@@ -5,7 +5,9 @@ from __future__ import annotations
 from .escada import Escada
 
 # 29/10/2026: sem o Camoufox nos pilotos (nenhum site precisou dele; cada navegador pesa na memória)
-ORDEM = ("api", "leve", "ponte", "lightpanda", "patchright", "arquivo", "local")
+# 14/11/2026 (R55, C16): sem o degrau 9 (o computador da titular) — nada sai pelo computador dela; o sistema funciona 24 h só
+# com a própria infraestrutura (a ponte BR é o degrau do IP brasileiro)
+ORDEM = ("api", "leve", "ponte", "lightpanda", "patchright", "arquivo")
 
 
 def escada_completa(intervalo_s: float = 1.0, tentativas: int = 1, tempo_limite: float = 25, ponte: str = "dados/ponte",

@@ -215,6 +215,7 @@
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
+    "test_pilotos_rotas_1411.py",
     "test_pilotos_site.py",
     "test_ponte_br.py",
     "test_ponte_fallback.py",
@@ -342,6 +343,7 @@
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
+    "test_pilotos_rotas_1411.py",
     "test_pilotos_site.py",
     "test_pontuacao_motores.py",
     "test_portao_aprendizado_0511.py",
@@ -376,7 +378,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 931,
+   "linhas": 943,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/banco/consolidar.py",
@@ -391,6 +393,7 @@
     "eldorado/base/cerebro/inventario.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/cerebro/relatorio_turno.py",
     "eldorado/base/cerebro/retencao.py",
     "eldorado/base/comandante/pilotos.py",
     "eldorado/base/fluxo/agenda.py",
@@ -445,6 +448,7 @@
     "eldorado/base/cerebro/inventario.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/cerebro/relatorio_turno.py",
     "eldorado/base/cerebro/retencao.py",
     "eldorado/base/comandante/pilotos.py",
     "eldorado/base/fluxo/agenda.py",
@@ -1993,6 +1997,7 @@
     "test_passagem_real.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
+    "test_pilotos_rotas_1411.py",
     "test_pontuacao_motores.py",
     "test_r48_comandante.py",
     "test_rede_neural.py",
@@ -2104,10 +2109,11 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos.py",
-   "linhas": 112,
+   "linhas": 139,
    "finalidade": "O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que",
    "depende_de": [
     "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
     "eldorado/motores/descoberta/metabusca.py",
     "eldorado/motores/leitura/leitores.py",
     "eldorado/motores/pilotos/espiao.py"
@@ -2131,6 +2137,7 @@
    "componente": "Outros",
    "ligacoes": [
     "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
     "eldorado/motores/descoberta/metabusca.py",
     "eldorado/motores/leitura/leitores.py",
     "eldorado/motores/pilotos/espiao.py"
@@ -2164,6 +2171,7 @@
     "test_parecer_sala_2910.py",
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
+    "test_pilotos_rotas_1411.py",
     "test_r48_comandante.py"
    ],
    "situacao": "pacote",
@@ -2604,14 +2612,15 @@
   },
   {
    "arquivo": "eldorado/base/comandante/pilotos.py",
-   "linhas": 307,
+   "linhas": 310,
    "finalidade": "O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião e cada",
    "depende_de": [
     "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/comandante/decidir.py",
     "eldorado/base/comandante/parametros.py",
-    "eldorado/base/comandante/politica.py"
+    "eldorado/base/comandante/politica.py",
+    "eldorado/motores/descoberta/metabusca.py"
    ],
    "eventos": [
     "alarme.aberto",
@@ -2624,7 +2633,8 @@
    ],
    "testes": [
     "test_pilotos_aprendizado.py",
-    "test_pilotos_no_painel.py"
+    "test_pilotos_no_painel.py",
+    "test_pilotos_rotas_1411.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -2635,7 +2645,8 @@
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/comandante/decidir.py",
     "eldorado/base/comandante/parametros.py",
-    "eldorado/base/comandante/politica.py"
+    "eldorado/base/comandante/politica.py",
+    "eldorado/motores/descoberta/metabusca.py"
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
@@ -2939,6 +2950,7 @@
     "test_passada_chrome.py",
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
+    "test_pilotos_rotas_1411.py",
     "test_ponte_br.py",
     "test_ponte_fallback.py",
     "test_reanalise_sala_1111.py",
@@ -2977,6 +2989,7 @@
     "test_interceptador_funciona.py",
     "test_motores_bussola_1411.py",
     "test_parecer_sala_2910.py",
+    "test_pilotos_rotas_1411.py",
     "test_ponte_br.py",
     "test_ponte_fallback.py",
     "test_reanalise_sala_1111.py"
@@ -2992,7 +3005,7 @@
   },
   {
    "arquivo": "eldorado/motores/acesso/escada.py",
-   "linhas": 319,
+   "linhas": 322,
    "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -3027,6 +3040,7 @@
     "test_interceptador_funciona.py",
     "test_motores_bussola_1411.py",
     "test_parecer_sala_2910.py",
+    "test_pilotos_rotas_1411.py",
     "test_ponte_br.py",
     "test_ponte_fallback.py",
     "test_reanalise_sala_1111.py"
@@ -3181,6 +3195,7 @@
     "test_motores_bussola_1411.py",
     "test_passada_chrome.py",
     "test_pilotos_no_painel.py",
+    "test_pilotos_rotas_1411.py",
     "test_reanalise_sala_1111.py",
     "test_sala_da_producao_1011.py",
     "test_subpaginas_diaria.py"
@@ -3214,7 +3229,8 @@
     "test_espiao.py",
     "test_incentivos.py",
     "test_interceptador_funciona.py",
-    "test_passada_chrome.py"
+    "test_passada_chrome.py",
+    "test_pilotos_rotas_1411.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
@@ -3367,7 +3383,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 270,
+   "linhas": 284,
    "situacao": "em funcionamento",
    "ordem": 104
   },
@@ -3477,7 +3493,7 @@
   },
   {
    "arquivo": "eldorado/motores/acesso/ponte_br.py",
-   "linhas": 103,
+   "linhas": 125,
    "finalidade": "A ponte da HostGator (titular, 25/10/2026): o IP brasileiro para os sites que recusam a nuvem (a CESE, o TJ-GO, o MP-GO,",
    "depende_de": [
     "eldorado/motores/acesso/escada.py"
@@ -3491,7 +3507,9 @@
     "eldorado/motores/acesso/leve.py",
     "eldorado/motores/canal/motor.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_pilotos_rotas_1411.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
    "parte": "MOTORES",
@@ -3596,6 +3614,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/comandante/biblioteca.py",
     "eldorado/motores/canal/motor.py",
     "eldorado/motores/pilotos/interceptador.py"
@@ -3614,7 +3633,7 @@
   },
   {
    "arquivo": "eldorado/motores/descoberta/metabusca.py",
-   "linhas": 131,
+   "linhas": 138,
    "finalidade": "Forma 1: a metabusca, o canivete de busca: SearXNG (serviço próprio), o DDGS por seis motores (Bing, Brave, Mojeek,",
    "depende_de": [
     "eldorado/motores/descoberta/pistas.py"
@@ -3625,13 +3644,17 @@
     "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
-    "eldorado/motores/canal/motor.py"
+    "eldorado/base/comandante/pilotos.py",
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/espiao.py"
    ],
    "testes": [
     "test_comandante_memoria.py",
     "test_descoberta.py",
+    "test_espiao.py",
     "test_interceptador_funciona.py",
-    "test_pilotos_no_painel.py"
+    "test_pilotos_no_painel.py",
+    "test_pilotos_rotas_1411.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
@@ -3762,7 +3785,7 @@
   },
   {
    "arquivo": "eldorado/motores/acesso/completa.py",
-   "linhas": 33,
+   "linhas": 35,
    "finalidade": "A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10/2026: os",
    "depende_de": [
     "eldorado/motores/acesso/api.py",
@@ -4912,6 +4935,7 @@
     "test_parecer_sala_2910.py",
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
+    "test_pilotos_rotas_1411.py",
     "test_rede_neural.py"
    ],
    "situacao": "pacote",
@@ -4925,13 +4949,14 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "linhas": 376,
+   "linhas": 464,
    "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
    "depende_de": [
     "eldorado/banco/cerebro_db/esquema.py",
     "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/comandante/cartorio.py",
-    "eldorado/base/nucleo/contratos.py"
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/motores/descoberta/metabusca.py"
    ],
    "eventos": [],
    "acionado_por": [],
@@ -4940,7 +4965,8 @@
     "eldorado/base/cerebro/pilotos.py"
    ],
    "testes": [
-    "test_espiao.py"
+    "test_espiao.py",
+    "test_pilotos_rotas_1411.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "10 Pilotos: o Espião e o Interceptador (comandados pelo Comandante)",
@@ -4950,7 +4976,8 @@
     "eldorado/banco/cerebro_db/esquema.py",
     "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/comandante/cartorio.py",
-    "eldorado/base/nucleo/contratos.py"
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/motores/descoberta/metabusca.py"
    ],
    "critico": false,
    "metrica": "achados por voo; fontes novas propostas",
@@ -5284,7 +5311,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 762,
+   "linhas": 791,
    "situacao": "em funcionamento",
    "ordem": 164
   },
@@ -6271,7 +6298,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 1472,
+   "linhas": 1476,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
@@ -6829,6 +6856,29 @@
    "ordem": 224
   },
   {
+   "arquivo": "eldorado/base/cerebro/relatorio_turno.py",
+   "linhas": 79,
+   "finalidade": "14/11/2026 (R55, C8 e C9): o relatório de turno do Espião — gerado na reserva final de cada execução (até 6 h), em",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/ciclo_pilotos.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_pilotos_rotas_1411.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 225
+  },
+  {
    "arquivo": "eldorado/base/cerebro/retencao.py",
    "linhas": 57,
    "finalidade": "A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para o",
@@ -6852,7 +6902,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 225
+   "ordem": 226
   },
   {
    "arquivo": "eldorado/base/cerebro/sinais_motores.py",
@@ -6879,7 +6929,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 226
+   "ordem": 227
   },
   {
    "arquivo": "eldorado/base/cartorio/expurgo_claude.py",
@@ -6909,7 +6959,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 227
+   "ordem": 228
   },
   {
    "arquivo": "eldorado/base/cerebro/pontuacao_motores.py",
@@ -6939,7 +6989,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 228
+   "ordem": 229
   },
   {
    "arquivo": "eldorado/base/cartorio/manutencao_expurgo.py",
@@ -6975,19 +7025,21 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 229
+   "ordem": 230
   },
   {
    "arquivo": "eldorado/base/cerebro/ciclo_pilotos.py",
-   "linhas": 161,
+   "linhas": 248,
    "finalidade": "O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetros de",
    "depende_de": [
     "eldorado/base/cerebro/aprendizado.py",
     "eldorado/base/cerebro/pontuacao_motores.py",
+    "eldorado/base/cerebro/relatorio_turno.py",
     "eldorado/base/nucleo/eventos.py"
    ],
    "eventos": [
     "espiao.consulta",
+    "espiao.familia",
     "medicao.registrada"
    ],
    "acionado_por": [],
@@ -7006,11 +7058,12 @@
    "ligacoes": [
     "eldorado/base/cerebro/aprendizado.py",
     "eldorado/base/cerebro/pontuacao_motores.py",
+    "eldorado/base/cerebro/relatorio_turno.py",
     "eldorado/base/nucleo/eventos.py"
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 230
+   "ordem": 231
   }
  ],
  "motores": [

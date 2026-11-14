@@ -436,16 +436,20 @@ def montar(
     try:
         miss = q(cer, "SELECT COUNT(*) FROM espiao_missao WHERE em >= ?", h24)
         ult_m = q(cer, "SELECT MAX(em) FROM espiao_missao")
+        # 14/11/2026 (R55, C10): o resultado, não as missões — os achados do Espião aceitos na Biblioteca em 7 dias (o mostrador
+        # ficava verde com 561 missões e 3 achados)
+        d7 = (datetime.now(timezone.utc) - timedelta(days=7)).date().isoformat()
+        aceitos = q(bib, "SELECT COUNT(*) FROM achado WHERE motor = 'espiao' AND decisao = 'aceito' AND encontrado_em >= ?", d7)
         I(
             "pi_espiao",
-            "Missões do Espião em 24 h",
-            miss,
-            "verde" if miss else "vermelho",
-            f"{miss} missões nas últimas 24 h (mínimo garantido: uma a cada 6 h)" if miss else "nenhuma missão em 24 h",
+            "Achados do Espião aceitos em 7 dias",
+            aceitos,
+            "verde" if aceitos else ("amarelo" if miss else "vermelho"),
+            (f"{aceitos} achado(s) aceito(s) na Biblioteca em 7 dias; {miss} missões em 24 h" if aceitos
+             else (f"nenhum achado aceito em 7 dias, com {miss} missões em 24 h" if miss else "nenhuma missão em 24 h")),
             ult_m,
             cadencia_h=6,
-      faixa={"regra": "verde quando há valor; falha quando zero"},
-
+            faixa={"regra": "verde com achado aceito; amarelo com missões sem aceito; vermelho sem missão em 24 h"},
         )
     except sqlite3.Error:
         I("pi_espiao", "Missões do Espião em 24 h", None, "cinza", "o aprendizado do Espião ainda não está no Cérebro", None,

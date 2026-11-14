@@ -79,10 +79,14 @@ def avaliar_espiao(bib: sqlite3.Connection, cer: sqlite3.Connection, raiz: Path 
             "evitar": [f for f in ordem if familias[f]["fator_real"] <= 0.6 and familias[f]["acertos"] + familias[f]["erros"] >= 5]}
 
 
-def avaliar_interceptador(bib: sqlite3.Connection) -> dict[str, Any]:
+def avaliar_interceptador(bib: sqlite3.Connection, desde: str = "") -> dict[str, Any]:
     ab: dict[str, dict] = defaultdict(lambda: {"tentativas": 0, "erros": 0, "aceitos": 0})
     erros = 0
-    for ferr, res in bib.execute("SELECT ferramenta, resultado FROM tentativa"):
+    try:                                              # desde o reset (R55); o banco sem a data conta todas
+        linhas = bib.execute("SELECT ferramenta, resultado FROM tentativa WHERE COALESCE(em, '') >= ?", (desde,)).fetchall()
+    except sqlite3.OperationalError:
+        linhas = bib.execute("SELECT ferramenta, resultado FROM tentativa").fetchall()
+    for ferr, res in linhas:
         try:
             d = json.loads(res or "{}")
         except ValueError:
@@ -121,25 +125,108 @@ def ultimo(cer: sqlite3.Connection, piloto: str) -> tuple[float, dict]:
         return float(r[0] or 0), {}
 
 
+RESET = "R55"   # 14/11/2026 (titular): o reset das missões dos pilotos depois das correções das rotas
+
+
+def marca_reset(cer: sqlite3.Connection) -> str:
+    """O instante do reset (R55) — as contagens dos ciclos começam dele; "" se ainda não houve."""
+    try:
+        r = cer.execute("SELECT MAX(em) FROM medicao WHERE marcador = 'ciclo:reset'").fetchone()
+        return (r[0] or "") if r else ""
+    except sqlite3.Error:
+        return ""
+
+
+def resetar(cer: sqlite3.Connection, diario) -> bool:
+    """14/11/2026 (titular: «faça o reset nas missões dos pilotos»): uma vez, na primeira passagem com as correções das
+    rotas (R55) — as crenças das famílias voltam ao começo (a=1, b=1), as consultas aposentadas com a ferramenta quebrada
+    voltam ao rodízio, o fator real volta a 1, a preferência do Interceptador é zerada e os ciclos contam a partir daqui.
+    Nada é apagado: é a marca «ciclo:reset» e os eventos de cada estado novo."""
+    if marca_reset(cer):
+        return False
+    em = agora()
+    try:
+        for (nome,) in cer.execute("SELECT nome FROM espiao_familia").fetchall():
+            diario.emitir("espiao.familia", "ciclo-pilotos", {"nome": nome, "a": 1.0, "b": 1.0, "usos": 0, "achados": 0})
+        for q, fam in cer.execute("SELECT texto, familia FROM espiao_consulta WHERE usos >= 3 AND achados = 0").fetchall():
+            diario.emitir("espiao.consulta", "ciclo-pilotos", {"texto": q, "familia": fam, "usos": 0, "achados": 0, "ultima": em})
+    except sqlite3.Error:
+        pass                                                          # o Cérebro ainda sem as tabelas do Espião: só a marca
+    for pil in ("espiao", "interceptador"):
+        diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": f"ciclo:{pil}", "nivel": "componente", "em": em, "valor": 0,
+                                                              "motivo": json.dumps({"reset": RESET, "fatores": {}, "preferencia": None})})
+    diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": "ciclo:reset", "nivel": "componente", "em": em, "valor": 0,
+                                                          "motivo": json.dumps({"regra": RESET, "o_que": "reset das missões dos pilotos"})})
+    return True
+
+
+def aprendizado_novo(cer: sqlite3.Connection, bib: sqlite3.Connection, desde: str) -> dict[str, Any]:
+    """O que o ciclo traz além da R47 (titular, 14/11/2026: «veja a cada 100 missões se é possível trazer algum aprendizado
+    além dos que foram colocados no relatório»): o placar das rotas, as missões sem pista, os motivos de descarte, as
+    listagens abertas, a varredura do cadastro — e quais critérios de aceite do parecer de rotas ainda não foram atingidos."""
+    from .relatorio_turno import medir
+    vazio = {"sem_pista_pct": None, "rotas_respondendo": 0, "rota_maior_parte_pct": None, "placar": {}, "motivos": {},
+             "listagens_abertas": 0, "varreduras": 0, "achados_da_varredura": 0, "aceitos": None, "falta_no_aceite": []}
+    try:
+        r = medir(cer, bib, desde)
+        linhas = cer.execute("SELECT familia, motivos, achados FROM espiao_missao WHERE em >= ?", (desde,)).fetchall()
+    except sqlite3.Error:                             # o Cérebro sem as colunas das missões: só as medidas da R47
+        return vazio
+    motivos: dict[str, int] = defaultdict(int)
+    varreduras = [0, 0]
+    for fam, mot, ach in linhas:
+        for k, v in json.loads(mot or "{}").items():
+            motivos[k] += int(v or 0)
+        if fam == "camada1_cadastro":
+            varreduras[0] += 1
+            varreduras[1] += ach or 0
+    falta = []
+    if r["sem_pista_pct"] is not None and r["sem_pista_pct"] >= 5:
+        falta.append(f"missões sem pista {r['sem_pista_pct']}% (alvo < 5%)")
+    if r["rota_maior_parte_pct"] is not None and r["rota_maior_parte_pct"] > 50:
+        falta.append(f"uma rota com {r['rota_maior_parte_pct']}% das pistas (alvo ≤ 50%)")
+    if r["rotas_respondendo"] < 5:
+        falta.append(f"{r['rotas_respondendo']} rota(s) respondendo (alvo ≥ 5)")
+    if r["pncp_nas_missoes"]:
+        falta.append(f"a rota do PNCP em {r['pncp_nas_missoes']} missão(ões) (alvo 0)")
+    return {"sem_pista_pct": r["sem_pista_pct"], "rotas_respondendo": r["rotas_respondendo"], "rota_maior_parte_pct": r["rota_maior_parte_pct"],
+            "placar": r["placar"], "motivos": dict(sorted(motivos.items(), key=lambda kv: -kv[1])[:8]),
+            "listagens_abertas": motivos.get("listagem aberta", 0), "varreduras": varreduras[0], "achados_da_varredura": varreduras[1],
+            "aceitos": r["aceitos"], "falta_no_aceite": falta}
+
+
 def ciclo(bib: sqlite3.Connection, cer: sqlite3.Connection, diario, raiz: Path = RAIZ, a_cada: int = A_CADA) -> dict[str, Any]:
-    """Roda o ciclo do piloto que passou de mais 100 (missões do Espião; erros do Interceptador) desde o último."""
+    """Roda o ciclo do piloto que passou de mais 100 (missões do Espião; erros do Interceptador) desde o último — contados a
+    partir do reset (R55)."""
     from .aprendizado import Aprendizado
     feito: dict[str, Any] = {}
-    missoes = cer.execute("SELECT COUNT(*) FROM espiao_missao").fetchone()[0] or 0
-    ult_m, _ = ultimo(cer, "espiao")
+    if resetar(cer, diario):
+        return {"reset": RESET}
+    desde = marca_reset(cer)
+    try:                                              # desde o reset (R55); o banco sem a data conta todas
+        missoes = cer.execute("SELECT COUNT(*) FROM espiao_missao WHERE em >= ?", (desde,)).fetchone()[0] or 0
+    except sqlite3.OperationalError:
+        missoes = cer.execute("SELECT COUNT(*) FROM espiao_missao").fetchone()[0] or 0
+    ult_m, ult_o = ultimo(cer, "espiao")
+    ult_em = ult_o.get("em") or desde
     if missoes - ult_m >= a_cada:
         av = avaliar_espiao(bib, cer, raiz)
         for q in av["aposentar"]:                      # a consulta que só trouxe erro real sai do rodízio (usos ≥ 3, achados 0)
             diario.emitir("espiao.consulta", "ciclo-pilotos", {"texto": q, "usos": 99, "achados": 0, "ultima": agora()})
+        novo = aprendizado_novo(cer, bib, ult_em)
         orient = {"fatores": {f: x["fator_real"] for f, x in av["familias"].items()}, "preferir": av["preferir"], "evitar": av["evitar"],
-                  "aposentadas": len(av["aposentar"]), "media_real": av["media_real"]}
+                  "aposentadas": len(av["aposentar"]), "media_real": av["media_real"], "em": agora(), "novo": novo}
         diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": "ciclo:espiao", "nivel": "componente", "em": agora(),
                                                               "valor": missoes, "motivo": json.dumps(orient, ensure_ascii=False)})
-        Aprendizado(diario).registrar("comandante", f"Espião (ciclo de {a_cada} missões, {missoes} no total): preferir {', '.join(av['preferir']) or '—'}; "
-                                      f"evitar {', '.join(av['evitar']) or '—'}; {len(av['aposentar'])} consulta(s) aposentada(s) por só trazer erro real",
-                                      json.dumps(av["familias"], ensure_ascii=False)[:4000])
+        falta = "; ".join(novo["falta_no_aceite"]) or "nada — o aceite atingido"
+        licao = (f"Espião (ciclo de {a_cada} missões, {missoes} desde o reset): preferir {', '.join(av['preferir']) or '—'}; "
+                 f"evitar {', '.join(av['evitar']) or '—'}; {len(av['aposentar'])} consulta(s) aposentada(s) por só trazer erro real; "
+                 f"{novo['sem_pista_pct']}% sem pista, {novo['rotas_respondendo']} rota(s) respondendo, {novo['listagens_abertas']} "
+                 f"listagem(ns) aberta(s), {novo['varreduras']} varredura(s) do cadastro ({novo['achados_da_varredura']} achado(s)); "
+                 f"ainda falta: {falta}")
+        Aprendizado(diario).registrar("comandante", licao, json.dumps({"familias": av["familias"], "novo": novo}, ensure_ascii=False)[:4000])
         feito["espiao"] = orient
-    ai = avaliar_interceptador(bib)
+    ai = avaliar_interceptador(bib, desde)
     ult_e, _ = ultimo(cer, "interceptador")
     if ai["erros"] - ult_e >= a_cada:
         orient = {"preferencia": ai["preferencia"], "ordem": ai["ordem"],

@@ -47,8 +47,9 @@ def usar(url: str) -> bool:
     return configurada() and precisa(url)
 
 
-def assinar(chave: str, ts: int, url: str) -> str:
-    return hmac.new(chave.encode("utf-8"), f"{ts}\n{url}".encode(), hashlib.sha256).hexdigest()
+def assinar(chave: str, ts: int, url: str, modo: str = "") -> str:
+    msg = f"{ts}\n{modo}\n{url}" if modo else f"{ts}\n{url}"          # 14/11/2026 (R55, C17): o modo entra na assinatura
+    return hmac.new(chave.encode("utf-8"), msg.encode(), hashlib.sha256).hexdigest()
 
 
 # 08/11/2026 (parecer dos motores): o arquivo de programas do Transferegov tem 11 MB e a ponte cortava em 6 MB ("Callback
@@ -56,10 +57,11 @@ def assinar(chave: str, ts: int, url: str) -> str:
 MAX_BYTES = 15_000_000
 
 
-def buscar(url: str, tempo_limite: float = 40, max_bytes: int = MAX_BYTES) -> Resposta:
+def buscar(url: str, tempo_limite: float = 40, max_bytes: int = MAX_BYTES, modo: str = "") -> Resposta:
     ponte, chave = os.environ["ELDORADO_PONTE_URL"], os.environ["ELDORADO_PONTE_CHAVE"]
     ts = int(time.time())
-    corpo = {"url": url, "ts": ts, "assinatura": assinar(chave, ts, url), "max_bytes": int(max_bytes),
+    corpo = {"url": url, "ts": ts, "assinatura": assinar(chave, ts, url, modo), "max_bytes": int(max_bytes),
+             **({"modo": modo} if modo else {}),
              "cabecalhos": {"Accept": "text/html,application/xhtml+xml,application/json,*/*;q=0.5", "Accept-Language": "pt-BR,pt;q=0.9"}}
     try:
         r = httpx.post(ponte, json=corpo, timeout=tempo_limite, headers={"User-Agent": "EldoradoPonte/1.0"})
@@ -97,7 +99,27 @@ class DegrauPonteBR:
     nome = "P · ponte BR (HostGator)"
     pesado = False                                               # não é navegador: não pede folga ao governador
 
+    # 14/11/2026 (R55, C17): o modo do Espião — os sites privados fora da lista, até TETO_ESPIAO por turno, com a memória de
+    # 6 horas do que a ponte recusou (o mesmo endereço não volta a ser pedido nesse prazo)
+    modo: str = ""
+    TETO_ESPIAO = 300
+    MEMORIA_H = 6
+    _pedidos_espiao = 0
+    _recusados: dict = {}
+
     def buscar(self, url: str, tempo_limite: float) -> Resposta:
         if not configurada():
             raise Indisponivel("a ponte BR não está configurada neste ambiente (os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE)")
-        return buscar(url, tempo_limite)
+        if self.modo != "espiao":
+            return buscar(url, tempo_limite)
+        agora = time.time()
+        if DegrauPonteBR._recusados.get(url, 0) > agora:
+            raise Bloqueado("a ponte recusou este endereço nas últimas 6 horas (memória do Espião)")
+        if DegrauPonteBR._pedidos_espiao >= self.TETO_ESPIAO:
+            raise Indisponivel(f"teto do Espião na ponte ({self.TETO_ESPIAO} por turno)")
+        DegrauPonteBR._pedidos_espiao += 1
+        try:
+            return buscar(url, tempo_limite, modo="espiao")
+        except (Bloqueado, Indisponivel):
+            DegrauPonteBR._recusados[url] = agora + self.MEMORIA_H * 3600
+            raise
