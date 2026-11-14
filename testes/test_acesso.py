@@ -70,7 +70,9 @@ def test_captcha_vai_ao_computador_da_titular(site, tmp_path, diario):
     assert len(pedidos) == 1 and json.loads(pedidos[0].read_text())["url"] == f"{url}/captcha.html"
     k = DegrauLocal.chave(f"{url}/captcha.html")                                       # o computador local atende
     (tmp_path / f"ponte/respostas/{k}.bin").write_bytes(b"<html><body>" + b"Edital lido pelo computador local. " * 5 + b"</body></html>")
-    (tmp_path / f"ponte/respostas/{k}.json").write_text(json.dumps({"status": 200, "tipo": "text/html", "em": "2026-10-22T10:00"}))
+    # 14/11/2026 (R54): a resposta do computador local vale 24 h — a resposta deste ensaio é a de agora (antes, data fixa)
+    from datetime import datetime, timezone
+    (tmp_path / f"ponte/respostas/{k}.json").write_text(json.dumps({"status": 200, "tipo": "text/html", "em": datetime.now(timezone.utc).isoformat()}))
     r = e.buscar(f"{url}/captcha.html")
     assert b"computador local" in r.conteudo and r.degrau.startswith("9 ·")
     aprendido = [x.dados for x in ler(tmp_path / "eventos") if x.tipo == "dominio.aprendido"]

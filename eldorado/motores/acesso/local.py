@@ -13,6 +13,7 @@ from pathlib import Path
 
 from .escada import Pendente, Resposta
 
+VALIDADE_H = 24   # 14/11/2026: a validade da resposta do computador local (horas)
 
 class DegrauLocal:
     nome = "9 · computador da titular"
@@ -32,6 +33,17 @@ class DegrauLocal:
         resposta, conteudo = self.pasta / "respostas" / f"{k}.json", self.pasta / "respostas" / f"{k}.bin"
         if resposta.exists() and conteudo.exists():
             meta = json.loads(resposta.read_text(encoding="utf-8"))
+            # 14/11/2026 (parecer dos motores da Bússola, padrão 2; R45): a resposta guardada vale por VALIDADE_H — vencida, a
+            # fonte volta a «pendente» e o pedido é refeito (três fontes liam todo dia a cópia de 29/10 e apareciam «lidas»)
+            try:
+                idade_h = (datetime.now(timezone.utc) - datetime.fromisoformat(str(meta.get("em")))).total_seconds() / 3600
+            except (TypeError, ValueError):
+                idade_h = float("inf")
+            if idade_h > VALIDADE_H:
+                pedido = self.pasta / "pedidos" / f"{k}.json"
+                pedido.write_text(json.dumps({"url": url, "pedido_em": datetime.now(timezone.utc).isoformat(),
+                                              "motivo": f"a resposta guardada venceu ({meta.get('em')})"}, ensure_ascii=False), encoding="utf-8")
+                raise Pendente(f"a resposta do computador local venceu ({meta.get('em')}); pedido refeito ({k})")
             r = Resposta(meta.get("url", url), int(meta.get("status", 200)), conteudo.read_bytes(), meta.get("tipo", ""))
             r.alertas.append(f"lido pelo computador local em {meta.get('em')}")
             return r

@@ -50,18 +50,22 @@ papel = "alternativa"
 # 09/11/2026: local novo (proposto (v2)) — fonte
 [[fonte]]
 nome = "Sesi Goiás (Sistema Fieg)"
-url = "https://www.fieg.com.br/sesi"
+url = "https://sesigoias.com.br/transparencia/"
 tipo = "pagina"
 papel = "alternativa"
 
 # 09/11/2026: local novo (proposto (v2)) — fonte
+exige_brasil = true
+
 [[fonte]]
 nome = "Senai Goiás (Sistema Fieg)"
-url = "https://www.fieg.com.br/senai"
+url = "https://senaigoias.com.br/transparencia/"
 tipo = "pagina"
 papel = "alternativa"
 
 # 09/11/2026: local novo (proposto (v2)) — fonte
+exige_brasil = true
+
 [[fonte]]
 nome = "Senar Goiás (Sistema Faeg)"
 url = "https://sistemafaeg.com.br/senar"
@@ -97,6 +101,8 @@ tipo = "pagina"
 papel = "alternativa"
 
 # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
+lexico = { termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|credenciamento de (entidades|organiza|institui|osc)|patroc[íi]nio|apoio a projetos"], vetos = ["re:preg[ãa]o|aquisi[çc][ãa]o|contrata[çc][ãa]o de (empresa|servi[çc]o)|registro de pre[çc]os|cota[çc][ãa]o|dispensa|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|alien[aã]"] }   # 14/11/2026 (parecer): só chamamento, credenciamento de entidades e patrocínio — 1.298 dos 1.442 achados do motor eram avisos de compra
+
 [[fonte]]
 nome = "Sesc Goiás — notícias"
 url = "https://www.sescgo.com.br/noticias/"
@@ -210,6 +216,13 @@ id = "f260-captacao-238"
 nome = "Sebrae Goiás - parcerias com OSC para empreendedorismo"
 enderecos = ["https://sebraego.com.br/", "https://diariooficial.abc.go.gov.br/"]
 orgao = "Sebrae Goiás"
+
+[[fonte]]
+nome = "Sesc Goiás — notícias (RSS)"
+url = "https://www.sescgo.com.br/feed/"
+tipo = "feed"
+papel = "principal"
+exige_brasil = true
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)

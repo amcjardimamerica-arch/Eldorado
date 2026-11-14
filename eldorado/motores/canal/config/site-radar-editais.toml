@@ -13,14 +13,14 @@ destino = "biblioteca"
 nomes_anteriores = []
 
 [[fonte]]
-nome = "Radar de Editais — publicações (API do WordPress)"
-url = "https://radareditais.com/wp-json/wp/v2/posts?orderby=date&per_page=50"
-tipo = "wordpress"
-papel = "principal"
-
-[[fonte]]
 nome = "Radar de Editais — página de editais"
 url = "https://radareditais.com/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Radar de Editais — página de editais (aplicativo com login)"
+url = "https://radareditais.com/editais"
 tipo = "pagina"
 papel = "alternativa"
 
@@ -42,4 +42,5 @@ vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscrico
 idade_maxima_dias = 120
 
 [aprendizado]
+rotas_que_falharam = ["https://radareditais.com/wp-json/wp/v2/posts?orderby=date&per_page=50 — retirada em 14/11/2026 (o site não é WordPress: o endereço devolve a página do aplicativo; parecer dos motores da Bússola)"]
 licoes = ["09/11/2026: criado pela decisão da titular (R51) — motor 53, grupo «Sites de divulgação — terceiro setor»; site de divulgação (replicador): o motor segue até o edital oficial"]

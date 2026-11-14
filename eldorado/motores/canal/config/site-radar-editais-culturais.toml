@@ -13,12 +13,6 @@ destino = "biblioteca"
 nomes_anteriores = []
 
 [[fonte]]
-nome = "Radar de Editais Culturais — publicações (API do WordPress)"
-url = "https://radareditais.clubemma.com.br/wp-json/wp/v2/posts?orderby=date&per_page=50"
-tipo = "wordpress"
-papel = "principal"
-
-[[fonte]]
 nome = "Radar de Editais Culturais — página de editais"
 url = "https://radareditais.clubemma.com.br/"
 tipo = "pagina"
@@ -29,6 +23,14 @@ nome = "mapa do site (radareditais.clubemma.com.br)"
 url = "https://radareditais.clubemma.com.br/wp-sitemap.xml"
 tipo = "mapa"
 papel = "alternativa"
+
+[[fonte]]
+nome = "Radar de Editais Culturais — a lista da página (lista JavaScript EDITAIS)"
+url = "https://radareditais.clubemma.com.br/"
+tipo = "api"
+papel = "principal"
+json_em = "js:EDITAIS"
+caminhos = { itens = "[?starts_with(local, 'GO') || reg == 'Nacional' || reg == 'Internacional' || !contains(local, ' · ')]", titulo = "n", link = "link", fim = "prazo", orgao = "org", resumo = "join(' · ', [local || '', reg || ''])" }
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -51,4 +53,5 @@ cadencia_h = 24
 periodo_dias = 14
 
 [aprendizado]
+rotas_que_falharam = ["https://radareditais.clubemma.com.br/wp-json/wp/v2/posts?orderby=date&per_page=50 — retirada em 14/11/2026 (o site não é WordPress: o endereço devolve a página do aplicativo; parecer dos motores da Bússola)"]
 licoes = ["09/11/2026: criado pela decisão da titular (R51) — motor 58, grupo «Sites de divulgação — cultura»; site de divulgação (replicador): o motor segue até o edital oficial"]

@@ -250,7 +250,7 @@ class Escada:
                 self.pendente_desde[dom] = self.relogio()
                 self._registrar_exige_local(dom)
                 # 05/11/2026 (R45): a pendência leva o motivo de cada degrau que falhou antes (antes só «pendente»)
-                raise Pendente(f"{e} — antes: {'; '.join(motivos)[:400]}" if motivos else str(e)) from e
+                raise Pendente(f"{e} — antes: {'; '.join(motivos)}" if motivos else str(e)) from e   # 14/11: sem o corte (os últimos degraus somiam)
             r.degrau = d.nome
             self.ultimo_degrau = d.nome                         # o degrau que serviu a última leitura (vai para o livro)
             self.pendente_desde.pop(dom, None)                  # 11/11/2026: o domínio respondeu: deixa de ser pendente

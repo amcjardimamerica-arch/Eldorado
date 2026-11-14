@@ -13,12 +13,6 @@ destino = "biblioteca"
 nomes_anteriores = []
 
 [[fonte]]
-nome = "Editais Culturais (.com) — publicações (API do WordPress)"
-url = "https://editaisculturais.com/wp-json/wp/v2/posts?orderby=date&per_page=50"
-tipo = "wordpress"
-papel = "principal"
-
-[[fonte]]
 nome = "Editais Culturais (.com) — página de editais"
 url = "https://editaisculturais.com/editais"
 tipo = "pagina"
@@ -29,6 +23,13 @@ nome = "mapa do site (editaisculturais.com)"
 url = "https://editaisculturais.com/wp-sitemap.xml"
 tipo = "mapa"
 papel = "alternativa"
+
+[[fonte]]
+nome = "Editais Culturais (.com) — editais abertos a OSC (API pública)"
+url = "https://editaisculturais.com/api/public/editais"
+tipo = "api"
+papel = "principal"
+caminhos = { itens = "items[?(contains(tipo_participacao, 'pessoa_juridica_sem_fins') || contains(tipo_participacao, 'coletivo')) && !contains(nome, 'TESTE') && !contains(nome, 'Teste')]", titulo = "nome", link = "join('', ['https://editaisculturais.com/editais/', slug])", data = "data_abertura", inicio = "data_abertura", fim = "data_encerramento_prorrogacao || data_encerramento", resumo = "join(' · ', [cidade_edital || '', estado_edital || '', tipo || ''])", uf = "estado_edital" }
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -51,4 +52,5 @@ cadencia_h = 24
 periodo_dias = 14
 
 [aprendizado]
+rotas_que_falharam = ["https://editaisculturais.com/wp-json/wp/v2/posts?orderby=date&per_page=50 — retirada em 14/11/2026 (o site não é WordPress: o endereço devolve a página do aplicativo; parecer dos motores da Bússola)"]
 licoes = ["09/11/2026: criado pela decisão da titular (R51) — motor 60, grupo «Sites de divulgação — cultura»; site de divulgação (replicador): o motor segue até o edital oficial"]

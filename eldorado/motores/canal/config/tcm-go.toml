@@ -27,7 +27,7 @@ papel = "alternativa"
 nome = "TCM-GO — comunicação (notícias e orientações)"
 url = "https://www.tcmgo.tc.br/site/comunicacao/"
 tipo = "pagina"
-papel = "alternativa"
+papel = "principal"
 
 # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
 [[fonte]]
@@ -51,13 +51,6 @@ tipo = "pagina"
 papel = "alternativa"
 
 # 09/11/2026: local novo (novo — pesquisa Chrome 09/11) — fonte
-[[fonte]]
-nome = "Atos Oficiais — últimos atos do TCM-GO"
-url = "https://www.atosoficiais.com.br/tcmgo/ultimas-atualizacoes"
-tipo = "pagina"
-papel = "alternativa"
-exige_brasil = true                 # abre só pelo navegador no Brasil (verificação de 09/11/2026)
-
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
 
@@ -76,8 +69,7 @@ idade_maxima_dias = 365
 licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 14, grupo «Tribunais de Contas»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão judiciario-cnj."]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
-rotas_que_falharam = []
-
+rotas_que_falharam = ["https://www.atosoficiais.com.br/tcmgo/ultimas-atualizacoes — retirada em 14/11/2026 (403 à nuvem e verificação de segurança; os atos já são lidos no site do TCM-GO; parecer dos motores da Bússola)"]
 [metrica]
 esporadica = true   # R48 (titular, 08/11/2026): o Judiciário e os MPs publicam raramente; a vigilância sem erro cumpre a finalidade
 cadencia_h = 24

@@ -24,6 +24,13 @@ url = "https://agentecultural.com.br/"
 tipo = "pagina"
 papel = "alternativa"
 
+[[fonte]]
+nome = "Agente Cultural — oportunidades com inscrição aberta (API do Mapas Culturais)"
+url = "https://agentecultural.com.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo,singleUrl,owner.name&registrationTo=GTE({hoje:%Y-%m-%d})&@order=registrationTo%20ASC&@limit=200"
+tipo = "api"
+papel = "principal"
+caminhos = { itens = "@", titulo = "name", link = "singleUrl", resumo = "shortDescription", data = "registrationFrom.date || registrationFrom", inicio = "registrationFrom.date || registrationFrom", fim = "registrationTo.date || registrationTo", orgao = "owner.name" }
+
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
 

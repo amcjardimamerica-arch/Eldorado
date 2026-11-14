@@ -312,7 +312,7 @@ def _texto(v) -> str:
     """O texto sem as marcações e com os códigos de HTML decodificados (&#8211; → –)."""
     import html
     import re
-    t = v.get("rendered", "") if isinstance(v, dict) else str(v or "")
+    t = (v.get("rendered") or "") if isinstance(v, dict) else str(v or "")
     return html.unescape(re.sub(r"<[^>]+>", "", t)).strip()
 
 

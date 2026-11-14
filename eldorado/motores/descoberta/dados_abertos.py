@@ -27,6 +27,62 @@ def ckan(buscar: Buscar, base: str, termos: str, linhas: int = 50) -> list[Pista
     return saida
 
 
+def lista_js(texto: str, nome: str) -> Any:
+    """14/11/2026 (parecer dos motores da Bússola, motor 58): a lista que a página guarda como código JavaScript
+    («const EDITAIS = [ {n:'...', link:'https://...'}, ... ]», com comentários) convertida em JSON, sem executar nada: tira os
+    comentários fora das cadeias (o «//» dos endereços fica), passa as aspas simples a duplas, põe aspas nos nomes dos
+    campos e tira a vírgula final. Erro claro se a lista não estiver na página ou não for convertível."""
+    import re
+    m = re.search(r"(?:const|let|var)\s+" + re.escape(nome) + r"\s*=\s*\[", texto)
+    if not m:
+        raise ValueError(f"lista JavaScript {nome} não encontrada na página")
+    i, prof, saida, n = m.end() - 1, 0, [], len(texto)
+    while i < n:
+        c = texto[i]
+        if c in "'\"":                                  # a cadeia: copiada como JSON (aspas duplas, escapes preservados)
+            q, j, buf = c, i + 1, []
+            while j < n and texto[j] != q:
+                if texto[j] == "\\" and j + 1 < n:
+                    buf.append(texto[j:j + 2] if texto[j + 1] != "'" else "'")
+                    j += 2
+                    continue
+                buf.append('\\"' if texto[j] == '"' else texto[j])
+                j += 1
+            saida.append('"' + "".join(buf) + '"')
+            i = j + 1
+            continue
+        if texto.startswith("//", i):                      # o comentário de linha (fora de cadeia)
+            i = texto.find("\n", i)
+            i = n if i < 0 else i
+            continue
+        if texto.startswith("/*", i):
+            i = texto.find("*/", i)
+            i = n if i < 0 else i + 2
+            continue
+        if (c.isalpha() or c in "_$") and saida and "".join(saida).rstrip()[-1:] in ("{", ","):
+            j = i
+            while j < n and (texto[j].isalnum() or texto[j] in "_$"):
+                j += 1
+            k = j
+            while k < n and texto[k] in " \t\r\n":
+                k += 1
+            if k < n and texto[k] == ":":                  # o nome do campo (fora de cadeia): entre aspas
+                saida.append('"' + texto[i:j] + '"')
+                i = j
+                continue
+        if c in "[{":
+            prof += 1
+        elif c in "]}":
+            prof -= 1
+        saida.append(c)
+        i += 1
+        if prof == 0:
+            break
+    js = "".join(saida)
+    js = re.sub(r",\s*([\]}])", r"\1", js)                            # a vírgula final
+    return json.loads(js)
+
+
 def carregar_json(buscar: Buscar, url: str, json_em: str | None = None) -> Any:
     """A resposta da API como dados. json_em: o seletor EXATO do bloco de JSON dentro de uma página HTML (lição do DOU:
     a mesma página tem outro bloco, o da busca, com uma lista vazia que enganava a versão antiga)."""
@@ -36,6 +92,8 @@ def carregar_json(buscar: Buscar, url: str, json_em: str | None = None) -> Any:
             import xmltodict
             return xmltodict.parse(conteudo, attr_prefix="", cdata_key="texto")
         return json.loads(conteudo)
+    if json_em.startswith("js:"):                          # 14/11/2026: a lista JavaScript «const NOME = [...]» da página
+        return lista_js(conteudo.decode("utf-8", errors="replace"), json_em[3:].strip())
     from selectolax.lexbor import LexborHTMLParser
     no = LexborHTMLParser(conteudo.decode("utf-8", errors="replace")).css_first(json_em)
     if no is None:
