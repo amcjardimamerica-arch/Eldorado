@@ -135,7 +135,7 @@ def ler_aprendido(dados) -> dict[str, int]:
 # por RESUBIR_PENDENTE_H horas, o pedido vai direto ao degrau do computador da titular (a resposta chegou? é lida; não chegou?
 # pendente, em milissegundos). Passado o prazo, a escada inteira é tentada de novo (o site pode ter voltado a abrir) — o
 # computador da titular continua sem ser o ponto de partida permanente (29/10/2026). O acionamento à mão sobe sempre.
-RESUBIR_PENDENTE_H = 6.0
+RESUBIR_PENDENTE_H = 168.0   # 14/11/2026 (R56, S5): a escada inteira, para o site de coleta local, uma vez por semana (eram 6 h)
 
 
 def ler_pendentes(dados) -> dict[str, float]:

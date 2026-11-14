@@ -47,7 +47,7 @@ def test_a_resposta_do_computador_local_vence_em_24_horas(tmp_path):
     guardar(datetime(2026, 10, 29, tzinfo=timezone.utc))                 # a cópia de 29/10: vencida, o pedido é refeito
     with pytest.raises(Pendente):
         c.buscar(url, 10)
-    assert (tmp_path / "pedidos" / f"{k}.json").exists()
+    assert not (tmp_path / "pedidos" / f"{k}.json").exists()      # R56 (S5): vencida, a fonte fica «coleta local»; sem pedido
 
 
 def test_os_enderecos_do_parecer():

@@ -58,7 +58,7 @@ def test_a_sala_so_tem_mostradores_vivos():
     assert all(x.get("faixa") for x in d["instrumentos"])
     assert not ids & {"fl_fila", "es_livros", "hi_frio", "es_validadas", "es_curadoria", "es_vigilancia", "ve_completas", "em_rankings",
                       "es_abertas", "es_fichas"}
-    assert {"pa_passagem", "pa_falhas", "al_abertos", "mo_pendentes_local", "es_esteira_parada", "ab_link_oficial", "fa_fecham_7d"} <= ids
+    assert {"pa_passagem", "pa_falhas", "al_abertos", "es_esteira_parada", "ab_link_oficial", "fa_fecham_7d"} <= ids
 
 
 def test_o_interceptador_numa_unidade_e_os_rotulos_honestos():

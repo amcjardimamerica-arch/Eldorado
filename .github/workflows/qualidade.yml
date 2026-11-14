@@ -32,6 +32,8 @@ jobs:
           pip install -q uv && python scripts/instalar_bibliotecas.py
       - name: Verificador
         run: ruff check eldorado testes
+      - name: a lista da ponte (R56, S6) — o ponte.php igual à lista do sistema
+        run: python scripts/gerar_ponte.py --conferir
       - name: Bateria
         # cada teste que falhar vira uma anotação (25/10/2026: o registro detalhado não é lido de fora; a anotação é)
         run: |

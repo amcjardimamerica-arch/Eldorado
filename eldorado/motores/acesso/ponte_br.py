@@ -23,6 +23,22 @@ import httpx
 from .escada import Bloqueado, Indisponivel, Passageiro, Resposta
 
 LISTA = Path(__file__).resolve().parents[3] / "config/ponte_dominios.txt"
+# 14/11/2026 (R56, S6): os domínios que a ponte já atendia e que o sistema não manda direto por ela
+LISTA_BASE = Path(__file__).resolve().parents[3] / "config/ponte_base.txt"
+
+
+def dominios_da_ponte() -> list[str]:
+    """A lista DOMINIOS do ponte.php: a união da lista do sistema (os que recusam a nuvem) e da base (R56, S6)."""
+    out = set()
+    for arq in (LISTA, LISTA_BASE):
+        try:
+            for linha in arq.read_text(encoding="utf-8").splitlines():
+                d = linha.split("#")[0].strip().lower()
+                if d:
+                    out.add(d)
+        except OSError:
+            continue
+    return sorted(out)
 
 
 def configurada() -> bool:

@@ -66,8 +66,9 @@ def test_captcha_vai_ao_computador_da_titular(site, tmp_path, diario):
     e, _ = escada([DegrauAPI(), DegrauLeve(), local], diario=diario)
     with pytest.raises(Pendente):
         e.buscar(f"{url}/captcha.html")
-    pedidos = list((tmp_path / "ponte/pedidos").glob("*.json"))
-    assert len(pedidos) == 1 and json.loads(pedidos[0].read_text())["url"] == f"{url}/captcha.html"
+    # 14/11/2026 (R56, S5): o sistema não pede leitura ao computador local — nenhum pedido é gravado; a resposta que já está
+    # lá (abaixo) continua sendo lida
+    assert not list((tmp_path / "ponte/pedidos").glob("*.json"))
     k = DegrauLocal.chave(f"{url}/captcha.html")                                       # o computador local atende
     (tmp_path / f"ponte/respostas/{k}.bin").write_bytes(b"<html><body>" + b"Edital lido pelo computador local. " * 5 + b"</body></html>")
     # 14/11/2026 (R54): a resposta do computador local vale 24 h — a resposta deste ensaio é a de agora (antes, data fixa)

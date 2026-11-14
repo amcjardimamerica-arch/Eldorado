@@ -83,10 +83,17 @@ def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None 
         return {"luz": None, "sinais": [], "lidas": 0, "sem_mudanca": 0, "ultima_novidade": None}
     por = {r[0]: r for r in linhas}
     nomes = fontes_config if fontes_config else list(por)
-    pend, aband, falha, lidas, sem_m = [], [], [], 0, 0
+    pend, aband, falha, aguard, lidas, sem_m = [], [], [], [], 0, 0
     for n in nomes:
         r = por.get(n)
-        if r is None or (_dt(r[5]) and _dt(r[5]) < limite):
+        if r is None:
+            # 14/11/2026 (R56, S7): a fonte da configuração sem nenhuma leitura registrada aguarda a primeira leitura — não é
+            # «abandonada» (os motores corrigidos acendiam com as fontes novas antes da primeira passagem). A primeira
+            # tentativa grava a linha; se falhar, a fonte passa a «falhando». (O sistema não registra quando a fonte entrou
+            # na configuração; por isso não há o prazo de 48 h do parecer.)
+            aguard.append(n)
+            continue
+        if _dt(r[5]) and _dt(r[5]) < limite:
             aband.append(n)
             continue
         erro = str(r[4] or "")
@@ -103,8 +110,8 @@ def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None 
     ultima_nov = (ult_ent[0] if ult_ent else None)
     primeira_leitura = min((_dt(r[5]) for r in linhas if _dt(r[5])), default=None)
     s = []
-    if pend:
-        s.append(f"{len(pend)} fonte(s) pendente(s) no computador local: {', '.join(pend)[:160]}")
+    # 14/11/2026 (R56, S3 — a titular: as fontes paradas no computador local não são alerta da Sala; ficam só no motor): a
+    # fonte de coleta local não é sinal nem conta em «todas falham»; vai no campo coleta_local, como informação
     if aband:
         s.append(f"{len(aband)} fonte(s) sem leitura há mais de {DIAS} dias: {', '.join(aband)[:160]}")
     if falha:
@@ -125,8 +132,13 @@ def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None 
         s.append(f"em carência: lê há {(agora - estreia).days} dia(s), sem oportunidade ainda (o motor novo tem {DIAS} dias)")
     elif not especial and not rara and ultima_nov and _dt(ultima_nov) < limite:
         s.append(f"sem oportunidade nova há {(agora - _dt(ultima_nov)).days} dias (a última em {str(ultima_nov)[8:10]}/{str(ultima_nov)[5:7]})")
-    todas_falham = bool(nomes) and len(falha) + len(aband) + len(pend) == len(nomes)
-    luz = "vermelho" if (todas_falham or (nunca and not rara)) else ("amarelo" if s else "verde")
+    restantes = [n for n in nomes if n not in pend]
+    todas_falham = bool(restantes) and len(falha) + len(aband) == len(restantes)
+    if nomes and not restantes:                        # todas as fontes são de coleta local: sem cor de alerta (R56)
+        luz = "cinza"
+    else:
+        luz = "vermelho" if (todas_falham or (nunca and not rara)) else ("amarelo" if s else "verde")
     return {"luz": luz, "sinais": s, "lidas": lidas, "sem_mudanca": sem_m, "ultima_novidade": ultima_nov,
-            "pendentes_local": pend, "abandonadas": aband, "falhando": falha, "nunca_entregou": nunca,
+            "coleta_local": pend, "pendentes_local": pend, "aguardando_primeira_leitura": aguard,
+            "abandonadas": aband, "falhando": falha, "nunca_entregou": nunca,
             "primeira_leitura": primeira_leitura.isoformat() if primeira_leitura else None, "em_carencia": em_carencia}

@@ -2639,7 +2639,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
   const ETAPAS=[   /* 18/10/2026 (titular): os 9 compartimentos da sala, na ordem do workflow; a Regência avalia cada um */
     {id:"regencia",nome:"Regência",faz:"A rede neural organiza todas as informações do sistema, avalia se cada compartimento está sendo cumprido e aciona as ferramentas para chegar aos livros completos.",ids:["rg_regencia","pa_passagem","pa_falhas","al_abertos","ma_cobertura","ma_esgotados","dg_finalidade","ma_memoria_etapa"]},
-    {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_sinais","mo_pendentes_local","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
+    {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_sinais","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
     {id:"certificacao",nome:"Certificação",faz:"O Cartório, hub dos livros: cada livro é verificado um a um, com todas as ferramentas e até 3 tentativas por ferramenta.",ids:["ca_12","es_esteira_parada","es_parcial"]},
     {id:"investigacao",nome:"Investigação",faz:"O Interceptador e os Pilotos pesquisam o que o Cartório não alcança.",ids:["pi_interceptador","pi_espiao","pi_piloto","pi_missoes","pi_vagas"]},
     {id:"externa",nome:"Verificação externa",faz:"A exceção: o que esgotou as tentativas vai ao Claude no Chrome, que resolve de forma definitiva.",ids:["ve_para_o_chrome","de_decisoes","es_expurgo","ve_bloqueadas","ve_importado","al_externa"]},
@@ -2769,11 +2769,18 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
      (a lição é validada e entra no aprendizado permanente). Grava no Cérebro pelo fluxo ciente.yml; o navegador já reflete */
   function cienteHtml(x){
     if(x.id==="fa_fecham_7d"&&(x.novos||[]).length&&!cienteSala("farol",x.novos))
-      return `<div class="ciente-b"><b>${x.novos.length}</b> validada(s) fechando em até 7 dias ainda não vistas. <button class="bt-ciente" onclick="event.stopPropagation();nvCienteFarol(this)">Ciente — retirar o alerta</button></div>`;
+      return `<div class="ciente-b"><b>${x.novos.length}</b> validada(s) fechando em até 7 dias ainda não vistas. <button class="bt-ciente" onclick="event.stopPropagation();nvCienteFarol(this)">Ciente — retirar o alerta</button>${ajudaToken()}</div>`;
     if(x.licao){ const L=x.licao, ok=L.validada||cienteSala("aprendizado",[L.chave]);
       return `<div class="ciente-b licao"><div><b>Aprendizado deste alerta</b> — ${e(L.texto)}</div>${ok?`<span class="ciente-ok">validado${L.validada_em?" em "+e(String(L.validada_em).slice(0,16).replace("T"," ")):" (registrando)"}</span>`
-        :`<button class="bt-ciente" onclick="event.stopPropagation();nvCienteLicao('${e(x.id)}',this)">Ciente — validar o aprendizado</button>`}</div>`; }
+        :`<button class="bt-ciente" onclick="event.stopPropagation();nvCienteLicao('${e(x.id)}',this)">Ciente — validar o aprendizado</button>${ajudaToken()}`}</div>`; }
     return ""; }
+  // 14/11/2026 (R56, S18): o estado do token, o botão «trocar o token» e os passos para gerar um token novo
+  function ajudaToken(){ return ` <span class="meta" style="display:block;margin-top:6px">${e(ghTokenInfo())} · <a href="#" onclick="event.preventDefault();event.stopPropagation();ghTrocarToken()">trocar o token</a>
+    <details onclick="event.stopPropagation()" style="display:inline"><summary style="display:inline;cursor:pointer;text-decoration:underline">como gerar o token</summary>
+    <ol style="margin:6px 0 0 18px"><li>No GitHub: Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token.</li>
+    <li>Repository access: só o repositório <b>Eldorado</b>.</li><li>Permissions → Repository → <b>Actions: Read and write</b>.</li>
+    <li>Validade: a maior que o GitHub oferecer.</li><li>Copie o token (começa por <code>github_pat_</code>) e cole aqui; a página confere antes de guardar.</li>
+    <li>Não use o token de administração do projeto: esta página guarda o token no navegador.</li></ol></details></span>`; }
   function cienteSala(tipo,lista){ try{ const C=JSON.parse(localStorage.getItem("eldorado_ciente_"+tipo)||"[]"); return lista.every(k=>C.includes(k)); }catch(e){ return false; } }
   function marcaCienteSala(tipo,lista){ try{ const k="eldorado_ciente_"+tipo, C=JSON.parse(localStorage.getItem(k)||"[]"); localStorage.setItem(k,JSON.stringify([...new Set([...C,...lista])].slice(-500))); }catch(e){} }
   window.nvCienteFarol=async function(bt){ const x=I("fa_fecham_7d"); if(!x) return; bt.disabled=true; bt.textContent="registrando…";
@@ -5283,22 +5290,50 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
    sem abrir o GitHub. Na primeira vez pedem um token (fine-grained, só este repositório, permissão
    Actions: read and write), guardado só neste navegador. */
 const GH_REPO="amcjardimamerica-arch/Eldorado";
-window.ghToken=function(pedir){
+/* 14/11/2026 (R56, S16 e S18 — a titular: «reiniciei o token 3 vezes e não aceitou»): a página guardava tudo o que era colado
+   (aspas, crase, quebra de linha, um rótulo antes do token) e apagava o token em qualquer recusa, com a mesma mensagem para o
+   401 e o 403. Agora: só o trecho que é token do GitHub; a conferência no GitHub ANTES de guardar; a mensagem pelo motivo; o
+   token só é esquecido no 401; o dono e a validade à vista; o botão «trocar o token». */
+window.ghExtrair=function(texto){ const m=String(texto||"").replace(/\s+/g,"").match(/github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9]{20,}/); return m?m[0]:""; };   // o token nunca tem espaço: a quebra de linha no meio some
+window.ghMotivo=function(st){ return st===401?"token inválido ou vencido: gere outro":st===403?"o token não tem a permissão Actions: Read and write"
+  :st===404?"o token não alcança o repositório Eldorado":"o GitHub respondeu HTTP "+st; };
+window.ghConferir=async function(tok){
+  const H={"Authorization":"Bearer "+tok,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
+  try{
+    const r=await fetch(`https://api.github.com/repos/${GH_REPO}/actions/workflows/ciente.yml`,{headers:H});
+    if(r.status!==200) return {ok:false,status:r.status,motivo:ghMotivo(r.status)};
+    let dono="", vence=r.headers.get("github-authentication-token-expiration")||"";
+    try{ const u=await fetch("https://api.github.com/user",{headers:H}); if(u.ok){ dono=(await u.json()).login||""; vence=vence||u.headers.get("github-authentication-token-expiration")||""; } }catch(e){}
+    return {ok:true,dono,vence};
+  }catch(e){ return {ok:false,status:0,motivo:"sem conexão com o GitHub: "+String(e).slice(0,80)}; }
+};
+window.ghToken=async function(pedir){
   let t=""; try{ t=localStorage.getItem("eldorado_gh_token")||""; }catch(e){}
-  if(!t&&pedir){ t=(prompt("Cole o token do GitHub para acionar as buscas daqui (fine-grained, só este repositório, permissão Actions: read and write). Fica guardado apenas neste navegador.")||"").trim();
-    if(t){ try{ localStorage.setItem("eldorado_gh_token",t); }catch(e){} } }
+  if(t||!pedir) return t;
+  const colado=prompt("Cole o token do GitHub (fine-grained, só o repositório Eldorado, permissão Actions: Read and write). Pode colar o texto como veio: a página aproveita só o token. Fica guardado apenas neste navegador.")||"";
+  if(!colado.trim()) return "";
+  t=ghExtrair(colado);
+  if(!t){ alert("O texto colado não tem um token do GitHub (ele começa por github_pat_). Copie de novo, só o token."); return ""; }
+  const c=await ghConferir(t);
+  if(!c.ok){ alert("O token não foi aceito: "+c.motivo+"."); return ""; }
+  try{ localStorage.setItem("eldorado_gh_token",t); localStorage.setItem("eldorado_gh_token_info",JSON.stringify({dono:c.dono,vence:c.vence,em:new Date().toISOString()})); }catch(e){}
+  alert("Token aceito"+(c.dono?" — de "+c.dono:"")+(c.vence?"; vence em "+c.vence:"")+".");
   return t;
 };
+window.ghTrocarToken=async function(){ try{ localStorage.removeItem("eldorado_gh_token"); localStorage.removeItem("eldorado_gh_token_info"); }catch(e){}
+  const t=await ghToken(true); if(t&&typeof desenhar==="function") try{ desenhar(); }catch(e){} return t; };
+window.ghTokenInfo=function(){ try{ const t=localStorage.getItem("eldorado_gh_token"), i=JSON.parse(localStorage.getItem("eldorado_gh_token_info")||"{}");
+  return t?`token de ${i.dono||"?"}${i.vence?" · vence em "+i.vence:""}`:"sem token neste navegador"; }catch(e){ return "sem token neste navegador"; } };
 window.ghDispatch=async function(workflow,inputs){
-  const tok=ghToken(true); if(!tok) return {ok:false,motivo:"sem token"};
+  const tok=await ghToken(true); if(!tok) return {ok:false,motivo:"sem token"};
   try{
     const r=await fetch(`https://api.github.com/repos/${GH_REPO}/actions/workflows/${workflow}/dispatches`,{method:"POST",
       headers:{"Authorization":"Bearer "+tok,"Accept":"application/vnd.github+json","Content-Type":"application/json","X-GitHub-Api-Version":"2022-11-28"},
       body:JSON.stringify({ref:"main",inputs:inputs||{}})});
     if(r.status===204) return {ok:true};
-    if(r.status===401||r.status===403){ try{ localStorage.removeItem("eldorado_gh_token"); }catch(e){} return {ok:false,motivo:"token recusado ("+r.status+") — ele foi esquecido; clique de novo para informar outro"}; }
-    return {ok:false,motivo:"HTTP "+r.status};
-  }catch(e){ return {ok:false,motivo:String(e).slice(0,80)}; }
+    if(r.status===401){ try{ localStorage.removeItem("eldorado_gh_token"); localStorage.removeItem("eldorado_gh_token_info"); }catch(e){} }
+    return {ok:false,motivo:ghMotivo(r.status)+(r.status===401?" (o token foi esquecido; clique de novo para colar outro)":"")};
+  }catch(e){ return {ok:false,motivo:"sem conexão com o GitHub: "+String(e).slice(0,80)}; }
 };
 window.mtImediato=async function(id,nome){
   const e=mtEstado();e.imediatos=e.imediatos||{};e.imediatos[id]=new Date().toISOString();mtSalva(e);desenhaMotores();
@@ -6235,7 +6270,7 @@ window._INT=null;
 /* ESTADO REAL DO MOTOR DO INTERCEPTADOR: pergunta ao GitHub (se houver token guardado) se há voo em curso ou na fila;
    sem token, deduz pela hora do último voo (menos de 20 min = ligado) e pelo arquivo de espera. */
 window.estadoMotorInterceptador=async function(D){
-  const tok=(typeof ghToken==="function")?ghToken(false):"";
+  const tok=(typeof ghToken==="function")?await ghToken(false):"";   // 14/11/2026: o ghToken passou a ser assíncrono (a conferência)
   if(tok){ try{ const r=await fetch("https://api.github.com/repos/"+GH_REPO+"/actions/workflows/interceptador.yml/runs?per_page=3",{headers:{"Authorization":"Bearer "+tok,"Accept":"application/vnd.github+json"}});
       if(r.ok){ const j=await r.json(); const vivo=(j.workflow_runs||[]).find(x=>["in_progress","queued","pending","waiting"].includes(x.status));
         if(vivo){ window._INT_MOTOR="ligado"; window._INT_MOTOR_FRASE="voo em curso no GitHub desde "+horaMin(vivo.created_at); return; } } }catch(e){} }

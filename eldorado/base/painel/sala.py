@@ -17,7 +17,7 @@ from typing import Any
 
 ETAPAS = {
     "regencia": ["rg_regencia", "pa_passagem", "pa_falhas", "al_abertos", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
-    "coleta": ["mo_saude", "mo_sinais", "mo_pendentes_local", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
+    "coleta": ["mo_saude", "mo_sinais", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],   # R56: sem mo_pendentes_local
     "certificacao": ["ca_12", "es_esteira_parada", "es_parcial"],
     "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "pi_missoes", "pi_vagas"],
     # 04/11/2026 (titular): a verificação externa e o expurgo são da etapa 5 (antes acendiam também as etapas 3 e 4)
@@ -80,7 +80,7 @@ def _ciente(cer: sqlite3.Connection, tipo: str, chave: str) -> dict:
 # 09/11/2026 (titular): os relógios de cada etapa — os parâmetros mais importantes, e só com a faixa do bom e do ruim
 RELOGIOS = {
     "regencia": ["rg_regencia", "ma_cobertura", "dg_finalidade"],
-    "coleta": ["mo_saude", "mo_sinais", "mo_pendentes_local"],
+    "coleta": ["mo_saude", "mo_sinais"],
     "certificacao": ["ca_12", "es_esteira_parada"],
     "investigacao": ["pi_interceptador", "pi_missoes"],
     "externa": ["ve_para_o_chrome", "ve_importado"],
@@ -303,7 +303,7 @@ def montar(
         # 10/11/2026 (parecer, passo 6): o motor só EM CARÊNCIA (novo, sem outro sinal) não é perda; aparece na estrela dele
         if _s["luz"] in ("amarelo", "vermelho") and not all(x.startswith("em carência") for x in _s["sinais"]):
             _com_sinal.append(f"{_m}: {'; '.join(_s['sinais'])[:140]}")
-    I("mo_sinais", "Motores com sinal de perda (fonte pendente ou abandonada, sem novidade há 7 dias, nunca entregou)", len(_com_sinal),
+    I("mo_sinais", "Motores com sinal de perda (fonte abandonada ou falhando, sem novidade há 7 dias, nunca entregou)", len(_com_sinal),
       "verde" if not _com_sinal else ("vermelho" if len(_com_sinal) > n // 2 else "amarelo"),
       (f"{len(_com_sinal)} de {len(reg)} motores: " + " | ".join(_com_sinal))[:900] if _com_sinal else "nenhum motor com sinal de perda",
       ultima_leitura, [0, len(reg)], {"normal": [None, 0], "alarme": [None, n // 2]})
@@ -886,11 +886,7 @@ def montar(
     I("al_abertos", "Alarmes abertos sem solução", _al, _faixa(_al, 0, 10, False),
       f"{_al} causa(s) de alarme aberta(s), sem solução ({_al_reg} registro(s), contadas as repetições)", iso,
       faixa={"normal": [None, 0], "alarme": [None, 10]}, cadencia_h=0.25)
-    from ..cerebro.sinais_motores import sinais as _sn
-    _pend = sum(len(_sn(cer, m)["pendentes_local"]) for m in reg)
-    I("mo_pendentes_local", "Fontes paradas no computador local", _pend, _faixa(_pend, 0, 20, False),
-      f"{_pend} fonte(s) dos motores pendente(s) no computador local (sem leitura pela nuvem nem pela ponte)", ultima_leitura,
-      faixa={"normal": [None, 0], "alarme": [None, 20]}, cadencia_h=0.25)
+    # 14/11/2026 (R56, S2 — a titular): as fontes paradas no computador local não são alerta da Sala; ficam só no motor
     _parada = q(bib, "SELECT COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE l.situacao NOT IN ('excluido', 'unido') "
                      "AND p.fase IN ('recepcao', 'certificacao', 'preparacao', 'validacao', 'analise externa') AND p.entrou_em < ?",
                 (agora - timedelta(hours=72)).isoformat())

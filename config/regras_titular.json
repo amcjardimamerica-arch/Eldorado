@@ -786,6 +786,29 @@
    "travas_pendentes": [
     "a fila do Interceptador aceita livro sem link oficial (correção I8, envio 3)"
    ]
+  },
+  {
+   "id": "R56",
+   "data": "2026-11-14",
+   "tema": "a coleta local não é alerta da Sala; o Ciente com o token conferido",
+   "regra": "A fonte que só pode ser lida no computador local não é alerta da Sala de controle. Ela é indicada apenas no motor (na estrela, na ficha e na Bússola), como informação, com o nome de cada fonte. O motor sem resultado que depende de coleta no computador local indica isso no próprio motor, e não na Sala. O sistema não pede leitura ao computador local; a escada inteira, para o site de coleta local, é tentada uma vez por semana. A lista de domínios do ponte.php é gerada dos arquivos do sistema (config/ponte_dominios.txt e config/ponte_base.txt). O Ciente da Sala aceita o token do GitHub como vier colado (aproveita só o token), confere-o antes de guardar e diz o motivo da recusa.",
+   "porque": "titular, 14/11/2026: o parecer da Sala de controle e dos motores — 27 fontes paradas no computador local acendiam a Coleta em falha; o token do Ciente era recusado depois de três trocas (a página guardava o texto colado como veio e apagava o token em qualquer recusa).",
+   "revoga": {
+    "R45": "«o motor tem a cor dos seus sinais», no que toca à fonte de coleta local (ela deixa de ser sinal)",
+    "R54": "«a resposta do computador local vale 24 h […] os pedidos vão ao repositório» (nenhum pedido é gravado)",
+    "R53": "o prazo de 6 h (reanálise de 11/11) para voltar a subir a escada do site pendente: passa a uma semana"
+   },
+   "onde": "eldorado/base/cerebro/sinais_motores.py; eldorado/base/painel/sala.py, dados.py, pagina/dashboard.html; eldorado/motores/acesso/local.py, escada.py; scripts/gerar_ponte.py; config/ponte_base.txt; ponte/ponte.php",
+   "travas": [
+    "testes/test_sala_coleta_local_1411.py::test_a_sala_nao_tem_o_mostrador_das_fontes_do_computador_local",
+    "testes/test_sala_coleta_local_1411.py::test_a_fonte_do_computador_local_nao_acende_o_motor",
+    "testes/test_sala_coleta_local_1411.py::test_o_resultado_do_motor_diz_que_exige_coleta_local",
+    "testes/test_sala_coleta_local_1411.py::test_nenhum_pedido_novo_ao_computador_local",
+    "testes/test_sala_coleta_local_1411.py::test_o_ponte_php_e_a_lista_do_sistema_tem_os_mesmos_dominios",
+    "testes/test_token_ciente_1411.py::test_o_token_colado_como_veio_e_aproveitado_inteiro",
+    "testes/test_token_ciente_1411.py::test_a_mensagem_pelo_motivo_e_o_token_so_some_no_401",
+    "testes/test_token_ciente_1411.py::test_o_token_e_conferido_antes_de_guardar_e_ha_o_botao_de_trocar"
+   ]
   }
  ]
 }

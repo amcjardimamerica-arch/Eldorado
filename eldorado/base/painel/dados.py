@@ -379,7 +379,10 @@ def _motores(sis: Sistema) -> tuple[list[dict], dict, dict]:
             nov = sg["ultima_novidade"]
             luz = sg["luz"] or ("vermelho" if fontes and falhas == len(fontes) else "verde")
             res = (f"leu hoje ({len(hoje)}x): {n} achado(s) · {sg['lidas']} fonte(s) lida(s), {sg['sem_mudanca']} sem mudança"
-                   + (f" · última novidade em {nov[8:10]}/{nov[5:7]}" if nov else "") + "".join(f" · ⚠ {x}" for x in sg["sinais"]))
+                   + (f" · última novidade em {nov[8:10]}/{nov[5:7]}" if nov else "") + "".join(f" · ⚠ {x}" for x in sg["sinais"])
+                   # 14/11/2026 (R56, S4): a coleta local é informação do motor, sem o símbolo de alerta
+                   + (f" · {len(sg['coleta_local'])} fonte(s) exigem coleta local: {', '.join(sg['coleta_local'])[:160]}" if sg.get("coleta_local") else "")
+                   + (f" · {len(sg['aguardando_primeira_leitura'])} fonte(s) aguardando a primeira leitura" if sg.get("aguardando_primeira_leitura") else ""))
         else:
             luz, res = "cinza", f"não leu hoje (última leitura em {_data_br(ultima['inicio'])})"
         ag = sis.agenda.get(mid, {})

@@ -40,14 +40,11 @@ class DegrauLocal:
             except (TypeError, ValueError):
                 idade_h = float("inf")
             if idade_h > VALIDADE_H:
-                pedido = self.pasta / "pedidos" / f"{k}.json"
-                pedido.write_text(json.dumps({"url": url, "pedido_em": datetime.now(timezone.utc).isoformat(),
-                                              "motivo": f"a resposta guardada venceu ({meta.get('em')})"}, ensure_ascii=False), encoding="utf-8")
-                raise Pendente(f"a resposta do computador local venceu ({meta.get('em')}); pedido refeito ({k})")
+                # 14/11/2026 (R56, S5): o sistema não pede leitura ao computador local — a fonte fica «coleta local»
+                raise Pendente(f"coleta local: a resposta do computador local venceu ({meta.get('em')}); sem pedido novo ({k})")
             r = Resposta(meta.get("url", url), int(meta.get("status", 200)), conteudo.read_bytes(), meta.get("tipo", ""))
             r.alertas.append(f"lido pelo computador local em {meta.get('em')}")
             return r
-        pedido = self.pasta / "pedidos" / f"{k}.json"
-        if not pedido.exists():
-            pedido.write_text(json.dumps({"url": url, "pedido_em": datetime.now(timezone.utc).isoformat()}, ensure_ascii=False), encoding="utf-8")
-        raise Pendente(f"pedido entregue ao computador local ({k})")
+        # 14/11/2026 (R56, S5 — a titular: nada sai pelo computador dela; o sistema não pede leitura a ele): sem pedido novo;
+        # a fonte fica marcada «coleta local», indicada só no motor
+        raise Pendente(f"coleta local: o site só abre pelo computador local ({k}); nenhum pedido é gravado")

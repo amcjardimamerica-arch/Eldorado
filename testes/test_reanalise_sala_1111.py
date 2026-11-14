@@ -267,7 +267,8 @@ def test_o_dominio_pendente_nao_sobe_a_escada_a_cada_fonte(tmp_path, monkeypatch
     antes = api.chamado
     with pytest.raises(Pendente) as x:
         e.buscar("https://acesso.luziania.go.gov.br/a")
-    assert "antes:" in str(x.value) and api.chamado == antes + 1 and RESUBIR_PENDENTE_H <= 12
+    # 14/11/2026 (R56, S5): a escada inteira, para o site de coleta local, uma vez por semana (era até 12 h)
+    assert "antes:" in str(x.value) and api.chamado == antes + 1 and RESUBIR_PENDENTE_H == 168
     # a resposta do computador da titular chegou: é lida pelo atalho e o domínio deixa de ser pendente
     resposta["https://acesso.luziania.go.gov.br/a"] = b"<html><body>" + b"<p>Edital de chamamento publico com inscricoes abertas.</p>" * 30 + b"</body></html>"
     r = e.buscar("https://acesso.luziania.go.gov.br/a")
