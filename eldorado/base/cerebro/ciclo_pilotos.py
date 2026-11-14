@@ -87,13 +87,17 @@ def avaliar_interceptador(bib: sqlite3.Connection, desde: str = "") -> dict[str,
     except sqlite3.OperationalError:
         linhas = bib.execute("SELECT ferramenta, resultado FROM tentativa").fetchall()
     for ferr, res in linhas:
+        if not str(ferr or "").startswith("abordagem"):   # 14/11/2026 (R55, I5): só as abordagens do Interceptador, sem os motores
+            continue
         try:
             d = json.loads(res or "{}")
         except ValueError:
             d = {}
-        n = (d.get("ia") or {}).get("aceitas")
-        if not isinstance(n, (int, float)):            # a tentativa de um motor registra «trouxe» (e não «aceitas»)
+        ia = d.get("ia") or {}
+        n = ia.get("aceitas")
+        if not isinstance(n, (int, float)):
             n = int(bool(d.get("trouxe") or d.get("obtidos")))
+        n = int(n) + len(ia.get("extratores") or [])        # R55 (I5): os itens dos extratores também contam
         k = str(ferr or "?")
         ab[k]["tentativas"] += 1
         ab[k]["aceitos"] += n

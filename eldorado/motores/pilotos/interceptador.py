@@ -46,7 +46,25 @@ ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial
 # edital (a busca na internet pelos navegadores da escada, o mapa do site), DUAS rodadas por livro, com 30 minutos ou mais
 # entre elas. Nenhuma abordagem fica aposentada (a secretaria do município, do estado e o ministério são onde os editais
 # públicos aparecem): as que renderam pouco só vão para o fim da ordem.
-APOSENTADAS: frozenset[int] = frozenset()
+# 14/11/2026 (R55, I6): a abordagem 8 («ponte do titular») refaz pelo computador da titular — nada sai por ele; nunca voou
+APOSENTADAS: frozenset[int] = frozenset({8})
+
+
+def aplica(n: int, lv: "Livro") -> bool:
+    """14/11/2026 (R55, I3): a pré-condição de cada abordagem — a que não se aplica ao livro é pulada SEM contar como tentativa
+    (1.298 passos vazios: a 9 sem PDF ou DOC, a 2 sem PNCP, a 5 sem número de edital, a 11 sem município, a 4 sem órgão)."""
+    links = f"{lv.link_oficial or ''} {lv.link_divulgacao or ''}".lower()
+    if n == 9:
+        return bool(re.search(r"\.(pdf|docx?|odt)(\b|$)", links))
+    if n == 2:
+        return "pncp.gov.br" in links
+    if n == 5:
+        return bool(re.search(r"\b\d{1,4}\s*/\s*20\d\d\b|n[º°o.]\s*\d", lv.titulo or "", re.I))
+    if n == 11:
+        return bool(lv.municipio)
+    if n == 4:
+        return bool(lv.orgao)
+    return True
 VERIFICACAO_PREVIA, RODADAS_VP, INTERVALO_VP_MIN = 12, 2, 30
 ORDEM = {"sem estrela": [12, 1, 11, 3, 10, 6, 8, 2, 9, 7, 4, 5], "bronze": [12, 1, 11, 2, 3, 9, 7, 10, 6, 8, 4, 5],
          "prata": [12, 1, 11, 2, 9, 7, 3, 10, 6, 8, 4, 5]}
@@ -409,7 +427,12 @@ class Interceptador:
                 return links[:3]
         return []
 
-    AGREGADORES = re.compile(r"capitaai|gife\.org|captadores|prosas|queridodiario|liderafest|editaisoportunidades|apoia\.se|benfeitoria", re.I)
+    # 14/11/2026 (R55, I7): os agregadores de onde vêm os livros sem link oficial (AltEditais, Farol Cultural, Licitário, Capta,
+    # Editais do Brasil, Conjunta e os demais sites de divulgação da R51)
+    AGREGADORES = re.compile(r"capitaai|gife\.org|captadores|prosas|queridodiario|liderafest|editaisoportunidades|apoia\.se|benfeitoria|"
+                             r"alteditais|farolcultural|licitario|capta\.org|editaisdobrasil|conjunta\.org|editalong|escolaaberta3setor|"
+                             r"terceirosetor\.net|i3s\.org|rit\.org|radareditais|utarget|plataformaexitos|agentecultural|editaisdecultura|"
+                             r"editaisculturais|fundingcalls|bussolasocial|observatorio3setor|redefilantropia|idis\.org", re.I)
 
     def _a12(self, lv: Livro) -> list[str]:
         """O MOTOR DE VERIFICAÇÃO PRÉVIA (titular, 01/11/2026): especializado em achar o site oficial e o edital da
@@ -491,7 +514,8 @@ class Interceptador:
         for item in lv.faltam:
             for pos, n in enumerate(PLANO_POR_ITEM.get(item, ORDEM[lv.balcao])):
                 vp_fora = n == VERIFICACAO_PREVIA and (not lv.vp_devida or n in lv.tentadas)
-                if vp_fora or (n != VERIFICACAO_PREVIA and n in lv.tentadas) or n in APOSENTADAS or (n == 8 and not self.ponte):
+                if vp_fora or (n != VERIFICACAO_PREVIA and n in lv.tentadas) or n in APOSENTADAS or (n == 8 and not self.ponte) \
+                        or not aplica(n, lv):
                     continue
                 pontos[n] = pontos.get(n, 0) + 1 / (1 + pos)
                 para.setdefault(n, []).append(item)
@@ -500,7 +524,7 @@ class Interceptador:
                 pontos[n] += 0.3 / (1 + pos)
         return [(n, para[n]) for n in sorted(pontos, key=lambda k: -pontos[k])]
 
-    def voar(self, lv: Livro, ate: float | None = None, tempo_livro_s: float = 180, maximo_achados: int = 4,
+    def voar(self, lv: Livro, ate: float | None = None, tempo_livro_s: float = 400, maximo_achados: int = 4,
              preferencia: list[int] | None = None) -> dict[str, Any]:
         """Um livro por vez, pelo plano de voo, até achar o que falta ou esgotar o plano (com tempo máximo por livro):
         cada passo registrado com os itens que buscou; o material de cada passo vira um achado para o livro."""

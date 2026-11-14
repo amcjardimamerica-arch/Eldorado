@@ -41,7 +41,8 @@ def test_os_12_itens_ate_o_fim_e_a_verificacao_previa_em_duas_rodadas():
 
     lv = _livro()
     assert "Resultado" in lv.faltam and "Prazo de recurso" in lv.faltam and not hasattr(M, "POSTERIORES")
-    assert not hasattr(M.Livro, "suficiente") and not M.APOSENTADAS
+    # 14/11/2026 (R55, I6): a única aposentada é a 8, a do computador da titular (nada sai por ele); as outras seguem
+    assert not hasattr(M.Livro, "suficiente") and M.APOSENTADAS == frozenset({8})
     it = M.Interceptador.__new__(M.Interceptador)
     it.ponte = None
     assert [n for n, _ in it.plano_de_voo(lv)][0] == 12 and M.ORDEM["sem estrela"][0] == 12

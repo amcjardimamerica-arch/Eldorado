@@ -168,6 +168,12 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
         pousou("interceptador")
 
 
+def _vagas_max() -> int:
+    """R55 (I6): o teto real das vagas — o do controlador do Comandante (o quadro dizia «de 8»; o controlador nunca passa de 3)."""
+    from ..comandante.pilotos import VAGAS_MAX
+    return VAGAS_MAX
+
+
 def _quadro_das_vagas(diario) -> None:
     """29/10/2026: quantos Interceptadores voam agora e quantas vagas o controlador liberou (gravado quando muda)."""
     try:
@@ -180,7 +186,7 @@ def _quadro_das_vagas(diario) -> None:
         emitir_se_mudou(diario, "medicao.registrada", "pilotos", "vagas", {
             "marcador": "pilotos:vagas", "nivel": "componente", "em": _agora(), "ponto": "v", "circulo": "v", "linhas": "v",
             "valor": float(EM_VOO["n"]),
-            "motivo": f"{EM_VOO['n']} Interceptador(es) em voo · {e.get('vagas', 1)} vaga(s) liberada(s) de {PARALELOS_INTERCEPTADOR} · "
+            "motivo": f"{EM_VOO['n']} Interceptador(es) em voo · {e.get('vagas', 1)} vaga(s) liberada(s) de {_vagas_max()} · "
                       f"processador total {cpu:.0%} (alvo 85%) · memória {mem:.0%}"},
             renovar_s=900, ignorar=("em", "motivo"), chave_extra=f"{EM_VOO['n']}/{e.get('vagas', 1)}")
     except Exception:  # noqa: BLE001
@@ -232,7 +238,11 @@ def paralelos_agora() -> int:
 
     return 1 if pressao() >= 600 else min(PARALELOS_INTERCEPTADOR, vagas_por_ociosidade())
 
-def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
+VOO_LONGO_S = 900   # 14/11/2026 (R55, I9): o voo acima de 15 min abre alarme e libera a vaga
+TEMPO_LIVRO_S = 400  # 14/11/2026 (R55, I4): o tempo por livro cabe na espera pela IA + a leitura (eram 180 s: 59% com um passo)
+
+
+def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = TEMPO_LIVRO_S) -> None:
     """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as
     abertas incompletas, as recuperáveis, as sem base; 2 tentativas, 30 minutos entre elas); depois a fila de sempre.
     26/10/2026: cada vaga tem o SEU fio, fixo (a conexão da vaga com a Biblioteca só pode ser usada no fio que a criou;
@@ -246,9 +256,12 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
     pedidos: queue.Queue = queue.Queue()
     avisados: set[str] = set()
 
-    def trabalhador(k: int) -> None:
+    inicio: dict[int, tuple[float, str]] = {}          # R55 (I9): a vaga → o início do voo atual e o livro
+    geracao: dict[int, int] = {}
+
+    def trabalhador(k: int, ger: int = 0) -> None:
         vaga = _Vaga(dados, eventos, k)
-        while not parar.is_set():
+        while not parar.is_set() and geracao.get(k, 0) == ger:   # a vaga liberada pelo vigia: o fio antigo sai
             if k >= paralelos_agora():                       # sob pressão de memória, só as primeiras vagas voam
                 # 29/10/2026: a vaga parada há mais de 2 min devolve o contexto (a conexão, a escada, o registro) e a memória
                 vaga.parada_desde = getattr(vaga, "parada_desde", None) or time.monotonic()
@@ -262,6 +275,7 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
             except queue.Empty:
                 continue
             try:
+                inicio[k] = (time.monotonic(), lv_id)
                 _voo_interceptador(vaga, parar, lv_id, b, tempo_livro_s)
             except Exception as e:  # noqa: BLE001 — o voo que falha vira alarme (uma vez por tipo); a vaga se renova
                 tipo = f"{type(e).__name__}: {str(e)[:120]}"
@@ -273,13 +287,28 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                                                                             "aberto_em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime())})
                 vaga.fechar()
             finally:
+                if geracao.get(k, 0) == ger:
+                    inicio.pop(k, None)
                 pedidos.task_done()
         vaga.fechar()
+
+    def vigiar() -> None:
+        """R55 (I9): o voo acima de VOO_LONGO_S abre alarme e a vaga passa a um trabalhador novo."""
+        for k, (t0, lv) in list(inicio.items()):
+            if time.monotonic() - t0 > VOO_LONGO_S:
+                inicio.pop(k, None)
+                geracao[k] = geracao.get(k, 0) + 1
+                diario.emitir("alarme.aberto", "piloto:interceptador", {
+                    "gravidade": "media", "modulo": "piloto:interceptador",
+                    "mensagem": f"voo longo: a vaga {k + 1} passou de {VOO_LONGO_S // 60} min no livro {lv}; a vaga foi liberada",
+                    "aberto_em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime())})
+                threading.Thread(target=trabalhador, args=(k, geracao[k]), name=f"interceptador-{k + 1}-g{geracao[k]}", daemon=True).start()
 
     fios = [threading.Thread(target=trabalhador, args=(k,), name=f"interceptador-{k + 1}", daemon=True) for k in range(PARALELOS_INTERCEPTADOR)]
     for f in fios:
         f.start()
     while not parar.is_set():
+        vigiar()
         try:
             dados_, con, _escada, _registro = _contexto(dados, diario)
             try:
