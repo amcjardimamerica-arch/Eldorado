@@ -65,8 +65,11 @@ def test_os_enderecos_do_parecer():
 
 
 def test_o_sesc_e_a_ponte():
-    lic = [f for f in _cfg("sistema-s")["fonte"] if f["nome"] == "Sesc Goiás — licitações e chamamentos"][0]
-    assert lic["lexico"]["vetos"] and "preg" in lic["lexico"]["vetos"][0]
+    # 14/11/2026 (a análise externa em 3 grupos): a fonte de licitações do Sesc saiu — os 271 livros dela eram compras, nenhuma
+    # oportunidade (a decisão 6 do parecer dava as duas saídas: o léxico próprio, aplicado antes, ou a retirada, com evidência)
+    ss = _cfg("sistema-s")
+    assert not any("www3.sescgo.com.br/licitac" in f["url"] for f in ss["fonte"])
+    assert any("www3.sescgo.com.br/licitac" in r for r in ss["aprendizado"]["rotas_que_falharam"])
     ponte = Path("config/ponte_dominios.txt").read_text(encoding="utf-8")
     assert all(d in ponte for d in ("sescgo.com.br", "go.senac.br", "atosoficiais.com.br", "go.equatorialenergia.com.br",
                                     "portaldoincentivo.com.br", "alcoa.com", "brasil.diplo.de"))

@@ -159,6 +159,9 @@ class CfgLexico(_Base):
     # PRAZO DE INSCRIÇÃO VIGENTE (uma data perto de «inscrição/prazo/até/encerra», de hoje a ~1 ano); sem ele, a página não
     # entra (o mapa do site trazia centenas de editais antigos, sem título nem prazo, e cada um virava livro)
     exige_prazo: bool = False
+    # 14/11/2026 (a análise externa em 3 grupos): vetos_endereco — o veto aplicado ao ENDEREÇO do achado (o blog, a notícia, o
+    # estágio, a licitação moram no caminho do endereço, com título de arquivo ou genérico que o veto do título não pega)
+    vetos_endereco: list[str] = Field(default_factory=list)
 
 
 CfgFonte.model_rebuild()        # 09/11/2026: o léxico por fonte (CfgLexico é declarado depois de CfgFonte)
@@ -1065,7 +1068,7 @@ class MotorCanal(Motor):
         return True
 
     def _motivo_entrada(self, pista: Pista) -> str | None:
-        if not self._passa_lexico(pista.titulo, pista.resumo or ""):
+        if not self._passa_lexico(pista.titulo, pista.resumo or "", pista.link or ""):
             return "léxico"
         if TITULO_GENERICO.search(pista.titulo or "") and not NOME_DE_ARQUIVO.search(pista.titulo or "") and not DOCUMENTO.search(pista.link or ""):
             return "título genérico de link (menu ou chamada de notícia)"
@@ -1090,10 +1093,12 @@ class MotorCanal(Motor):
                 return "município de outro estado (não capital)"
         return None
 
-    def _passa_lexico(self, titulo: str, resumo: str = "") -> bool:
+    def _passa_lexico(self, titulo: str, resumo: str = "", link: str = "") -> bool:
         lx = self._lx()
         t, tudo = _sem_acento(titulo), _sem_acento(f"{titulo} {resumo}")
         if lx.termos and not self._casa(t if lx.termos_em == "titulo" else tudo, lx.termos):
+            return False
+        if lx.vetos_endereco and link and self._casa(link.lower(), lx.vetos_endereco) and not self._casa(t, lx.salvos):
             return False
         return not (lx.vetos and self._casa(t, lx.vetos) and not self._casa(t, lx.salvos))
 
