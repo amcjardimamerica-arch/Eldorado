@@ -242,6 +242,21 @@ VOO_LONGO_S = 900   # 14/11/2026 (R55, I9): o voo acima de 15 min abre alarme e 
 TEMPO_LIVRO_S = 400  # 14/11/2026 (R55, I4): o tempo por livro cabe na espera pela IA + a leitura (eram 180 s: 59% com um passo)
 
 
+def _tempo_livro(dados: Path, padrao: float) -> float:   # noqa: D401
+    """15/11/2026 (S20): o tempo por livro que o Comandante ajustou pelo dado medido (parâmetro interceptador.tempo_livro_s);
+    sem o parâmetro, o padrão (TEMPO_LIVRO_S)."""
+    import sqlite3
+    try:
+        from ..comandante.parametros import valor
+        c = sqlite3.connect(f"file:{Path(dados) / 'cerebro.db'}?mode=ro", uri=True)
+        try:
+            return float(valor(c, "interceptador", "tempo_livro_s", padrao) or padrao)
+        finally:
+            c.close()
+    except (sqlite3.Error, ValueError, TypeError):
+        return padrao
+
+
 def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = TEMPO_LIVRO_S) -> None:
     """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as
     abertas incompletas, as recuperáveis, as sem base; 2 tentativas, 30 minutos entre elas); depois a fila de sempre.
@@ -276,7 +291,7 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                 continue
             try:
                 inicio[k] = (time.monotonic(), lv_id)
-                _voo_interceptador(vaga, parar, lv_id, b, tempo_livro_s)
+                _voo_interceptador(vaga, parar, lv_id, b, _tempo_livro(dados, tempo_livro_s))
             except Exception as e:  # noqa: BLE001 — o voo que falha vira alarme (uma vez por tipo); a vaga se renova
                 tipo = f"{type(e).__name__}: {str(e)[:120]}"
                 if tipo not in avisados:

@@ -91,3 +91,36 @@ def test_o_ultimo_expurgo_conta_a_importacao_do_chrome(tmp_path):
     (tmp_path / "veredito-lote-2026-11-14-externa-grupo-1.json").write_text(json.dumps({"vereditos": [{"decisao": "descartar"}, {"decisao": "valido"}]}))
     u = _ultima_importacao_com_descarte(tmp_path)
     assert u["em"].startswith("2026-11-14") and "1 descarte" in u["motivo"]
+
+
+def test_o_comandante_ajusta_o_tempo_por_livro_pelo_dado_medido(tmp_path):
+    """15/11/2026 (S20): as habilidades «parametrizar» e «conferir em 20 minutos» passam a ser exercidas."""
+    import json
+
+    from eldorado.base.comandante.parametros import ajustar_tempo_livro
+
+    class D:
+        def __init__(self):
+            self.ev = []
+
+        def emitir(self, t, m, d, **k):
+            self.ev.append((t, d))
+    cer = sqlite3.connect(":memory:")
+    cer.execute("CREATE TABLE parametro(etapa TEXT, chave TEXT, versao INT, valor TEXT, em TEXT)")
+    b = tmp_path / "b.db"
+    bc = sqlite3.connect(b)
+    bc.execute("CREATE TABLE tentativa(ferramenta TEXT, resultado TEXT, em TEXT)")
+    agora = datetime.now(timezone.utc)
+    bc.executemany("INSERT INTO tentativa VALUES ('abordagem 12', ?, ?)",
+                   [(json.dumps({"ia": {"segundos": s}}), agora.isoformat()) for s in [100] * 15 + [200] * 10])
+    bc.commit()
+    bc.close()
+    d = D()
+    novo = ajustar_tempo_livro(cer, b, d, agora)
+    assert novo == 560 and [t for t, _ in d.ev] == ["parametro.definido", "conferencia.agendada"]      # p75 200 + 300 + 60
+    assert ajustar_tempo_livro(cer, tmp_path / "nao.db", D(), agora) is None
+
+
+def test_os_motores_55_e_56_sao_vigilancia_esporadica():
+    from eldorado.base.cerebro.sinais_motores import esporadica
+    assert esporadica("site-mapa-osc") and esporadica("site-exitos")

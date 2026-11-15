@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 12004,
+   "linhas": 12010,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -2202,7 +2202,8 @@
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_rotas_1411.py",
-    "test_r48_comandante.py"
+    "test_r48_comandante.py",
+    "test_sala_coleta_local_1411.py"
    ],
    "situacao": "pacote",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -2292,7 +2293,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/parametros.py",
-   "linhas": 122,
+   "linhas": 165,
    "finalidade": "Os parâmetros do Comandante (as etapas C7 e C9; titular, 25/10/2026). Cada parâmetro de cada etapa vive no Arquivo do",
    "depende_de": [],
    "eventos": [
@@ -2309,7 +2310,9 @@
     "eldorado/base/comandante/escolher.py",
     "eldorado/base/comandante/pilotos.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_sala_coleta_local_1411.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "parte": "BASE",
@@ -2755,7 +2758,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 430,
+   "linhas": 445,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -5352,7 +5355,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 824,
+   "linhas": 826,
    "situacao": "em funcionamento",
    "ordem": 165
   },
@@ -6031,7 +6034,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/rede.py",
-   "linhas": 449,
+   "linhas": 451,
    "finalidade": "A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas.",
    "depende_de": [
     "eldorado/base/cerebro/lote.py",

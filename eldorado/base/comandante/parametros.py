@@ -107,6 +107,47 @@ def conferir(cer: sqlite3.Connection, diario, agora: datetime | None = None) -> 
     return conta
 
 
+TEMPO_LIVRO_LIMITES = (300, 900)    # 15/11/2026 (S20): o tempo por livro do Interceptador fica entre 5 e 15 min (o vigia, I9)
+
+
+def ajustar_tempo_livro(cer: sqlite3.Connection, biblioteca: Path, diario, agora: datetime | None = None) -> int | None:
+    """15/11/2026 (S20 — as duas habilidades paradas do Comandante: nada chamava o ajuste dos parâmetros): uma vez por dia, o
+    Comandante ajusta o tempo do Interceptador por livro pelo dado medido — o 75º percentil da leitura da IA nas abordagens dos
+    últimos 7 dias, mais a espera pela vez (300 s) e a leitura dos documentos (60 s), entre 300 e 900 s. A mudança é gravada
+    com a cópia anterior e conferida 20 minutos depois (a habilidade «conferir em 20 minutos»). Sem 20 leituras: nada muda."""
+    import json as _json
+    agora = agora or datetime.now(timezone.utc)
+    try:
+        ult = cer.execute("SELECT MAX(em) FROM parametro WHERE etapa = 'interceptador' AND chave = 'tempo_livro_s'").fetchone()[0]
+    except sqlite3.Error:
+        return None
+    if ult and agora - datetime.fromisoformat(str(ult).replace("Z", "+00:00")) < timedelta(hours=24):
+        return None
+    try:
+        bib = sqlite3.connect(f"file:{biblioteca}?mode=ro", uri=True)
+        linhas = bib.execute("SELECT resultado FROM tentativa WHERE ferramenta LIKE 'abordagem %' AND em >= ?",
+                             ((agora - timedelta(days=7)).isoformat(),)).fetchall()
+        bib.close()
+    except sqlite3.Error:
+        return None
+    seg = []
+    for (res,) in linhas:
+        try:
+            s = ((_json.loads(res or "{}").get("ia") or {}).get("segundos"))
+        except ValueError:
+            continue
+        if isinstance(s, (int, float)) and s > 0:
+            seg.append(float(s))
+    if len(seg) < 20:
+        return None
+    seg.sort()
+    p75 = seg[int(0.75 * (len(seg) - 1))]
+    novo = int(min(TEMPO_LIVRO_LIMITES[1], max(TEMPO_LIVRO_LIMITES[0], round(p75 + 300 + 60))))
+    definir(cer, diario, "interceptador", "tempo_livro_s", str(novo),
+            f"o Comandante: 75º percentil da leitura da IA {p75:.0f} s em {len(seg)} leituras (7 dias) + a espera e os documentos", agora)
+    return novo
+
+
 def no_conferir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem (o Comandante, C7 e C9): os parâmetros iniciais e as conferências de 20 minutos."""
     p = Path(parametros.get("dados", "dados")) / "cerebro.db"
@@ -117,6 +158,8 @@ def no_conferir(itens: list[dict[str, Any]], parametros: dict[str, Any], context
         if not cer.execute("SELECT 1 FROM sqlite_master WHERE name = 'parametro'").fetchone():
             return []
         iniciais = sum(definir(cer, contexto.diario, e, k, v, o) for (e, k), (v, o) in INICIAIS.items() if valor(cer, e, k) is None)
-        return [{"parametros_iniciais": iniciais, **conferir(cer, contexto.diario)}]
+        b = Path(parametros.get("dados", "dados")) / "biblioteca.db"
+        ajuste = ajustar_tempo_livro(cer, b, contexto.diario) if b.exists() else None
+        return [{"parametros_iniciais": iniciais, "ajuste_tempo_livro": ajuste, **conferir(cer, contexto.diario)}]
     finally:
         cer.close()
