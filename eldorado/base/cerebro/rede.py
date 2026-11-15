@@ -234,11 +234,17 @@ def metricas_por_contagem(hist: list[tuple[str, bool, float]], limiar: float, n:
         auc.update(y, {True: p, False: 1 - p})
         pre.update(y, p >= limiar)
         rev.update(y, p >= limiar)
-    topo = sorted(j, key=lambda h: -h[2])
+    # 14/11/2026 (R56, S15): o acerto nos 50 e nos 200 de maior nota na JANELA DE 7 DIAS (o que a fila usa agora); com menos
+    # de 20 rótulos na semana, sem medida
+    from datetime import datetime, timedelta, timezone
+    d7 = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+    semana = [h for h in hist if str(h[0]) >= d7]
+    topo = sorted(semana, key=lambda h: -h[2]) if len(semana) >= 20 else []
     return {"amostras": len(j), "discernimento": round(float(auc.get()), 4), "precisao": round(float(pre.get()), 4),
             "revocacao": round(float(rev.get()), 4), "brier": round(sum((p - y) ** 2 for _, y, p in j) / len(j), 4),
-            "acerto_50": round(sum(y for _, y, _p in topo[:50]) / min(50, len(topo)), 4),
-            "acerto_200": round(sum(y for _, y, _p in topo[:200]) / min(200, len(topo)), 4), "desde": str(j[0][0])[:19]}
+            "acerto_50": round(sum(y for _, y, _p in topo[:50]) / min(50, len(topo)), 4) if topo else None,
+            "acerto_200": round(sum(y for _, y, _p in topo[:200]) / min(200, len(topo)), 4) if topo else None,
+            "desde": str(j[0][0])[:19], "rotulos_7d": len(semana)}
 
 
 class RedeNeural:

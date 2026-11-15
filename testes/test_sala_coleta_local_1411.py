@@ -60,3 +60,34 @@ def test_o_ponte_php_e_a_lista_do_sistema_tem_os_mesmos_dominios():
     cfg = {x.strip() for x in Path("config/ponte_dominios.txt").read_text(encoding="utf-8").splitlines() if x.strip() and not x.startswith("#")}
     assert cfg <= set(g.dominios())
     _ = timedelta
+
+
+def test_a_limpeza_nao_apaga_o_ciente_nem_as_marcas_dos_ciclos(tmp_path):
+    from eldorado.base.cerebro.retencao import reter
+    c = sqlite3.connect(tmp_path / "c.db")
+    c.execute("CREATE TABLE medicao(marcador TEXT, em TEXT, valor REAL)")
+    velho = (datetime.now(timezone.utc) - timedelta(days=90)).isoformat()
+    c.executemany("INSERT INTO medicao VALUES (?, ?, 0)", [("ciente:farol:fa_fecham_7d", velho), ("ciclo:reset", velho), ("rede:x", velho)])
+    c.commit()
+    c.close()
+    reter(tmp_path / "c.db", tmp_path / "ev")
+    ficou = {r[0] for r in sqlite3.connect(tmp_path / "c.db").execute("SELECT marcador FROM medicao")}
+    assert ficou == {"ciente:farol:fa_fecham_7d", "ciclo:reset"}
+
+
+def test_o_acerto_nos_50_na_janela_de_7_dias():
+    from eldorado.base.cerebro.rede import metricas_por_contagem
+    agora = datetime.now(timezone.utc)
+    velhos = [((agora - timedelta(days=20)).isoformat(), True, 0.99) for _ in range(300)]
+    novos = [((agora - timedelta(days=1)).isoformat(), False, 0.9) for _ in range(30)]
+    m = metricas_por_contagem(velhos + novos, 0.5, n=500, minimo=300)
+    assert m["acerto_50"] == 0.0 and m["rotulos_7d"] == 30            # só a semana: os 300 antigos não contam
+
+
+def test_o_ultimo_expurgo_conta_a_importacao_do_chrome(tmp_path):
+    import json
+
+    from eldorado.base.painel.sala import _ultima_importacao_com_descarte
+    (tmp_path / "veredito-lote-2026-11-14-externa-grupo-1.json").write_text(json.dumps({"vereditos": [{"decisao": "descartar"}, {"decisao": "valido"}]}))
+    u = _ultima_importacao_com_descarte(tmp_path)
+    assert u["em"].startswith("2026-11-14") and "1 descarte" in u["motivo"]

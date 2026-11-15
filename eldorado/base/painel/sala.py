@@ -54,6 +54,24 @@ def _idade_h(quando: str | None, agora: datetime) -> float | None:
 LIMITE_CLAUDE_ITENS, LIMITE_CLAUDE_HORAS = 50, 168
 
 
+def _ultima_importacao_com_descarte(pasta: Path | None = None) -> dict | None:
+    """R56 (S14): a importação mais recente de veredito do Chrome que trouxe descartes (verificacao/vereditos/importados)."""
+    import json as _json
+    import re as _re
+    pasta = pasta or Path("verificacao/vereditos/importados")
+    melhor = None
+    for f in pasta.glob("veredito-*.json") if pasta.exists() else []:
+        m = _re.search(r"(20\d\d-\d\d-\d\d)", f.name)
+        if not m or (melhor and m.group(1) <= melhor["em"][:10]):
+            continue
+        try:
+            n = sum(1 for v in _json.loads(f.read_text(encoding="utf-8")).get("vereditos", []) if v.get("decisao") == "descartar")
+        except (OSError, ValueError):
+            continue
+        if n:
+            melhor = {"em": f"{m.group(1)}T23:59:00+00:00", "motivo": f"o veredito do Claude no Chrome: {n} descarte(s) ({f.stem[9:]})"}
+    return melhor
+
 def _alerta_claude(itens: int | None, idade_h: float | None) -> str:
     if itens is None:
         return "cinza"
@@ -406,6 +424,10 @@ def montar(
         from ..cartorio.expurgo_claude import ultimo as _ult
 
         cd, ul = _cand(bib), _ult()
+        # 14/11/2026 (R56, S14): a importação dos vereditos do Chrome com descartes também é expurgo (a de 14/11 descartou 1.558)
+        ul_chrome = _ultima_importacao_com_descarte()
+        if ul_chrome and (not ul or ul_chrome["em"] > str(ul.get("em") or "")):
+            ul = ul_chrome
         I(
             "es_expurgo",
             "Último expurgo (feito pelo Claude)",

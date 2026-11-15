@@ -26,7 +26,10 @@ def reter(cerebro: str | Path, pasta_eventos: str | Path, dias: int = DIAS) -> d
             if not cols:
                 continue
             if "em" in cols:
-                n = con.execute(f"DELETE FROM {t} WHERE em < ?", (corte,)).rowcount
+                # 14/11/2026 (R56, S17): o «ciente» da titular e as marcas dos ciclos (o reset dos pilotos, R55) não vencem — sem
+                # eles o alerta voltaria depois de 30 dias e o reset rodaria de novo
+                guarda = " AND NOT (marcador LIKE 'ciente:%' OR marcador LIKE 'ciclo:%')" if "marcador" in cols else ""
+                n = con.execute(f"DELETE FROM {t} WHERE em < ?{guarda}", (corte,)).rowcount
             else:
                 n = con.execute(f"DELETE FROM {t} WHERE rowid <= (SELECT MAX(rowid) FROM {t}) - ?", (SEM_DATA_MAX,)).rowcount
             saida[t] = max(0, n)

@@ -270,7 +270,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 188 | `skills/interceptador-plano-de-voo/SKILL.md` | A skill interceptador-plano-de-voo: Um voo pelo plano de voo de um livro: as abordagens em ordem, até comprova | em funcionamento |  | curador | 0 |
 | 189 | `eldorado/base/cartorio/auditoria.py` | A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados). | em funcionamento | certificacao, origem, passaporte, selos, aprendizado, itens, portao, regras_portao, eventos, normalizar | passagem, nó 11 «auditar» | 7 |
 | 190 | `eldorado/base/cerebro/inventario.py` | O inventário do sistema (titular, 22/10/2026): todo arquivo, do primeiro ao último no caminho do funcionamento | em funcionamento | mapa_arquivos | comandos | 1 |
-| 191 | `eldorado/base/cerebro/rede.py` | A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas. | em funcionamento | lote, eventos, motor, interceptador | passagem, nó 24 «rede» | 8 |
+| 191 | `eldorado/base/cerebro/rede.py` | A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas. | em funcionamento | lote, eventos, motor, interceptador | passagem, nó 24 «rede» | 9 |
 
 ## 14 Análise e painel
 
@@ -287,7 +287,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 200 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
 | 201 | `eldorado/base/painel/pilotos.py` | Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de control | em funcionamento | itens | dados, vivo | 2 |
 | 202 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 1 |
-| 203 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, pontuacao_motores, sinais_motores | passagem, nó 3 «medir_sala» | 5 |
+| 203 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, pontuacao_motores, sinais_motores | passagem, nó 3 «medir_sala» | 6 |
 | 204 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | a construir |  |  | 0 |
 | 205 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, vivo, estado | comandos, legado, vivo | 7 |
 | 206 | `eldorado/base/painel/legado.py` | Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: "pedi para consertar diversas vezes  | em funcionamento | dados | dados | 1 |
@@ -327,7 +327,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 225 | `eldorado/base/cartorio/migrados.py` | Os livros migrados do Eldorado0 (titular, 01/11/2026): dado histórico, sem nova releitura nem avaliação — exce | em funcionamento |  | expurgo_claude, interceptador | 1 |
 | 226 | `eldorado/base/cartorio/regua.py` | A régua única (R46, titular, 05/11/2026; parecer de teste do site, 06/11/2026): UMA função conta as oportunida | em funcionamento |  | dados, sala | 1 |
 | 227 | `eldorado/base/cerebro/relatorio_turno.py` | 14/11/2026 (R55, C8 e C9): o relatório de turno do Espião — gerado na reserva final de cada execução (até 6 h) | em funcionamento |  | ciclo_pilotos, comandos | 1 |
-| 228 | `eldorado/base/cerebro/retencao.py` | A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para | em funcionamento | eventos | comandos | 1 |
+| 228 | `eldorado/base/cerebro/retencao.py` | A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para | em funcionamento | eventos | comandos | 2 |
 | 229 | `eldorado/base/cerebro/sinais_motores.py` | Os SINAIS de cada motor (titular, 05/11/2026: «o sistema deve mostrar o que está ocorrendo além do resultado;  | em funcionamento |  | mapa_arquivos, pontuacao_motores, dados, sala | 4 |
 | 230 | `eldorado/base/cartorio/expurgo_claude.py` | O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: "somente o Claude apaga livros e faz expurgos, o | em funcionamento | leitura_efemera, migrados | manutencao_expurgo, sala | 2 |
 | 231 | `eldorado/base/cerebro/pontuacao_motores.py` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento | sinais_motores | ciclo_pilotos, livros_motores, dados, sala | 2 |

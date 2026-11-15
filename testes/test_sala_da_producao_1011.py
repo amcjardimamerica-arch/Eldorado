@@ -204,7 +204,10 @@ def test_a_rede_pelos_ultimos_500_rotulos_e_o_acerto_dos_50():
     from eldorado.base.cerebro.rede import metricas_por_contagem
 
     assert metricas_por_contagem([("2026-11-01", True, 0.9)] * 10, 0.5)["discernimento"] is None   # menos de 300: não mede
-    h = [(f"2026-11-{1 + i % 9:02d}T{i % 24:02d}", i % 3 == 0, 0.9 if i % 3 == 0 else 0.2) for i in range(800)]
+    # 14/11/2026 (R56, S15): o acerto nos 50 é da janela de 7 dias — as datas do ensaio, relativas a hoje, dentro da semana
+    from datetime import datetime, timedelta, timezone
+    agora = datetime.now(timezone.utc)
+    h = [((agora - timedelta(hours=1 + i % 150)).isoformat(), i % 3 == 0, 0.9 if i % 3 == 0 else 0.2) for i in range(800)]
     m = metricas_por_contagem(h, 0.5)
     assert m["amostras"] == 500 and m["acerto_50"] == 1.0 and m["precisao"] == 1.0
     s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
