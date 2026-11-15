@@ -42,7 +42,8 @@ def test_a_ordem_de_territorio():
 def test_a_escada_nao_busca_sem_link_nem_completo():
     assert C.pode_buscar(None, False)[0] is False and C.pode_buscar("https://o", True)[0] is False and C.pode_buscar("https://o", False)[0] is True
     t = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
-    assert "if lv.faltam and lv.link_oficial:" in t and "chave_de_busca" in t
+    # 14/11/2026 (R55, I8, que revoga a R38 neste ponto): o livro sem link oficial entra para UMA rodada da verificação prévia
+    assert "if lv.faltam and (lv.link_oficial or (lv.link_divulgacao and lv.vp_rodadas == 0)):" in t and "chave_de_busca" in t
 
 
 def test_a_lei_e_o_chamamento():

@@ -49,3 +49,50 @@ def test_os_agregadores_dos_livros_sem_link_oficial():
 def test_o_vigia_de_voo_longo():
     fonte = inspect.getsource(PP.voar_interceptador)
     assert PP.VOO_LONGO_S == 900 and "def vigiar()" in fonte and "voo longo" in fonte and "geracao[k] = geracao.get(k, 0) + 1" in fonte
+
+
+def test_o_disjuntor_da_forma_validada_vai_direto_a_reserva(monkeypatch):
+    from eldorado.base.nucleo import ia as IA
+
+    class _IA:
+        url = "http://local"
+
+        def disponivel(self):
+            return True
+
+        def pedir(self, nome, pedido):
+            return {"itens": []}, IA.Uso("comprovar")
+    chamadas = []
+
+    def falha(ia, pedido):
+        chamadas.append(1)
+        raise RuntimeError("ModelAPIError")
+    monkeypatch.setattr(IA, "_validado", falha)
+    monkeypatch.setitem(IA.DISJUNTOR, "seguidas", 0)
+    monkeypatch.setitem(IA.DISJUNTOR, "desligado_ate", 0.0)
+    for _ in range(IA.DISJUNTOR_FALHAS + 2):
+        IA.comprovar(_IA(), ["Prazo de inscrição"], ["Edital de chamamento. As inscrições estão abertas até 30/11/2026, pelo site."],
+                     "Edital", ("Prazo de inscrição",))
+    assert len(chamadas) == IA.DISJUNTOR_FALHAS           # depois de 3 falhas seguidas, a forma validada fica em pausa
+
+
+def test_o_material_que_a_ia_nao_leu_volta_no_proximo_voo():
+    fonte = inspect.getsource(M.Interceptador.investigar)
+    assert 'f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d)' in fonte
+    assert "WHERE fase='preparacao' AND ferramenta LIKE 'abordagem %'" in inspect.getsource(M.fila)   # a pendente não conta
+
+
+def test_o_livro_sem_link_oficial_passa_pelo_interceptador_antes_do_chrome():
+    assert "lv.link_oficial or (lv.link_divulgacao and lv.vp_rodadas == 0)" in inspect.getsource(M.fila)
+    from pathlib import Path
+    assert "if lid not in na_fila:" in Path("eldorado/base/comandante/cartorio.py").read_text(encoding="utf-8")
+
+
+def test_o_mapa_do_orgao_e_do_municipio_para_o_site_oficial():
+    it = M.Interceptador.__new__(M.Interceptador)
+    it.con = sqlite3.connect(":memory:")
+    it.con.executescript("CREATE TABLE empresa(nome_fantasia TEXT, razao_social TEXT, site TEXT);"
+                         "INSERT INTO empresa VALUES ('Fundação Exemplo', 'Fundação Exemplo S.A.', 'fundacaoexemplo.org.br')")
+    assert it._mapa_oficial(_lv(municipio="Anápolis", uf="GO")) == ["https://www.anapolis.go.gov.br/"]
+    assert it._mapa_oficial(_lv(municipio="Tupaciguara", uf="MG")) == []                       # outro estado: não
+    assert it._mapa_oficial(_lv(orgao="Fundação Exemplo")) == ["https://fundacaoexemplo.org.br"]

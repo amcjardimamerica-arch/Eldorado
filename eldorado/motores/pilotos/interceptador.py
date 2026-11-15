@@ -206,8 +206,10 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
         rodadas = vp.get(r["id"], [])
         lv.vp_rodadas, lv.vp_ultima = len(rodadas), (max(rodadas) if rodadas else None)
-        # 02/11/2026 (titular, R38): o Comandante ordena — sem link oficial ou completo, a escada não busca
-        if lv.faltam and lv.link_oficial:
+        # 02/11/2026 (titular, R38): o Comandante ordena — completo, a escada não busca. 14/11/2026 (R55, I8, que revoga a R38
+        # neste ponto): o livro SEM link oficial entra para UMA rodada da verificação prévia (a abordagem 12, feita para achar o
+        # oficial pela divulgação: 731 de 734 passos acharam documento) antes de ir ao Chrome
+        if lv.faltam and (lv.link_oficial or (lv.link_divulgacao and lv.vp_rodadas == 0)):
             lv.abrangencia = r["abrangencia"]
             saida.append(lv)
     # a ordem do Comandante: Goiás → Brasil → internacional → outras capitais e estados; dentro de cada um, as abertas que
@@ -434,6 +436,39 @@ class Interceptador:
                              r"terceirosetor\.net|i3s\.org|rit\.org|radareditais|utarget|plataformaexitos|agentecultural|editaisdecultura|"
                              r"editaisculturais|fundingcalls|bussolasocial|observatorio3setor|redefilantropia|idis\.org", re.I)
 
+    def _mapa_oficial(self, lv: Livro) -> list[str]:
+        """14/11/2026 (R55, I10): o mapa do órgão ou do município para o site oficial, antes da busca na internet — o
+        município de Goiás pelo domínio das prefeituras goianas (<município>.go.gov.br, só o que está na lista do IBGE) e o
+        órgão ou a entidade do cadastro pelo site cadastrado (o nome do órgão do livro igual ao do cadastro)."""
+        import unicodedata
+        saida: list[str] = []
+        sa = lambda s: unicodedata.normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode().lower()  # noqa: E731
+        mun = sa(lv.municipio).strip()
+        if mun and (str(lv.uf or "").upper() in ("GO", "")):
+            try:
+                from ...base.missao.regras_portao import ROOT as _R
+                from ...base.missao.regras_portao import _j
+                lista = (_j(_R / "config/missao/municipios_brasil.json", {}) or {}).get("municipios") or {}
+            except Exception:  # noqa: BLE001
+                lista = {}
+            if "GO" in (lista.get(mun) or []):
+                saida.append(f"https://www.{re.sub(r'[^a-z0-9]', '', mun)}.go.gov.br/")
+        org = " ".join(sa(lv.orgao).split())
+        if org and len(org) >= 6:
+            if getattr(self, "_cadastro_sites", None) is None:      # o cadastro, sem acento, carregado uma vez
+                self._cadastro_sites = {}
+                try:
+                    for nf, rs, site in self.con.execute("SELECT nome_fantasia, razao_social, site FROM empresa WHERE site IS NOT NULL AND site <> ''"):
+                        for nome in (nf, rs):
+                            if nome:
+                                self._cadastro_sites.setdefault(" ".join(sa(nome).split()), site)
+                except Exception:  # noqa: BLE001 — sem o cadastro, só o município
+                    pass
+            site = self._cadastro_sites.get(org)
+            if site:
+                saida.append(site if site.startswith("http") else f"https://{site}")
+        return list(dict.fromkeys(saida))
+
     def _a12(self, lv: Livro) -> list[str]:
         """O MOTOR DE VERIFICAÇÃO PRÉVIA (titular, 01/11/2026): especializado em achar o site oficial e o edital da
         oportunidade, para o Interceptador atuar com o edital já aberto. Em quatro passos:
@@ -443,7 +478,7 @@ class Interceptador:
           4. o edital e os anexos (PDF) dessas páginas.
         Os extratores leem tudo de uma vez; o achado leva o link de divulgação e o oficial. Duas rodadas por livro."""
         enderecos: list[str] = []
-        oficiais: list[str] = []
+        oficiais: list[str] = list(self._mapa_oficial(lv))           # R55 (I10): o órgão ou o município → o site oficial
         if lv.base:
             lido = self._ler(lv.base)
             if lido is not None:
@@ -568,8 +603,12 @@ class Interceptador:
                 lv.tentadas.add(n)
                 continue
             achado = self._achado(lv, n, urls)
+            # 14/11/2026 (R55, I2): o material que a IA não leu (ocupada ou estourou) não se perde — a tentativa é registrada
+            # como «ia pendente · abordagem N», que NÃO conta como tentada: no próximo voo o material volta e a IA o lê
+            ia_d = ((achado.dados or {}).get("ia") or {}) if achado else {}
+            ferr = f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d) else f"abordagem {n}"
             self.diario.emitir("tentativa.registrada", "interceptador", {
-                "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": self._numero(lv.id, f"abordagem {n}"), "em": agora(),
+                "livro_id": lv.id, "fase": "preparacao", "ferramenta": ferr, "numero": self._numero(lv.id, ferr), "em": agora(),
                 "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
                                          "enderecos": len(urls), "faltam": lv.faltam,
                                          "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0,
@@ -626,6 +665,8 @@ class Interceptador:
                     ia_rel = {"segundos": uso.segundos, "propostas": uso.propostas, "aceitas": uso.aceitas, "recusas": uso.recusas[:6]}
                 except SemIA as e:
                     ia_rel = {"indisponivel": str(e)[:200]}
+                except Exception as e:  # noqa: BLE001 — R55 (I2): a IA que estoura não derruba o passo; o material fica pendente
+                    ia_rel = {"estourou": f"{type(e).__name__}: {str(e)[:160]}"}
                 finally:
                     VEZ_DA_IA.release()
             else:

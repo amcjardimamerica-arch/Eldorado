@@ -205,6 +205,13 @@ def _validado(ia: IA, pedido: str) -> tuple[list[dict], Uso] | None:
     return [i.model_dump() for i in r.output.itens], uso
 
 
+# 14/11/2026 (R55, I1): a forma validada falhava com ModelAPIError em 49% das leituras e cada uma pagava dois pedidos — depois de
+# DISJUNTOR_FALHAS falhas seguidas, ela fica em pausa por DISJUNTOR_PAUSA_S e a leitura vai direto à reserva (um pedido só);
+# passada a pausa, é tentada de novo (se a causa for corrigida, o disjuntor não volta a desarmar)
+DISJUNTOR_FALHAS, DISJUNTOR_PAUSA_S = 3, 3600
+DISJUNTOR: dict[str, float] = {"seguidas": 0, "desligado_ate": 0.0}
+
+
 def comprovar(ia: IA, itens: list[str], paginas: list[str], titulo: str, validos: tuple[str, ...]) -> tuple[dict[str, dict], Uso]:
     """A IA propõe cada item que falta, com o trecho e a página; o sistema valida (o trecho tem de existir naquela página)."""
     partes = trechos_relevantes(paginas, itens)
@@ -218,11 +225,21 @@ def comprovar(ia: IA, itens: list[str], paginas: list[str], titulo: str, validos
     pedido = exemplos_para_instrucao() + pedido                       # os exemplos escolhidos pelo DSPy (certidões validadas)
     if not ia.disponivel() and getattr(ia, "_modelo_validado", None) is None:
         raise SemIA(f"o modelo local não está disponível em {ia.url}")
-    try:
-        validado = _validado(ia, pedido)
-    except Exception as e:  # noqa: BLE001 — a saída validada falhou: o caminho do JSON, de reserva
-        validado = None
-        motivo = f"{type(e).__name__}"
+    import time as _t
+    validado = None
+    if _t.monotonic() < DISJUNTOR["desligado_ate"]:   # 14/11/2026 (R55, I1): o disjuntor desarmou a forma validada
+        motivo = f"forma validada em pausa depois de {DISJUNTOR_FALHAS} falhas seguidas"
+    else:
+        try:
+            validado = _validado(ia, pedido)
+            DISJUNTOR["seguidas"] = 0
+        except Exception as e:  # noqa: BLE001 — a saída validada falhou: o caminho do JSON, de reserva
+            validado = None
+            motivo = f"{type(e).__name__}"
+            DISJUNTOR["seguidas"] += 1
+            if DISJUNTOR["seguidas"] >= DISJUNTOR_FALHAS:
+                DISJUNTOR["desligado_ate"] = _t.monotonic() + DISJUNTOR_PAUSA_S
+                DISJUNTOR["seguidas"] = 0
     if validado is not None:
         propostas, uso = validado
     else:

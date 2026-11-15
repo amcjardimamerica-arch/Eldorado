@@ -87,7 +87,10 @@ def candidatos(con: sqlite3.Connection, hoje: str) -> dict[str, list[str]]:
         elif set(I.DOZE) <= certs.get(lid, set()):
             out["completos"].append(lid)
         elif not oficial:
-            out["ao_chrome_sem_link" if fim else "sem_dados"].append(lid)
+            # 14/11/2026 (R55, I8, que revoga a R42 neste ponto): antes do Chrome, uma rodada do Interceptador — o livro sem
+            # link oficial que está na fila (a verificação prévia ainda não rodou) espera a sua vez na preparação
+            if lid not in na_fila:
+                out["ao_chrome_sem_link" if fim else "sem_dados"].append(lid)
         elif lid not in na_fila:
             out["sem_o_que_buscar"].append(lid)
     return out

@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11990,
+   "linhas": 11992,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -177,6 +177,7 @@
     "test_interceptador.py",
     "test_interceptador_funciona.py",
     "test_interceptador_melhorias.py",
+    "test_interceptador_rotas_1411.py",
     "test_inventario.py",
     "test_leitor_universal.py",
     "test_leitura.py",
@@ -322,6 +323,7 @@
     "test_incentivos.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_interceptador_rotas_1411.py",
     "test_inventario.py",
     "test_linha_cartorio.py",
     "test_lote.py",
@@ -692,6 +694,7 @@
     "test_incentivos.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_interceptador_rotas_1411.py",
     "test_linha_cartorio.py",
     "test_missao.py",
     "test_motor_canal.py",
@@ -2005,6 +2008,7 @@
     "test_incentivos.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_interceptador_rotas_1411.py",
     "test_inventario.py",
     "test_linha_cartorio.py",
     "test_lote.py",
@@ -2192,6 +2196,7 @@
     "test_enxugamento_0511.py",
     "test_governador_recursos.py",
     "test_identidade_caracteristicas.py",
+    "test_interceptador_rotas_1411.py",
     "test_organizar_livros.py",
     "test_parecer_sala_2910.py",
     "test_pilotos_aprendizado.py",
@@ -2210,7 +2215,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/cartorio.py",
-   "linhas": 162,
+   "linhas": 165,
    "finalidade": "O COMANDANTE DO CARTÓRIO (titular, 02/11/2026 — R37 e R38).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
@@ -2339,7 +2344,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/ia.py",
-   "linhas": 246,
+   "linhas": 263,
    "finalidade": "O serviço único de IA dos pilotos (do Eldorado0, titular, 26/09 e 02/10/2026).",
    "depende_de": [
     "eldorado/base/aprendizado/memoria.py",
@@ -2657,6 +2662,7 @@
     "eldorado/base/nucleo/comandos.py"
    ],
    "testes": [
+    "test_interceptador_rotas_1411.py",
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_rotas_1411.py"
@@ -2749,7 +2755,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 401,
+   "linhas": 430,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -2955,6 +2961,7 @@
     "test_interceptador.py",
     "test_interceptador_funciona.py",
     "test_interceptador_melhorias.py",
+    "test_interceptador_rotas_1411.py",
     "test_leitor_universal.py",
     "test_leitura.py",
     "test_mapa_original.py",
@@ -4359,7 +4366,8 @@
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/comandante/biblioteca.py",
-    "eldorado/base/missao/regras_portao.py"
+    "eldorado/base/missao/regras_portao.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "acionado_por": [],
    "eventos": [],
@@ -4511,7 +4519,8 @@
    "usado_por": [
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/missao/portao.py",
-    "eldorado/motores/canal/motor.py"
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "testes": [
     "test_escopo_geografico_1011.py",
@@ -4961,6 +4970,7 @@
     "test_interceptador.py",
     "test_interceptador_funciona.py",
     "test_interceptador_melhorias.py",
+    "test_interceptador_rotas_1411.py",
     "test_parecer_sala_2910.py",
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
@@ -5061,7 +5071,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 621,
+   "linhas": 686,
    "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
    "depende_de": [
     "eldorado/base/cartorio/migrados.py",
@@ -5069,6 +5079,7 @@
     "eldorado/base/cerebro/pilotos_permanentes.py",
     "eldorado/base/comandante/cartorio.py",
     "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/regras_portao.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
     "eldorado/base/nucleo/ia.py",
@@ -5112,6 +5123,7 @@
     "eldorado/base/cerebro/pilotos_permanentes.py",
     "eldorado/base/comandante/cartorio.py",
     "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/regras_portao.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
     "eldorado/base/nucleo/ia.py",
@@ -5340,7 +5352,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 814,
+   "linhas": 821,
    "situacao": "em funcionamento",
    "ordem": 165
   },
@@ -7080,7 +7092,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/ciclo_pilotos.py",
-   "linhas": 248,
+   "linhas": 252,
    "finalidade": "O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetros de",
    "depende_de": [
     "eldorado/base/cerebro/aprendizado.py",
