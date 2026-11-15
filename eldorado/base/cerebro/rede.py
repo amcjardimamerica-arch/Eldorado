@@ -396,9 +396,11 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
                                                                    "discernimento": j5["discernimento"], "precisao": j5["precisao"],
                                                                    "revocacao": j5["revocacao"], "brier": j5.get("brier")})
                 for marca in ("acerto_50", "acerto_200"):
+                    if j5.get(marca) is None:                      # R56 (S15): menos de 20 rótulos na semana — sem medida nova
+                        continue
                     contexto.diario.emitir("medicao.registrada", "rede", {
                         "marcador": f"rede:{pergunta}:{marca}", "nivel": "componente", "em": agora(), "valor": j5[marca],
-                        "motivo": f"dos {marca.split('_')[1]} livros de maior nota entre os últimos {j5['amostras']} rótulos (desde {j5['desde']})"})
+                        "motivo": f"dos {marca.split('_')[1]} livros de maior nota entre os {j5.get('rotulos_7d', 0)} rótulos dos últimos 7 dias"})
             j = x.get("janela_7d") or {}
             if j.get("amostras"):                                   # R48: a janela de 7 dias, que a Sala mostra
                 contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-7d-{j['amostras']:07d}-{agora()[:19]}",

@@ -5317,13 +5317,13 @@ window.ghToken=async function(pedir){
   const c=await ghConferir(t);
   if(!c.ok){ alert("O token não foi aceito: "+c.motivo+"."); return ""; }
   try{ localStorage.setItem("eldorado_gh_token",t); localStorage.setItem("eldorado_gh_token_info",JSON.stringify({dono:c.dono,vence:c.vence,em:new Date().toISOString()})); }catch(e){}
-  alert("Token aceito"+(c.dono?" — de "+c.dono:"")+(c.vence?"; vence em "+c.vence:"")+".");
+  alert("Token aceito"+(c.dono?" — de "+c.dono:"")+(c.vence?"; vence em "+c.vence:"; a validade aparece em github.com/settings/tokens")+".");
   return t;
 };
 window.ghTrocarToken=async function(){ try{ localStorage.removeItem("eldorado_gh_token"); localStorage.removeItem("eldorado_gh_token_info"); }catch(e){}
   const t=await ghToken(true); if(t&&typeof desenhar==="function") try{ desenhar(); }catch(e){} return t; };
 window.ghTokenInfo=function(){ try{ const t=localStorage.getItem("eldorado_gh_token"), i=JSON.parse(localStorage.getItem("eldorado_gh_token_info")||"{}");
-  return t?`token de ${i.dono||"?"}${i.vence?" · vence em "+i.vence:""}`:"sem token neste navegador"; }catch(e){ return "sem token neste navegador"; } };
+  return t?`token de ${i.dono||"?"} · ${i.vence?"vence em "+i.vence:"a validade não é informada ao navegador: confira em github.com/settings/tokens"}`:"sem token neste navegador"; }catch(e){ return "sem token neste navegador"; } };
 window.ghDispatch=async function(workflow,inputs){
   const tok=await ghToken(true); if(!tok) return {ok:false,motivo:"sem token"};
   try{
