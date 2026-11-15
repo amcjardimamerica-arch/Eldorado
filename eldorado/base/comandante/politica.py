@@ -94,7 +94,8 @@ class Thompson:
         import random
 
         self.etapa = etapa
-        self.contagens = {o: (max(0, int(a)), max(0, int(e))) for o, (a, e) in contagens.items()}
+        # K1 (R57): os acertos são fracionados (a recompensa do destino final: 0,7, 0,5, 0,2) — a crença Beta aceita
+        self.contagens = {o: (max(0.0, float(a)), max(0.0, float(e))) for o, (a, e) in contagens.items()}
         self.fator = fator or {}
         self.opcoes = sorted(self.contagens)
         self.aprendidas = sum(a + e for a, e in self.contagens.values())
@@ -131,13 +132,27 @@ def contagens_coleta(bib: sqlite3.Connection, cer: sqlite3.Connection, motores: 
     for m, d in cer.execute("SELECT DISTINCT motor, substr(inicio, 1, 10) FROM execucao_motor WHERE substr(inicio, 1, 10) < ?", (ate,)):
         if m in lidos:
             lidos[m].add(d)
-    com: dict[str, set[str]] = {m: set() for m in motores}
-    for m, d in bib.execute("SELECT DISTINCT motor, substr(encontrado_em, 1, 10) FROM achado WHERE decisao = 'aceito' AND substr(encontrado_em, 1, 10) < ?",
-                            (ate,)):
-        if m in com:
-            com[m].add(d)
-    # o dia com achado aceito conta como lido (o achado prova a leitura, mesmo sem o registro da execução)
-    return {m: (len(com[m]), len(lidos[m] - com[m])) for m in motores}
+    # K1 (R57, 14/11/2026): o dia com achado aceito vale a melhor recompensa do DESTINO dos seus livros (Farol 1, arquivo com
+    # edição 0,7, arquivo 0,5, unido 0,2, descartado 0); o dia cujos livros ainda não têm destino fica fora da conta
+    from .destino import destinos
+    dest = destinos(bib)
+    valor_dia: dict[tuple[str, str], list[float]] = {}
+    pendentes: dict[str, set[str]] = {m: set() for m in motores}
+    for m, d, lid in bib.execute("SELECT motor, substr(encontrado_em, 1, 10), livro_id FROM achado WHERE decisao = 'aceito' "
+                                 "AND substr(encontrado_em, 1, 10) < ?", (ate,)):
+        if m not in lidos:
+            continue
+        if lid in dest:
+            valor_dia.setdefault((m, d), []).append(dest[lid])
+        else:
+            pendentes[m].add(d)
+    saida = {}
+    for m in motores:
+        dias_val = {d: max(v) for (mm, d), v in valor_dia.items() if mm == m}
+        acertos = sum(dias_val.values())
+        erros = sum(1 - v for v in dias_val.values()) + len(lidos[m] - set(dias_val) - pendentes[m])
+        saida[m] = (acertos, erros)
+    return saida
 
 
 def contagens_espiao(bib: sqlite3.Connection, cer: sqlite3.Connection, familias: list[str]) -> dict[str, tuple[int, int]]:
@@ -145,12 +160,14 @@ def contagens_espiao(bib: sqlite3.Connection, cer: sqlite3.Connection, familias:
     O «achado» da missão (o que passou no crivo) não serve: a internacional_espanhol teve 7.006 missões «com achado» e
     deu 3 oportunidades reais em 11.904 missões."""
     missoes = dict(cer.execute("SELECT familia, COUNT(*) FROM espiao_missao GROUP BY familia").fetchall())
-    aceitos: dict[str, int] = {}
+    # K1 (R57): o acerto da família é a soma das recompensas do DESTINO dos livros que ela trouxe (não o aceite)
+    from .destino import destinos
+    dest = destinos(bib)
+    aceitos: dict[str, float] = {}
     try:
-        for fam, n in bib.execute("SELECT json_extract(dados, '$.familia'), COUNT(*) FROM achado WHERE motor = 'espiao' AND decisao = 'aceito' "
-                                  "GROUP BY 1"):
-            if fam:
-                aceitos[fam] = n
+        for fam, lid in bib.execute("SELECT json_extract(dados, '$.familia'), livro_id FROM achado WHERE motor = 'espiao' AND decisao = 'aceito'"):
+            if fam and lid in dest:
+                aceitos[fam] = aceitos.get(fam, 0.0) + dest[lid]
     except sqlite3.Error:
         pass
     return {f: (min(aceitos.get(f, 0), missoes.get(f, 0)), max(0, missoes.get(f, 0) - aceitos.get(f, 0))) for f in familias}

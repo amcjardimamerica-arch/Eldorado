@@ -241,6 +241,8 @@ class Espiao:
                 "AND lower(decisao) NOT IN ('aceito', 'aceita', 'aceitar', 'pertinente', 'manter')", (desde,))}
         except sqlite3.Error:
             self.barrados = set()
+        from ...base.comandante.descartes import ruido as _ruido
+        self.ruido = _ruido(self.con)                             # K3 (R57): a lista de ruído do crivo
         existentes = {r[0] for r in self.con.execute("SELECT nome FROM espiao_familia")}
         for f in self.fams:
             if f not in existentes:
@@ -296,6 +298,8 @@ class Espiao:
             return False, "buscador, agregador ou rede social"
         if h in self.vigiados:
             return False, "já vigiado por um motor"
+        if h in self.ruido:                                    # K3 (R57): o domínio de ruído (20+ descartes, menos de 5% úteis)
+            return False, "domínio de ruído (os descartes do Comandante)"
         if url.rstrip("/") in self.conhecidos:
             return False, "já está na Biblioteca"
         return True, ""

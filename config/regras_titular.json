@@ -821,6 +821,27 @@
     "testes/test_sala_coleta_local_1411.py::test_o_comandante_ajusta_o_tempo_por_livro_pelo_dado_medido",
     "testes/test_sala_coleta_local_1411.py::test_os_motores_55_e_56_sao_vigilancia_esporadica"
    ]
+  },
+  {
+   "id": "R57",
+   "data": "2026-11-14",
+   "tema": "o discernimento do Comandante: o destino final, o objetivo e a previsão com base",
+   "regra": "O Comandante é medido pelo destino final do que mandou buscar, e não pelo que foi aceito (Farol 1; arquivo com edição anterior 0,7; arquivo 0,5; unido 0,2; descartado 0 — para os motores, as famílias do Espião e o Interceptador). Toda missão tem um objetivo com nome e uma finalidade (descobrir, completar, revalidar, prever). A previsão de reabertura só vale quando vem de datas de edições anteriores. O motivo de cada descarte volta ao Comandante, e o domínio de ruído entra no crivo.",
+   "porque": "titular, 14/11/2026: o estudo dos dados para o discernimento do Comandante — 65% dos livros criados acabavam descartados, 32% dos livros do Espião acabavam úteis, 5% das previsões tinham duas edições; o Comandante aprendia com o aceite, não com o destino.",
+   "revoga": {
+    "R48": "«a recompensa do Espião = a missão que a decisão autorizou e o achado ACEITO na Biblioteca» e o acerto da coleta pelo achado aceito: passam ao destino final do livro (K1)"
+   },
+   "onde": "eldorado/base/comandante/destino.py, finalidade.py, descartes.py, politica.py, decidir.py, escolher.py, pilotos.py; eldorado/base/cerebro/ciclo_pilotos.py, aprendizado.py; eldorado/motores/pilotos/espiao.py",
+   "travas": [
+    "testes/test_comandante_destino_1411.py::test_a_recompensa_de_um_livro_descartado_e_zero",
+    "testes/test_comandante_destino_1411.py::test_a_familia_do_espiao_e_medida_pelo_destino_e_nao_pelo_aceite",
+    "testes/test_comandante_destino_1411.py::test_toda_decisao_leva_a_finalidade_e_a_medida",
+    "testes/test_comandante_destino_1411.py::test_o_motivo_do_descarte_volta_e_o_ruido_vai_ao_crivo"
+   ],
+   "travas_pendentes": [
+    "nenhuma missão do Espião sem objetivo (K4 e K5, envio 2)",
+    "nenhuma previsão com confiança acima de 0,3 sem duas datas de edição (K6 e K7, envio 2)"
+   ]
   }
  ]
 }

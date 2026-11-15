@@ -305,6 +305,7 @@ def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: st
             "motivo": motivo,
             "politica": "thompson" if piloto == "espiao" else "fila da rede",
             **dec,
+            "contexto": __import__("eldorado.base.comandante.finalidade", fromlist=["anotar"]).anotar(dec.get("contexto"), piloto),   # K2 (R57)
         },
     )
     return {"alvo": dec["alvo"], "carga": c, "motivo": motivo}

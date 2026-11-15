@@ -25,13 +25,17 @@ def test_thompson_pela_taxa_real_e_a_probabilidade_de_inclusao():
 
 
 def test_contagens_da_coleta_ate_a_vespera():
+    # 14/11/2026 (R57, K1, que revoga a R48 neste ponto): o acerto é o DESTINO do livro, não o aceite — o livro do dia 05 foi ao
+    # Farol (1); o do dia 08 é hoje e não entra; os dias 06 e 07 foram lidos sem achado (erros)
     b, c = sqlite3.connect(":memory:"), sqlite3.connect(":memory:")
-    b.execute("CREATE TABLE achado(motor TEXT, encontrado_em TEXT, decisao TEXT)")
+    b.executescript("CREATE TABLE achado(motor TEXT, encontrado_em TEXT, decisao TEXT, livro_id TEXT);"
+                    "CREATE TABLE livro(id TEXT, situacao TEXT); CREATE TABLE passaporte(livro_id TEXT, fase TEXT);"
+                    "INSERT INTO livro VALUES ('L1', 'transferido ao farol'); INSERT INTO passaporte VALUES ('L1', 'farol');")
     c.execute("CREATE TABLE execucao_motor(motor TEXT, inicio TEXT)")
     for d in ("2026-11-05", "2026-11-06", "2026-11-07", "2026-11-08"):
         c.execute("INSERT INTO execucao_motor VALUES ('a', ?)", (d + "T03:00:00+00:00",))
-    b.executemany("INSERT INTO achado VALUES ('a', ?, 'aceito')", [("2026-11-05",), ("2026-11-08",)])
-    assert contagens_coleta(b, c, ["a"], "2026-11-08") == {"a": (1, 2)}   # o dia de hoje não entra
+    b.executemany("INSERT INTO achado VALUES ('a', ?, 'aceito', ?)", [("2026-11-05", "L1"), ("2026-11-08", "L1")])
+    assert contagens_coleta(b, c, ["a"], "2026-11-08") == {"a": (1.0, 2.0)}   # o dia de hoje não entra
 
 
 def test_a_coleta_decide_uma_vez_por_motor_por_dia_e_sem_o_vw():

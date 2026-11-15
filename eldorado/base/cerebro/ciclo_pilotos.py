@@ -83,10 +83,15 @@ def avaliar_interceptador(bib: sqlite3.Connection, desde: str = "") -> dict[str,
     ab: dict[str, dict] = defaultdict(lambda: {"tentativas": 0, "erros": 0, "aceitos": 0})
     erros = 0
     try:                                              # desde o reset (R55); o banco sem a data conta todas
-        linhas = bib.execute("SELECT ferramenta, resultado FROM tentativa WHERE COALESCE(em, '') >= ?", (desde,)).fetchall()
+        linhas = bib.execute("SELECT ferramenta, resultado, livro_id FROM tentativa WHERE COALESCE(em, '') >= ?", (desde,)).fetchall()
     except sqlite3.OperationalError:
-        linhas = bib.execute("SELECT ferramenta, resultado FROM tentativa").fetchall()
-    for ferr, res in linhas:
+        linhas = [(f, r, None) for f, r in bib.execute("SELECT ferramenta, resultado FROM tentativa").fetchall()]
+    try:                                              # K1 (R57): os itens valem pelo destino do livro (sem destino ainda: 1)
+        from ..comandante.destino import destinos
+        dest = destinos(bib)
+    except sqlite3.Error:
+        dest = {}
+    for ferr, res, lid in linhas:
         if not str(ferr or "").startswith("abordagem"):   # 14/11/2026 (R55, I5): só as abordagens do Interceptador, sem os motores
             continue
         try:
@@ -97,7 +102,7 @@ def avaliar_interceptador(bib: sqlite3.Connection, desde: str = "") -> dict[str,
         n = ia.get("aceitas")
         if not isinstance(n, (int, float)):
             n = int(bool(d.get("trouxe") or d.get("obtidos")))
-        n = int(n) + len(ia.get("extratores") or [])        # R55 (I5): os itens dos extratores também contam
+        n = (int(n) + len(ia.get("extratores") or [])) * dest.get(lid, 1.0)   # R55 (I5) e K1 (R57): os extratores; o destino
         k = str(ferr or "?")
         ab[k]["tentativas"] += 1
         ab[k]["aceitos"] += n

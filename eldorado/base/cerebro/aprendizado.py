@@ -76,6 +76,8 @@ def no_aprendizado(itens: list[dict[str, Any]], parametros: dict[str, Any], cont
         cer = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
         try:
             ciclo_feito = ciclo(bib, cer, contexto.diario)
+            from ..comandante.descartes import gravar_diario  # K3 (R57): as classes dos descartes e a lista de ruído
+            gravar_diario(bib, cer, contexto.diario)
         except sqlite3.Error as e:
             ciclo_feito = {"erro": f"{type(e).__name__}: {str(e)[:120]}"}
         finally:

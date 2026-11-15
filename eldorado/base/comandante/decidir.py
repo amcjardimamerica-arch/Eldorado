@@ -4,13 +4,13 @@ Ainda não aciona: a ordem fixa continua acionando, e a sala compara o rendiment
 
 from __future__ import annotations
 
-import json
 import sqlite3
 import tomllib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .finalidade import anotar
 from .politica import Thompson, contagens_coleta, contexto
 
 ESCOLHAS_MOTORES = 8
@@ -89,8 +89,8 @@ def decidir(dados: Path, config: Path, diario, plano: dict | None = None, agora:
                         "motivo": motivo,
                         "nota": round(prob, 4),
                         "politica": "thompson",
-                        "contexto": json.dumps({**ctx, "lista": pol.opcoes, "prob": prob, "na_ordem_fixa": alvo in ordem_fixa,
-                                                "contagem": [a_, e_], "inclusao": getattr(pol, "inclusao", {})}, ensure_ascii=False),
+                        "contexto": anotar({**ctx, "lista": pol.opcoes, "prob": prob, "na_ordem_fixa": alvo in ordem_fixa,   # K2 (R57)
+                                            "contagem": [a_, e_], "inclusao": getattr(pol, "inclusao", {})}, "coleta"),
                     },
                 )
             resumo["coleta"] = {"opcoes": len(opcoes), "escolhas": ESCOLHAS_MOTORES, "aprendidas": pol.aprendidas}

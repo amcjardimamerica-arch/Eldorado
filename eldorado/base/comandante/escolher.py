@@ -14,6 +14,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .finalidade import anotar
+
 # 01/11/2026 (titular): a união de repetidos é integridade dos dados, não uma etapa que "rende": nunca é pulada (custa
 # 0,2 s no banco inteiro). Pulada quando "nada rendia", os livros duplicados ficavam vivos por passagens seguidas.
 CANDIDATAS = [
@@ -112,7 +114,7 @@ def no_comandante_escolher(itens: list[dict[str, Any]], parametros: dict[str, An
                 "motivo": x["motivo"],
                 "nota": None,
                 "politica": "necessidade medida",
-                "contexto": json.dumps({"execucao": contexto.execucao, "aciona": aciona}),
+                "contexto": anotar({"execucao": contexto.execucao, "aciona": aciona}, "passagem"),   # K2 (R57): a finalidade
             },
         )
     de_verdade = [x["no"] for x in pular if tudo or x["no"] in acionadas]

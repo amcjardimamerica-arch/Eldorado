@@ -18,7 +18,7 @@ def _aplicar(gravador, pasta):
         f.unlink()
 
 
-def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, tmp_path):
+def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, tmp_path, monkeypatch):
     ontem = datetime.now(timezone.utc) - timedelta(days=1)
     ev = tmp_path / "ev"
     decidir(tmp_path, Path("config"), Diario(ev, "c"), {"motores": [{"modulo": "pncp"}]}, agora=ontem)
@@ -51,8 +51,12 @@ def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, t
     r = avaliar(tmp_path, Diario(ev, "a"))
     _aplicar(gravador, ev)
     assert r["avaliadas"] >= 8 and c.execute("SELECT COUNT(*) FROM comandante_decisao WHERE avaliada_em IS NOT NULL").fetchone()[0] >= 8
+    # 14/11/2026 (R57, K1, que revoga a R48 neste ponto): o resultado real é o DESTINO do livro — o aceite sozinho não ensina;
+    # quando o livro do achado chega ao Farol, o Comandante aprende
+    import eldorado.base.comandante.destino as _dest
+    monkeypatch.setattr(_dest, "destinos", lambda bib: {None: 1.0})       # o livro do achado chegou ao Farol
     r2 = decidir(tmp_path, Path("config"), Diario(ev, "c"), None)
-    assert r2["decisoes"]["coleta"]["aprendidas"] >= 1  # R48: aprende do resultado real no Cérebro e na Biblioteca
+    assert r2["decisoes"]["coleta"]["aprendidas"] >= 1
 
 
 def test_a_ia_recebe_o_contexto_do_cerebro(bancos, gravador, tmp_path, monkeypatch):
