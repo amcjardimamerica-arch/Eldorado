@@ -842,6 +842,20 @@
     "nenhuma missão do Espião sem objetivo (K4 e K5, envio 2)",
     "nenhuma previsão com confiança acima de 0,3 sem duas datas de edição (K6 e K7, envio 2)"
    ]
+  },
+  {
+   "id": "R58",
+   "data": "2026-11-16",
+   "tema": "o livro de ouro: o código novo, a subclassificação do edital e a validação no edital",
+   "regra": "Todo livro é validado de novo no edital (os 12 itens com o trecho e o endereço). O código do livro é ABRANGÊNCIA-OBJETO-AÇÃO-NNNN: a abrangência é a sigla da cidade com a UF (GYN.GO), a UF, BR ou INT; o objeto é o que será entregue no edital (a letra da área com o número: C01 Teatro, D01 Futebol, T01 Computador…); a ação só quando for aula (AU), apresentação (AP) ou aquisição (AQ); o número de série é dado pelo sistema. O número e o ano do edital são uma subclassificação interna do livro, fora do código, e distinguem editais de mesmo nome. O código de ouro não é sobrescrito pelo código calculado. O livro sem fonte ou sem validação volta à análise externa (não é descarte).",
+   "porque": "titular, 15 e 16/11/2026: a validação de todos os livros do Farol e do Eldorado pelos 20 agentes do Claude no Chrome, com o código novo e a subclassificação.",
+   "onde": "eldorado/base/cartorio/importar_ouro.py, analise_externa.py (no_analise_externa); eldorado/banco/biblioteca/esquema.py (versão 15); eldorado/base/nucleo/eventos.py (livro.ouro); eldorado/base/comandante/organizar.py; verificacao/ouro/",
+   "travas": [
+    "testes/test_importar_ouro_1611.py::test_o_formato_dos_agentes_e_normalizado",
+    "testes/test_importar_ouro_1611.py::test_o_codigo_de_ouro_e_conferido",
+    "testes/test_importar_ouro_1611.py::test_o_numero_de_serie_e_compartilhado_entre_as_partes",
+    "testes/test_importar_ouro_1611.py::test_a_parte_incompleta_e_recusada"
+   ]
   }
  ]
 }

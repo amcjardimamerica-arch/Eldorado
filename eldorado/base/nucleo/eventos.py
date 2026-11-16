@@ -207,6 +207,9 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
         Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "base_classe", "base_buscar", "base_tentativas", "base_ultima")),
     ),
     "livro.codigo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "codigo")),),  # o código da oportunidade
+    # 16/11/2026: o livro de ouro — o código novo, o número e o ano do edital, a classificação (o código antigo dá lugar ao novo)
+    "livro.ouro": (Alvo(B, "livro_dados", "atualizar", ("livro_id",),
+                        _so("livro_id", "codigo_ouro", "codigo", "edital_numero", "edital_ano", "catalogo_ouro")),),
     "livro.prazo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "situacao_prazo")),),
     # 01/11/2026: as datas de inscrição validadas fora do Cartório (os migrados do Eldorado0 avaliados pelo Chrome)
     "livro.datas": (Alvo(B, "livro_dados", "atualizar", ("livro_id",),

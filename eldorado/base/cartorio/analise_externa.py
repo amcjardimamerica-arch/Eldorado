@@ -566,6 +566,11 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
             except msgspec.ValidationError as e:
                 contexto.diario.emitir("alarme.aberto", "analise externa", {"gravidade": "media", "modulo": "analise externa", "aberto_em": agora(),
                                                                             "mensagem": f"veredito {arq.name} fora do formato: {str(e)[:200]}"})
+        # 16/11/2026 (titular): os livros de ouro validados no edital pelos agentes do Claude no Chrome (verificacao/ouro/)
+        from .importar_ouro import importar_pasta
+        ouro = importar_pasta(con, contexto.diario, pasta / "ouro")
+        if ouro:
+            resultado["ouro"] = ouro
         hoje = date.today()
         triados = aplicar_triagem(con, contexto.diario)            # 30/10/2026: o que o Chrome sempre descarta não vai a ele
         saiu |= set(triados)

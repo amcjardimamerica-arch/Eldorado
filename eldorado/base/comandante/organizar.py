@@ -432,8 +432,14 @@ def no_organizar_livros(itens: list[dict[str, Any]], parametros: dict[str, Any],
                 "justificativa_exclusao": f"município de outro estado, fora das capitais ({x['municipio'] or '?'}): a Biblioteca não guarda (regra da titular)"})
         con.row_factory = None
         atuais = dict(con.execute("SELECT livro_id, codigo FROM livro_dados"))
+        try:   # 16/11/2026: o livro de ouro guarda o código novo (validado no edital) — o código calculado não o sobrescreve
+            de_ouro = {r[0] for r in con.execute("SELECT livro_id FROM livro_dados WHERE codigo_ouro IS NOT NULL")}
+        except sqlite3.Error:
+            de_ouro = set()
         gravados = 0
         for x in dec["restantes"]:
+            if x["id"] in de_ouro:
+                continue
             cod = codigo_do_grupo(x, outros.get(x["id"], []))
             if x["id"] in atuais and atuais[x["id"]] != cod:   # só com a ficha do livro já criada (26/10/2026: as recusas)
                 contexto.diario.emitir("livro.codigo", "comandante", {"livro_id": x["id"], "codigo": cod})
