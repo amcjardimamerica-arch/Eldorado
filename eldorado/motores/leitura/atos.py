@@ -9,7 +9,9 @@ from __future__ import annotations
 import re
 
 CABECALHO = (r"(?m)^[ \t]*((?:EDITAL|AVISO|PORTARIA|DECRETO|LEI|EXTRATO|RESOLU[ÇC][ÃA]O|INSTRU[ÇC][ÃA]O NORMATIVA|TERMO|CHAMAMENTO|CHAMADA|"
-             r"ATO|DESPACHO|COMUNICADO|RETIFICA[ÇC][ÃA]O|ERRATA|CONVOCA[ÇC][ÃA]O|SELE[ÇC][ÃA]O|PR[ÊE]MIO|HOMOLOGA[ÇC][ÃA]O)\b[^\n]{0,140})$")
+             r"ATO|DESPACHO|COMUNICADO|RETIFICA[ÇC][ÃA]O|ERRATA|CONVOCA[ÇC][ÃA]O|SELE[ÇC][ÃA]O|PR[ÊE]MIO|HOMOLOGA[ÇC][ÃA]O|"
+             # 16/11/2026 (C-03): os atos de licitação também são cabeçalho — sem eles, a dispensa vizinha entrava no edital
+             r"DISPENSA|INEXIGIBILIDADE|CONTRATO|PREG[ÃA]O|LICITA[ÇC][ÃA]O|ADJUDICA[ÇC][ÃA]O|RATIFICA[ÇC][ÃA]O)\b[^\n]{0,140})$")
 ORGAO = re.compile(r"(?i)secretaria|fundo|funda[çc][ãa]o|instituto|procuradoria|gabinete|ag[êe]ncia|companhia|conselho|controladoria|prefeitura|"
                    r"c[âa]mara|tribunal|minist[ée]rio|superintend|diretoria|coordena")
 

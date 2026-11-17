@@ -453,6 +453,9 @@ def _N(t) -> str:
 def portao_associacao(m: dict, T: str) -> str | None:
     """15/10/2026 (titular): o motivo de RUÍDO quando a publicação não é captação de recursos para associação."""
     T = T.replace("CREDECIAMENTO", "CREDENCIAMENTO")
+    # 16/11/2026 (C-03): o aviso de licitação não é oportunidade (3 chegaram ao Farol pelo diário municipal)
+    if re.search(r"AVISO DE (?:CONTRATACAO DIRETA|ANULACAO|DISPENSA|INEXIGIBILIDADE|REVOGACAO DE LICITACAO)", T):
+        return "aviso de licitação (contratação direta, dispensa, inexigibilidade ou anulação) — não é captação de recursos para associação"
     if re.search(r"CONTRATACAO DE VAGAS|CONTRATAC(?:AO|OES) ONEROSA(?! DE ASSOCIAC)", T) and \
             not re.search(r"ACOLHIMENTO|LONGA PERMANENCIA|\bILPIS?\b|COMUNIDADES? TERAPEUTIC", T):   # ILPI: a regra própria decide
         return "contratação de vagas ou serviço (contrato) — não é captação de recursos para associação"

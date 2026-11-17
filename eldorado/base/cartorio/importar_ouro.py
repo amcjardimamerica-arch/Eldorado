@@ -147,6 +147,10 @@ def importar_pasta(con: sqlite3.Connection, diario, pasta: Path = PASTA) -> list
     feitos = pasta / "importados"
     usados: dict[str, int] = {}
     for arq in sorted(pasta.glob("ouro-*.json")):
+        # 16/11/2026 (C-13): a parte que já tem relatório não é importada de novo — a gravação leva os arquivos novos, mas não
+        # a remoção do original, e ele voltava a cada execução (4.725 vereditos para 1.575 livros, 3 vezes no mesmo dia)
+        if (feitos / (arq.stem + "-relatorio.json")).exists():
+            continue
         r = importar_arquivo(arq, con, diario, usados)
         saida.append(r)
         if "recusado" not in r:

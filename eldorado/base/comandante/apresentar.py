@@ -32,7 +32,8 @@ def reunir(dados: Path, agora: datetime) -> dict[str, Any]:
         abertas = bib.execute(
             "SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.estrela, l.selo_livro, d.inscricao_fim, p.fase FROM livro l "
             "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
-            "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') ORDER BY d.inscricao_fim"
+            # 16/11/2026 (C-18, R46): as abertas pela régua única (fora do arquivo) — o relatório dizia 294 e a régua 291
+            "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim"
         ).fetchall()
         fecham = []
         for lid, tit, org, uf, link, est, selo, fim, fase in abertas:
@@ -89,11 +90,17 @@ def reunir(dados: Path, agora: datetime) -> dict[str, Any]:
         "abertas": len(abertas),
         "ouro_abertas": sum(1 for a in abertas if _selo(a[5], a[6]) == "ouro"),
         "fecham_em_7_dias": fecham[:15],
+        "fecham_em_7_dias_total": len(fecham),          # C-18: contados antes do corte (a lista mostra 15; eram 45)
         "novidades": novidades,
         "falta": falta,
         "sistema": sistema,
     }
 
+
+
+def _n7(r: dict) -> int:
+    """C-18: os que fecham em 7 dias, contados antes do corte da lista."""
+    return r.get("fecham_em_7_dias_total") or len(r["fecham_em_7_dias"])
 
 def prioridades_pela_regra(r: dict[str, Any]) -> list[dict[str, str]]:
     p = [
@@ -133,7 +140,8 @@ def redigir(r: dict[str, Any]) -> tuple[dict[str, Any], str]:
         except SemIA:
             pass
     return {
-        "resumo": f"{r['abertas']} oportunidades abertas ({r['ouro_abertas']} com ouro); {len(r['fecham_em_7_dias'])} fecham em 7 dias.",
+        # C-18: o total antes do corte
+        "resumo": f"{r['abertas']} oportunidades abertas ({r['ouro_abertas']} com ouro); {_n7(r)} fecham em 7 dias.",
         "prioridades": prioridades_pela_regra(r),
     }, "a regra (o que fecha antes; o ouro primeiro)"
 

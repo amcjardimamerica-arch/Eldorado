@@ -41,4 +41,6 @@ def test_o_arquivado_por_decisao_nao_volta_a_recepcao():
         devolver_abertas_do_arquivo(c, None)
     finally:
         PS.Passaporte = orig
-    assert movidos == ["C"]          # A: arquivado pelo Chrome; B: sem data — ficam; C: arquivado por prazo, reabriu — volta
+    # A: arquivado pelo Chrome; B: sem data — ficam; C: arquivado por prazo, reabriu — volta (16/11/2026, C-02: e segue na
+    # mesma passagem pela certificação até o Farol: três passos do mesmo livro)
+    assert set(movidos) == {"C"} and movidos[0] == "C"

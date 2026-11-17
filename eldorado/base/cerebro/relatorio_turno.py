@@ -47,7 +47,8 @@ def medir(cer: sqlite3.Connection, bib: sqlite3.Connection | None, desde: str, a
             aceitos = None
     return {
         "desde": desde, "ate": ate, "missoes": n, "sem_pista": sem_pista, "sem_pista_pct": round(100 * sem_pista / n, 1) if n else None,
-        "achados": sum(x[4] or 0 for x in linhas), "aceitos": aceitos,
+        # 16/11/2026 (C-18): a Biblioteca guarda só o DIA do achado — o número é dos aceitos no dia, não do turno (72 > 28)
+        "achados": sum(x[4] or 0 for x in linhas), "aceitos_no_dia": aceitos, "aceitos": aceitos,
         "rotas_respondendo": sum(1 for c in placar.values() if c["respondeu"]),
         "rota_maior_parte_pct": round(100 * max((c["pistas"] for c in placar.values()), default=0) / total_pistas, 1) if total_pistas else None,
         "placar": {k: dict(v) for k, v in sorted(placar.items(), key=lambda kv: -kv[1]["pistas"])},
@@ -63,10 +64,11 @@ def gerar(cer: sqlite3.Connection, bib: sqlite3.Connection | None, raiz: Path, d
     pasta.mkdir(parents=True, exist_ok=True)
     marca = datetime.fromisoformat(r["ate"]).strftime("%Y%m%d-%H%M")
     (pasta / f"turno-{marca}.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
+    ac = "—" if r["aceitos"] is None else r["aceitos"]          # C-18: os aceitos do dia (a Biblioteca guarda só o dia)
     linhas = [f"# Relatório de turno do Espião — {r['desde'][:16]} a {r['ate'][:16]} (UTC)", "",
               "| Medida | Valor |", "|---|---|",
               f"| Missões | {r['missoes']} |", f"| Missões sem nenhuma pista | {r['sem_pista']} ({r['sem_pista_pct']}%) |",
-              f"| Achados entregues | {r['achados']} |", f"| Achados aceitos na Biblioteca | {r['aceitos'] if r['aceitos'] is not None else '—'} |",
+              f"| Achados entregues | {r['achados']} |", f"| Achados do Espião aceitos no dia (todas as missões do dia) | {ac} |",
               f"| Rotas de busca respondendo | {r['rotas_respondendo']} |",
               f"| Rota com a maior parte das pistas | {r['rota_maior_parte_pct']}% |",
               f"| Missões com a rota do PNCP | {r['pncp_nas_missoes']} |", "",

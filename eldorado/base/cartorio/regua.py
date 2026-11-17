@@ -17,6 +17,9 @@ ESTEIRA = ("recepcao", "certificacao", "preparacao", "validacao", "analise exter
 _VIVO = "l.situacao NOT IN ('excluido', 'unido')"
 _ABERTA = f"{_VIVO} AND d.situacao_prazo = 'aberta' AND p.fase <> 'arquivo'"
 _BASE = "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id"
+# 16/11/2026 (C-02): a condição ÚNICA de «prazo aberto», para a devolução do arquivo e a saída do Farol (as duas usavam
+# critérios diferentes e o livro ia e voltava: saiu do Farol às 11:30 e voltou às 11:57)
+PRAZO_ABERTO = "COALESCE(d.situacao_prazo, '') = 'aberta' AND (d.inscricao_fim IS NULL OR d.inscricao_fim >= date('now'))"
 
 
 def regua(bib: sqlite3.Connection, fila_interceptador: int | None = None) -> dict[str, Any]:

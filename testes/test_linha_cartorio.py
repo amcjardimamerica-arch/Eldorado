@@ -143,7 +143,9 @@ def test_o_arquivo_e_so_para_encerradas(gravador, bancos, diario, tmp_path):
                                 inscricao_fim="2099-12-31")]).ok
     assert devolver_abertas_do_arquivo(bancos["biblioteca"], diario) == 1
     aplicar(gravador, tmp_path)
-    assert etapa(bancos["biblioteca"], "V") == "recepcao"
+    # 16/11/2026 (C-02, R46): o livro devolvido do arquivo com prazo aberto chega ao Farol na mesma passagem (antes ficava
+    # preso na recepção, que só sai com achado novo)
+    assert etapa(bancos["biblioteca"], "V") in ("farol", "preparacao")
 
 
 def test_a_aberta_com_o_prazo_vencido_e_arquivada(gravador, bancos, diario, tmp_path):

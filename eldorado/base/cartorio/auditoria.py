@@ -473,7 +473,7 @@ def farol_so_com_prazo_aberto(con: sqlite3.Connection, diario: Diario) -> int:
     passaporte, n = Passaporte(con, diario, maximo=10), 0
     for (lid,) in con.execute("SELECT p.livro_id FROM passaporte p JOIN livro l ON l.id = p.livro_id LEFT JOIN livro_dados d ON d.livro_id = p.livro_id "
                               "WHERE p.fase = 'farol' AND l.situacao NOT IN ('excluido', 'unido') "
-                              "AND COALESCE(d.situacao_prazo, 'sem prazo') <> 'aberta'").fetchall():
+                              "AND NOT (" + PRAZO_ABERTO + ")").fetchall():   # C-02: a mesma régua da devolução
         ok, _ = passaporte.mover(lid, "arquivo", "sem o prazo aberto: o Farol é para as oportunidades abertas",
                                  {"gerou": "o livro sem prazo aberto saiu do Farol para o arquivo (à espera da edição)"})
         n += int(bool(ok))
@@ -512,6 +512,9 @@ def escada_do_livro(con: sqlite3.Connection, lid: str) -> str:
     return "livro migrado do Eldorado0 · sem registro da escada"
 
 
+from .regua import PRAZO_ABERTO  # noqa: E402 — C-02: a régua única do prazo aberto
+
+
 def devolver_abertas_do_arquivo(con: sqlite3.Connection, diario: Diario) -> int:
     """Regra da titular (24/10/2026): o arquivo é só para as oportunidades encerradas. O livro no arquivo com o prazo
     aberto volta à linha do Cartório, pela recepção (a passagem permitida do arquivo), a cada passagem."""
@@ -523,7 +526,7 @@ def devolver_abertas_do_arquivo(con: sqlite3.Connection, diario: Diario) -> int:
     # inclusive o «encerrada» e o «arquivar» do Chrome e os sem data, e a esteira enchia de livros já verificados
     for (lid,) in con.execute(
             "SELECT p.livro_id FROM passaporte p JOIN livro_dados d ON d.livro_id = p.livro_id "
-            "WHERE p.fase = 'arquivo' AND d.situacao_prazo = 'aberta' AND d.inscricao_fim >= date('now') "
+            "WHERE p.fase = 'arquivo' AND d.inscricao_fim IS NOT NULL AND " + PRAZO_ABERTO + " "
             "AND COALESCE((SELECT x.motivo FROM passagem x WHERE x.livro_id = p.livro_id AND x.para = 'arquivo' "
             "ORDER BY x.em DESC LIMIT 1), '') NOT LIKE '%análise externa%' "
             "AND COALESCE((SELECT x.motivo FROM passagem x WHERE x.livro_id = p.livro_id AND x.para = 'arquivo' "
@@ -532,6 +535,13 @@ def devolver_abertas_do_arquivo(con: sqlite3.Connection, diario: Diario) -> int:
             "ORDER BY x.em DESC LIMIT 1), '') NOT IN ('titular', 'analise-externa')").fetchall():
         ok, _ = passaporte.mover(lid, "recepcao", "o prazo está aberto: o arquivo é só para encerradas (regra da titular)",
                                  {"gerou": "o livro com o prazo aberto saiu do arquivo e voltou à linha do Cartório"})
+        if ok:   # 16/11/2026 (C-02): na mesma passagem, até o Farol (antes ficava preso na recepção, que só sai com achado novo)
+            chegou = all(passaporte.mover(lid, passo, "o prazo aberto revalidado na devolução do arquivo",
+                                          {"gerou": "o livro devolvido do arquivo seguiu ao Farol na mesma passagem"})[0]
+                         for passo in ("certificacao", "farol"))
+            if not chegou:
+                passaporte.mover(lid, "preparacao", "a devolução do arquivo: o livro segue à preparação (o Comandante o processa)",
+                                 {"gerou": "o livro devolvido do arquivo não ficou parado na recepção"})
         n += int(bool(ok))
     return n
 

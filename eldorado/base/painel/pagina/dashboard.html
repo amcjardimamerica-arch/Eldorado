@@ -1223,8 +1223,8 @@ se fecha; nada inserido nas outras páginas. -->
     c.innerHTML=`<h2 id="dec-titulo">Para a sua decisão</h2><div class="quando">${E((R.em||"").slice(0,16).replace("T"," "))} UTC · redigido por ${E(R.redigido_por)}</div>
       <p style="margin:0 0 6px">${E((R.redacao||{}).resumo)}</p>
       <ol>${P.map(p=>`<li><b>${E(p.o_que)}</b> — ${E(p.por_que)}</li>`).join("")}</ol>
-      <details><summary>Fecham em até 7 dias (${F.length})</summary><ul style="margin:6px 0 0 18px">${F.map(x=>`<li>${E(x.fecha_em)} · ${E(x.selo)} · ${x.link?`<a href="${E(x.link)}" target="_blank" rel="noopener">${E(x.titulo)}</a>`:E(x.titulo)}</li>`).join("")||"<li>nenhuma</li>"}</ul></details>
-      <div class="rodape"><span>${R.abertas} abertas (${R.ouro_abertas} com ouro) · ${N.achados_aceitos} achados aceitos hoje · ${(R.falta||{}).aguardam_o_chrome} à espera do Chrome</span>
+      <details><summary>Fecham em até 7 dias (${R.fecham_em_7_dias_total??F.length}${(R.fecham_em_7_dias_total||0)>F.length?`; os ${F.length} primeiros`:""})</summary><ul style="margin:6px 0 0 18px">${F.map(x=>`<li>${E(x.fecha_em)} · ${E(x.selo)} · ${x.link?`<a href="${E(x.link)}" target="_blank" rel="noopener">${E(x.titulo)}</a>`:E(x.titulo)}</li>`).join("")||"<li>nenhuma</li>"}</ul></details>
+      <div class="rodape"><span>às ${E((R.em||"").slice(11,16))} UTC: ${R.abertas} abertas (${R.ouro_abertas} com ouro) · ${N.achados_aceitos} achados aceitos hoje · ${(R.falta||{}).aguardam_o_chrome} à espera do Chrome</span>
       <button class="fechar" type="button">Fechar</button></div>`;
     const fechar=()=>{j.classList.remove("aberta");try{sessionStorage.setItem("eldorado-decisao","1")}catch(e){}};
     c.querySelector(".fechar").addEventListener("click",fechar);
@@ -6831,7 +6831,7 @@ window.htmlEspiaoAgora=function(V){
   const plano=(V.plano||[]).length?`<div class=meta style="margin-top:3px">Plano do voo: ${(V.plano||[]).map(p=>{const feita=(V.concluidas||[]).length>=p.ordem, atual=MA&&MA.n===p.ordem;
       return `<span class="esp-pl${feita?" feita":""}${atual?" atual":""}" title="${esc(p.alvo||"")}">${p.ordem}. ${esc(p.missao)}</span>`;}).join(" ")}</div>`:"";
   return `<div class="int-agora-v">${cab}
-    ${vivo&&MA?`<div style="margin-top:4px"><b>Missão ${MA.n}/${MA.total} — ${esc(MA.missao)}</b>${MA.alvo?` <span class=meta>· ${esc(String(MA.alvo).slice(0,140))}</span>`:""} <span class=meta>· há ${duracaoTxt(MA.desde,new Date().toISOString())}</span></div>`:""}
+    ${vivo&&MA?`<div style="margin-top:4px"><b>${MA.n!=null&&MA.total!=null?`Missão ${MA.n}/${MA.total} — `:"Missão em curso — "}${esc(MA.missao||MA.titulo||"")}</b>${MA.alvo?` <span class=meta>· ${esc(String(MA.alvo).slice(0,140))}</span>`:""} <span class=meta>· há ${duracaoTxt(MA.desde,new Date().toISOString())}</span></div>`:""}
     ${!vivo&&R&&R.missoes!=null?`<div class=meta style="margin-top:2px">Resultado do voo: <b>${R.missoes}</b> missão(ões) · <b>${R.propostas||0}</b> achado(s) · <b>${R.abates||0}</b> abate(s)${R.encerrou_por?" · encerrou por "+esc(R.encerrou_por):""}</div>`:""}
     ${plano}
     ${(V.passos||[]).length?`<ol class="int-passos">${V.passos.map(s=>`<li><span class=meta>${esc(horaMin(s.em).slice(6))}</span> <b>${esc(s.etapa)}</b>${s.detalhe?` — ${esc(String(s.detalhe).slice(0,150))}`:""}</li>`).join("")}</ol>`:""}</div>`;

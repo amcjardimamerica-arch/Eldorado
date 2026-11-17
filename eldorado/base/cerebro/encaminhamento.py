@@ -77,10 +77,13 @@ class Encaminhamento:
     def _entregar(self, a, quem: str) -> dict[str, Any]:
         a = _canivete(a)                                            # o canivete suíço dos motores, também nos pilotos (25/10/2026)
         doc = a.documento or {}
-        self.diario.emitir("documento.registrado", quem, {"url": doc["url"], "sha256": doc["sha256"], "tipo": doc.get("tipo"),
-             "paginas": len(doc.get("paginas") or []), "obtido_em": agora(), "oficial": int(bool(doc.get("oficial"))), "leitor": doc.get("leitor")})
-        for i, texto in enumerate(doc.get("paginas") or [], 1):
-            self.diario.emitir("pagina.gravada", quem, {"documento_sha256": doc["sha256"], "numero": i, "texto": texto})
+        # 16/11/2026 (C-01): o achado sem documento (a página do mapa do site que não abriu) é entregue sem o documento — antes,
+        # doc["url"] derrubava a passagem (KeyError em 04, 10 e 16/11) e a novidade se perdia
+        if doc.get("url") and doc.get("sha256"):
+            self.diario.emitir("documento.registrado", quem, {"url": doc["url"], "sha256": doc["sha256"], "tipo": doc.get("tipo"),
+                 "paginas": len(doc.get("paginas") or []), "obtido_em": agora(), "oficial": int(bool(doc.get("oficial"))), "leitor": doc.get("leitor")})
+            for i, texto in enumerate(doc.get("paginas") or [], 1):
+                self.diario.emitir("pagina.gravada", quem, {"documento_sha256": doc["sha256"], "numero": i, "texto": texto})
         self.diario.emitir("achado.entregue", quem, achado_para_evento(a))
         return _sem_paginas(msgspec.to_builtins(a)) | {"documento": _sem_paginas(doc)}
 
@@ -234,6 +237,13 @@ def no_originais(itens: list[dict[str, Any]], parametros: dict[str, Any], contex
     try:
         dos_originais, _ = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario)
         enc = Encaminhamento(con, contexto.diario, registro, None)
-        return [enc._entregar(a, a.motor) for a in dos_originais]
+        saida = []
+        for a in dos_originais:                       # C-01: cada entrega isolada — uma com defeito não derruba as outras
+            try:
+                saida.append(enc._entregar(a, a.motor))
+            except Exception as e:  # noqa: BLE001
+                msg = f"entrega do original {a.link_divulgacao}: {type(e).__name__}: {str(e)[:160]}"
+                contexto.diario.emitir("alarme.aberto", "originais", {"gravidade": "media", "modulo": "originais", "aberto_em": agora(), "mensagem": msg})
+        return saida
     finally:
         con.close()
