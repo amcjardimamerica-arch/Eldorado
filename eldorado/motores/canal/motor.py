@@ -394,6 +394,19 @@ def _datar_pela_pagina(pista: Pista, html: bytes | str | None) -> None:
         pista.data, pista.extra = data, {**(pista.extra or {}), "data_lida_na_pagina": True}
 
 
+def _prazo_estruturado_vigente(pista) -> bool:
+    """17/11/2026 (relatório de aprendizado de 16/11): o prazo que a própria fonte informa (o fim da inscrição na API, em
+    pista.extra["fim"]) vale antes do texto — o Agente Cultural tinha 2 chamamentos de Goiás abertos e não entregava nenhum,
+    porque o prazo vinha num campo da API e não no texto da página."""
+    fim = (getattr(pista, "extra", None) or {}).get("fim")
+    if isinstance(fim, dict):
+        fim = fim.get("date")
+    m = re.search(r"(20\d\d)-(\d\d)-(\d\d)|(\d\d)/(\d\d)/(20\d\d)", str(fim or ""))
+    if not m:
+        return False
+    data = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m.group(1) else f"{m.group(6)}-{m.group(5)}-{m.group(4)}"
+    return data >= hoje_local().isoformat()[:10]
+
 def _prazo_vigente_no_texto(texto: str, horizonte_dias: int = 400) -> date | None:
     """10/11/2026: o prazo de inscrição vigente no texto — a data (dd/mm/aaaa, «dd de mês de aaaa») que vem até 160 caracteres
     depois de «inscrição/prazo/até/encerra/limite/período», de hoje a horizonte_dias (a vigência do projeto, anos à frente, não
@@ -1144,7 +1157,7 @@ class MotorCanal(Motor):
                     _datar_pela_pagina(pista, html_bruto)             # 08/11/2026: a data lida na própria página
         if self._velha_pela_pagina(pista, documento):
             return None
-        if self._lx().exige_prazo and not str(pista.origem or "").startswith("alvo ") and \
+        if self._lx().exige_prazo and not str(pista.origem or "").startswith("alvo ") and not _prazo_estruturado_vigente(pista) and \
                 not _prazo_vigente_no_texto("\n".join([pista.titulo or "", pista.resumo or "", *((documento or {}).get("paginas") or [])])):
             motivo = "sem prazo de inscrição vigente na página lida (exige_prazo)"
             if not hasattr(self, "_barradas_na_entrada"):

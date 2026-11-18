@@ -73,3 +73,16 @@ def test_o_ocr_que_demora_nao_prende_a_leitura():
     with pytest.raises(OCRDemorou):
         o.texto(b"x", limite_s=0.5)
     assert time.monotonic() - t0 < 2
+
+
+def test_o_prazo_da_api_vale_antes_do_texto():
+    """17/11/2026: o Agente Cultural tinha 2 chamamentos de Goiás abertos e não entregava — o prazo vinha num campo da API."""
+    from datetime import timedelta
+
+    from eldorado.motores.canal.motor import _prazo_estruturado_vigente, hoje_local
+    from eldorado.motores.descoberta.pistas import Pista
+    futuro = (hoje_local() + timedelta(days=5)).isoformat()
+    assert _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api", extra={"fim": {"date": futuro + " 23:59:00"}}))
+    assert _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api", extra={"fim": futuro}))
+    assert not _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api", extra={"fim": "2020-01-01"}))
+    assert not _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api"))

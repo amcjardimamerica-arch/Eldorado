@@ -146,11 +146,11 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 94 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 15 |
 | 95 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | releitura, pilotos, regencia, comandos, api, arquivo_web, completa, leve, local, navegador, ponte_br, motor, fonte_ofici | 14 |
 | 96 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | a construir |  |  | 0 |
-| 97 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 26 |
+| 97 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 27 |
 | 98 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
 | 99 | `eldorado/motores/canal/estado.py` | O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O mot | em funcionamento | esquema, eventos, gravador | consolidar, dados, motor | 2 |
-| 100 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 14 |
-| 101 | `eldorado/motores/descoberta/pistas.py` | O formato comum das cinco formas de descoberta: a pista (título, link, data, de onde veio). | em funcionamento |  | motor, arquivos_web, dados_abertos, estrutura_site, mapa_original, metabusca, subpaginas | 5 |
+| 100 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 15 |
+| 101 | `eldorado/motores/descoberta/pistas.py` | O formato comum das cinco formas de descoberta: a pista (título, link, data, de onde veio). | em funcionamento |  | motor, arquivos_web, dados_abertos, estrutura_site, mapa_original, metabusca, subpaginas | 6 |
 | 102 | `eldorado/motores/descoberta/vigilancia.py` | Forma 5: a vigilância: só segue quando a página mudou. | em funcionamento |  | motor | 0 |
 | 103 | `eldorado/motores/leitura/__init__.py` |  | pacote |  |  | 5 |
 | 104 | `eldorado/motores/leitura/atos.py` | O recorte dos atos (canivete suíço): a edição inteira de um diário em PDF ou texto → um ato por cabeçalho. | em funcionamento |  | cadeia | 1 |
@@ -174,7 +174,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 122 | `eldorado/motores/descoberta/mapa_original.py` | O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um si | em funcionamento | estrutura_site, pistas | motor | 0 |
 | 123 | `eldorado/motores/acesso/completa.py` | A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10 | em funcionamento | api, arquivo_web, escada, leve, local, navegador, ponte_br | encaminhamento | 2 |
 | 124 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 2 |
-| 125 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | regras_portao, contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, subpaginas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (bussola-social); config/modulos.toml (camara-goiania-pl); config/mo | 23 |
+| 125 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | regras_portao, contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, subpaginas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (bussola-social); config/modulos.toml (camara-goiania-pl); config/mo | 24 |
 | 126 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | estrutura_site, atos, leitores | motor | 0 |
 | 127 | `eldorado/motores/leitura/audio.py` | O leitor de áudio e vídeo (plano C: faster-whisper): transcreve em português as transmissões e os vídeos que a | em funcionamento | leitores | leitores | 0 |
 | 128 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
