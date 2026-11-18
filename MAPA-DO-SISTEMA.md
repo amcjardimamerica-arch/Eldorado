@@ -114,7 +114,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 67 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, fonte_oficial, metabusca, leitores, espiao | encaminhamento, pilotos_permanentes, comandos | 4 |
 | 68 | `eldorado/base/comandante/__init__.py` | O Comandante (titular, 25/10/2026): o responsável por executar e coordenar todo o sistema — perceber o estado, | pacote |  |  | 22 |
 | 69 | `eldorado/base/comandante/cartorio.py` | O COMANDANTE DO CARTÓRIO (titular, 02/11/2026 — R37 e R38). | em funcionamento | cartorio, itens, registro, interceptador | passagem, nó 20 «comandante_cartorio» | 1 |
-| 70 | `eldorado/base/comandante/destino.py` | K1 (R57, titular, 14/11/2026): a recompensa pelo DESTINO FINAL do livro — o Comandante é medido pelo que o liv | em funcionamento |  | ciclo_pilotos, descartes, politica | 2 |
+| 70 | `eldorado/base/comandante/destino.py` | K1 (R57, titular, 14/11/2026): a recompensa pelo DESTINO FINAL do livro — o Comandante é medido pelo que o liv | em funcionamento |  | avaliar, ciclo_pilotos, descartes, politica | 2 |
 | 71 | `eldorado/base/comandante/finalidade.py` | K2 (R57, titular, 14/11/2026): a finalidade em cada decisão do Comandante — toda decisão leva a FINALIDADE (de | em funcionamento |  | decidir, escolher | 1 |
 | 72 | `eldorado/base/comandante/organizar.py` | O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: "não existem 5 mil livros e nem  | em funcionamento | auditoria, identidade, itens | passagem, nó 31 «organizar_livros» | 2 |
 | 73 | `eldorado/base/comandante/parametros.py` | Os parâmetros do Comandante (as etapas C7 e C9; titular, 25/10/2026). Cada parâmetro de cada etapa vive no Arq | em funcionamento |  | passagem, nó 37 «conferir» | 1 |
@@ -248,8 +248,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|---|---|---|---|---|
 | 167 | `config/regras.toml` | A tabela única de regras e decisões da titular. Para cada tema, vale a decisão da titular mais recente. As sub | em funcionamento |  | regras | 0 |
 | 168 | `config/regras_titular.json` | As regras da titular para o sistema. Cada regra tem as travas (testes) que a defendem: se alguém quebrar a reg | em funcionamento |  | regras, comandos | 0 |
-| 169 | `eldorado/base/aprendizado/__init__.py` | O Aprendizado (titular, 25/10/2026): o responsável por toda análise e melhoria do sistema — a pertinência, a a | pacote |  |  | 7 |
-| 170 | `eldorado/base/aprendizado/avaliar.py` | O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a | em funcionamento | escolher | passagem, nó 35 «avaliar» | 4 |
+| 169 | `eldorado/base/aprendizado/__init__.py` | O Aprendizado (titular, 25/10/2026): o responsável por toda análise e melhoria do sistema — a pertinência, a a | pacote |  |  | 8 |
+| 170 | `eldorado/base/aprendizado/avaliar.py` | O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a | em funcionamento | destino, escolher | passagem, nó 35 «avaliar» | 5 |
 | 171 | `eldorado/base/aprendizado/curador.py` | O curador do Aprendizado (a etapa A5; o conceito do curador do Hermes Agent, titular, 25/10/2026). | em funcionamento |  | passagem, nó 36 «curar» | 1 |
 | 172 | `eldorado/base/aprendizado/memoria.py` | A memória do Aprendizado (a etapa A6): tudo o que o sistema viveu, pesquisável no Arquivo do Cérebro (titular, | em funcionamento | eventos | passagem, nó 38 «memorizar» | 2 |
 | 173 | `eldorado/base/cerebro/aprendizado.py` | O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai. | em funcionamento | ciclo_pilotos, descartes, eventos | passagem, nó 25 «aprender» | 3 |
@@ -279,11 +279,11 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 195 | `eldorado/base/analise/__init__.py` |  | pacote |  |  | 1 |
+| 195 | `eldorado/base/analise/__init__.py` |  | pacote |  |  | 2 |
 | 196 | `eldorado/base/analise/calendario.py` | calendário atualizado na passagem | substituído por eldorado/base/analise/previsao.py (o calendário das abertas e das previstas) |  |  | 0 |
 | 197 | `eldorado/base/analise/historia.py` | livros com história completa | substituído por eldorado/base/analise/previsao.py (a história do livro) |  |  | 0 |
 | 198 | `eldorado/base/analise/preditivo.py` | alertas emitidos antes da abertura | substituído por eldorado/base/analise/previsao.py (a previsão da próxima abertura e o alerta) |  |  | 0 |
-| 199 | `eldorado/base/analise/previsao.py` | A análise (fase F9 do plano): a previsão da próxima abertura, o calendário e a história de cada livro. | em funcionamento |  | passagem, nó 23 «analise» | 0 |
+| 199 | `eldorado/base/analise/previsao.py` | A análise (fase F9 do plano): a previsão da próxima abertura, o calendário e a história de cada livro. | em funcionamento |  | passagem, nó 23 «analise» | 1 |
 | 200 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 18 |
 | 201 | `eldorado/base/painel/api.py` | A API do sistema (plano C: FastAPI, com respostas em orjson): a leitura do sistema para o painel novo e para q | a construir |  |  | 0 |
 | 202 | `eldorado/base/painel/cartorio.py` | O Cartório no site, ligado aos dados (titular, 25/10/2026: a página estava estática). | em funcionamento | itens | dados | 2 |

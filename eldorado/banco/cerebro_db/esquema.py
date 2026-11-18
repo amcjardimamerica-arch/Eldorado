@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 12
+VERSAO = 13
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -157,7 +157,16 @@ DDL_V12 = r"""
 ALTER TABLE maquina ADD COLUMN processos TEXT
 """
 
+# 13 (C-07, R57 «toda missão tem um objetivo com nome»): a fila de objetivos do Espião (os 10.300 direcionamentos de 14/11) e o
+# objetivo de cada missão
+DDL_V13 = r"""
+CREATE TABLE IF NOT EXISTS espiao_objetivo (id TEXT PRIMARY KEY, tipo TEXT, alvo TEXT, prioridade INTEGER, procurar TEXT, consultas TEXT,
+  dominio TEXT, pista TEXT, exemplo TEXT, usos INTEGER NOT NULL DEFAULT 0, achados INTEGER NOT NULL DEFAULT 0, ultima TEXT);
+CREATE INDEX IF NOT EXISTS espiao_objetivo_fila ON espiao_objetivo(usos, prioridade, ultima);
+ALTER TABLE espiao_missao ADD COLUMN objetivo TEXT
+"""
+
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V10 + ";\n" + DDL_V11 + ";\n" + DDL_V12, VERSAO,
-                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V10 + ";\n" + DDL_V11 + ";\n" + DDL_V12 + ";\n" + DDL_V13, VERSAO,
+                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12, 13: DDL_V13})

@@ -110,6 +110,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "espiao.familia": (Alvo(C, "espiao_familia", "inserir_ou_atualizar", ("nome",)),),
     "espiao.consulta": (Alvo(C, "espiao_consulta", "inserir_ou_atualizar", ("texto",)),),
     "espiao.missao": (Alvo(C, "espiao_missao", "inserir"),),
+    "espiao.objetivo": (Alvo(C, "espiao_objetivo", "inserir_ou_atualizar", ("id",)),),   # C-07: a fila de objetivos
     "espiao.rota": (Alvo(C, "espiao_rota", "inserir_ou_atualizar", ("nome",)),),
     "sala.medida": (Alvo(C, "sala_medicao", "inserir_ou_atualizar", ("chave",)),),  # a sala como parâmetro do funcionamento
     "arquivos.medidos": (Alvo(C, "medicao_arquivos", "inserir_ou_atualizar", ("chave",)),),  # o monitoramento de cada arquivo

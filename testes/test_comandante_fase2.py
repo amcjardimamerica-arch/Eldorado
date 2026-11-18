@@ -50,7 +50,8 @@ def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, t
     )
     r = avaliar(tmp_path, Diario(ev, "a"))
     _aplicar(gravador, ev)
-    assert r["avaliadas"] >= 8 and c.execute("SELECT COUNT(*) FROM comandante_decisao WHERE avaliada_em IS NOT NULL").fetchone()[0] >= 8
+    # 17/11/2026 (C-06, R57): a decisão cujo achado aceito ainda não tem livro espera o destino (14 dias) — uma das 8 espera
+    assert r["avaliadas"] >= 7 and c.execute("SELECT COUNT(*) FROM comandante_decisao WHERE avaliada_em IS NOT NULL").fetchone()[0] >= 7
     # 14/11/2026 (R57, K1, que revoga a R48 neste ponto): o resultado real é o DESTINO do livro — o aceite sozinho não ensina;
     # quando o livro do achado chega ao Farol, o Comandante aprende
     import eldorado.base.comandante.destino as _dest

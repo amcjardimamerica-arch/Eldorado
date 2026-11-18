@@ -219,6 +219,13 @@ LISTAGEM = re.compile(r"(?i)^\s*(?:convocat[óo]rias|editais|oportunidades|chama
 
 FORA_DO_AR_MIN = 360   # 17/11/2026 (C-05): a rota fora do ar é tentada uma vez por turno (6 h)
 
+
+# 17/11/2026 (C-07): o tipo do objetivo → a família do Espião (o aprendizado do Comandante continua por família)
+TIPO_FAMILIA = {"empresa do cadastro": "empresa_semente", "financiador conhecido": "rastro_de_patrocinio",
+                "institutos e fundações do Brasil": "publico_apoio_empresa", "estatais e bancos públicos": "publico_apoio_empresa",
+                "financiadores internacionais": "internacional_financiador", "município de Goiás": "setor_apoio_regiao",
+                "outros estados": "setor_apoio_regiao", "prêmios": "operador_avancado", "edital nomeado": "operador_avancado"}
+
 class Espiao:
     def __init__(
         self,
@@ -347,8 +354,30 @@ class Espiao:
         return True, ""
 
     # ------------------------------------------------------------------ uma missão
+    def proximo_objetivo(self, familia: str | None = None) -> dict | None:
+        """17/11/2026 (C-07, R57 «toda missão tem um objetivo com nome»): o próximo objetivo da fila — o MENOS USADO e, entre
+        eles, a maior prioridade e o tentado há mais tempo (o rodízio percorre os 10.300 sem repetir a mesma busca, C-04); da
+        família que o Comandante escolheu, quando houver."""
+        try:
+            tipos = [t for t, f in TIPO_FAMILIA.items() if f == familia] if familia else []
+            filtro = f" WHERE tipo IN ({','.join('?' * len(tipos))})" if tipos else ""
+            r = self.con.execute(f"SELECT id, tipo, alvo, consultas, usos, achados FROM espiao_objetivo{filtro} "
+                                 "ORDER BY usos, prioridade, COALESCE(ultima, '') LIMIT 1", tipos).fetchone()   # rodízio: o menos usado
+            if r is None and tipos:
+                return self.proximo_objetivo(None)
+        except sqlite3.Error:                         # o Cérebro antes da versão 13: sem fila
+            return None
+        if r is None:
+            return None
+        return {"id": r[0], "tipo": r[1], "alvo": r[2], "consultas": json.loads(r[3] or "[]"), "usos": r[4] or 0, "achados": r[5] or 0}
+
     def missao(self) -> dict[str, Any]:
-        fam, q = self.escolher()
+        obj = self.proximo_objetivo(getattr(self, "preferida", None))
+        if obj and obj["consultas"]:
+            fam = TIPO_FAMILIA.get(obj["tipo"], "setor_apoio_regiao")
+            q = re.sub(r"\s+", " ", self.rnd.choice(obj["consultas"]).replace("{ano}", str(date.today().year))).strip()
+        else:
+            fam, q = self.escolher()
         pistas, relato = self.consultar(q)
         for linha in relato:  # o descanso das rotas vale entre as execuções
             # 14/11/2026 (R55, C1): só a linha «falhou» grava o descanso, com os minutos que a metabusca calculou (2 a 60; o
@@ -433,8 +462,13 @@ class Espiao:
         em = datetime.now(timezone.utc).isoformat()
         linha_m = {"em": em, "familia": fam, "consulta": q, "resultados": len(pistas), "candidatos": candidatos, "achados": len(achados),
                    "motivos": json.dumps(motivos, ensure_ascii=False), "rotas": json.dumps(relato, ensure_ascii=False), "bloqueada": int(bloqueada)}
+        linha_m["objetivo"] = obj["id"] if obj else None            # C-07: o objetivo da missão
         self._gravar("espiao.missao", linha_m, "INSERT INTO espiao_missao(em, familia, consulta, resultados, candidatos, achados, motivos, rotas, "
-                     "bloqueada) VALUES (?,?,?,?,?,?,?,?,?)", tuple(linha_m.values()))
+                     "bloqueada, objetivo) VALUES (?,?,?,?,?,?,?,?,?,?)", tuple(linha_m.values()))
+        if obj:                                                   # o objetivo: mais um uso, a data e os achados
+            dados_o = {"id": obj["id"], "usos": obj["usos"] + 1, "achados": obj["achados"] + len(achados), "ultima": em}
+            self._gravar("espiao.objetivo", dados_o, "UPDATE espiao_objetivo SET usos = ?, achados = ?, ultima = ? WHERE id = ?",
+                         (dados_o["usos"], dados_o["achados"], em, obj["id"]))
         if not bloqueada:  # aprende: reforça a família que rendeu (os valores completos: nenhum incremento se perde)
             f0 = self.con.execute("SELECT a, b, usos, achados FROM espiao_familia WHERE nome = ?", (fam,)).fetchone() or (1.0, 1.0, 0, 0)
             # R48 (titular, 08/11/2026): a crença da família é simétrica (+1 no acerto, +1 no erro); com +0,3 no erro, a

@@ -31,8 +31,9 @@ def aberturas(con: sqlite3.Connection) -> dict[str, list[date]]:
     for lid, ini in con.execute("SELECT livro_id, inscricao_inicio FROM livro_dados WHERE inscricao_inicio IS NOT NULL"):
         if (d := _data(ini)):
             por[lid].append(d)
-    for lid, pub, enc in con.execute("SELECT livro_id, publicado_em, encontrado_em FROM achado WHERE livro_id IS NOT NULL"):
-        if (d := _data(pub) or _data(enc)):
+    # 17/11/2026 (C-08, R57): só a publicação — a data em que o motor ACHOU não é a abertura de uma edição
+    for lid, pub in con.execute("SELECT livro_id, publicado_em FROM achado WHERE livro_id IS NOT NULL"):
+        if (d := _data(pub)):
             por[lid].append(d)
     saida = {}
     for lid, ds in por.items():
@@ -43,10 +44,17 @@ def aberturas(con: sqlite3.Connection) -> dict[str, list[date]]:
     return saida
 
 
+SEM_BASE = {"proxima_abertura_prevista": None, "alerta_em": None, "confianca": 0.0, "anos": []}
+
+
 def prever(datas: list[date], hoje: date | None = None) -> dict[str, Any] | None:
     hoje = hoje or date.today()
     if not datas:
         return None
+    if len({d.year for d in datas}) < 2:
+        # 17/11/2026 (C-08, R57: «a previsão só vale com datas de edições anteriores»): uma edição só é «sem base» — sem
+        # data, sem alerta (2.156 previsões tinham data e alerta com uma data só)
+        return SEM_BASE
     meses = [d.month for d in datas]
     dia = int(statistics.median(d.day for d in datas))
     mes = statistics.mode(meses)
@@ -62,7 +70,10 @@ def calcular(con: sqlite3.Connection, diario, hoje: date | None = None) -> dict[
     """A previsão dos livros que esperam a próxima edição (o arquivo) e dos encerrados; o evento previsao.calculada."""
     hoje = hoje or date.today()
     alvo = {r[0] for r in con.execute("SELECT p.livro_id FROM passaporte p JOIN livro_dados d ON d.livro_id = p.livro_id "
-                                      "WHERE p.fase = 'arquivo' OR d.situacao_prazo = 'encerrada'")}
+                                      "JOIN livro l ON l.id = p.livro_id WHERE (p.fase = 'arquivo' OR d.situacao_prazo = 'encerrada') "
+                                      "AND l.situacao NOT IN ('excluido', 'unido')")}   # C-08: nada de previsão para livro morto
+    mortos = {r[0] for r in con.execute("SELECT v.livro_id FROM previsao v JOIN livro l ON l.id = v.livro_id "
+                                        "WHERE l.situacao IN ('excluido', 'unido') AND v.proxima_abertura_prevista IS NOT NULL")}
     ab = aberturas(con)
     motores = defaultdict(set)
     for lid, m in con.execute("SELECT livro_id, motor FROM achado WHERE livro_id IS NOT NULL"):
@@ -79,7 +90,10 @@ def calcular(con: sqlite3.Connection, diario, hoje: date | None = None) -> dict[
                                                         "proxima_abertura_prevista": p["proxima_abertura_prevista"], "alerta_em": p["alerta_em"],
                                                         "confianca": p["confianca"], "calculada_em": agora})
         feitas += 1
-    return {"livros_esperando": len(alvo), "previsoes": feitas}
+    for lid in sorted(mortos):                          # C-08: a previsão do livro excluído ou unido é esvaziada
+        diario.emitir("previsao.calculada", "analise", {"livro_id": lid, "motores_que_encontraram": "", "datas_encontrado": "",
+                                                        "proxima_abertura_prevista": None, "alerta_em": None, "confianca": 0.0, "calculada_em": agora})
+    return {"livros_esperando": len(alvo), "previsoes": feitas, "esvaziadas_de_livro_morto": len(mortos)}
 
 
 def calendario(con: sqlite3.Connection, hoje: date | None = None, dias: int = 365) -> list[dict[str, Any]]:
@@ -91,7 +105,8 @@ def calendario(con: sqlite3.Connection, hoje: date | None = None, dias: int = 36
         "AND d.inscricao_fim >= ? AND l.situacao NOT IN ('excluido', 'unido')", (hoje.isoformat(),))]
     itens += [{"data": p, "tipo": "abertura prevista", "livro_id": i, "titulo": t, "alerta_em": a, "confianca": c} for i, t, p, a, c in con.execute(
         "SELECT l.id, l.titulo, v.proxima_abertura_prevista, v.alerta_em, v.confianca FROM previsao v JOIN livro l ON l.id = v.livro_id "
-        "WHERE v.proxima_abertura_prevista BETWEEN ? AND ?", (hoje.isoformat(), ate))]
+        "WHERE v.proxima_abertura_prevista BETWEEN ? AND ? AND v.confianca > 0 AND l.situacao NOT IN ('excluido', 'unido')",
+        (hoje.isoformat(), ate))]                         # C-08: só a previsão com base, de livro vivo
     return sorted(itens, key=lambda x: x["data"])
 
 

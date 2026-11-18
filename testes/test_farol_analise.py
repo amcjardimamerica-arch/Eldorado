@@ -13,7 +13,8 @@ def test_previsao_pela_repeticao_das_aberturas():
     p = P.prever([date(2023, 9, 20), date(2024, 9, 26), date(2025, 9, 18)], hoje=date(2026, 3, 1))
     assert p["proxima_abertura_prevista"] == "2026-09-20" and p["alerta_em"] == "2026-08-21" and p["confianca"] >= 0.7
     um = P.prever([date(2025, 5, 10)], hoje=date(2026, 6, 1))
-    assert um["proxima_abertura_prevista"] == "2027-05-10" and um["confianca"] == 0.3                # um ano só: confiança baixa
+    # 17/11/2026 (C-08, R57: a previsão só vale com datas de edições anteriores): um ano só é «sem base» — sem data e sem alerta
+    assert um["proxima_abertura_prevista"] is None and um["alerta_em"] is None and um["confianca"] == 0
     assert P.prever([]) is None
 
 

@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 12178,
+   "linhas": 12183,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -901,7 +901,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/eventos.py",
-   "linhas": 512,
+   "linhas": 513,
    "finalidade": "Os eventos: a única forma de escrita do Eldorado.",
    "depende_de": [
     "eldorado/base/nucleo/contrato_eventos.py",
@@ -1556,7 +1556,7 @@
   },
   {
    "arquivo": "eldorado/banco/cerebro_db/esquema.py",
-   "linhas": 163,
+   "linhas": 172,
    "finalidade": "O esquema do banco do Cérebro (cerebro.db): a operação e o aprendizado do sistema, sem nenhuma oportunidade.",
    "depende_de": [
     "eldorado/banco/_sqlite.py"
@@ -2272,6 +2272,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/aprendizado/avaliar.py",
     "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/comandante/descartes.py",
     "eldorado/base/comandante/politica.py"
@@ -5118,7 +5119,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "linhas": 513,
+   "linhas": 547,
    "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
    "depende_de": [
     "eldorado/banco/cerebro_db/esquema.py",
@@ -5488,7 +5489,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 863,
+   "linhas": 862,
    "situacao": "em funcionamento",
    "ordem": 168
   },
@@ -5505,6 +5506,7 @@
     "test_comandante_fase2.py",
     "test_comandante_fase5.py",
     "test_comparacao_motor_dia.py",
+    "test_manutencao_1611.py",
     "test_pilotos_aprendizado.py",
     "test_r48_comandante.py",
     "test_sala_da_producao_1011.py"
@@ -5520,9 +5522,10 @@
   },
   {
    "arquivo": "eldorado/base/aprendizado/avaliar.py",
-   "linhas": 190,
+   "linhas": 247,
    "finalidade": "O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a sua",
    "depende_de": [
+    "eldorado/base/comandante/destino.py",
     "eldorado/base/comandante/escolher.py"
    ],
    "eventos": [
@@ -5537,6 +5540,7 @@
    "testes": [
     "test_comandante_fase2.py",
     "test_comparacao_motor_dia.py",
+    "test_manutencao_1611.py",
     "test_r48_comandante.py",
     "test_sala_da_producao_1011.py"
    ],
@@ -5545,6 +5549,7 @@
    "parte": "BASE",
    "componente": "Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
    "ligacoes": [
+    "eldorado/base/comandante/destino.py",
     "eldorado/base/comandante/escolher.py"
    ],
    "critico": false,
@@ -6227,7 +6232,8 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
-    "test_farol_analise.py"
+    "test_farol_analise.py",
+    "test_manutencao_1611.py"
    ],
    "situacao": "pacote",
    "etapa": "14 Análise e painel",
@@ -6300,7 +6306,7 @@
   },
   {
    "arquivo": "eldorado/base/analise/previsao.py",
-   "linhas": 124,
+   "linhas": 139,
    "finalidade": "A análise (fase F9 do plano): a previsão da próxima abertura, o calendário e a história de cada livro.",
    "depende_de": [],
    "eventos": [
@@ -6312,7 +6318,9 @@
    "usado_por": [
     "eldorado/base/cartorio/analise_externa.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_manutencao_1611.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "14 Análise e painel",
    "parte": "BASE",

@@ -12,6 +12,25 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+ESPERA_DESTINO_DIAS = 14   # 17/11/2026 (C-06): o prazo para o livro ganhar destino; depois, sem destino, vale como arquivo (0,5)
+
+
+def pelo_destino(livros: list, dest: dict, em: str, agora: datetime) -> tuple[float | None, str | None]:
+    """C-06 (R57): a recompensa da decisão é o MELHOR destino entre os livros dos achados aceitos — Farol 1, arquivo com
+    edição 0,7, arquivo 0,5, unido 0,2, descartado 0 (a avaliação gravava só 0 e 1). Sem achado aceito: 0. Livro ainda sem
+    destino: espera ESPERA_DESTINO_DIAS dias (None, None) e, depois, vale 0,5."""
+    if not livros:
+        return 0.0, "nenhum achado aceito"
+    sem_livro = [x for x in livros if not x]
+    livros = [x for x in livros if x]
+    if not livros and sem_livro:                    # aceito, mas o livro ainda não nasceu: espera como o livro sem destino
+        livros = ["_sem_livro_"]
+    vals = [dest[x] for x in livros if x in dest]
+    if vals:
+        return max(vals), f"{len(livros)} livro(s); o melhor destino vale {max(vals)}"
+    if agora - datetime.fromisoformat(em) < timedelta(days=ESPERA_DESTINO_DIAS):
+        return None, None
+    return 0.5, f"{len(livros)} livro(s) sem destino em {ESPERA_DESTINO_DIAS} dias: vale como arquivo"
 
 def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int]:
     agora = agora or datetime.now(timezone.utc)
@@ -22,17 +41,20 @@ def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int
         if not cer.execute("SELECT 1 FROM sqlite_master WHERE name = 'comandante_decisao'").fetchone():
             return conta
         maduras = (agora - timedelta(hours=2)).isoformat()
+        from ..comandante.destino import destinos
+        dest = destinos(bib)                                # C-06 (R57): o destino final de cada livro
         for did, etapa, alvo, em in cer.execute(
             "SELECT id, etapa, alvo, em FROM comandante_decisao WHERE avaliada_em IS NULL AND em < ?", (maduras,)
         ):
             rec, resultado = None, None
             if etapa == "coleta":
                 dia = em[:10]
-                n = bib.execute(
-                    "SELECT COUNT(*) FROM achado WHERE motor = ? AND decisao = 'aceito' AND substr(encontrado_em, 1, 10) = ?", (alvo, dia)
-                ).fetchone()[0]
+                livros = [r[0] for r in bib.execute(
+                    "SELECT livro_id FROM achado WHERE motor = ? AND decisao = 'aceito' AND substr(encontrado_em, 1, 10) = ?", (alvo, dia))]
                 if em[:10] < agora.date().isoformat():
-                    rec, resultado = (1.0 if n else 0.0), f"{n} achado(s) aceito(s) em {dia}"
+                    rec, resultado = pelo_destino(livros, dest, em, agora)       # C-06 (R57): pelo destino dos livros
+                    if rec is None and resultado is None:
+                        continue
             elif etapa == "espiao":
                 # R48 (titular, 08/11/2026): a recompensa é o ACHADO ACEITO NOVO da família nas 24 h depois da decisão (o dia
                 # da decisão e o seguinte), não «alguma missão, a qualquer tempo depois, achou algo» (mediana de 114 missões
@@ -53,13 +75,15 @@ def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int
                         rec, resultado = 0.0, "a missão autorizada trouxe 0 achado(s)"
                     else:
                         try:
-                            n = bib.execute(
-                                "SELECT COUNT(*) FROM achado WHERE motor = 'espiao' AND decisao = 'aceito' AND json_extract(dados, '$.familia') = ? "
-                                "AND substr(encontrado_em, 1, 10) BETWEEN ? AND ?", (alvo, m[0][:10], fim_.date().isoformat())
-                            ).fetchone()[0]
+                            livros = [r[0] for r in bib.execute(
+                                "SELECT livro_id FROM achado WHERE motor = 'espiao' AND decisao = 'aceito' AND json_extract(dados, '$.familia') = ? "
+                                "AND substr(encontrado_em, 1, 10) BETWEEN ? AND ?", (alvo, m[0][:10], fim_.date().isoformat()))]
                         except sqlite3.Error:
-                            n = 0
-                        rec, resultado = (1.0 if n else 0.0), f"a missão autorizada trouxe {m[1]} achado(s); {n} aceito(s) na Biblioteca"
+                            livros = []
+                        rec, resultado = pelo_destino(livros, dest, em, agora)    # C-06 (R57): pelo destino dos livros
+                        if rec is None and resultado is None:
+                            continue
+                        resultado = f"a missão autorizada trouxe {m[1]} achado(s); {resultado}"
             elif etapa == "interceptador":  # o voo autorizado trouxe material para o livro?
                 t = bib.execute(
                     "SELECT COUNT(*), SUM(CASE WHEN resultado NOT LIKE '%sem material%' THEN 1 ELSE 0 END) FROM tentativa "
@@ -99,6 +123,7 @@ def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int
             )
             conta["avaliadas"] += 1
             conta["acertos"] += int(rec == 1.0)
+        conta["reavaliadas"] = reavaliar(cer, bib, dest, diario, agora)     # C-06: o destino mudou, a recompensa muda
     finally:
         bib.close()
         cer.close()
@@ -188,3 +213,35 @@ def no_avaliar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
     if not ((dados / "cerebro.db").exists() and (dados / "biblioteca.db").exists()):
         return []
     return [avaliar(dados, contexto.diario)]
+
+
+def reavaliar(cer: sqlite3.Connection, bib: sqlite3.Connection, dest: dict, diario, agora: datetime, dias: int = 30) -> int:
+    """17/11/2026 (C-06, R57: «a recompensa de um livro é revista quando o destino muda»): as decisões de coleta e do Espião
+    avaliadas nos últimos `dias` dias são recalculadas pelo destino atual dos livros e regravadas quando o valor mudou."""
+    desde = (agora - timedelta(days=dias)).isoformat()
+    n = 0
+    try:
+        decisoes = cer.execute(
+            "SELECT id, etapa, alvo, em, recompensa FROM comandante_decisao WHERE etapa IN ('coleta', 'espiao') AND avaliada_em >= ? "
+            "AND recompensa IS NOT NULL", (desde,)).fetchall()
+    except sqlite3.Error:                            # o Cérebro sem as colunas da avaliação: nada a rever
+        return 0
+    for did, etapa, alvo, em, rec in decisoes:
+        dia = em[:10]
+        if etapa == "coleta":
+            sql, args = ("SELECT livro_id FROM achado WHERE motor = ? AND decisao = 'aceito' AND substr(encontrado_em, 1, 10) = ?", (alvo, dia))
+        else:
+            fim = (datetime.fromisoformat(em) + timedelta(hours=24)).date().isoformat()
+            sql, args = ("SELECT livro_id FROM achado WHERE motor = 'espiao' AND decisao = 'aceito' AND json_extract(dados, '$.familia') = ? "
+                         "AND substr(encontrado_em, 1, 10) BETWEEN ? AND ?", (alvo, dia, fim))
+        try:
+            livros = [r[0] for r in bib.execute(sql, args)]
+        except sqlite3.Error:
+            continue
+        novo, motivo = pelo_destino(livros, dest, em, agora)
+        if novo is None or abs(novo - float(rec)) < 1e-9:
+            continue
+        diario.emitir("comandante.avaliada", "aprendizado", {"id": did, "resultado": f"reavaliada (o destino mudou): {motivo}", "recompensa": novo,
+                                                             "avaliada_em": agora.isoformat(timespec="seconds")})
+        n += 1
+    return n

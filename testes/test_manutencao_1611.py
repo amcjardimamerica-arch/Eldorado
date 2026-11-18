@@ -190,3 +190,45 @@ def test_o_degrau_maximo_conta_so_os_degraus_usados_nesta_execucao():
     e._aprender("lido.org", 0)
     from eldorado.motores.acesso.escada import codigo
     assert e.degrau_maximo() == codigo(e.degraus[0])
+
+
+def test_livro_com_uma_data_fica_sem_previsao():
+    """C-08 (R57): com uma edição só, a previsão é «sem base» — sem data e sem alerta."""
+    from datetime import date
+
+    from eldorado.base.analise.previsao import SEM_BASE, prever
+    assert prever([date(2026, 3, 10)], date(2026, 11, 17)) == SEM_BASE and SEM_BASE["alerta_em"] is None
+    p = prever([date(2025, 3, 10), date(2026, 3, 12)], date(2026, 11, 17))
+    assert p["proxima_abertura_prevista"] == "2027-03-11" and p["confianca"] > 0.3
+
+
+def test_decisao_de_livro_arquivado_recebe_0_5():
+    """C-06 (R57): a recompensa gravada é a do destino — Farol 1, arquivo 0,5; sem destino espera 14 dias."""
+    from datetime import datetime, timedelta, timezone
+
+    from eldorado.base.aprendizado.avaliar import pelo_destino
+    agora = datetime.now(timezone.utc)
+    em = (agora - timedelta(days=2)).isoformat()
+    assert pelo_destino(["A"], {"A": 0.5}, em, agora)[0] == 0.5
+    assert pelo_destino(["A", "F"], {"A": 0.5, "F": 1.0}, em, agora)[0] == 1.0
+    assert pelo_destino([], {}, em, agora)[0] == 0.0
+    assert pelo_destino(["X"], {}, em, agora) == (None, None)                                   # ainda sem destino: espera
+    assert pelo_destino(["X"], {}, (agora - timedelta(days=20)).isoformat(), agora)[0] == 0.5
+
+
+def test_nenhuma_missao_do_espiao_sem_objetivo(tmp_path):
+    """C-07 (R57 «toda missão tem um objetivo com nome»): a missão pega o próximo objetivo da fila e o registra."""
+    import json
+    import random
+
+    from eldorado.motores.pilotos.espiao import Espiao
+    e = Espiao(tmp_path / "c.db", lambda q: ([], ["searxng: 0 pista(s), 0 nova(s)"]), lambda u: None, rnd=random.Random(1))
+    e.con.executemany("INSERT INTO espiao_objetivo(id, tipo, alvo, prioridade, consultas) VALUES (?, ?, ?, ?, ?)",
+                      [("OBJ-1", "financiador conhecido", "Secult-GO", 1, json.dumps(["site:goias.gov.br edital {ano}"])),
+                       ("OBJ-2", "empresa do cadastro", "Empresa X", 2, json.dumps(['"Empresa X" edital {ano}']))])
+    e.con.commit()
+    m = e.missao()
+    linha = e.con.execute("SELECT objetivo, consulta FROM espiao_missao ORDER BY id DESC LIMIT 1").fetchone()
+    assert linha[0] == "OBJ-1" and "goias.gov.br" in linha[1] and m["familia"] == "rastro_de_patrocinio"
+    assert e.con.execute("SELECT usos FROM espiao_objetivo WHERE id = 'OBJ-1'").fetchone()[0] == 1
+    assert e.missao() and e.con.execute("SELECT objetivo FROM espiao_missao ORDER BY id DESC LIMIT 1").fetchone()[0] == "OBJ-2"

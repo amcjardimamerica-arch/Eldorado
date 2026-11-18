@@ -48,8 +48,11 @@ def test_a_recompensa_do_espiao_e_o_achado_aceito_em_24h(tmp_path):
     from eldorado.base.aprendizado.avaliar import avaliar
     em = (datetime.now(timezone.utc) - timedelta(hours=30)).replace(microsecond=0)
     b = sqlite3.connect(tmp_path / "biblioteca.db")
-    b.execute("CREATE TABLE achado(motor TEXT, encontrado_em TEXT, decisao TEXT, dados TEXT)")
-    b.execute("INSERT INTO achado VALUES ('espiao', ?, 'aceito', ?)", (em.date().isoformat(), json.dumps({"familia": "empresa_semente"})))
+    # 17/11/2026 (C-06, R57): a recompensa é o destino do livro do achado aceito — o livro está no Farol (1)
+    b.executescript("CREATE TABLE achado(motor TEXT, encontrado_em TEXT, decisao TEXT, dados TEXT, livro_id TEXT);"
+                    "CREATE TABLE livro(id TEXT, situacao TEXT); CREATE TABLE passaporte(livro_id TEXT, fase TEXT);"
+                    "INSERT INTO livro VALUES ('L1', 'transferido ao farol'); INSERT INTO passaporte VALUES ('L1', 'farol');")
+    b.execute("INSERT INTO achado VALUES ('espiao', ?, 'aceito', ?, 'L1')", (em.date().isoformat(), json.dumps({"familia": "empresa_semente"})))
     b.commit()
     b.close()
     c = sqlite3.connect(tmp_path / "cerebro.db")
