@@ -81,4 +81,5 @@ def test_a_fonte_com_destino_especial_vai_a_base_especial(tmp_path):
     c = Configuracao(**_cfg("novo-fundacoes-institutos"))
     assert c.motor.destino == "biblioteca"
     esp = [f for f in c.fonte if f.destino == "especial"]
-    assert len(esp) >= 5 and all(f.especial.get("cnpj") for f in esp)
+    # 17/11/2026 (C-20): as 4 fontes fixas do Salic viraram uma, com paginação — o ICMS e o Salic (a lista inteira)
+    assert len(esp) >= 2 and all(f.especial.get("cnpj") for f in esp)

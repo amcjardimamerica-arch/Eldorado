@@ -335,3 +335,31 @@ def test_o_andamento_das_leis_e_conferido():
                "https://planalto.gov.br/L8313.htm": "LEI Nº 8.313 — Restabelece princípios da Lei nº 7.505"}
     r = acompanhar(b, ev, paginas.get, datetime(2026, 11, 17, tzinfo=timezone.utc))
     assert r["conferidas"] == 2 and r["mudaram"] == ["Lei 11.438/2006: vigente → revogada"] and ev.ev == ["lei.registrada"] * 2
+
+
+def test_a_cadeia_pagina_pelo_deslocamento_ate_a_lista_vir_vazia(monkeypatch, tmp_path):
+    """C-20 (1): os incentivadores do Salic eram 4 fontes fixas (offset 0 a 300); agora a lista inteira, de 100 em 100."""
+    from pathlib import Path
+
+    from eldorado.motores.canal.motor import MotorCanal
+    from eldorado.motores.descoberta import cadeia
+    vistos = []
+
+    def falso(buscar, url, elos, relato):
+        vistos.append(url.split("offset=")[1].split("&")[0])
+        return [{"cnpj": f"{len(vistos)}", "nome": f"E{len(vistos)}"}] if len(vistos) <= 3 else []
+    monkeypatch.setattr(cadeia, "percorrer", falso)
+    m = MotorCanal(Path("eldorado/motores/canal/config/novo-fundacoes-institutos.toml"), dados=tmp_path / "m", ponte=tmp_path / "p")
+    f = [x for x in m.cfg.fonte if "{deslocamento}" in x.url][0]
+    ps = m._cadeia(f) or []
+    assert vistos == ["0", "100", "200", "300"] and len(ps) == 3
+
+
+def test_o_achado_do_espiao_num_objetivo_de_empresa_leva_a_empresa_como_financiador():
+    """C-20 (3): o achado do objetivo de empresa leva a empresa como órgão — o livro nasce com ela e o vínculo a liga."""
+    import inspect
+
+    from eldorado.motores.pilotos import espiao
+    assert "empresa do cadastro" in espiao.TIPOS_EMPRESARIAIS
+    fonte = inspect.getsource(espiao.Espiao.missao)
+    assert 'a.dados["objetivo"] = obj["id"]' in fonte and 'a.dados.setdefault("orgao", obj["alvo"])' in fonte

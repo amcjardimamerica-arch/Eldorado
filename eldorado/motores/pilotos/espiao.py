@@ -226,6 +226,9 @@ TIPO_FAMILIA = {"empresa do cadastro": "empresa_semente", "financiador conhecido
                 "financiadores internacionais": "internacional_financiador", "município de Goiás": "setor_apoio_regiao",
                 "outros estados": "setor_apoio_regiao", "prêmios": "operador_avancado", "edital nomeado": "operador_avancado"}
 
+# 17/11/2026 (C-20, parte 3): os objetivos de empresa — o achado leva a empresa como financiador e o vínculo empresa–livro a liga
+TIPOS_EMPRESARIAIS = ("empresa do cadastro", "institutos e fundações do Brasil", "estatais e bancos públicos")
+
 class Espiao:
     def __init__(
         self,
@@ -462,6 +465,11 @@ class Espiao:
         em = datetime.now(timezone.utc).isoformat()
         linha_m = {"em": em, "familia": fam, "consulta": q, "resultados": len(pistas), "candidatos": candidatos, "achados": len(achados),
                    "motivos": json.dumps(motivos, ensure_ascii=False), "rotas": json.dumps(relato, ensure_ascii=False), "bloqueada": int(bloqueada)}
+        if obj:                                     # C-20 (3): o achado leva o objetivo e, se é de empresa, a empresa como financiador
+            for a in achados:
+                a.dados["objetivo"] = obj["id"]
+                if obj["tipo"] in TIPOS_EMPRESARIAIS and obj.get("alvo"):
+                    a.dados.setdefault("orgao", obj["alvo"])
         linha_m["objetivo"] = obj["id"] if obj else None            # C-07: o objetivo da missão
         self._gravar("espiao.missao", linha_m, "INSERT INTO espiao_missao(em, familia, consulta, resultados, candidatos, achados, motivos, rotas, "
                      "bloqueada, objetivo) VALUES (?,?,?,?,?,?,?,?,?,?)", tuple(linha_m.values()))

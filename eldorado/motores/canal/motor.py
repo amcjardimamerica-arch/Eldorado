@@ -72,6 +72,7 @@ class CfgPaginacao(_Base):
     inicio: int = 1
     maximo: int = Field(50, ge=1, le=1000)    # 27/10/2026: até o fim real (o total ou a página vazia), não 5 páginas
     total: str | None = None                  # onde está o total de páginas na resposta (jmespath)
+    passo: int = Field(1, ge=1)               # 17/11/2026 (C-20): o tamanho da página — {deslocamento} = (página − início) × passo
 
 
 class CfgElo(_Base):
@@ -801,7 +802,18 @@ class MotorCanal(Motor):
         if not f.cadeia or f.pista is None:
             raise ValueError("fonte em cadeia sem elos ou sem o modelo da pista")
         relato: list[str] = []
-        itens = percorrer(self.escada.buscar, preencher(f.url, hoje_local()), [Elo(**e.model_dump()) for e in f.cadeia], relato)
+        elos = [Elo(**e.model_dump()) for e in f.cadeia]
+        if f.paginacao is None:
+            itens = percorrer(self.escada.buscar, preencher(f.url, hoje_local()), elos, relato)
+        else:                                       # 17/11/2026 (C-20): a lista inteira, página após página, até vir vazia
+            itens, pg = [], f.paginacao.inicio
+            for pg in range(f.paginacao.inicio, f.paginacao.inicio + f.paginacao.maximo):
+                url = preencher(f.url, hoje_local(), {"pagina": pg, "deslocamento": (pg - f.paginacao.inicio) * f.paginacao.passo})
+                novos = percorrer(self.escada.buscar, url, elos, relato)
+                if not novos:
+                    break
+                itens += novos
+            relato.append(f"{pg - f.paginacao.inicio + 1} página(s) lida(s), {len(itens)} item(ns)")
         self.relatorio.extend(f"{f.nome}: {x}" for x in relato[:10])
         pistas = [Pista(titulo=formatar(f.pista.titulo, i), link=formatar(f.pista.link, i), origem=f.nome,
                         data=str(i["data"]) if i.get("data") else None,   # 08/11/2026: a idade e a publicação também na cadeia
@@ -831,7 +843,8 @@ class MotorCanal(Motor):
             vals = {k: preencher(str(v), hoje) for k, v in zip(chaves, combinacao, strict=True)}
             paginas = range(f.paginacao.inicio, f.paginacao.inicio + f.paginacao.maximo) if f.paginacao else [None]
             for pg in paginas:
-                url = preencher(f.url, hoje, {**vals, **({"pagina": pg} if pg is not None else {})})
+                url = preencher(f.url, hoje, {**vals, **({"pagina": pg, "deslocamento": (pg - f.paginacao.inicio) * f.paginacao.passo}
+                                                          if pg is not None else {})})
                 try:
                     doc = dados_abertos.carregar_json(self.escada.buscar, url, f.json_em)
                 except (Bloqueado, ValueError) as e:
