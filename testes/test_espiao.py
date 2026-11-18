@@ -49,7 +49,10 @@ def test_thompson_e_consulta_aposentada(tmp_path):
     for q in ("call for proposals Brazil civil society 2026", "grants for NGOs in Brazil 2026", "small grants Brazil community organizations 2026",
               "funding opportunity nonprofits Latin America 2026 Brazil eligible", "request for proposals Brazil social projects 2026"):
         e.con.execute("INSERT INTO espiao_consulta VALUES (?, 'internacional_ingles', 3, 0, NULL)", (q.replace("2026", str(__import__("datetime").date.today().year)),))
-    assert e.escolher()[0] != "internacional_ingles"                                                # todas aposentadas: outra família
+    # 17/11/2026 (C-04): a família de língua monta consultas por combinação — com as 5 frases-base aposentadas ela ainda tem
+    # consultas novas; o que não volta é a consulta aposentada
+    aposentadas = {q for (q,) in e.con.execute("SELECT texto FROM espiao_consulta")}
+    assert all(e.escolher()[1] not in aposentadas for _ in range(20))
 
 
 def test_bloqueio_e_ociosidade(tmp_path, bancos):

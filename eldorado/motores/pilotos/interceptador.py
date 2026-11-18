@@ -623,7 +623,9 @@ class Interceptador:
             # 14/11/2026 (R55, I2): o material que a IA não leu (ocupada ou estourou) não se perde — a tentativa é registrada
             # como «ia pendente · abordagem N», que NÃO conta como tentada: no próximo voo o material volta e a IA o lê
             ia_d = ((achado.dados or {}).get("ia") or {}) if achado else {}
-            ferr = f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d) else f"abordagem {n}"
+            # 17/11/2026 (C-17): o tempo esgotado da IA («indisponível») também é pendência — 47 de 367 abordagens em 24 h
+            # contavam como tentadas e o material se perdia
+            ferr = f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d or "indisponivel" in ia_d) else f"abordagem {n}"
             self.diario.emitir("tentativa.registrada", "interceptador", {
                 "livro_id": lv.id, "fase": "preparacao", "ferramenta": ferr, "numero": self._numero(lv.id, ferr), "em": agora(),
                 "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,

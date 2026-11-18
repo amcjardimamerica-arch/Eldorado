@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 12177,
+   "linhas": 12178,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -2448,7 +2448,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 355,
+   "linhas": 358,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
@@ -3145,61 +3145,6 @@
    "ordem": 94
   },
   {
-   "arquivo": "eldorado/motores/acesso/escada.py",
-   "linhas": 322,
-   "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
-   "depende_de": [
-    "eldorado/base/nucleo/eventos.py"
-   ],
-   "eventos": [
-    "dominio.aprendido"
-   ],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/base/cartorio/releitura.py",
-    "eldorado/base/cerebro/pilotos.py",
-    "eldorado/base/cerebro/regencia.py",
-    "eldorado/base/nucleo/comandos.py",
-    "eldorado/motores/acesso/api.py",
-    "eldorado/motores/acesso/arquivo_web.py",
-    "eldorado/motores/acesso/completa.py",
-    "eldorado/motores/acesso/leve.py",
-    "eldorado/motores/acesso/local.py",
-    "eldorado/motores/acesso/navegador.py",
-    "eldorado/motores/acesso/ponte_br.py",
-    "eldorado/motores/canal/motor.py",
-    "eldorado/motores/descoberta/fonte_oficial.py",
-    "eldorado/motores/pilotos/interceptador.py"
-   ],
-   "testes": [
-    "test_acesso.py",
-    "test_cassete.py",
-    "test_descoberta.py",
-    "test_escada_ponte_0511.py",
-    "test_fumaca_dados_reais.py",
-    "test_interceptador.py",
-    "test_interceptador_funciona.py",
-    "test_manutencao_1611.py",
-    "test_motores_bussola_1411.py",
-    "test_parecer_sala_2910.py",
-    "test_pilotos_rotas_1411.py",
-    "test_ponte_br.py",
-    "test_ponte_fallback.py",
-    "test_reanalise_sala_1111.py",
-    "test_sala_coleta_local_1411.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [
-    "eldorado/base/nucleo/eventos.py"
-   ],
-   "critico": false,
-   "metrica": "leituras com sucesso por domínio; degrau usado",
-   "ordem": 95
-  },
-  {
    "arquivo": "eldorado/motores/acesso/rotas_alternativas.py",
    "linhas": 0,
    "finalidade": "Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de páginas.",
@@ -3219,7 +3164,7 @@
    ],
    "critico": false,
    "metrica": "sucesso das reservas",
-   "ordem": 96
+   "ordem": 95
   },
   {
    "arquivo": "eldorado/motores/canal/__init__.py",
@@ -3265,7 +3210,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 97
+   "ordem": 96
   },
   {
    "arquivo": "eldorado/motores/canal/achado.py",
@@ -3285,7 +3230,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "achados completos",
-   "ordem": 98
+   "ordem": 97
   },
   {
    "arquivo": "eldorado/motores/canal/estado.py",
@@ -3318,7 +3263,7 @@
    ],
    "critico": false,
    "metrica": "idade do último aprendizado",
-   "ordem": 99
+   "ordem": 98
   },
   {
    "arquivo": "eldorado/motores/descoberta/__init__.py",
@@ -3352,7 +3297,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 100
+   "ordem": 99
   },
   {
    "arquivo": "eldorado/motores/descoberta/pistas.py",
@@ -3385,7 +3330,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "pistas no formato comum",
-   "ordem": 101
+   "ordem": 100
   },
   {
    "arquivo": "eldorado/motores/descoberta/vigilancia.py",
@@ -3405,7 +3350,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "mudanças detectadas que viraram achado",
-   "ordem": 102
+   "ordem": 101
   },
   {
    "arquivo": "eldorado/motores/leitura/__init__.py",
@@ -3429,7 +3374,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 103
+   "ordem": 102
   },
   {
    "arquivo": "eldorado/motores/leitura/atos.py",
@@ -3451,7 +3396,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 104
+   "ordem": 103
   },
   {
    "arquivo": "eldorado/motores/leitura/enriquecer.py",
@@ -3474,7 +3419,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 105
+   "ordem": 104
   },
   {
    "arquivo": "eldorado/motores/leitura/expurgo.py",
@@ -3494,7 +3439,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "palavras-chave e valores preservados (teste obrigatório)",
-   "ordem": 106
+   "ordem": 105
   },
   {
    "arquivo": "eldorado/motores/leitura/normalizar.py",
@@ -3514,7 +3459,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "campos normalizados por achado",
-   "ordem": 107
+   "ordem": 106
   },
   {
    "arquivo": "ponte/ponte.php",
@@ -3534,7 +3479,7 @@
    "testes": [],
    "linhas": 337,
    "situacao": "em funcionamento",
-   "ordem": 108
+   "ordem": 107
   },
   {
    "arquivo": ".github/workflows/ponte-teste.yml",
@@ -3554,122 +3499,7 @@
    "testes": [],
    "linhas": 46,
    "situacao": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
-   "ordem": 109
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/arquivo_web.py",
-   "linhas": 38,
-   "finalidade": "Degrau 6: a cópia arquivada (Wayback Machine), quando o site está fora do ar ou bloqueou.",
-   "depende_de": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/motores/acesso/completa.py",
-    "eldorado/motores/canal/motor.py",
-    "eldorado/motores/pilotos/interceptador.py"
-   ],
-   "testes": [
-    "test_acesso.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "cópias encontradas",
-   "ordem": 110
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/local.py",
-   "linhas": 50,
-   "finalidade": "Degrau 9: o computador da titular, quando o próprio site bloqueia o acesso remoto.",
-   "depende_de": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/motores/acesso/completa.py",
-    "eldorado/motores/canal/motor.py"
-   ],
-   "testes": [
-    "test_acesso.py",
-    "test_motores_bussola_1411.py",
-    "test_sala_coleta_local_1411.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "pedidos resolvidos localmente",
-   "ordem": 111
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/navegador.py",
-   "linhas": 85,
-   "finalidade": "Degraus 3 a 5: os navegadores, para páginas que só existem depois do JavaScript.",
-   "depende_de": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/base/nucleo/comandos.py",
-    "eldorado/motores/acesso/completa.py",
-    "eldorado/motores/canal/motor.py"
-   ],
-   "testes": [
-    "test_acesso.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "sucesso por degrau",
-   "ordem": 112
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/ponte_br.py",
-   "linhas": 141,
-   "finalidade": "A ponte da HostGator (titular, 25/10/2026): o IP brasileiro para os sites que recusam a nuvem (a CESE, o TJ-GO, o MP-GO,",
-   "depende_de": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/base/nucleo/comandos.py",
-    "eldorado/motores/acesso/api.py",
-    "eldorado/motores/acesso/completa.py",
-    "eldorado/motores/acesso/leve.py",
-    "eldorado/motores/canal/motor.py"
-   ],
-   "testes": [
-    "test_pilotos_rotas_1411.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Coleta: os motores, o canivete suíço e a ponte BR",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "testes verdes e uso registrado",
-   "ordem": 113
+   "ordem": 108
   },
   {
    "arquivo": "eldorado/motores/descoberta/arquivos_web.py",
@@ -3693,7 +3523,7 @@
    ],
    "critico": false,
    "metrica": "endereços históricos encontrados",
-   "ordem": 114
+   "ordem": 109
   },
   {
    "arquivo": "eldorado/motores/descoberta/dados_abertos.py",
@@ -3719,11 +3549,11 @@
    ],
    "critico": false,
    "metrica": "registros novos por fonte",
-   "ordem": 115
+   "ordem": 110
   },
   {
    "arquivo": "eldorado/motores/descoberta/estrutura_site.py",
-   "linhas": 380,
+   "linhas": 382,
    "finalidade": "Forma 3: a estrutura do site: o mapa do site, os feeds (RSS e Atom), a API do WordPress e os links da página.",
    "depende_de": [
     "eldorado/motores/descoberta/pistas.py"
@@ -3753,38 +3583,11 @@
    ],
    "critico": false,
    "metrica": "endereços novos por domínio",
-   "ordem": 116
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/fonte_oficial.py",
-   "linhas": 91,
-   "finalidade": "Seguir até a fonte oficial: na página de DIVULGAÇÃO (notícia, post, agregador), o documento OFICIAL do edital.",
-   "depende_de": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/base/cerebro/pilotos.py",
-    "eldorado/base/comandante/biblioteca.py",
-    "eldorado/motores/canal/motor.py",
-    "eldorado/motores/pilotos/interceptador.py"
-   ],
-   "testes": [],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Coleta: os motores e o canivete suíço",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "testes verdes e uso registrado",
-   "ordem": 117
+   "ordem": 111
   },
   {
    "arquivo": "eldorado/motores/descoberta/metabusca.py",
-   "linhas": 138,
+   "linhas": 141,
    "finalidade": "Forma 1: a metabusca, o canivete de busca: SearXNG (serviço próprio), o DDGS por seis motores (Bing, Brave, Mojeek,",
    "depende_de": [
     "eldorado/motores/descoberta/pistas.py"
@@ -3816,7 +3619,7 @@
    ],
    "critico": false,
    "metrica": "consultas respondidas por rota",
-   "ordem": 118
+   "ordem": 112
   },
   {
    "arquivo": "eldorado/motores/descoberta/subpaginas.py",
@@ -3840,7 +3643,33 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 119
+   "ordem": 113
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/mapa_original.py",
+   "linhas": 95,
+   "finalidade": "O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um site",
+   "depende_de": [
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 114
   },
   {
    "arquivo": "eldorado/motores/acesso/api.py",
@@ -3875,23 +3704,21 @@
    ],
    "critico": false,
    "metrica": "respostas válidas",
-   "ordem": 120
+   "ordem": 115
   },
   {
-   "arquivo": "eldorado/motores/acesso/leve.py",
-   "linhas": 56,
-   "finalidade": "Degrau 2: requisição leve com assinatura de navegador real (TLS e cabeçalhos de um Chrome).",
+   "arquivo": "eldorado/motores/acesso/arquivo_web.py",
+   "linhas": 38,
+   "finalidade": "Degrau 6: a cópia arquivada (Wayback Machine), quando o site está fora do ar ou bloqueou.",
    "depende_de": [
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/acesso/ponte_br.py"
+    "eldorado/motores/acesso/escada.py"
    ],
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
-    "eldorado/base/cartorio/releitura.py",
-    "eldorado/base/nucleo/comandos.py",
     "eldorado/motores/acesso/completa.py",
-    "eldorado/motores/canal/motor.py"
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "testes": [
     "test_acesso.py"
@@ -3901,38 +3728,11 @@
    "parte": "MOTORES",
    "componente": "Ferramentas de acesso (escada de 9 degraus)",
    "ligacoes": [
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/acesso/ponte_br.py"
+    "eldorado/motores/acesso/escada.py"
    ],
    "critico": false,
-   "metrica": "sucesso por domínio",
-   "ordem": 121
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/mapa_original.py",
-   "linhas": 95,
-   "finalidade": "O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um site",
-   "depende_de": [
-    "eldorado/motores/descoberta/estrutura_site.py",
-    "eldorado/motores/descoberta/pistas.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/motores/canal/motor.py"
-   ],
-   "testes": [],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Coleta: os motores e o canivete suíço",
-   "ligacoes": [
-    "eldorado/motores/descoberta/estrutura_site.py",
-    "eldorado/motores/descoberta/pistas.py"
-   ],
-   "critico": false,
-   "metrica": "testes verdes e uso registrado",
-   "ordem": 122
+   "metrica": "cópias encontradas",
+   "ordem": 116
   },
   {
    "arquivo": "eldorado/motores/acesso/completa.py",
@@ -3971,6 +3771,209 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
+   "ordem": 117
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/escada.py",
+   "linhas": 338,
+   "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/acesso/ponte_br.py"
+   ],
+   "eventos": [
+    "dominio.aprendido"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/releitura.py",
+    "eldorado/base/cerebro/pilotos.py",
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/completa.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/acesso/local.py",
+    "eldorado/motores/acesso/navegador.py",
+    "eldorado/motores/acesso/ponte_br.py",
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_acesso.py",
+    "test_cassete.py",
+    "test_descoberta.py",
+    "test_escada_ponte_0511.py",
+    "test_fumaca_dados_reais.py",
+    "test_interceptador.py",
+    "test_interceptador_funciona.py",
+    "test_manutencao_1611.py",
+    "test_motores_bussola_1411.py",
+    "test_parecer_sala_2910.py",
+    "test_pilotos_rotas_1411.py",
+    "test_ponte_br.py",
+    "test_ponte_fallback.py",
+    "test_reanalise_sala_1111.py",
+    "test_sala_coleta_local_1411.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/acesso/ponte_br.py"
+   ],
+   "critico": false,
+   "metrica": "leituras com sucesso por domínio; degrau usado",
+   "ordem": 118
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/local.py",
+   "linhas": 50,
+   "finalidade": "Degrau 9: o computador da titular, quando o próprio site bloqueia o acesso remoto.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/acesso/completa.py",
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py",
+    "test_motores_bussola_1411.py",
+    "test_sala_coleta_local_1411.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "pedidos resolvidos localmente",
+   "ordem": 119
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/navegador.py",
+   "linhas": 85,
+   "finalidade": "Degraus 3 a 5: os navegadores, para páginas que só existem depois do JavaScript.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/acesso/completa.py",
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "sucesso por degrau",
+   "ordem": 120
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/ponte_br.py",
+   "linhas": 141,
+   "finalidade": "A ponte da HostGator (titular, 25/10/2026): o IP brasileiro para os sites que recusam a nuvem (a CESE, o TJ-GO, o MP-GO,",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/completa.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_pilotos_rotas_1411.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores, o canivete suíço e a ponte BR",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 121
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/fonte_oficial.py",
+   "linhas": 91,
+   "finalidade": "Seguir até a fonte oficial: na página de DIVULGAÇÃO (notícia, post, agregador), o documento OFICIAL do edital.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/pilotos.py",
+    "eldorado/base/comandante/biblioteca.py",
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 122
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/leve.py",
+   "linhas": 56,
+   "finalidade": "Degrau 2: requisição leve com assinatura de navegador real (TLS e cabeçalhos de um Chrome).",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/ponte_br.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/releitura.py",
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/acesso/completa.py",
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/ponte_br.py"
+   ],
+   "critico": false,
+   "metrica": "sucesso por domínio",
    "ordem": 123
   },
   {
@@ -4002,7 +4005,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 1220,
+   "linhas": 1238,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/missao/regras_portao.py",
@@ -5097,6 +5100,7 @@
     "test_interceptador_funciona.py",
     "test_interceptador_melhorias.py",
     "test_interceptador_rotas_1411.py",
+    "test_manutencao_1611.py",
     "test_parecer_sala_2910.py",
     "test_pilotos_aprendizado.py",
     "test_pilotos_no_painel.py",
@@ -5114,7 +5118,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "linhas": 468,
+   "linhas": 513,
    "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
    "depende_de": [
     "eldorado/banco/cerebro_db/esquema.py",
@@ -5132,6 +5136,7 @@
    ],
    "testes": [
     "test_espiao.py",
+    "test_manutencao_1611.py",
     "test_pilotos_rotas_1411.py"
    ],
    "situacao": "em funcionamento",
@@ -5199,7 +5204,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 703,
+   "linhas": 705,
    "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
    "depende_de": [
     "eldorado/base/cartorio/migrados.py",
@@ -7264,7 +7269,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/ciclo_pilotos.py",
-   "linhas": 257,
+   "linhas": 263,
    "finalidade": "O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetros de",
    "depende_de": [
     "eldorado/base/cerebro/aprendizado.py",

@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import re
 import tomllib
+import unicodedata
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable, Literal
@@ -394,6 +395,14 @@ def _datar_pela_pagina(pista: Pista, html: bytes | str | None) -> None:
         pista.data, pista.extra = data, {**(pista.extra or {}), "data_lida_na_pagina": True}
 
 
+def orgao_real(orgao: str | None, motor: str) -> str | None:
+    """17/11/2026 (C-11): o órgão do achado nunca é o nome do próprio motor — nos agregadores o alvo traz o site como órgão
+    e o livro nascia com o agregador no lugar do financiador (13 livros). Sem o financiador, o órgão fica vazio."""
+    if not orgao:
+        return None
+    sa = lambda t: unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower().split("—")[0].strip()  # noqa: E731
+    return None if sa(orgao).startswith(sa(motor)) or sa(motor).startswith(sa(orgao)) else orgao
+
 def _prazo_estruturado_vigente(pista) -> bool:
     """17/11/2026 (relatório de aprendizado de 16/11): o prazo que a própria fonte informa (o fim da inscrição na API, em
     pista.extra["fim"]) vale antes do texto — o Agente Cultural tinha 2 chamamentos de Goiás abertos e não entregava nenhum,
@@ -760,7 +769,15 @@ class MotorCanal(Motor):
         if f.tipo == "mapa":
             return estrutura_site.mapa_do_site(buscar, f.url)
         if f.tipo == "wordpress":
-            return estrutura_site.wordpress(buscar, f.url, f.termos)
+            try:
+                return estrutura_site.wordpress(buscar, f.url, f.termos)
+            except ValueError as e:
+                # 17/11/2026 (C-10): a API do WordPress que responde sem JSON (página de erro, bloqueio, site que deixou de ser
+                # WordPress) cai, na mesma leitura, para os links da página inicial do site — e fica registrado
+                from urllib.parse import urlsplit
+                raiz = "{0.scheme}://{0.netloc}/".format(urlsplit(f.url))
+                self.relatorio.append(f"{f.nome}: a API do WordPress respondeu sem JSON ({str(e)[:80]}); lida a página {raiz}")
+                return estrutura_site.links(buscar, raiz, True, None)
         if f.tipo == "ckan":
             return dados_abertos.ckan(buscar, f.url, f.termos or "")
         if f.tipo == "api":
@@ -1171,9 +1188,10 @@ class MotorCanal(Motor):
         titulo = pista.titulo
         if TITULO_GENERICO.search(titulo or "") or (pista.extra or {}).get("titulo_do_endereco"):   # 08/11: do próprio documento
             titulo = _titulo_do_documento(documento) or titulo
+        org = orgao_real(m.orgao, self.cfg.motor.nome)   # C-11: o órgão nunca é o próprio motor
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
                       titulo=titulo[:300], publicado_em=_data_iso(pista.data),
-                      dados={"uf": m.uf, "orgao": m.orgao, **{k: v for k, v in pista.extra.items() if k != "documento_texto"}, "fonte": fonte.nome,
+                      dados={"uf": m.uf, "orgao": org, **{k: v for k, v in pista.extra.items() if k != "documento_texto"}, "fonte": fonte.nome,
                              "origem": pista.origem,
                              **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),
                              **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),

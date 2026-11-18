@@ -138,6 +138,15 @@ def ler_aprendido(dados) -> dict[str, int]:
 RESUBIR_PENDENTE_H = 168.0   # 14/11/2026 (R56, S5): a escada inteira, para o site de coleta local, uma vez por semana (eram 6 h)
 
 
+
+def na_lista_da_ponte(url: str) -> bool:
+    """17/11/2026 (C-09): o domínio está na lista da ponte BR (config/ponte_dominios.txt e config/ponte_base.txt)."""
+    from urllib.parse import urlsplit
+
+    from .ponte_br import dominios_da_ponte
+    h = (urlsplit(url).hostname or "").lower()
+    return any(h == d or h.endswith("." + d) for d in dominios_da_ponte())
+
 def ler_pendentes(dados) -> dict[str, float]:
     """Os domínios que terminaram a escada pendentes no computador da titular (o Cérebro: a tabela dominio), domínio → a
     hora da última subida inteira (segundos desde a época)."""
@@ -212,7 +221,9 @@ class Escada:
         atalho = (local is not None and desde is not None and corpo is None and 0 <= self.relogio() - desde < RESUBIR_PENDENTE_H * 3600
                   and os.environ.get("ELDORADO_FORCAR") != "1" and not servico_local(url))
         if atalho:
-            ordem = [local]
+            # 17/11/2026 (C-09): o domínio pendente que está na lista da ponte tenta a ponte antes do degrau local (o atalho
+            # reduzia a escada ao computador da titular e a ponte nunca era tentada: 64 domínios da lista entre os 187 pendentes)
+            ordem = [ponte, local] if ponte is not None and na_lista_da_ponte(url) else [local]
         for i in ordem:
             d = self.degraus[i]
             if d.pesado and self.governador is not None and not self.governador.pode_iniciar(f"degrau:{d.nome}", "pesado"):
@@ -288,7 +299,9 @@ class Escada:
 
     def degrau_maximo(self) -> int | None:
         """O código canônico do degrau mais alto que esta escada precisou usar (para a Sala: o Camoufox está em uso?)."""
-        usados = [codigo(self.degraus[i]) for i in set(self.aprendido.values()) if 0 <= i < len(self.degraus)]
+        # 17/11/2026 (C-12): só os degraus usados nesta execução — o aprendido traz os domínios semeados da memória (5.656 de
+        # 5.816 execuções marcavam «Wayback» sem o ter usado)
+        usados = [codigo(self.degraus[i]) for i in getattr(self, "_usados", set()) if 0 <= i < len(self.degraus)]
         usados = [u for u in usados if u is not None]
         return max(usados, key=ORDEM_CANONICA.index) if usados else None
 
@@ -299,6 +312,9 @@ class Escada:
 
     def _aprender(self, dom: str, i: int, exige_local: bool = False) -> None:
         self.aprendido[dom] = i
+        if not hasattr(self, "_usados"):
+            self._usados: set[int] = set()
+        self._usados.add(i)                       # C-12: os degraus usados NESTA execução
         if self.diario:
             # 29/10/2026: grava o CÓDIGO canônico do degrau (cada escada tem a sua lista; a posição não serve a outra)
             dados = {"dominio": dom, "degrau_que_funciona": codigo(self.degraus[i]) if 0 <= i < len(self.degraus) else i,

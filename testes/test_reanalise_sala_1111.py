@@ -251,7 +251,8 @@ def test_o_dominio_pendente_nao_sobe_a_escada_a_cada_fonte(tmp_path, monkeypatch
     hora["t"] += 60
     with pytest.raises(Pendente) as x:                                   # a segunda: direto ao computador da titular
         e.buscar("https://acesso.luziania.go.gov.br/b")
-    assert "já entregue" in str(x.value) and api.chamado == 1 and ponte.chamado == 1 and local.chamado == 2
+    # 17/11/2026 (C-09): o domínio na lista da ponte tenta a ponte antes do computador — e não sobe a escada (a API não volta)
+    assert "já entregue" in str(x.value) and api.chamado == 1 and ponte.chamado == 2 and local.chamado == 2
     assert len([v for v in ler(tmp_path / "ev") if v.tipo == "dominio.aprendido"]) == 1     # a hora da subida não é renovada
     with pytest.raises(Pendente):                                        # outro domínio sobe a escada normalmente
         e.buscar("https://outro.go.gov.br/a")

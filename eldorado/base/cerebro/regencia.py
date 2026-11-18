@@ -183,8 +183,11 @@ class Regencia:
                         PENDENTES_DO_DIA.get(_hoje(), set()).discard(modulo)
                     esc_ = getattr(mot_, "escada", None)
                     rel = list(getattr(mot_, "relatorio", []) or [])
+                    barrados_ = sum((getattr(mot_, "_barradas_na_entrada", None) or {}).values())   # C-12
                     self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
                                                                       "erro": med.erro or None, **_telemetria(rel),
+                                                                      # C-12: os contadores (estavam vazios)
+                                                                      "aceitos": len(lista), "barrados": barrados_,
                                                                       "degrau_maximo": esc_.degrau_maximo() if esc_ is not None else None})
                     for a in lista:
                         if (a.dados or {}).get("especial"):              # empresa e incentivo: à base Especial, não à Pertinência

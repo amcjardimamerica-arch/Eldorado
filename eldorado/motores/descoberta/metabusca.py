@@ -8,6 +8,7 @@ O SearXNG e o Marginalia passam pela escada de acesso; o ddgs é uma biblioteca 
 from __future__ import annotations
 
 import json
+import re
 import time
 from dataclasses import dataclass, field
 from typing import Any
@@ -77,7 +78,9 @@ class Metabusca:
                     relato.append(f"{rota}: pendente, tenta na próxima")
                     continue
                 self._descansar(rota)
-                relato.append(f"{rota}: falhou ({type(e).__name__}); descansa {int(self._descansando[rota] - self.relogio()) // 60} min")
+                # 17/11/2026 (C-05): a mensagem do erro também (só o tipo não deixava confirmar a causa)
+                msg = re.sub(r"[\s;]+", " ", str(e))[:90]
+                relato.append(f"{rota}: falhou ({type(e).__name__}: {msg}); descansa {int(self._descansando[rota] - self.relogio()) // 60} min")
                 continue
             self._falhas.pop(rota, None)                         # respondeu: o descanso volta ao começo
             novas = 0

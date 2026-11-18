@@ -78,7 +78,7 @@ def test_o_disjuntor_da_forma_validada_vai_direto_a_reserva(monkeypatch):
 
 def test_o_material_que_a_ia_nao_leu_volta_no_proximo_voo():
     fonte = inspect.getsource(M.Interceptador.investigar)
-    assert 'f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d)' in fonte
+    assert 'f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d or "indisponivel" in ia_d)' in fonte   # C-17
     assert "WHERE fase='preparacao' AND ferramenta LIKE 'abordagem %'" in inspect.getsource(M.fila)   # a pendente não conta
 
 

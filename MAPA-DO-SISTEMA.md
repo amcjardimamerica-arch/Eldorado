@@ -144,35 +144,35 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 92 | `eldorado/base/motor_modelo/__init__.py` |  | pacote |  |  | 0 |
 | 93 | `eldorado/motores/__init__.py` |  | pacote |  |  | 57 |
 | 94 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 16 |
-| 95 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | releitura, pilotos, regencia, comandos, api, arquivo_web, completa, leve, local, navegador, ponte_br, motor, fonte_ofici | 15 |
-| 96 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | a construir |  |  | 0 |
-| 97 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 27 |
-| 98 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
-| 99 | `eldorado/motores/canal/estado.py` | O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O mot | em funcionamento | esquema, eventos, gravador | consolidar, dados, motor | 2 |
-| 100 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 15 |
-| 101 | `eldorado/motores/descoberta/pistas.py` | O formato comum das cinco formas de descoberta: a pista (título, link, data, de onde veio). | em funcionamento |  | motor, arquivos_web, dados_abertos, estrutura_site, mapa_original, metabusca, subpaginas | 6 |
-| 102 | `eldorado/motores/descoberta/vigilancia.py` | Forma 5: a vigilância: só segue quando a página mudou. | em funcionamento |  | motor | 0 |
-| 103 | `eldorado/motores/leitura/__init__.py` |  | pacote |  |  | 5 |
-| 104 | `eldorado/motores/leitura/atos.py` | O recorte dos atos (canivete suíço): a edição inteira de um diário em PDF ou texto → um ato por cabeçalho. | em funcionamento |  | cadeia | 1 |
-| 105 | `eldorado/motores/leitura/enriquecer.py` | O enriquecimento de cada achado (o canivete do motor padrão; plano C, as ferramentas adotadas): o que o texto  | em funcionamento |  | encaminhamento, motor | 1 |
-| 106 | `eldorado/motores/leitura/expurgo.py` | O expurgo seguro: tira só o que se repete na faixa do cabeçalho e do rodapé (pela posição na página). | em funcionamento |  | pdf | 0 |
-| 107 | `eldorado/motores/leitura/normalizar.py` | A normalização: datas, valores, números por extenso e CNPJ, a partir do texto literal. | em funcionamento |  | auditoria | 0 |
-| 108 | `ponte/ponte.php` | PONTE BRASIL do Eldorado (25/10/2026): a mesma ponte do Eldorado0, com os domínios de TODOS os motores do sist | em funcionamento |  | ponte_br | 0 |
-| 109 | `.github/workflows/ponte-teste.yml` | name: Ponte BR (teste) Testa a ponte da HostGator (o IP brasileiro) com os sites que recusam a nuvem (25/10/20 | o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início) | __init__ |  | 0 |
-| 110 | `eldorado/motores/acesso/arquivo_web.py` | Degrau 6: a cópia arquivada (Wayback Machine), quando o site está fora do ar ou bloqueou. | em funcionamento | escada | completa, motor, interceptador | 1 |
-| 111 | `eldorado/motores/acesso/local.py` | Degrau 9: o computador da titular, quando o próprio site bloqueia o acesso remoto. | em funcionamento | escada | completa, motor | 3 |
-| 112 | `eldorado/motores/acesso/navegador.py` | Degraus 3 a 5: os navegadores, para páginas que só existem depois do JavaScript. | em funcionamento | escada | comandos, completa, motor | 1 |
-| 113 | `eldorado/motores/acesso/ponte_br.py` | A ponte da HostGator (titular, 25/10/2026): o IP brasileiro para os sites que recusam a nuvem (a CESE, o TJ-GO | em funcionamento | escada | comandos, api, completa, leve, motor | 1 |
-| 114 | `eldorado/motores/descoberta/arquivos_web.py` | Forma 4: os arquivos da web: o índice da Wayback Machine lista as URLs já vistas de um domínio (inclusive edit | em funcionamento | pistas | motor | 0 |
-| 115 | `eldorado/motores/descoberta/dados_abertos.py` | Forma 2: os dados abertos: as APIs oficiais (pela configuração de cada motor) e os portais CKAN (dados.gov.br  | em funcionamento | pistas | motor | 1 |
-| 116 | `eldorado/motores/descoberta/estrutura_site.py` | Forma 3: a estrutura do site: o mapa do site, os feeds (RSS e Atom), a API do WordPress e os links da página. | em funcionamento | pistas | motor, cadeia, mapa_original, interceptador | 6 |
-| 117 | `eldorado/motores/descoberta/fonte_oficial.py` | Seguir até a fonte oficial: na página de DIVULGAÇÃO (notícia, post, agregador), o documento OFICIAL do edital. | em funcionamento | escada | pilotos, biblioteca, motor, interceptador | 0 |
-| 118 | `eldorado/motores/descoberta/metabusca.py` | Forma 1: a metabusca, o canivete de busca: SearXNG (serviço próprio), o DDGS por seis motores (Bing, Brave, Mo | em funcionamento | pistas | encaminhamento, pilotos, pilotos_permanentes, pilotos, motor, espiao | 6 |
-| 119 | `eldorado/motores/descoberta/subpaginas.py` | As subpáginas novas do domínio (titular, 08/11/2026 — R49: a segunda etapa de cada local de busca). | em funcionamento | pistas | motor | 0 |
-| 120 | `eldorado/motores/acesso/api.py` | Degrau 1: as APIs oficiais (DOU, PNCP, Querido Diário, Transferegov, Câmara, Senado, WordPress, CKAN) com o ht | em funcionamento | escada, ponte_br | releitura, comandos, completa, motor | 5 |
-| 121 | `eldorado/motores/acesso/leve.py` | Degrau 2: requisição leve com assinatura de navegador real (TLS e cabeçalhos de um Chrome). | em funcionamento | escada, ponte_br | releitura, comandos, completa, motor | 1 |
-| 122 | `eldorado/motores/descoberta/mapa_original.py` | O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um si | em funcionamento | estrutura_site, pistas | motor | 0 |
-| 123 | `eldorado/motores/acesso/completa.py` | A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10 | em funcionamento | api, arquivo_web, escada, leve, local, navegador, ponte_br | encaminhamento | 2 |
+| 95 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | a construir |  |  | 0 |
+| 96 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 27 |
+| 97 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
+| 98 | `eldorado/motores/canal/estado.py` | O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O mot | em funcionamento | esquema, eventos, gravador | consolidar, dados, motor | 2 |
+| 99 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 15 |
+| 100 | `eldorado/motores/descoberta/pistas.py` | O formato comum das cinco formas de descoberta: a pista (título, link, data, de onde veio). | em funcionamento |  | motor, arquivos_web, dados_abertos, estrutura_site, mapa_original, metabusca, subpaginas | 6 |
+| 101 | `eldorado/motores/descoberta/vigilancia.py` | Forma 5: a vigilância: só segue quando a página mudou. | em funcionamento |  | motor | 0 |
+| 102 | `eldorado/motores/leitura/__init__.py` |  | pacote |  |  | 5 |
+| 103 | `eldorado/motores/leitura/atos.py` | O recorte dos atos (canivete suíço): a edição inteira de um diário em PDF ou texto → um ato por cabeçalho. | em funcionamento |  | cadeia | 1 |
+| 104 | `eldorado/motores/leitura/enriquecer.py` | O enriquecimento de cada achado (o canivete do motor padrão; plano C, as ferramentas adotadas): o que o texto  | em funcionamento |  | encaminhamento, motor | 1 |
+| 105 | `eldorado/motores/leitura/expurgo.py` | O expurgo seguro: tira só o que se repete na faixa do cabeçalho e do rodapé (pela posição na página). | em funcionamento |  | pdf | 0 |
+| 106 | `eldorado/motores/leitura/normalizar.py` | A normalização: datas, valores, números por extenso e CNPJ, a partir do texto literal. | em funcionamento |  | auditoria | 0 |
+| 107 | `ponte/ponte.php` | PONTE BRASIL do Eldorado (25/10/2026): a mesma ponte do Eldorado0, com os domínios de TODOS os motores do sist | em funcionamento |  | ponte_br | 0 |
+| 108 | `.github/workflows/ponte-teste.yml` | name: Ponte BR (teste) Testa a ponte da HostGator (o IP brasileiro) com os sites que recusam a nuvem (25/10/20 | o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início) | __init__ |  | 0 |
+| 109 | `eldorado/motores/descoberta/arquivos_web.py` | Forma 4: os arquivos da web: o índice da Wayback Machine lista as URLs já vistas de um domínio (inclusive edit | em funcionamento | pistas | motor | 0 |
+| 110 | `eldorado/motores/descoberta/dados_abertos.py` | Forma 2: os dados abertos: as APIs oficiais (pela configuração de cada motor) e os portais CKAN (dados.gov.br  | em funcionamento | pistas | motor | 1 |
+| 111 | `eldorado/motores/descoberta/estrutura_site.py` | Forma 3: a estrutura do site: o mapa do site, os feeds (RSS e Atom), a API do WordPress e os links da página. | em funcionamento | pistas | motor, cadeia, mapa_original, interceptador | 6 |
+| 112 | `eldorado/motores/descoberta/metabusca.py` | Forma 1: a metabusca, o canivete de busca: SearXNG (serviço próprio), o DDGS por seis motores (Bing, Brave, Mo | em funcionamento | pistas | encaminhamento, pilotos, pilotos_permanentes, pilotos, motor, espiao | 6 |
+| 113 | `eldorado/motores/descoberta/subpaginas.py` | As subpáginas novas do domínio (titular, 08/11/2026 — R49: a segunda etapa de cada local de busca). | em funcionamento | pistas | motor | 0 |
+| 114 | `eldorado/motores/descoberta/mapa_original.py` | O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um si | em funcionamento | estrutura_site, pistas | motor | 0 |
+| 115 | `eldorado/motores/acesso/api.py` | Degrau 1: as APIs oficiais (DOU, PNCP, Querido Diário, Transferegov, Câmara, Senado, WordPress, CKAN) com o ht | em funcionamento | escada, ponte_br | releitura, comandos, completa, motor | 5 |
+| 116 | `eldorado/motores/acesso/arquivo_web.py` | Degrau 6: a cópia arquivada (Wayback Machine), quando o site está fora do ar ou bloqueou. | em funcionamento | escada | completa, motor, interceptador | 1 |
+| 117 | `eldorado/motores/acesso/completa.py` | A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10 | em funcionamento | api, arquivo_web, escada, leve, local, navegador, ponte_br | encaminhamento | 2 |
+| 118 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos, ponte_br | releitura, pilotos, regencia, comandos, api, arquivo_web, completa, leve, local, navegador, ponte_br, motor, fonte_ofici | 15 |
+| 119 | `eldorado/motores/acesso/local.py` | Degrau 9: o computador da titular, quando o próprio site bloqueia o acesso remoto. | em funcionamento | escada | completa, motor | 3 |
+| 120 | `eldorado/motores/acesso/navegador.py` | Degraus 3 a 5: os navegadores, para páginas que só existem depois do JavaScript. | em funcionamento | escada | comandos, completa, motor | 1 |
+| 121 | `eldorado/motores/acesso/ponte_br.py` | A ponte da HostGator (titular, 25/10/2026): o IP brasileiro para os sites que recusam a nuvem (a CESE, o TJ-GO | em funcionamento | escada | comandos, api, completa, escada, leve, motor | 1 |
+| 122 | `eldorado/motores/descoberta/fonte_oficial.py` | Seguir até a fonte oficial: na página de DIVULGAÇÃO (notícia, post, agregador), o documento OFICIAL do edital. | em funcionamento | escada | pilotos, biblioteca, motor, interceptador | 0 |
+| 123 | `eldorado/motores/acesso/leve.py` | Degrau 2: requisição leve com assinatura de navegador real (TLS e cabeçalhos de um Chrome). | em funcionamento | escada, ponte_br | releitura, comandos, completa, motor | 1 |
 | 124 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 2 |
 | 125 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | regras_portao, contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, subpaginas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (bussola-social); config/modulos.toml (camara-goiania-pl); config/mo | 24 |
 | 126 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | estrutura_site, atos, leitores | motor | 0 |
@@ -219,8 +219,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 155 | `eldorado/motores/pilotos/__init__.py` |  | pacote |  |  | 15 |
-| 156 | `eldorado/motores/pilotos/espiao.py` | O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança. | em funcionamento | esquema, ciclo_pilotos, cartorio, descartes, contratos, metabusca | consolidar, pilotos | 2 |
+| 155 | `eldorado/motores/pilotos/__init__.py` |  | pacote |  |  | 16 |
+| 156 | `eldorado/motores/pilotos/espiao.py` | O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança. | em funcionamento | esquema, ciclo_pilotos, cartorio, descartes, contratos, metabusca | consolidar, pilotos | 3 |
 | 157 | `eldorado/motores/pilotos/extratores.py` | Os extratores determinísticos do Interceptador (titular, 01/11/2026: a melhoria 1 do diagnóstico). | em funcionamento |  | interceptador | 1 |
 | 158 | `eldorado/motores/pilotos/otimizacao.py` | A otimização das instruções dos pilotos (plano C: DSPy): a partir das certidões já validadas no banco (o item, | em funcionamento | ia | comandos, ia | 0 |
 | 159 | `eldorado/motores/pilotos/interceptador.py` | O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova". | em funcionamento | migrados, origem, pilotos_permanentes, cartorio, itens, regras_portao, contratos, eventos, ia, arquivo_web, escada, estrutura_site, fonte_oficial, leitores, pdf, extratores | encaminhamento, pilotos_permanentes, rede, cartorio | 10 |

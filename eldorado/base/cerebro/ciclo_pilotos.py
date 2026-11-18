@@ -32,6 +32,8 @@ A_CADA = 100
 RAIZ = Path(__file__).resolve().parents[3]
 
 
+AMOSTRA_MINIMA = 20   # 17/11/2026 (C-04): livros julgados para o fator real da família sair do neutro
+
 def resultado_real(bib: sqlite3.Connection, raiz: Path = RAIZ) -> dict[str, str]:
     """livro → «acerto» ou «erro» (a mesma régua da pontuação dos motores); os livros em curso ficam de fora."""
     from .pontuacao_motores import REAIS, _vereditos
@@ -70,8 +72,12 @@ def avaliar_espiao(bib: sqlite3.Connection, cer: sqlite3.Connection, raiz: Path 
     for f in set(fam) | set(usos):
         x = fam[f]
         taxa = (x["acertos"] + 1) / (x["acertos"] + x["erros"] + 2)            # a taxa real (com o anteparo de Laplace)
+        # 17/11/2026 (C-04): o fator real só sai do neutro com AMOSTRA_MINIMA livros julgados (3 acertos em 7 livros levavam
+        # a família ao teto 3,0 e ela dominava o sorteio)
+        julgados = x["acertos"] + x["erros"]
+        fator = round(min(3.0, max(0.1, taxa / media)), 3) if julgados >= AMOSTRA_MINIMA else 1.0
         familias[f] = {**x, "missoes": usos.get(f, (0, 0))[0], "candidatos": usos.get(f, (0, 0))[1],
-                       "taxa_real": round(taxa, 3), "fator_real": round(min(3.0, max(0.1, taxa / media)), 3)}
+                       "taxa_real": round(taxa, 3), "fator_real": fator, "julgados": julgados}
     aposentar = sorted(q for q, x in cons.items() if x["erros"] >= 3 and not x["acertos"])
     ordem = sorted(familias, key=lambda f: -familias[f]["fator_real"])
     return {"familias": familias, "media_real": round(media, 3), "aposentar": aposentar,

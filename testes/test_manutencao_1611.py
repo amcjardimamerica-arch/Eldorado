@@ -126,3 +126,67 @@ def test_o_ato_legislativo_vai_a_tabela_de_leis_e_so_a_oportunidade_vira_livro()
     assert ato_legislativo(ch) is None
     outro = Achado(id="c3", motor="site-capta", encontrado_em="2026-11-17", link_divulgacao="https://x", link_oficial=None, titulo="PL 1/2026", dados={})
     assert ato_legislativo(outro) is None
+
+
+def test_a_rota_sem_resposta_em_24h_fica_fora_do_ar(tmp_path):
+    """C-05: as 4 rotas mortas eram tentadas a cada 2 minutos (702 a 716 falhas em 3 dias); fora do ar, uma vez por turno."""
+    import json
+    import random
+    from datetime import datetime, timezone
+
+    from eldorado.motores.pilotos.espiao import FORA_DO_AR_MIN, Espiao
+    e = Espiao(tmp_path / "c.db", lambda q: ([], []), lambda u: None, rnd=random.Random(1))
+    agora = datetime.now(timezone.utc).isoformat()
+    for _ in range(6):
+        e.con.execute("INSERT INTO espiao_missao(em, familia, consulta, resultados, candidatos, achados, motivos, rotas, bloqueada) "
+                      "VALUES (?, 'f', 'q', 0, 0, 0, '{}', ?, 0)", (agora, json.dumps(["ddgs-brave: falhou (Erro: x); descansa 2 min",
+                                                                                     "searxng: 3 pista(s), 3 nova(s)"])))
+    assert e.fora_do_ar("ddgs-brave") and not e.fora_do_ar("searxng") and FORA_DO_AR_MIN == 360
+
+
+def test_dominio_pendente_na_lista_da_ponte_tenta_a_ponte_antes_do_local():
+    """C-09: o atalho do domínio pendente pulava a ponte (64 domínios da lista entre os 187 pendentes)."""
+    import inspect
+
+    from eldorado.motores.acesso import escada
+    assert escada.na_lista_da_ponte("https://www.tjgo.jus.br/x") is escada.na_lista_da_ponte("https://tjgo.jus.br/x")
+    assert not escada.na_lista_da_ponte("https://exemplo-que-nao-esta-na-lista.org/")
+    assert "ordem = [ponte, local] if ponte is not None and na_lista_da_ponte(url) else [local]" in inspect.getsource(escada)
+
+
+def test_api_do_wordpress_sem_json_cai_para_a_pagina():
+    """C-10: a resposta que não é a lista de publicações (HTML ou objeto de erro) faz a fonte ler a página do site."""
+    import inspect
+    import json
+
+    import pytest
+
+    from eldorado.motores.acesso.escada import Resposta
+    from eldorado.motores.canal import motor
+    from eldorado.motores.descoberta.estrutura_site import wordpress
+    for corpo in (b"<html>erro</html>", json.dumps({"code": "rest_disabled"}).encode()):
+        with pytest.raises(ValueError):
+            wordpress(lambda u, c=corpo: Resposta(u, 200, c, "text/html"), "https://x.org/wp-json/wp/v2/posts")
+    assert "a API do WordPress respondeu sem JSON" in inspect.getsource(motor)
+
+
+def test_o_orgao_nunca_e_o_nome_do_proprio_motor():
+    """C-11: nos agregadores o livro nascia com o site no lugar do financiador (13 livros)."""
+    from eldorado.motores.canal.motor import orgao_real
+    assert orgao_real("Bússola Social — Bússola Editais", "Bússola Social") is None
+    assert orgao_real("Fundação Banco do Brasil", "Bússola Social") == "Fundação Banco do Brasil" and orgao_real(None, "x") is None
+
+
+def test_o_degrau_maximo_conta_so_os_degraus_usados_nesta_execucao():
+    """C-12: o degrau máximo vinha dos domínios semeados da memória (Wayback em 5.656 de 5.816 execuções)."""
+    from eldorado.motores.acesso.escada import Escada
+
+    class D:
+        def __init__(self, nome):
+            self.nome, self.pesado = nome, False
+    e = Escada([D("1 · api"), D("7 · Wayback")], intervalo_padrao=0)
+    e.aprendido["semeado.org"] = 1                       # a memória semeada não conta
+    assert e.degrau_maximo() is None
+    e._aprender("lido.org", 0)
+    from eldorado.motores.acesso.escada import codigo
+    assert e.degrau_maximo() == codigo(e.degraus[0])

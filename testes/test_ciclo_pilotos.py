@@ -19,8 +19,8 @@ def _bancos(n_missoes=120):
     b.executescript("CREATE TABLE achado(dados TEXT, livro_id TEXT, motor TEXT);"
                     "CREATE TABLE livro(id TEXT, situacao TEXT); CREATE TABLE passaporte(livro_id TEXT, fase TEXT);"
                     "CREATE TABLE tentativa(ferramenta TEXT, resultado TEXT);")
-    for i in range(6):
-        boa = i < 3
+    for i in range(40):        # 17/11/2026 (C-04): 40 livros julgados — o fator real exige a amostra mínima de 20 por família
+        boa = i < 20
         b.execute("INSERT INTO achado VALUES (?,?,'espiao')", (json.dumps({"familia": "boa" if boa else "ruim", "consulta": f"q{i % 2}{boa}"}), f"L{i}"))
         b.execute("INSERT INTO livro VALUES (?,?)", (f"L{i}", "aguardando" if boa else "excluido"))
         b.execute("INSERT INTO passaporte VALUES (?,?)", (f"L{i}", "farol" if boa else "arquivo"))

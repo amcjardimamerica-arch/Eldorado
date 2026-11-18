@@ -241,7 +241,7 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:chamada|edital|inscri[çc][õo]es abertas|sele[çc][ãa]o|apresenta[çc][ãa]o de projetos|programa|apoio a projetos"]
-vetos = ["re:resultado|selecionad|ler ?mais|e-?mail|@|bolsa fam|fies|p[ée]-de-meia|integridade", "re:notifica[çc][ãa]o|intima[çc][ãa]o|^edital de \\d+ de \\w+ de \\d{4}$", "re:\\b(pregao|concorrencia|convite|tomada de precos|leilao|registro de precos|aquisicao|contratacao de empresa|credenciamento de (fornecedor|profissionais|guias)|instrutor|programacao|semana s)\\b"]
+vetos = ["re:resultado|selecionad|ler ?mais|e-?mail|@|bolsa fam|fies|p[ée]-de-meia|integridade", "re:notifica[çc][ãa]o|intima[çc][ãa]o|^edital de \\d+ de \\w+ de \\d{4}$", "re:\\b(pregao|concorrencia|convite|tomada de precos|leilao|registro de precos|aquisicao|contratacao de empresa|credenciamento de (fornecedor|profissionais|guias)|instrutor|programacao|semana s)\\b", "re:\\b(cursos?|matr[ií]culas?|inscri[çc][õo]es para (o )?curso|aprendizagem|t[ée]cnico em|qualifica[çc][ãa]o profissional|ead|turmas?)\\b"]
 termos_em = "titulo"
 
 # 08/11/2026 (parecer: um edital de 2018 aceito em 2026): a pista com data de mais de um ano não entra.
@@ -251,7 +251,7 @@ vetos_endereco = ["re:/licitac", "re:/eventos/", "re:/curso_evento/", "re:/curso
 exige_prazo = true
 
 [aprendizado]
-licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 24, grupo «Sistema S e bancos públicos»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão novo-bancos-publicos.", "14/11/2026 (análise externa em 3 grupos, pelo Claude no Chrome): 372 livros: 0 válidos, 2 encerradas, 370 descartes — vetos +1; salvos +1; vetos_endereco +5; exige_prazo=True; idade_maxima_dias=180; fontes -2"]
+licoes = ["09/11/2026: organização dos 43 motores (titular) — motor 24, grupo «Sistema S e bancos públicos»", "09/11/2026: motor criado na organização dos 43 motores (titular); as seções técnicas vieram do motor irmão novo-bancos-publicos.", "14/11/2026 (análise externa em 3 grupos, pelo Claude no Chrome): 372 livros: 0 válidos, 2 encerradas, 370 descartes — vetos +1; salvos +1; vetos_endereco +5; exige_prazo=True; idade_maxima_dias=180; fontes -2", "17/11/2026 (C-11): 3 úteis em 403 — os cursos também vetados (licitação e instrutor já estavam)"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://scf3.sebrae.com.br/PortalCf/Licitacoes — retirada em 14/11/2026 (a análise externa em 3 grupos: só trouxe compras ou páginas institucionais)", "https://www3.sescgo.com.br/licitacoes — retirada em 14/11/2026 (a análise externa em 3 grupos: só trouxe compras ou páginas institucionais)"]

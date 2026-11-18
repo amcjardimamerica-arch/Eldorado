@@ -141,6 +141,8 @@ def wordpress(buscar: Buscar, api: str, busca: str | None = None, por_pagina: in
     if busca:
         url += f"&search={quote(busca)}"
     itens = json_tolerante(buscar(url).conteudo)
+    if not isinstance(itens, list):        # 17/11/2026 (C-10): o objeto de erro da API ({"code": ...}) não é a lista de publicações
+        raise ValueError(f"a API do WordPress respondeu sem a lista de publicações ({str(itens)[:80]})")
     return [Pista(titulo=_texto(i.get("title")), link=i.get("link", ""), origem="API do WordPress", data=i.get("date"),
                   resumo=_texto(i.get("excerpt"))[:500]) for i in itens if i.get("link")]
 

@@ -133,6 +133,17 @@ LINGUAS = {
     ],
     "internacional_italiano": ["bando ONG Brasile {ano}", "finanziamenti società civile Brasile {ano}"],
 }
+# 17/11/2026 (C-04): os temas que se combinam com as frases de cada língua (o sorteio fica diferente a cada missão)
+TEMAS_LINGUA = {
+    "internacional_ingles": ["culture", "education", "environment", "youth", "women", "community development", "human rights", "health",
+                             "sport", "indigenous", "Central-West Brazil", "small grants"],
+    "internacional_espanhol": ["cultura", "educación", "medio ambiente", "juventud", "mujeres", "comunidades", "derechos humanos", "salud"],
+    "internacional_frances": ["culture", "éducation", "environnement", "jeunesse", "femmes", "communautés", "droits humains"],
+    "internacional_alemao": ["Kultur", "Bildung", "Umwelt", "Jugend", "Frauen", "Gemeinden", "Menschenrechte", "Kleinprojekte"],
+    "internacional_italiano": ["cultura", "educazione", "ambiente", "giovani", "donne", "comunità"],
+}
+OPERADORES_LINGUA = ['filetype:pdf', 'intitle:call', '"deadline"', '"apply"']
+
 OPORT = re.compile(
     r"(?i)edital|regulamento|inscri[çc][õo]es|chamada|call for proposals|apply now|grant|convocatoria|patroc[ií]nio|doa[çc][ãa]o|"
     r"sele[çc][ãa]o de projetos|programa de apoio|investimento social|fondos?|appel à projets|ausschreibung|bando"
@@ -181,7 +192,9 @@ def familias(empresas: list[str]) -> dict[str, Callable[[random.Random, int], st
         ),
     }
     for nome, consultas in LINGUAS.items():
-        f[nome] = lambda r, a, c=consultas: r.choice(c).format(ano=a)
+        # 17/11/2026 (C-04): por combinação — a frase-base com um tema e, às vezes, um operador (a mesma frase rodava 343 vezes)
+        f[nome] = lambda r, a, c=consultas, n=nome: " ".join(x for x in (
+            r.choice(c).format(ano=a), r.choice(TEMAS_LINGUA.get(n, [""]) + [""]), r.choice(OPERADORES_LINGUA + [""] * 3)) if x)
     if empresas:
         f["empresa_semente"] = lambda r, a: (
             f'"{r.choice(empresas)}" {r.choice(["instituto", "fundação", "patrocínio", "edital"])} projetos sociais {a}'
@@ -203,6 +216,8 @@ def _fator_real(con, familia: str) -> float:
 
 # 14/11/2026 (R55, C19): o título de uma listagem (o mesmo critério do portão de entrada)
 LISTAGEM = re.compile(r"(?i)^\s*(?:convocat[óo]rias|editais|oportunidades|chamadas|programas|portal de (?:projetos|editais|oportunidades))\b")
+
+FORA_DO_AR_MIN = 360   # 17/11/2026 (C-05): a rota fora do ar é tentada uma vez por turno (6 h)
 
 class Espiao:
     def __init__(
@@ -264,14 +279,41 @@ class Espiao:
         rotas = dict(self.con.execute("SELECT nome, descansa_ate FROM espiao_rota"))
         return not any((rotas.get(r) or "") <= agora_ for r in ROTAS_GERAIS)
 
+    RECENTE_DIAS = 3
+
+    def fora_do_ar(self, rota: str) -> bool:
+        """17/11/2026 (C-05): a rota que não respondeu nenhuma vez em 24 h, com 5 falhas ou mais, está fora do ar — a metabusca é
+        recriada a cada missão e o descanso crescente nunca crescia (as rotas mortas eram tentadas a cada 2 minutos)."""
+        desde = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+        resp = falhas = 0
+        try:
+            for (rotas,) in self.con.execute("SELECT rotas FROM espiao_missao WHERE em >= ?", (desde,)):
+                for linha in json.loads(rotas or "[]"):
+                    if linha.split(":")[0] != rota:
+                        continue
+                    resp += "pista" in linha
+                    falhas += "falhou" in linha
+        except (sqlite3.Error, ValueError):
+            return False
+        return resp == 0 and falhas >= 5
+
+    def _recentes(self) -> set[str]:
+        """17/11/2026 (C-04, R55 «a busca é diferente a cada tentativa»): as consultas usadas nos últimos RECENTE_DIAS dias."""
+        desde = (datetime.now(timezone.utc) - timedelta(days=self.RECENTE_DIAS)).isoformat()
+        try:
+            return {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE ultima >= ?", (desde,))}
+        except sqlite3.Error:
+            return set()
+
     def escolher(self) -> tuple[str, str]:
         if getattr(self, "preferida", None) in self.fams:                        # a família escolhida pelo Comandante (25/10/2026)
-            ano, ruins = date.today().year, {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")}
+            ano = date.today().year
+            ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")} | self._recentes()
             for _ in range(6):
                 q = self.fams[self.preferida](self.rnd, ano)
                 if q and q not in ruins:
                     return self.preferida, re.sub(r"\s+", " ", q).strip()
-        ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")}
+        ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")} | self._recentes()
         sorteio = sorted(
             (
                 (self.rnd.betavariate(max(0.1, a), max(0.1, b)) * peso_espiao(f) * _fator_real(self.con, f), f)   # 06/11: o fator real
@@ -313,7 +355,10 @@ class Espiao:
             # SearXNG, 1) — a linha «descansando» regravava 2 h a cada missão e a rota nunca voltava (79.054 eventos)
             m_falha = re.match(r"([^:]+): falhou .*?descansa (\d+) min", linha)
             if m_falha:
-                ate = (datetime.now(timezone.utc) + timedelta(minutes=max(1, int(m_falha.group(2))))).isoformat()
+                minutos = max(1, int(m_falha.group(2)))
+                if self.fora_do_ar(m_falha.group(1)):            # C-05: sem resposta em 24 h — uma tentativa por turno
+                    minutos = max(minutos, FORA_DO_AR_MIN)
+                ate = (datetime.now(timezone.utc) + timedelta(minutes=minutos)).isoformat()
                 self._gravar("espiao.rota", {"nome": m_falha.group(1), "descansa_ate": ate}, "INSERT OR REPLACE INTO espiao_rota VALUES (?, ?)",
                              (m_falha.group(1), ate))
         motivos: dict[str, int] = {}
