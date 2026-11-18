@@ -90,10 +90,38 @@ def evidencia(url: str | None, orgao: str | None, localidade: str | None = None)
     return None
 
 
+_PORTAL = {"pt-br", "pt", "br", "en", "es", "home", "inicio", "index", "portal", "site", "editais", "oportunidades", "chamadas", "chamamentos",
+           "programas", "projetos", "servicos", "noticias", "transparencia", "acesso-a-informacao", "institucional", "sobre", "cultura", "saude",
+           "educacao", "esporte", "assistencia-social", "meio-ambiente", "secretarias", "governo", "orgaos", "assuntos", "composicao"}
+_DOC = re.compile(r"(?i)\.(pdf|docx?|odt|xlsx?|zip)(\?|$)")
+_LEI = re.compile(r"(?i)planalto\.gov\.br/ccivil|/legisla[çc][ãa]o/|legisweb|leisestaduais|leismunicipais|/lei-\d|normas\.leg\.br")
+
+
+def link_generico(url: str | None) -> bool:
+    """17/11/2026 (C-15): a página inicial ou o portal — até 2 segmentos de caminho, sem documento e sem identificador (91 livros
+    vivos tinham o «oficial» genérico, 11 no Farol). Conta como ausente."""
+    if not url:
+        return False
+    from urllib.parse import urlsplit
+    u = urlsplit(url)
+    segs = [s.lower() for s in u.path.split("/") if s]
+    # a página inicial ou o portal: sem caminho, ou só com palavras de portal (até 2) — «/edital-x» e «/edital» são de uma
+    # oportunidade (titular, 23/10: nenhum site é original por regra)
+    return len(segs) <= 2 and not u.query and not _DOC.search(u.path) and all(re.sub(r"\.(html?|php|aspx?)$", "", s) in _PORTAL for s in segs)
+
+
+def link_especifico(url: str | None) -> bool:
+    """17/11/2026 (C-14): o link oficial que identifica UMA oportunidade (o documento, o endereço com identificador, o caminho
+    fundo) — nem genérico, nem página de lei. É chave para unir os repetidos."""
+    return bool(url) and not link_generico(url) and not _LEI.search(url or "")
+
+
 def classificar(url: str | None, orgao: str | None, localidade: str | None = None, confirmado_antes: bool = False) -> tuple[str, str]:
     """confirmado, candidato ou ausente, com o motivo."""
     if not url:
         return AUSENTE, "sem link da oportunidade original"
+    if link_generico(url) and not confirmado_antes:         # C-15: a página inicial ou o portal não é a origem (nunca rebaixa)
+        return AUSENTE, "link genérico (página inicial ou portal): conta como ausente — falta o endereço da oportunidade"
     if confirmado_antes:
         return CONFIRMADO, "confirmado antes (análise externa, titular ou Interceptador)"
     ev = evidencia(url, orgao, localidade)

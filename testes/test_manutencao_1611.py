@@ -232,3 +232,106 @@ def test_nenhuma_missao_do_espiao_sem_objetivo(tmp_path):
     assert linha[0] == "OBJ-1" and "goias.gov.br" in linha[1] and m["familia"] == "rastro_de_patrocinio"
     assert e.con.execute("SELECT usos FROM espiao_objetivo WHERE id = 'OBJ-1'").fetchone()[0] == 1
     assert e.missao() and e.con.execute("SELECT objetivo FROM espiao_missao ORDER BY id DESC LIMIT 1").fetchone()[0] == "OBJ-2"
+
+
+def _bib_mecanismo():
+    import sqlite3
+    b = sqlite3.connect(":memory:")
+    b.executescript("CREATE TABLE livro(id TEXT, titulo TEXT, situacao TEXT, estrela TEXT);"
+                    "CREATE TABLE livro_dados(livro_id TEXT, situacao_prazo TEXT, inscricao_fim TEXT, tipo_livro TEXT, catalogo_ouro TEXT, codigo_ouro TEXT);"
+                    "CREATE TABLE passaporte(livro_id TEXT, fase TEXT);"
+                    "INSERT INTO livro VALUES ('M', 'Lei Rouanet — Lei nº 8.313/91', 'aguardando', 'ouro'), ('E', 'Edital PNAB 2026', 'aguardando', 'ouro');"
+                    "INSERT INTO livro_dados VALUES ('M', 'aberta', NULL, NULL, '{\"tipo\": \"mecanismo\"}', 'BR-C99-0001'),"
+                    "('E', 'aberta', NULL, NULL, '{\"tipo\": \"edital\"}', NULL);"
+                    "INSERT INTO passaporte VALUES ('M', 'farol'), ('E', 'farol');")
+    return b
+
+
+def test_livro_de_mecanismo_com_link_de_lei_e_valido_e_nao_recebe_previsao_de_abertura():
+    """C-24 (R60): o mecanismo ganha o tipo pela validação de ouro; sem previsão por edições; o Valor não é conflito."""
+    import inspect
+
+    from eldorado.base.analise import previsao
+    from eldorado.base.cartorio import auditoria
+    from eldorado.base.cartorio.mecanismo import classificar
+    b = _bib_mecanismo()
+    ev = _D()
+    r = classificar(b, ev)
+    assert r["mecanismos"] == 1 and r["novos"] == 1 and ev.ev == ["livro.tipo"]
+    assert "_sem_mecanismo(con)" in inspect.getsource(previsao.calcular)
+    assert "COALESCE(d.tipo_livro, '') <> 'mecanismo'" in inspect.getsource(previsao._sem_mecanismo)
+    assert 'conflitos = [c for c in conflitos if c != "Valor"]' in inspect.getsource(auditoria.auditar)
+    import json
+    from pathlib import Path
+    reg = json.loads(Path("config/missao/dispensas_por_regime.json").read_text(encoding="utf-8"))["regimes"]["mecanismo"]["itens"]
+    assert reg["Prazo de inscrição"]["situacao"] == "nao_se_aplica" and "Valor" in reg
+
+
+def test_mecanismo_nao_conta_como_aberta_sem_data_de_fim():
+    """C-24 (R60): o mecanismo sai da conta de abertas e de «sem data de fim»; é contado à parte."""
+    from eldorado.base.cartorio.regua import regua
+    b = _bib_mecanismo()
+    b.execute("UPDATE livro_dados SET tipo_livro = 'mecanismo' WHERE livro_id = 'M'")
+    r = regua(b)
+    assert r["abertas"] == 1 and r["mecanismos"] == 1
+
+
+def test_o_codigo_de_ouro_resolve_o_territorio_indeterminado():
+    """C-16: a abrangência verificada no edital (o código de ouro) vale quando o território está indeterminado."""
+    from eldorado.base.cartorio.auditoria import abrangencia_do_codigo as a
+    assert (a("GYN.GO-C01-AP-0001"), a("VAR.GO-D01-0002"), a("REC.PE-C04-0001"), a("GO-T01-AQ-0012"), a("SP-C01-0003"),
+            a("BR-D01-AU-0003"), a("INT-X01-0002"), a(None)) == ("municipal_go", "municipal_go", "capital_outro_estado", "estadual_go",
+                                                                  "estadual_outro_estado", "nacional", "internacional", None)
+
+
+def test_o_mesmo_link_oficial_especifico_une_os_repetidos_e_o_generico_conta_como_ausente():
+    """C-14 e C-15: o documento oficial é chave de união; a página inicial ou o portal não é origem."""
+    from eldorado.base.cartorio.identidade import conflito, mesmo_link_especifico
+    from eldorado.base.cartorio.origem import AUSENTE, classificar, link_especifico, link_generico
+    assert link_generico("https://www.gov.br/cultura") and link_generico("https://fundacao.org/editais/")
+    assert not link_generico("https://www.gov.br/saude/pt-br/pronon/edital-06-2026.pdf")
+    assert not link_especifico("https://www.planalto.gov.br/ccivil_03/leis/l8313.htm")
+    assert classificar("https://www.gov.br/cultura", "Ministério da Cultura")[0] == AUSENTE
+    doc = "https://www.gov.br/saude/pt-br/pronon/edital-06-2026.pdf"
+    a = {"oficial": doc, "titulo": "PRONON 06/2026", "fim": "2026-12-01"}
+    b = {"oficial": doc.upper().replace("HTTPS://WWW.", "https://"), "titulo": "Edital PRONON 06/2026", "fim": "2026-12-01"}
+    assert mesmo_link_especifico(a, b) and not conflito(a, b)
+    assert not mesmo_link_especifico({"oficial": "https://www.gov.br/cultura"}, {"oficial": "https://www.gov.br/cultura"})
+
+
+def test_livro_privado_com_financiador_gera_vinculo_e_livro_publico_nao_gera():
+    """C-20 (decisão da titular de 16/11): empresa com oportunidade tem vínculo; o setor público fica sem vínculo."""
+    import json
+    import sqlite3
+
+    from eldorado.base.cartorio.vinculo_empresa import vincular
+    b = sqlite3.connect(":memory:")
+    b.executescript("CREATE TABLE livro(id TEXT, titulo TEXT, orgao TEXT, link_oficial TEXT, situacao TEXT);"
+                    "CREATE TABLE livro_dados(livro_id TEXT, esfera TEXT, inscricao_inicio TEXT, inscricao_fim TEXT, catalogo_ouro TEXT);"
+                    "CREATE TABLE empresa(cnpj TEXT, razao_social TEXT, nome_fantasia TEXT); CREATE TABLE vinculo_livro(cnpj TEXT, livro_id TEXT);"
+                    "INSERT INTO empresa VALUES ('11.111.111/0001-11', 'Itaú Unibanco S.A.', 'Itaú');")
+    b.executemany("INSERT INTO livro VALUES (?, ?, ?, NULL, 'aguardando')", [("P", "Edital Itaú Social", "Itaú"), ("G", "Edital PNAB", "Secult-GO"),
+                                                                            ("N", "Edital Fundação X", None)])
+    b.executemany("INSERT INTO livro_dados VALUES (?, ?, NULL, NULL, ?)", [("P", "privada", None), ("G", "estadual", None),
+                                                                          ("N", "privada", json.dumps({"catalogo": {"financiador": "Fundação X"}}))])
+    ev = _D()
+    r = vincular(b, ev, "2026-11-17T00:00:00+00:00")
+    assert r["vinculos"] == 2 and r["empresas_novas_pelo_nome"] == 1                   # Itaú pelo cadastro; Fundação X pelo nome
+    assert ev.ev.count("vinculo_livro.registrado") == 2 and "G" not in str(ev.ev)
+
+
+def test_o_andamento_das_leis_e_conferido():
+    """C-21: as 27 leis tinham a data da importação; a revogação passa a ser lida na própria página."""
+    import sqlite3
+    from datetime import datetime, timezone
+
+    from eldorado.base.cartorio.leis import acompanhar
+    b = sqlite3.connect(":memory:")
+    b.execute("CREATE TABLE lei(id TEXT, esfera TEXT, numero TEXT, ementa TEXT, situacao TEXT, link_oficial TEXT, atualizada_em TEXT)")
+    b.executemany("INSERT INTO lei VALUES (?, 'federal', ?, 'x', 'vigente', ?, '2026-10-22')",
+                  [("L1", "Lei 11.438/2006", "https://planalto.gov.br/L11438.htm"), ("L2", "Lei 8.313/1991", "https://planalto.gov.br/L8313.htm")])
+    ev = _D()
+    paginas = {"https://planalto.gov.br/L11438.htm": "LEI Nº 11.438 — Revogado pela Lei Complementar nº 222, de 2025",
+               "https://planalto.gov.br/L8313.htm": "LEI Nº 8.313 — Restabelece princípios da Lei nº 7.505"}
+    r = acompanhar(b, ev, paginas.get, datetime(2026, 11, 17, tzinfo=timezone.utc))
+    assert r["conferidas"] == 2 and r["mudaram"] == ["Lei 11.438/2006: vigente → revogada"] and ev.ev == ["lei.registrada"] * 2

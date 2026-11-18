@@ -181,6 +181,13 @@ class Livro:
 from eldorado.base.cartorio.migrados import sql_migrado  # noqa: E402
 
 
+def _col_tipo(con) -> str:
+    """R60: o tipo do livro, quando a Biblioteca já o tem (versão 16); senão NULL."""
+    try:
+        return "d.tipo_livro" if "tipo_livro" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")} else "NULL"
+    except Exception:  # noqa: BLE001
+        return "NULL"
+
 def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     """Os livros na fase 3 (preparação), na ordem do Cartório: as abertas que fecham antes; depois os mais perto do ouro."""
     con.row_factory = sqlite3.Row
@@ -197,13 +204,14 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
         certs.setdefault(c["livro_id"], []).append(dict(c))
     saida = []
     for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf, "
-                         "d.modalidade, d.abrangencia FROM livro l "
+                         "d.modalidade, d.abrangencia, " + _col_tipo(con) + " AS tipo_livro FROM livro l "
                          "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
                          "AND l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao) "
                          # 01/11/2026 (titular): os migrados do Eldorado0 são histórico, sem nova avaliação (salvo os abertos)
                          f"AND NOT ({sql_migrado()} AND COALESCE(d.inscricao_fim, '') < ?)", (hoje,)):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
-                   I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
+                   I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"],
+                   "mecanismo" if r["tipo_livro"] == "mecanismo" else regime_de(r["titulo"], r["modalidade"]))   # R60: as dispensas da lei
         rodadas = vp.get(r["id"], [])
         lv.vp_rodadas, lv.vp_ultima = len(rodadas), (max(rodadas) if rodadas else None)
         # 02/11/2026 (titular, R38): o Comandante ordena — completo, a escada não busca. 14/11/2026 (R55, I8, que revoga a R38

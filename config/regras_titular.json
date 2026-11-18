@@ -857,6 +857,18 @@
     "testes/test_importar_ouro_1611.py::test_o_numero_de_serie_e_compartilhado_entre_as_partes",
     "testes/test_importar_ouro_1611.py::test_a_parte_incompleta_e_recusada"
    ]
+  },
+  {
+   "id": "R60",
+   "data": "2026-11-17",
+   "tema": "o livro de mecanismo (programa regulado por lei)",
+   "regra": "Programa que tem lei e norma próprias tem livro próprio, do tipo mecanismo. Não há edital: a informação vem toda da lei (o documento oficial é a lei ou a norma, com o regulamento e o portal de operação), e um edital novo não muda o livro. O checklist é preenchido pela lei; o prazo é a vigência (contínua, com as suspensões que a lei prevê, como o período eleitoral); Resultado, Prazo de recurso e Valor só quando a lei os traz. O mecanismo não entra na previsão por edições: acompanha-se a lei. Fica fora da conta de editais abertos e de «sem data de fim», contado à parte. Os livros que apontam para a mesma lei são listados para a titular; nada é unido sem ela.",
+   "porque": "titular, 17/11/2026 (decisão 5 da manutenção de 16/11): os mecanismos eram cobrados como edital — 40 no Farol sem data de fim, 9 em revisar por valor, previsão de abertura que não existe.",
+   "onde": "eldorado/banco/biblioteca/esquema.py (versão 16: tipo_livro); eldorado/base/cartorio/mecanismo.py, auditoria.py, regua.py; eldorado/base/analise/previsao.py; eldorado/motores/pilotos/interceptador.py; config/missao/dispensas_por_regime.json (regime mecanismo)",
+   "travas": [
+    "testes/test_manutencao_1611.py::test_livro_de_mecanismo_com_link_de_lei_e_valido_e_nao_recebe_previsao_de_abertura",
+    "testes/test_manutencao_1611.py::test_mecanismo_nao_conta_como_aberta_sem_data_de_fim"
+   ]
   }
  ]
 }

@@ -66,14 +66,26 @@ def prever(datas: list[date], hoje: date | None = None) -> dict[str, Any] | None
             "confianca": confianca, "anos": sorted({d.year for d in datas})}
 
 
+
+def _sem_mecanismo(con: sqlite3.Connection) -> str:
+    """R60: o filtro do mecanismo, quando a Biblioteca já tem o tipo do livro (versão 16)."""
+    try:
+        tem = "tipo_livro" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
+    except sqlite3.Error:
+        tem = False
+    return " AND COALESCE(d.tipo_livro, '') <> 'mecanismo'" if tem else ""
+
 def calcular(con: sqlite3.Connection, diario, hoje: date | None = None) -> dict[str, int]:
     """A previsão dos livros que esperam a próxima edição (o arquivo) e dos encerrados; o evento previsao.calculada."""
     hoje = hoje or date.today()
     alvo = {r[0] for r in con.execute("SELECT p.livro_id FROM passaporte p JOIN livro_dados d ON d.livro_id = p.livro_id "
                                       "JOIN livro l ON l.id = p.livro_id WHERE (p.fase = 'arquivo' OR d.situacao_prazo = 'encerrada') "
-                                      "AND l.situacao NOT IN ('excluido', 'unido')")}   # C-08: nada de previsão para livro morto
+                                      "AND l.situacao NOT IN ('excluido', 'unido')" + _sem_mecanismo(con))}
+    # C-08: nada de previsão para livro morto; C-24 (R60): nem para o mecanismo (acompanha-se a lei, não as edições)
     mortos = {r[0] for r in con.execute("SELECT v.livro_id FROM previsao v JOIN livro l ON l.id = v.livro_id "
-                                        "WHERE l.situacao IN ('excluido', 'unido') AND v.proxima_abertura_prevista IS NOT NULL")}
+                                        "LEFT JOIN livro_dados d ON d.livro_id = v.livro_id "
+        "WHERE (l.situacao IN ('excluido', 'unido')" + (" OR d.tipo_livro = 'mecanismo'" if _sem_mecanismo(con) else "") +
+        ") AND v.proxima_abertura_prevista IS NOT NULL")}
     ab = aberturas(con)
     motores = defaultdict(set)
     for lid, m in con.execute("SELECT livro_id, motor FROM achado WHERE livro_id IS NOT NULL"):

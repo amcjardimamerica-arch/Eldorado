@@ -209,6 +209,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     ),
     "livro.codigo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "codigo")),),  # o código da oportunidade
     # 16/11/2026: o livro de ouro — o código novo, o número e o ano do edital, a classificação (o código antigo dá lugar ao novo)
+    "livro.tipo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "tipo_livro")),),   # R60: edital ou mecanismo
     "livro.ouro": (Alvo(B, "livro_dados", "atualizar", ("livro_id",),
                         _so("livro_id", "codigo_ouro", "codigo", "edital_numero", "edital_ano", "catalogo_ouro")),),
     "livro.prazo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "situacao_prazo")),),

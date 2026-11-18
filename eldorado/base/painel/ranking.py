@@ -44,9 +44,11 @@ LEIS = [
         "chave": "esporte",
         "nome": "Lei de Incentivo ao Esporte",
         "curto": "Esporte",
-        "lei": "Lei 11.438/2006",
+        # 17/11/2026 (C-21): a Lei 11.438/2006 foi revogada pela Lei Complementar 222, de 26/11/2025, que tornou o incentivo
+        # permanente e eleva a dedução do IRPJ a 3% a partir do ano-calendário de 2028
+        "lei": "Lei Complementar 222/2025 (antes, Lei 11.438/2006)",
         "orgao": "Ministério do Esporte",
-        "teto": "2% do IRPJ devido",
+        "teto": "2% do IRPJ devido (3% a partir de 2028)",
         "porta": "o projeto aprovado na LIE",
         "cor": "#7CB518",
     },

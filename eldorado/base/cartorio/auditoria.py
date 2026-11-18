@@ -308,9 +308,30 @@ def pendentes(con: sqlite3.Connection) -> set[str]:
                                       "WHERE d.livro_id IS NULL OR l.atualizado_em > d.validado_em")}
 
 
+
+def abrangencia_do_codigo(codigo: str | None) -> str | None:
+    """17/11/2026 (C-16): a abrangência pelo código de ouro (R58: ABRANGÊNCIA-OBJETO-AÇÃO-NNNN, verificada no edital) —
+    XXX.GO ou VAR.GO municipal de Goiás; XXX.UF (capital) de outro estado; GO estadual; UF de outro estado; BR; INT."""
+    a = str(codigo or "").split("-")[0].upper()
+    if not a:
+        return None
+    if a == "BR":
+        return "nacional"
+    if a == "INT":
+        return "internacional"
+    if "." in a:
+        return "municipal_go" if a.endswith(".GO") else "capital_outro_estado"
+    if a == "GO":
+        return "estadual_go"
+    return "estadual_outro_estado" if len(a) == 2 else None
+
 def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None) -> Iterator[Resultado]:
     con.row_factory = sqlite3.Row
     livros = [dict(r) for r in con.execute("SELECT * FROM livro ORDER BY id") if somente is None or r["id"] in somente]
+    try:   # 17/11/2026 (C-16, C-24): o código de ouro e o tipo do livro
+        ouro = {r[0]: (r[1], r[2]) for r in con.execute("SELECT livro_id, codigo_ouro, tipo_livro FROM livro_dados")}
+    except sqlite3.Error:
+        ouro = {}
     todas: dict[str, list[dict]] = {}
     tipos_doc = dict(con.execute("SELECT id, tipo FROM documento").fetchall())   # o tipo do documento de cada certidão (o edital)
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado') ORDER BY id"):
@@ -337,6 +358,13 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
         conflitos = sorted({c["item"] for c in boas if c["item"] in I.CRITICOS and c.get("fase") in I.FASES_VALIDADAS
                             and _norm(str(c.get("valor"))) != _norm(str((validas.get(c["item"]) or {}).get("valor")))})
         abr, municipio = territorio(lv, validas)
+        cod_ouro, tipo_livro = ouro.get(lv["id"], (None, None))
+        if tipo_livro == "mecanismo":            # C-24 (R60): o valor depende do projeto ou do bem — não é conflito do mecanismo
+            conflitos = [c for c in conflitos if c != "Valor"]
+        if cod_ouro:
+            conflitos = []                       # C-16: o livro validado de novo no edital (ouro) substitui as certidões herdadas
+            if abr == "indeterminado":
+                abr = abrangencia_do_codigo(cod_ouro) or abr   # C-16: a abrangência verificada no edital
         motivo_portao = portao.motivo({"titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"],
                                        "url": lv["link_oficial"] or lv.get("link_divulgacao")}, hoje.isoformat())
         sem_titulo = not lv["titulo"] or lv["titulo"] == lv["id"]

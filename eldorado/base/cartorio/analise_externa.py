@@ -571,6 +571,13 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
         ouro = importar_pasta(con, contexto.diario, pasta / "ouro")
         if ouro:
             resultado["ouro"] = ouro
+        from .mecanismo import classificar as _mecanismos  # R60 (C-24): o tipo «mecanismo» e as famílias da mesma lei
+        resultado["mecanismo"] = _mecanismos(con, contexto.diario)
+        from datetime import datetime as _dt
+        from datetime import timezone as _tz
+
+        from .vinculo_empresa import vincular  # C-20: o vínculo empresa–livro (só esfera privada e internacional)
+        resultado["vinculo_empresa"] = vincular(con, contexto.diario, _dt.now(_tz.utc).isoformat(timespec="seconds"))
         hoje = date.today()
         triados = aplicar_triagem(con, contexto.diario)            # 30/10/2026: o que o Chrome sempre descarta não vai a ele
         saiu |= set(triados)

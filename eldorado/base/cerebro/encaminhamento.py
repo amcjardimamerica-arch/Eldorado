@@ -266,6 +266,17 @@ def no_originais(itens: list[dict[str, Any]], parametros: dict[str, Any], contex
         dos_originais, _ = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario)
         enc = Encaminhamento(con, contexto.diario, registro, None)
         saida = []
+        from ..cartorio.leis import acompanhar  # C-21: o andamento das leis, pela mesma escada
+
+        def _ler_lei(u: str) -> str | None:
+            r = escada.buscar(u)
+            return r.conteudo.decode("utf-8", errors="replace") if r is not None else None
+        try:
+            leis = acompanhar(con, contexto.diario, _ler_lei)
+            if leis.get("conferidas"):                                # só quando alguma lei foi conferida
+                saida.append({"leis": leis})
+        except Exception as e:  # noqa: BLE001 — o acompanhamento das leis nunca derruba a vigília dos originais
+            saida.append({"leis": f"{type(e).__name__}: {str(e)[:120]}"})
         for a in dos_originais:                       # C-01: cada entrega isolada — uma com defeito não derruba as outras
             try:
                 saida.append(enc._entregar(a, a.motor))

@@ -224,6 +224,22 @@ def nome_muito_diferente(a: dict[str, Any], b: dict[str, Any]) -> bool:
     return bool(substantivas(da)) and bool(substantivas(db))
 
 
+
+from .origem import link_especifico  # noqa: E402 — C-14
+
+
+def _link_normal(url: str) -> str:
+    return re.sub(r"^https?://(www\.)?", "", (url or "").strip().lower()).rstrip("/")
+
+
+def mesmo_link_especifico(a: dict[str, Any], b: dict[str, Any]) -> str | None:
+    """17/11/2026 (C-14): o mesmo link oficial específico (o documento ou a página daquela oportunidade) — 33 links repetidos
+    entre livros vivos, 9 no Farol (PRONON 06/2026 em 4 livros, APC Japão em 3). O conflito (datas, município, número do
+    edital) continua impedindo a união."""
+    if link_especifico(a.get("oficial")) and _link_normal(a["oficial"]) == _link_normal(b.get("oficial") or ""):
+        return "o mesmo link oficial específico (o mesmo documento da oportunidade)"
+    return None
+
 def _livros(con: sqlite3.Connection) -> list[dict[str, Any]]:
     con.row_factory = sqlite3.Row
     linhas = con.execute(
@@ -253,6 +269,8 @@ def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
             baldes["nome:" + lv["t"]].append(lv)
         if lv.get("ini") and lv.get("fim"):                            # 01/11/2026: o período identifica os de título diferente
             baldes[f"periodo:{lv['ini']}|{lv['fim']}"].append(lv)
+        if link_especifico(lv.get("oficial")):                         # 17/11/2026 (C-14): o mesmo documento oficial
+            baldes["oficial:" + _link_normal(lv["oficial"])].append(lv)
     pai: dict[str, str] = {}
     membros_de: dict[str, list[dict]] = {lv["id"]: [lv] for lv in livros}
 
@@ -273,7 +291,7 @@ def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
             for b in lista[k + 1:]:
                 if raiz(a["id"]) == raiz(b["id"]):
                     continue
-                m = mesma_oportunidade(a, b) or mesma_por_caracteristicas(a, b)
+                m = mesma_oportunidade(a, b) or mesma_por_caracteristicas(a, b) or mesmo_link_especifico(a, b)
                 if m:
                     ra, rb = raiz(a["id"]), raiz(b["id"])
                     if any(conflito(x, y) for x in membros_de[ra] for y in membros_de[rb]):
