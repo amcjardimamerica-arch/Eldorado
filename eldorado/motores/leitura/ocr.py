@@ -18,7 +18,8 @@ class OCRDemorou(Exception):
 
 # 17/11/2026 (manutenção): o OCR com tempo limite — uma leitura de OCR que não termina prendia a passagem e travou a
 # Qualidade (o motor dos estaduais de Goiás preso no OCR de um PDF por mais de 45 min)
-OCR_PAGINA_S, OCR_DOCUMENTO_S = 30.0, 60.0
+# 17/11/2026 (titular): 10 minutos por página; o documento, até 3 páginas nesse tempo
+OCR_PAGINA_S, OCR_DOCUMENTO_S = 600.0, 1800.0
 
 
 class OCR:

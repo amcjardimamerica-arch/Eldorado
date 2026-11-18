@@ -97,7 +97,7 @@ class LeitorPDF:
         if r.precisa_ocr and self.ocr is not None:
             import time
 
-            from .ocr import OCR_DOCUMENTO_S, OCRDemorou
+            from .ocr import OCR_DOCUMENTO_S, OCR_PAGINA_S, OCRDemorou
             repetidos = _faixas_repetidas(paginas)
             lidas, fim = [], time.monotonic() + OCR_DOCUMENTO_S
             for n in list(r.precisa_ocr):
@@ -108,7 +108,7 @@ class LeitorPDF:
                 try:
                     import inspect
                     aceita = len(inspect.signature(self.ocr.texto).parameters) >= 2   # o OCR de outro formato: só a imagem
-                    txt = self.ocr.texto(img, min(restante, 30.0)) if aceita else self.ocr.texto(img)
+                    txt = self.ocr.texto(img, min(restante, OCR_PAGINA_S)) if aceita else self.ocr.texto(img)
                 except OCRDemorou:
                     break
                 r.paginas[n - 1] = Pagina(n, _sem_repetidos(txt, repetidos))   # o OCR passa pelo mesmo expurgo
