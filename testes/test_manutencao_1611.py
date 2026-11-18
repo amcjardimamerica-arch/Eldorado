@@ -112,3 +112,17 @@ def test_frase_generica_nao_certifica_os_anexos():
     from eldorado.base.nucleo.ia import ANEXO_NOMEADO
     assert ANEXO_NOMEADO.search("conforme o Anexo II – Plano de Trabalho") and ANEXO_NOMEADO.search("ANEXO I - Formulário")
     assert not ANEXO_NOMEADO.search("Edital completo disponível em www.x.gov.br") and not ANEXO_NOMEADO.search("Documentos exigidos")
+
+
+def test_o_ato_legislativo_vai_a_tabela_de_leis_e_so_a_oportunidade_vira_livro():
+    """C-29 (R14): o projeto de lei acompanha-se na tabela de leis; o chamamento do Legislativo segue como livro."""
+    from eldorado.base.cerebro.encaminhamento import ato_legislativo
+    pl = Achado(id="c1", motor="alego-pl", encontrado_em="2026-11-17", link_divulgacao="https://al.go.leg.br/pl/1", link_oficial=None,
+                titulo="PL nº 1.234/2026 — declara de utilidade pública a Associação X", dados={})
+    lei = ato_legislativo(pl)
+    assert lei["esfera"] == "estadual" and lei["numero"] == "PL 1.234/2026" and lei["id"] == "leg-c1"
+    ch = Achado(id="c2", motor="alego-pl", encontrado_em="2026-11-17", link_divulgacao="https://al.go.leg.br/x", link_oficial=None,
+                titulo="Edital de chamamento público para entidades — emendas impositivas 2027", dados={})
+    assert ato_legislativo(ch) is None
+    outro = Achado(id="c3", motor="site-capta", encontrado_em="2026-11-17", link_divulgacao="https://x", link_oficial=None, titulo="PL 1/2026", dados={})
+    assert ato_legislativo(outro) is None

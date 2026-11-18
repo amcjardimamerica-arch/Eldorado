@@ -10,6 +10,7 @@ anda pelo orçamento de tempo do batimento e continua no seguinte, até esgotar.
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 import time
 from datetime import date
@@ -69,12 +70,39 @@ def _preferencia_do_ciclo(abordagens: list[int]) -> list[int] | None:
     pos = {n: i for i, n in enumerate(ordem)}
     return sorted(abordagens, key=lambda n: pos.get(n, len(pos)))
 
+
+# 17/11/2026 (C-29, R14): os motores do Legislativo ACOMPANHAM os atos do terceiro setor — o projeto de lei, a utilidade
+# pública, a moção viravam livro de oportunidade e eram descartados (congresso 0 úteis em 82 livros; alego 2 em 35; câmara
+# 3 em 30). O ato vai à tabela de leis (a aba Legislativo); só vira livro o que ABRE oportunidade.
+LEGISLATIVO = {"congresso-nacional": "federal", "alego-pl": "estadual", "camara-goiania-pl": "municipal"}
+ABRE_OPORTUNIDADE = re.compile(r"(?i)chamamento|edital|inscri[çc][õo]es|sele[çc][ãa]o p[úu]blica|pr[êe]mio|fundo .{0,40}(?:recebe|abre|destina)|"
+                               r"emendas? (?:parlamentar(?:es)?|impositivas?) .{0,60}(?:inscri|cadastr|indica[çc][ãa]o de entidades)|"
+                               r"subven[çc][ãa]o .{0,40}(?:entidades|organiza)")
+
+
+def ato_legislativo(a) -> dict[str, Any] | None:
+    """O ato legislativo que NÃO abre oportunidade, no formato da tabela de leis; None quando o achado segue como livro."""
+    esfera = LEGISLATIVO.get(getattr(a, "motor", "") or "")
+    if not esfera:
+        return None
+    texto = f"{a.titulo or ''} {((a.dados or {}).get('resumo') or '')}"
+    if ABRE_OPORTUNIDADE.search(texto):
+        return None
+    num = re.search(r"(?i)\b(PL|PLP|PEC|PDL|PLO|PR|projeto de lei|lei)\s*(?:complementar\s*)?n?[º°o.]?\s*([\d.]+\s*/\s*\d{2,4})", texto)
+    return {"id": f"leg-{a.id}", "esfera": esfera, "numero": (f"{num.group(1).upper()} {num.group(2).replace(' ', '')}" if num else None),
+            "ementa": (a.titulo or "")[:1000], "situacao": "em tramitação", "link_oficial": a.link_oficial or a.link_divulgacao,
+            "atualizada_em": agora()}
+
 class Encaminhamento:
     def __init__(self, biblioteca: sqlite3.Connection, diario, registro, interceptador, rede=None):
         self.con, self.diario, self.registro, self.interceptador, self.rede = biblioteca, diario, registro, interceptador, rede
         self.passaporte = Passaporte(biblioteca, diario, maximo=10)
 
     def _entregar(self, a, quem: str) -> dict[str, Any]:
+        lei = ato_legislativo(a)                                    # C-29: o ato que não abre oportunidade vai à tabela de leis
+        if lei:
+            self.diario.emitir("lei.registrada", quem, lei)
+            return {"lei": lei["id"], "motor": a.motor}
         a = _canivete(a)                                            # o canivete suíço dos motores, também nos pilotos (25/10/2026)
         doc = a.documento or {}
         # 16/11/2026 (C-01): o achado sem documento (a página do mapa do site que não abriu) é entregue sem o documento — antes,

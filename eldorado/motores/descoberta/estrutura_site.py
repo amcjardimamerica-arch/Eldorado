@@ -24,6 +24,8 @@ _LOC = re.compile(r"<(?:\w+:)?loc>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</(
 _LASTMOD = re.compile(r"<(?:\w+:)?lastmod>\s*(.*?)\s*</(?:\w+:)?lastmod>", re.S | re.I)
 
 
+_LOC_PAGINA = re.compile(r"<loc>\s*(https?://[^<\s]+)\s*</loc>", re.I)   # 17/11/2026 (C-27): o <loc> da página, sem prefixo
+
 def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | None]]]:
     """10/11/2026 (parecer da Sala, passo 5): a leitura TOLERANTE do mapa do site — ("indice" | "urlset" | None, [(loc, lastmod)]).
     Antes, o analisador XML estrito quebrava com espaço ou BOM antes da declaração, prefixo sem namespace (image:, news:)
@@ -74,7 +76,7 @@ def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | N
             # 17/11/2026 (C-27): o endereço cujo bloco tem a marca mal fechada também é aproveitado (sem a data, que não se
             # lê com segurança) — antes ele se perdia («mismatched tag» em captadores.org.br)
             vistos = {i[0] for i in itens}
-            itens += [(m.group(1), None) for m in _LOC.finditer(t) if m.group(1) not in vistos]
+            itens += [(m.group(1), None) for m in _LOC_PAGINA.finditer(t) if m.group(1) not in vistos]   # só a página (não <image:loc>)
     return tipo, [(html.unescape(loc.strip()), (mod or "").strip() or None) for loc, mod in itens if loc and loc.strip()]
 
 
