@@ -105,6 +105,9 @@ def motor(nome, base, tmp_path):
     texto = recorte(nome)
     texto = re.sub(r"https://(?:www\.in\.gov\.br|www\.gov\.br|pncp\.gov\.br|mapa\.cultura\.gov\.br|goias\.gov\.br|queridodiario\.ok\.org\.br|api-publica\.transferegov\.gestao\.gov\.br)",
                    base, texto)
+    # 17/11/2026 (manutenção): TODO endereço das fontes vai ao servidor de ensaio — as fontes novas (PNAB, FICA, OVG, Anater,
+    # o diário da ABC) liam a internet real e prendiam a Qualidade por mais de 45 min; o teste de motor nunca sai da máquina
+    texto = re.sub(r"https?://(?!127\.0\.0\.1)[A-Za-z0-9.-]+\.[A-Za-z]{2,}", base, texto)
     texto = texto.replace('intervalo_s = 1.0', 'intervalo_s = 0')
     (tmp_path / f"{nome}.toml").write_text(texto + ("\n" if "[acesso]" in texto else ""), encoding="utf-8")
     m = MotorCanal(tmp_path / f"{nome}.toml", dados=tmp_path / "motores", ponte=tmp_path / "ponte")

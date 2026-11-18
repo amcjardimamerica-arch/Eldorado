@@ -95,11 +95,30 @@ class LeitorPDF:
             except Exception:  # noqa: BLE001 — sem a biblioteca, segue o aviso de OCR
                 pass
         if r.precisa_ocr and self.ocr is not None:
+            import time
+
+            from .ocr import OCR_DOCUMENTO_S, OCRDemorou
             repetidos = _faixas_repetidas(paginas)
-            for n in r.precisa_ocr:
+            lidas, fim = [], time.monotonic() + OCR_DOCUMENTO_S
+            for n in list(r.precisa_ocr):
+                restante = fim - time.monotonic()
+                if restante <= 1:                       # 17/11/2026: o tempo do documento acabou — as demais aguardam OCR
+                    break
                 img = doc[n - 1].get_pixmap(dpi=200).tobytes("png")
-                r.paginas[n - 1] = Pagina(n, _sem_repetidos(self.ocr.texto(img), repetidos))   # o OCR passa pelo mesmo expurgo
-            r.alertas.append(f"{len(r.precisa_ocr)} página(s) lida(s) por OCR")
+                try:
+                    import inspect
+                    aceita = len(inspect.signature(self.ocr.texto).parameters) >= 2   # o OCR de outro formato: só a imagem
+                    txt = self.ocr.texto(img, min(restante, 30.0)) if aceita else self.ocr.texto(img)
+                except OCRDemorou:
+                    break
+                r.paginas[n - 1] = Pagina(n, _sem_repetidos(txt, repetidos))   # o OCR passa pelo mesmo expurgo
+                lidas.append(n)
+            for n in lidas:
+                r.precisa_ocr.remove(n)
+            if lidas:
+                r.alertas.append(f"{len(lidas)} página(s) lida(s) por OCR")
+            if r.precisa_ocr:
+                r.alertas.append(f"{len(r.precisa_ocr)} página(s) aguardando OCR (o OCR passou do tempo)")
         elif r.precisa_ocr:
             r.alertas.append(f"{len(r.precisa_ocr)} página(s) digitalizada(s) aguardando OCR (extra 'ocr' desligado)")
         r.dados["paginas"] = doc.page_count

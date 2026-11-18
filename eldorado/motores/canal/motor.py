@@ -876,7 +876,7 @@ class MotorCanal(Motor):
                 entregar.append((p, motivo))
         # C-01: o mapa só é marcado depois da entrega — a página relevante que não abriu fica para a próxima vigília
         relevantes = {p.link for p, _ in entregar}
-        lidas: set[str] = set()
+        nesta_rodada = {p.link for p, _ in entregar[:maximo]}
         self.relatorio.append(f"mapa do site original {dominio}: {len(pistas)} URL(s), {len(entregar)} nova(s) do livro"
                               f"{' (primeira visita: a base)' if primeira else ''}")
         achados = []
@@ -888,15 +888,15 @@ class MotorCanal(Motor):
                 lido = self.leitura.ler(r.conteudo, p.link)
                 documento = {"url": p.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": False,
                              "paginas": [x.texto for x in lido.paginas], "alertas": lido.alertas, "injecao": lido.dados.get("injecao")}
-                lidas.add(p.link)
             except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
                 self.relatorio.append(f"mapa do site original: {p.link} não lido ({str(e)[:120]})")
             achados.append(Achado(id=f"{m.id}-mapa-{hashlib.sha256(p.link.encode()).hexdigest()[:16]}", motor=m.id, encontrado_em=_agora()[:10],
                                   link_divulgacao=p.link, link_oficial=p.link, titulo=livro.get("titulo") or p.titulo,
                                   dados={"livro_id": livro["id"], "origem": "mapa do site original", "motivo": motivo, "modificado_em": p.data},
                                   documento=documento))
-        # vista: a página não relevante e a relevante entregue com o documento lido (a que não abriu ou ficou além do limite volta)
-        self.estado.marcar_mapa(dominio, [p.link for p in pistas if p.link not in relevantes or p.link in lidas], _agora())
+        # vista: a página não relevante e a entregue nesta rodada (com ou sem documento: o achado chega com o link, C-01); a
+        # relevante que ficou além do limite da rodada volta na próxima vigília (antes era marcada e se perdia)
+        self.estado.marcar_mapa(dominio, [p.link for p in pistas if p.link not in relevantes or p.link in nesta_rodada], _agora())
         return achados
 
     def pesquisar(self, livro: dict[str, Any]) -> Achado | None:

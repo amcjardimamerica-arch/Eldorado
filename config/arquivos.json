@@ -4309,7 +4309,7 @@
   },
   {
    "arquivo": "eldorado/motores/leitura/ocr.py",
-   "linhas": 67,
+   "linhas": 90,
    "finalidade": "O OCR (reserva, extra 'ocr'): RapidOCR, leve; só para o PDF digitalizado e as imagens.",
    "depende_de": [
     "eldorado/motores/leitura/leitores.py"
@@ -4318,10 +4318,12 @@
    "acionado_por": [],
    "usado_por": [
     "eldorado/motores/canal/motor.py",
-    "eldorado/motores/leitura/leitores.py"
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py"
    ],
    "testes": [
-    "test_leitura.py"
+    "test_leitura.py",
+    "test_manutencao_1611.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
@@ -4359,36 +4361,6 @@
    "ordem": 132
   },
   {
-   "arquivo": "eldorado/motores/leitura/pdf.py",
-   "linhas": 138,
-   "finalidade": "O leitor de PDF: o texto literal por página (com o expurgo seguro), as tabelas e as páginas que precisam de OCR.",
-   "depende_de": [
-    "eldorado/motores/leitura/expurgo.py",
-    "eldorado/motores/leitura/leitores.py"
-   ],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/motores/canal/motor.py",
-    "eldorado/motores/leitura/leitores.py",
-    "eldorado/motores/pilotos/interceptador.py"
-   ],
-   "testes": [
-    "test_leitura.py"
-   ],
-   "situacao": "em funcionamento",
-   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [
-    "eldorado/motores/leitura/expurgo.py",
-    "eldorado/motores/leitura/leitores.py"
-   ],
-   "critico": false,
-   "metrica": "páginas por segundo; páginas sem texto",
-   "ordem": 133
-  },
-  {
    "arquivo": "eldorado/motores/leitura/planilha.py",
    "linhas": 58,
    "finalidade": "Planilhas XLSX, XLS, XLSB e ODS (python-calamine, 13× mais rápido que o openpyxl, medido). Uma página por aba.",
@@ -4410,7 +4382,7 @@
    ],
    "critico": false,
    "metrica": "planilhas lidas",
-   "ordem": 134
+   "ordem": 133
   },
   {
    "arquivo": "eldorado/motores/leitura/universal.py",
@@ -4435,6 +4407,38 @@
    ],
    "critico": false,
    "metrica": "usos da reserva (deve ser raro)",
+   "ordem": 134
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/pdf.py",
+   "linhas": 157,
+   "finalidade": "O leitor de PDF: o texto literal por página (com o expurgo seguro), as tabelas e as páginas que precisam de OCR.",
+   "depende_de": [
+    "eldorado/motores/leitura/expurgo.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/ocr.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_leitura.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/expurgo.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/ocr.py"
+   ],
+   "critico": false,
+   "metrica": "páginas por segundo; páginas sem texto",
    "ordem": 135
   },
   {
@@ -5186,7 +5190,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 686,
+   "linhas": 703,
    "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
    "depende_de": [
     "eldorado/base/cartorio/migrados.py",

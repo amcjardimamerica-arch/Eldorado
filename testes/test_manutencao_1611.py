@@ -21,7 +21,7 @@ def test_o_no_originais_nao_falha_com_achado_sem_documento_e_entrega_o_achado():
     assert enc.diario.ev == ["achado.entregue"]
     from pathlib import Path
     m = Path("eldorado/motores/canal/motor.py").read_text(encoding="utf-8")
-    assert "if p.link not in relevantes or p.link in lidas" in m          # o mapa marcado só depois da entrega
+    assert "if p.link not in relevantes or p.link in nesta_rodada" in m   # a relevante além do limite não se perde
 
 
 def test_o_posto_do_espiao_nao_mostra_missao_undefined():
@@ -58,3 +58,18 @@ def test_os_que_fecham_em_7_dias_sao_contados_antes_do_corte():
     """C-18: a lista mostra 15; o total é o do banco (eram 45 e o relatório dizia 15)."""
     from eldorado.base.comandante.apresentar import _n7
     assert _n7({"fecham_em_7_dias": [1] * 15, "fecham_em_7_dias_total": 45}) == 45
+
+
+def test_o_ocr_que_demora_nao_prende_a_leitura():
+    """17/11/2026: o OCR passou a levar minutos por página e prendeu a Qualidade — agora tem tempo limite por página."""
+    import time
+
+    import pytest
+
+    from eldorado.motores.leitura.ocr import OCR, OCRDemorou
+    o = OCR.__new__(OCR)
+    o._motor, o._tess, o.nome = (lambda img: time.sleep(5)), None, "lento"
+    t0 = time.monotonic()
+    with pytest.raises(OCRDemorou):
+        o.texto(b"x", limite_s=0.5)
+    assert time.monotonic() - t0 < 2

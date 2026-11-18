@@ -294,6 +294,9 @@ class _VezDaIA:
 VEZ_DA_IA = _VezDaIA()
 
 
+
+COMMON_CRAWL_S = 20.0   # 17/11/2026: o tempo limite da cópia do Common Crawl (abordagem 7)
+
 class Interceptador:
     def __init__(self, biblioteca: sqlite3.Connection, diario: Diario, escada: Escada, ponte: Escada | None = None,
                  metabusca: Callable[[str], list[str]] | None = None, arquivo: str = "https://web.archive.org", ia=None):
@@ -395,9 +398,23 @@ class Interceptador:
             r = DegrauArquivo(self.arquivo).buscar(lv.base, 25)
         except (Bloqueado, Indisponivel, Pendente, Passageiro):           # a falha de rede no Wayback (24/10/2026: derrubava o nó)
             try:                                            # a segunda cópia arquivada: o Common Crawl (cdx_toolkit)
+                import threading
+
                 import cdx_toolkit
-                obj = next(iter(cdx_toolkit.CDXFetcher(source="cc").iter(lv.base, limit=1, filter=["status:200"])), None)
-                if obj is None:
+                # 17/11/2026: com tempo limite — a biblioteca tenta de novo, com espera crescente, sem respeitar o tempo do
+                # voo (prendia o voo e travou a Qualidade); passado o limite, o voo segue sem a cópia
+                saida: dict = {}
+
+                def _cc():
+                    try:
+                        saida["obj"] = next(iter(cdx_toolkit.CDXFetcher(source="cc").iter(lv.base, limit=1, filter=["status:200"])), None)
+                    except Exception as e:  # noqa: BLE001
+                        saida["erro"] = e
+                t = threading.Thread(target=_cc, daemon=True)
+                t.start()
+                t.join(COMMON_CRAWL_S)
+                obj = saida.get("obj")
+                if t.is_alive() or obj is None:
                     return []
                 r = type("Copia", (), {"conteudo": obj.content, "status": 200, "tipo": obj.data.get("mime") or "text/html"})()
             except Exception:  # noqa: BLE001 — sem a biblioteca ou sem cópia
