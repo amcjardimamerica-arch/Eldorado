@@ -859,6 +859,19 @@
    ]
   },
   {
+   "id": "R59",
+   "data": "2026-11-17",
+   "tema": "operação × falha na Sala",
+   "regra": "Operação é a condição do sistema funcionando; falha é o impedimento de o sistema funcionar. Fila e dado parado à espera do Claude no Chrome ou da titular são indicadores de operação: aparecem na Sala com cor própria, pedem só o ciente e não pintam a etapa, não contam contra a Regência e não descontam do índice de saúde. Amarelo e vermelho ficam só para falha. O sistema está em funcionamento adequado quando o Claude no Chrome está sem realizar. Todo instrumento tem a classe declarada (operação ou falha).",
+   "porque": "titular, 16/11/2026 (decisão 2 da manutenção de 16/11): a Regência ficava vermelha com 5 etapas amarelas, 3 delas só operação (a fila do Chrome, o Farol à espera do ciente, a origem à espera do Chrome).",
+   "onde": "eldorado/base/painel/sala.py (OPERACAO, efetivo, a classe de cada instrumento, as etapas, a Regência, o índice); eldorado/base/painel/pagina/dashboard.html (a cor própria do indicador de operação)",
+   "travas": [
+    "testes/test_r59_operacao_falha.py::test_todo_instrumento_tem_a_classe_declarada",
+    "testes/test_r59_operacao_falha.py::test_fila_do_chrome_acima_do_limite_nao_tira_a_etapa_externa_do_verde",
+    "testes/test_r59_operacao_falha.py::test_instrumento_de_falha_amarelo_tira_a_etapa_do_verde"
+   ]
+  },
+  {
    "id": "R60",
    "data": "2026-11-17",
    "tema": "o livro de mecanismo (programa regulado por lei)",

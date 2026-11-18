@@ -30,6 +30,16 @@ ETAPAS = {
 }
 ORDEM = {"vermelho": 0, "amarelo": 1, "cinza": 2, "verde": 3}
 
+# 17/11/2026 (titular, R59 — C-22): OPERAÇÃO é a condição do sistema funcionando; FALHA é o impedimento. Fila e dado parado à
+# espera do Claude no Chrome ou da titular são indicadores de operação: aparecem na Sala com cor própria e pedem só o ciente;
+# não pintam a etapa, não contam contra a Regência nem descontam do índice de saúde. Amarelo e vermelho ficam só para falha.
+OPERACAO = {"ve_para_o_chrome", "de_decisoes", "es_expurgo", "fa_fecham_7d", "ab_link_oficial"}
+
+
+def efetivo(x: dict) -> str:
+    """A cor que conta para a etapa, a Regência e o índice: o instrumento de operação fora da faixa conta como verde."""
+    return "verde" if x.get("classe") == "operacao" and x.get("estado") in ("amarelo", "vermelho") else x.get("estado", "cinza")
+
 
 def _causa(mensagem: str | None) -> str:
     """A causa de um alarme: a mensagem sem os números que variam de uma repetição para outra."""
@@ -365,7 +375,9 @@ def montar(
         col,
         "verde" if col else "amarelo",
         f"{col} achados entregues pelos motores desde ontem",
-        ultimo_achado,
+        # C-22: o campo é data sem hora — a idade era contada da meia-noite (22,5 h); hoje: a medição; outro dia: o fim dele
+        (iso if ultimo_achado and str(ultimo_achado)[:10] == agora.date().isoformat()
+         else f"{ultimo_achado}T23:59:59+00:00" if ultimo_achado and len(str(ultimo_achado)) == 10 else ultimo_achado),
       faixa={"regra": "verde quando há valor; atenção quando zero"},
 
     )
@@ -595,8 +607,8 @@ def montar(
     causas_txt = "; as tentativas: " + ", ".join(f"{k} {v}" for k, v in causa.items())
     I(
         "pi_missoes",
-        "Missões do Interceptador (24 h): itens do checklist obtidos",
-        it if nm else None,
+        "Missões do Interceptador (24 h): itens do checklist obtidos por missão",
+        round(it / nm, 1) if nm else None,          # C-22: a média, a mesma grandeza da faixa (mostrava o total, 316)
         "cinza" if not nm else _faixa(it / nm, 1.5, 0.5),
         "ainda sem missão registrada"
         if not nm
@@ -933,15 +945,19 @@ def montar(
       cadencia_h=0.25)
     inst["fa_fecham_7d"].update({"ids": _ids7, "novos": _novos7, "ciente": _cien or None})
 
+    # ---- R59: a classe de cada instrumento (operação ou falha)
+    for i_, x_ in inst.items():
+        x_["classe"] = "operacao" if i_ in OPERACAO else "falha"
     # ---- os compartimentos e a Regência
     comp_ = []
     for et, ids in ETAPAS.items():
         if et == "regencia":
             continue
-        est = min((inst[i]["estado"] for i in ids if i in inst), key=lambda k: ORDEM[k], default="cinza")
+        est = min((efetivo(inst[i]) for i in ids if i in inst), key=lambda k: ORDEM[k], default="cinza")   # R59: só a falha pinta
         # 30/10/2026: a etapa em alerta diz o MOTIVO (os indicadores que o causam)
-        mot = "; ".join(f"{inst[i]['nome']}: {inst[i]['motivo']}" for i in ids if i in inst and inst[i]["estado"] in ("amarelo", "vermelho"))
-        comp_.append({"id": et, "estado": est, "motivo": mot})
+        mot = "; ".join(f"{inst[i]['nome']}: {inst[i]['motivo']}" for i in ids if i in inst and efetivo(inst[i]) in ("amarelo", "vermelho"))
+        oper = [inst[i]["nome"] for i in ids if i in inst and inst[i]["classe"] == "operacao" and inst[i]["estado"] in ("amarelo", "vermelho")]
+        comp_.append({"id": et, "estado": est, "motivo": mot, "operacao": oper})
     cumpridos = [c["id"] for c in comp_ if c["estado"] == "verde"]
     em_falha = [c["id"] for c in comp_ if c["estado"] == "vermelho"]
     I(
@@ -954,14 +970,15 @@ def montar(
         [0, len(comp_)],
         {"normal": [7, None], "alarme": [4, None]},
     )
-    est_reg = min((inst[i]["estado"] for i in ETAPAS["regencia"]), key=lambda k: ORDEM[k])
+    inst["rg_regencia"]["classe"] = "falha"
+    est_reg = min((efetivo(inst[i]) for i in ETAPAS["regencia"]), key=lambda k: ORDEM[k])
     comp_.insert(
         0,
         {
             "id": "regencia",
             "estado": est_reg,
             "motivo": "; ".join(
-                f"{inst[i]['nome']}: {inst[i]['motivo']}" for i in ETAPAS["regencia"] if inst[i]["estado"] in ("amarelo", "vermelho")
+                f"{inst[i]['nome']}: {inst[i]['motivo']}" for i in ETAPAS["regencia"] if efetivo(inst[i]) in ("amarelo", "vermelho")
             ),
         },
     )
@@ -969,7 +986,8 @@ def montar(
     for c in comp_:
         if c["id"] == "coleta":
             c["estrelas"] = [_estrela(x, luz, cer, agora) for x in motores]
-    contagem = Counter(i["estado"] for i in inst.values())
+    contagem = Counter(efetivo(i) for i in inst.values())                      # R59: a operação não desconta da saúde
+    contagem_operacao = sum(1 for i in inst.values() if i.get("classe") == "operacao" and i["estado"] in ("amarelo", "vermelho"))
     medidos = sum(contagem[k] for k in ("verde", "amarelo", "vermelho"))
     indice = round(100 * (contagem["verde"] + 0.5 * contagem["amarelo"]) / medidos) if medidos else 0
     # ---- o caminho do dado
@@ -1159,7 +1177,8 @@ def montar(
         "instrumentos": (_relogios(inst), _licoes(inst, cer))[0] or list(inst.values()),
         "compartimentos": comp_,
         "regencia": {"cumpridos": len(cumpridos), "em_falha": len(em_falha)},
-        "contagem": {k: contagem.get(k, 0) for k in ("verde", "amarelo", "vermelho", "cinza")},
+        "contagem": {**{k: contagem.get(k, 0) for k in ("verde", "amarelo", "vermelho", "cinza")},
+                     "operacao": contagem_operacao},     # R59: os indicadores de operação acesos (pedem o ciente)
         "anunciadores": anunc,
         "mimico": mimico,
         "linha_do_tempo": linha,

@@ -26,21 +26,21 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
 | 1 | `.github/workflows/diagnostico.yml` | Diagnóstico (análise externa): sonda endereços a partir do GitHub, que alcança a internet, e publica o resulta | a construir |  |  | 0 |
-| 2 | `.github/workflows/implantar.yml` | name: Implantar (parar, implantar e religar) A regra R09 da titular (25/10/2026, a segunda forma): nunca o mei | em funcionamento | passagem |  | 0 |
+| 2 | `.github/workflows/implantar.yml` | name: Implantar (parar, implantar e religar) A regra R09 da titular (25/10/2026, a segunda forma): nunca o mei | em funcionamento | passagem |  | 1 |
 | 3 | `.github/workflows/visualizar.yml` | name: Visualizar a sala de controle | a construir |  |  | 0 |
-| 4 | `config/arquivos.json` | O catálogo dos arquivos do sistema (o inventário). | em funcionamento |  | inventario, mapa_arquivos, medicao, comandos | 0 |
-| 5 | `config/eldorado.toml` | Configuração do Eldorado. Validada na carga: chave desconhecida ou valor fora do limite impede a passagem. | em funcionamento |  | comandos, config | 0 |
-| 6 | `eldorado/__init__.py` |  | pacote |  |  | 142 |
-| 7 | `eldorado/base/__init__.py` |  | pacote |  |  | 108 |
+| 4 | `config/arquivos.json` | O catálogo dos arquivos do sistema (o inventário). | em funcionamento |  | inventario, mapa_arquivos, medicao, comandos | 2 |
+| 5 | `config/eldorado.toml` | Configuração do Eldorado. Validada na carga: chave desconhecida ou valor fora do limite impede a passagem. | em funcionamento |  | comandos, config | 2 |
+| 6 | `eldorado/__init__.py` |  | pacote |  |  | 144 |
+| 7 | `eldorado/base/__init__.py` |  | pacote |  |  | 109 |
 | 8 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | consolidar, copia_livros, drive, manutencao, memoria, analise_externa, releitura, fila, governador, inventario, pilotos, pilotos_permanentes, relatorio_turno, retencao, pilotos, agenda, definicao, executor, fila, nos, config, eventos, gravador, ia, dados, vivo, api, escada, leve, navegador, ponte_br, fabrica, motor, otimizacao | .github/workflows/eldorado.yml (eldorado permanente) | 3 |
-| 9 | `scripts/gerar_ponte.py` | 14/11/2026 (R56, S6): gera a lista DOMINIOS do ponte/ponte.php a partir de config/ponte_dominios.txt (os sites | em funcionamento |  | qualidade | 0 |
-| 10 | `scripts/gravar.sh` | !/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por di | em funcionamento |  | eldorado | 0 |
-| 11 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 0 |
+| 9 | `scripts/gerar_ponte.py` | 14/11/2026 (R56, S6): gera a lista DOMINIOS do ponte/ponte.php a partir de config/ponte_dominios.txt (os sites | em funcionamento |  | qualidade | 1 |
+| 10 | `scripts/gravar.sh` | !/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por di | em funcionamento |  | eldorado | 9 |
+| 11 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 1 |
 | 12 | `scripts/visualizar_sala.py` | Abre a sala de controle num navegador, fotografa em três alturas de rolagem e mede os quadros ao rolar (o flux | a construir |  |  | 0 |
-| 13 | `.github/workflows/painel.yml` | O painel (titular, 23/10/2026): a imagem atual do sistema. A página é a do Eldorado0 (o HTML, os scripts e as  | em funcionamento | comandos, passagem |  | 0 |
-| 14 | `.github/workflows/qualidade.yml` | Qualidade: a cada gravação, instala as dependências fixadas, roda o verificador e a bateria inteira. name: Qua | em funcionamento | comandos, gerar_ponte, instalar_bibliotecas |  | 0 |
+| 13 | `.github/workflows/painel.yml` | O painel (titular, 23/10/2026): a imagem atual do sistema. A página é a do Eldorado0 (o HTML, os scripts e as  | em funcionamento | comandos, passagem |  | 3 |
+| 14 | `.github/workflows/qualidade.yml` | Qualidade: a cada gravação, instala as dependências fixadas, roda o verificador e a bateria inteira. name: Qua | em funcionamento | comandos, gerar_ponte, instalar_bibliotecas |  | 1 |
 | 15 | `scripts/instalar.sh` | !/usr/bin/env bash A instalação completa do Eldorado (plano C: as ferramentas adotadas), usada por todos os fl | em funcionamento | settings, instalar_bibliotecas | eldorado, experimentar-motor | 0 |
-| 16 | `.github/workflows/eldorado.yml` | O Eldorado em FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário fixo, sem trabalho e descanso. Cada  | em funcionamento | ia_local, comandos, gravar, instalar, passagem |  | 0 |
+| 16 | `.github/workflows/eldorado.yml` | O Eldorado em FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário fixo, sem trabalho e descanso. Cada  | em funcionamento | ia_local, comandos, gravar, instalar, passagem |  | 7 |
 
 ## 02 Núcleo: contratos, eventos e gravação
 
@@ -62,7 +62,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 28 | `eldorado/banco/__init__.py` |  | pacote |  |  | 8 |
+| 28 | `eldorado/banco/__init__.py` |  | pacote |  |  | 9 |
 | 29 | `eldorado/banco/_sqlite.py` | Abertura padronizada dos bancos SQLite: configurações medidas, criação do esquema, versão e integridade. | em funcionamento |  | esquema, esquema, gravador | 1 |
 | 30 | `eldorado/banco/analise.py` | As análises sobre os bancos (plano C: DuckDB): o rendimento de cada motor, o funil do Cartório, os achados por | a construir |  |  | 0 |
 | 31 | `eldorado/banco/biblioteca/__init__.py` |  | pacote |  |  | 6 |
@@ -85,7 +85,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 48 | `eldorado/base/especial/registro.py` | O registro das empresas e dos incentivos (na Biblioteca: os livros e as empresas no mesmo banco, titular 24/10 | em funcionamento | eventos | regencia | 1 |
 | 49 | `eldorado/banco/biblioteca/esquema.py` | O esquema da Biblioteca (biblioteca.db): os livros e tudo o que se sabe de cada oportunidade. | em funcionamento | _sqlite | consolidar, nos, contrato_eventos | 3 |
 | 50 | `eldorado/banco/cerebro_db/esquema.py` | O esquema do banco do Cérebro (cerebro.db): a operação e o aprendizado do sistema, sem nenhuma oportunidade. | em funcionamento | _sqlite | nos, contrato_eventos, estado, espiao | 1 |
-| 51 | `eldorado/banco/consolidar.py` | A consolidação dos bancos (titular, 24/10/2026): só o Cérebro tem um banco paralelo, o de aprendizado; os livr | em funcionamento | esquema, estado, espiao | comandos | 0 |
+| 51 | `eldorado/banco/consolidar.py` | A consolidação dos bancos (titular, 24/10/2026): só o Cérebro tem um banco paralelo, o de aprendizado; os livr | em funcionamento | esquema, estado, espiao | comandos | 1 |
 
 ## 04 Execução: workflow, executor e fila (a engenharia do n8n)
 
@@ -95,7 +95,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 53 | `eldorado/base/fluxo/agenda.py` | A agenda: quais módulos estão devidos agora. | em funcionamento |  | regencia, comandos | 4 |
 | 54 | `eldorado/base/fluxo/definicao.py` | A definição de um workflow (conceito do n8n, reescrito do zero para o Eldorado). | em funcionamento |  | executor, fila, comandos | 6 |
 | 55 | `eldorado/base/fluxo/nos.py` | Os nós próprios da plataforma, usados nos workflows de operação (manutenção, aplicação de eventos). | em funcionamento | esquema, esquema, governador, eventos, gravador | passagem, nó 16 «aplicar_rede»; passagem, nó 18 «aplicar_validacao»; passagem, nó 28 «maquina»; passagem, nó 40 «aplicar | 13 |
-| 56 | `workflows/passagem.toml` | A passagem: planejar, acionar, decidir, aplicar, certificar no Cartório, aprender, conferir a completude e med | em funcionamento | previsao, avaliar, curador, memoria, analise_externa, auditoria, cartorio, identidade, manutencao_expurgo, releitura, aprendizado, completude | ciente, eldorado, implantar, painel, inventario, mapa_arquivos, comandos | 0 |
+| 56 | `workflows/passagem.toml` | A passagem: planejar, acionar, decidir, aplicar, certificar no Cartório, aprender, conferir a completude e med | em funcionamento | previsao, avaliar, curador, memoria, analise_externa, auditoria, cartorio, identidade, manutencao_expurgo, releitura, aprendizado, completude | ciente, eldorado, implantar, painel, inventario, mapa_arquivos, comandos | 8 |
 | 57 | `eldorado/base/fluxo/executor.py` | O executor durável dos workflows. | em funcionamento | definicao, alarmes, eventos, recibo | fila, comandos | 5 |
 | 58 | `eldorado/base/fluxo/fila.py` | A fila de tarefas (Huey sobre SQLite): executa workflows, sob o governador e a pausa do sistema. | em funcionamento | governador, definicao, executor | comandos | 1 |
 
@@ -104,10 +104,10 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
 | 59 | `.github/workflows/ia-teste.yml` | Teste dos pilotos no GitHub: uma missão real do Espião e a IA local (análise externa): os mesmos passos do fun | a construir |  |  | 0 |
-| 60 | `config/agenda.toml` | O PONTO DE PARTIDA do aprendizado (titular, 22/10/2026: o Eldorado não tem horário fixo). Quem decide é o Cére | em funcionamento |  | regencia, comandos, dados | 0 |
-| 61 | `config/cargos.toml` | Os cargos da IA (titular, 25/10/2026): uma única Qwen3-8B para o Comandante e os dois pilotos, cada um na SUA  | em funcionamento |  | ia | 0 |
+| 60 | `config/agenda.toml` | O PONTO DE PARTIDA do aprendizado (titular, 22/10/2026: o Eldorado não tem horário fixo). Quem decide é o Cére | em funcionamento |  | regencia, comandos, dados | 4 |
+| 61 | `config/cargos.toml` | Os cargos da IA (titular, 25/10/2026): uma única Qwen3-8B para o Comandante e os dois pilotos, cada um na SUA  | em funcionamento |  | ia | 2 |
 | 62 | `config/ia_local.toml` | A IA local dos pilotos (do Eldorado0, titular, 26/09/2026): um único modelo no sistema, o Qwen3-8B, servido pe | em funcionamento |  | eldorado | 0 |
-| 63 | `config/modulos.toml` | Os módulos ligados. Cada motor é um arquivo de configuração do motor genérico (eldorado/motores/canal/config/) | em funcionamento | registro, alego-pl, bussola-social, camara-goiania-pl, congresso-nacional, dj-trf1-go, do-goiania, do-goias, dou, editais-do-brasil, empresas-editais-incentivados, estaduais-go-gov | encaminhamento, inventario, mapa_arquivos, pilotos_permanentes, regencia, dados, sala | 0 |
+| 63 | `config/modulos.toml` | Os módulos ligados. Cada motor é um arquivo de configuração do motor genérico (eldorado/motores/canal/config/) | em funcionamento | registro, alego-pl, bussola-social, camara-goiania-pl, congresso-nacional, dj-trf1-go, do-goiania, do-goias, dou, editais-do-brasil, empresas-editais-incentivados, estaduais-go-gov | encaminhamento, inventario, mapa_arquivos, pilotos_permanentes, regencia, dados, sala | 6 |
 | 64 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 48 |
 | 65 | `eldorado/base/cerebro/decisao.py` | A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026). | em funcionamento |  | fila, regencia | 1 |
 | 66 | `eldorado/base/cerebro/governador.py` | O governador de carga: mantém a máquina abaixo do limite (85%). | em funcionamento | eventos | pilotos_permanentes, regencia, pilotos, fila, nos, comandos | 9 |
@@ -139,8 +139,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|---|---|---|---|---|
 | 88 | `.github/workflows/experimentar-motor.yml` | Experimentar motor (orientação de criação, passo 8): roda o motor inteiro no GitHub, com a internet de verdade | em funcionamento | comandos, instalar |  | 0 |
 | 89 | `.github/workflows/gravar-paginas.yml` | Gravar páginas (orientação de criação de motores, passo 3 e 8): grava as respostas reais inteiras das rotas de | a construir |  |  | 0 |
-| 90 | `config/motores_previstos.json` | O estudo da titular: os 47 motores, os alvos e o aprendizado do Eldorado0. | em funcionamento |  | inventario, mapa_arquivos, dados, fabrica | 0 |
-| 91 | `config/ponte_dominios.txt` | Os domínios lidos pela ponte da HostGator (o IP brasileiro): a mesma lista que o ponte.php aceita (do Eldorado | em funcionamento |  | ponte_br | 0 |
+| 90 | `config/motores_previstos.json` | O estudo da titular: os 47 motores, os alvos e o aprendizado do Eldorado0. | em funcionamento |  | inventario, mapa_arquivos, dados, fabrica | 5 |
+| 91 | `config/ponte_dominios.txt` | Os domínios lidos pela ponte da HostGator (o IP brasileiro): a mesma lista que o ponte.php aceita (do Eldorado | em funcionamento |  | ponte_br | 2 |
 | 92 | `config/searxng/settings.yml` | O SearXNG do próprio fluxo (plano C: a metabusca própria, sem custo): só local, sem limitador, com a saída em  | em funcionamento |  | mapa_arquivos, instalar | 0 |
 | 93 | `eldorado/base/motor_modelo/__init__.py` |  | pacote |  |  | 0 |
 | 94 | `eldorado/motores/__init__.py` |  | pacote |  |  | 57 |
@@ -157,7 +157,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 105 | `eldorado/motores/leitura/enriquecer.py` | O enriquecimento de cada achado (o canivete do motor padrão; plano C, as ferramentas adotadas): o que o texto  | em funcionamento |  | encaminhamento, motor | 1 |
 | 106 | `eldorado/motores/leitura/expurgo.py` | O expurgo seguro: tira só o que se repete na faixa do cabeçalho e do rodapé (pela posição na página). | em funcionamento |  | pdf | 0 |
 | 107 | `eldorado/motores/leitura/normalizar.py` | A normalização: datas, valores, números por extenso e CNPJ, a partir do texto literal. | em funcionamento |  | auditoria | 0 |
-| 108 | `ponte/ponte.php` | PONTE BRASIL do Eldorado (25/10/2026): a mesma ponte do Eldorado0, com os domínios de TODOS os motores do sist | em funcionamento |  | ponte_br | 0 |
+| 108 | `ponte/ponte.php` | PONTE BRASIL do Eldorado (25/10/2026): a mesma ponte do Eldorado0, com os domínios de TODOS os motores do sist | em funcionamento |  | ponte_br | 3 |
 | 109 | `.github/workflows/ponte-teste.yml` | name: Ponte BR (teste) Testa a ponte da HostGator (o IP brasileiro) com os sites que recusam a nuvem (25/10/20 | o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início) | __init__ |  | 0 |
 | 110 | `eldorado/motores/descoberta/arquivos_web.py` | Forma 4: os arquivos da web: o índice da Wayback Machine lista as URLs já vistas de um domínio (inclusive edit | em funcionamento | pistas | motor | 0 |
 | 111 | `eldorado/motores/descoberta/dados_abertos.py` | Forma 2: os dados abertos: as APIs oficiais (pela configuração de cada motor) e os portais CKAN (dados.gov.br  | em funcionamento | pistas | motor | 1 |
@@ -191,9 +191,9 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 137 | `config/missao/dispensas_por_regime.json` | Nem todo recurso tem os 12 parâmetros de um edital. Esta matriz diz, para cada TIPO de recurso (regime), quais | em funcionamento |  | mapa_arquivos, medicao, interceptador | 0 |
+| 137 | `config/missao/dispensas_por_regime.json` | Nem todo recurso tem os 12 parâmetros de um edital. Esta matriz diz, para cada TIPO de recurso (regime), quais | em funcionamento |  | mapa_arquivos, medicao, interceptador | 1 |
 | 138 | `config/missao/municipios_brasil.json` | Os 5.291 municípios do Brasil (IBGE), para localizar o órgão de cada oportunidade. | em funcionamento |  | auditoria, mapa_arquivos, biblioteca, regras_portao, interceptador | 0 |
-| 139 | `config/missao/republicadores.json` | Sites que REPUBLICAM oportunidades para divulgação: são INDÍCIO e insumo de busca do Piloto - Interceptador, n | em funcionamento |  | origem, organizar, dados | 0 |
+| 139 | `config/missao/republicadores.json` | Sites que REPUBLICAM oportunidades para divulgação: são INDÍCIO e insumo de busca do Piloto - Interceptador, n | em funcionamento |  | origem, organizar, dados | 1 |
 | 140 | `config/missao/territorio_goias.json` | O território de Goiás: os 246 municípios (IBGE, código UF 52), para a regra de abrangência. | em funcionamento |  | auditoria, mapa_arquivos, regras_portao | 0 |
 | 141 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 17 |
 | 142 | `eldorado/base/missao/chave.py` | A chave do livro nesta missão: o livro é o PROGRAMA, não a edição. | em funcionamento |  | indice, oportunidades | 0 |
@@ -247,8 +247,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 168 | `config/regras.toml` | A tabela única de regras e decisões da titular. Para cada tema, vale a decisão da titular mais recente. As sub | em funcionamento |  | regras | 0 |
-| 169 | `config/regras_titular.json` | As regras da titular para o sistema. Cada regra tem as travas (testes) que a defendem: se alguém quebrar a reg | em funcionamento |  | regras, comandos | 0 |
+| 168 | `config/regras.toml` | A tabela única de regras e decisões da titular. Para cada tema, vale a decisão da titular mais recente. As sub | em funcionamento |  | regras | 1 |
+| 169 | `config/regras_titular.json` | As regras da titular para o sistema. Cada regra tem as travas (testes) que a defendem: se alguém quebrar a reg | em funcionamento |  | regras, comandos | 3 |
 | 170 | `eldorado/base/aprendizado/__init__.py` | O Aprendizado (titular, 25/10/2026): o responsável por toda análise e melhoria do sistema — a pertinência, a a | pacote |  |  | 8 |
 | 171 | `eldorado/base/aprendizado/avaliar.py` | O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a | em funcionamento | destino, escolher | passagem, nó 35 «avaliar» | 5 |
 | 172 | `eldorado/base/aprendizado/curador.py` | O curador do Aprendizado (a etapa A5; o conceito do curador do Hermes Agent, titular, 25/10/2026). | em funcionamento |  | passagem, nó 36 «curar» | 1 |
@@ -270,7 +270,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 188 | `skills/comandante-conferir-20-minutos/SKILL.md` | A skill comandante-conferir-20-minutos: Confere, 20 minutos depois, cada mudança feita em funcionamento: se fo | em funcionamento |  | curador | 0 |
 | 189 | `skills/comandante-decidir-coleta/SKILL.md` | A skill comandante-decidir-coleta: Decide quais motores reacionar, pela política aprendida no Arquivo do Céreb | em funcionamento |  | curador | 0 |
 | 190 | `skills/comandante-parametrizar/SKILL.md` | A skill comandante-parametrizar: Ajusta os parâmetros de cada etapa no Arquivo do Cérebro, com a versão e a có | em funcionamento |  | curador | 0 |
-| 191 | `skills/espiao-missao/SKILL.md` | A skill espiao-missao: Uma missão de busca de oportunidades novas na web, na família de consultas escolhida pe | em funcionamento |  | curador | 0 |
+| 191 | `skills/espiao-missao/SKILL.md` | A skill espiao-missao: Uma missão de busca de oportunidades novas na web, na família de consultas escolhida pe | em funcionamento |  | curador | 1 |
 | 192 | `skills/interceptador-plano-de-voo/SKILL.md` | A skill interceptador-plano-de-voo: Um voo pelo plano de voo de um livro: as abordagens em ordem, até comprova | em funcionamento |  | curador | 0 |
 | 193 | `eldorado/base/cartorio/auditoria.py` | A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados). | em funcionamento | certificacao, origem, passaporte, regua, selos, aprendizado, itens, portao, regras_portao, eventos, normalizar | passagem, nó 11 «auditar» | 8 |
 | 194 | `eldorado/base/cerebro/inventario.py` | O inventário do sistema (titular, 22/10/2026): todo arquivo, do primeiro ao último no caminho do funcionamento | em funcionamento | mapa_arquivos | comandos | 1 |
@@ -285,13 +285,13 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 198 | `eldorado/base/analise/historia.py` | livros com história completa | substituído por eldorado/base/analise/previsao.py (a história do livro) |  |  | 0 |
 | 199 | `eldorado/base/analise/preditivo.py` | alertas emitidos antes da abertura | substituído por eldorado/base/analise/previsao.py (a previsão da próxima abertura e o alerta) |  |  | 0 |
 | 200 | `eldorado/base/analise/previsao.py` | A análise (fase F9 do plano): a previsão da próxima abertura, o calendário e a história de cada livro. | em funcionamento |  | passagem, nó 23 «analise» | 1 |
-| 201 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 18 |
+| 201 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 19 |
 | 202 | `eldorado/base/painel/api.py` | A API do sistema (plano C: FastAPI, com respostas em orjson): a leitura do sistema para o painel novo e para q | a construir |  |  | 0 |
 | 203 | `eldorado/base/painel/cartorio.py` | O Cartório no site, ligado aos dados (titular, 25/10/2026: a página estava estática). | em funcionamento | itens | dados | 2 |
 | 204 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
 | 205 | `eldorado/base/painel/pilotos.py` | Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de control | em funcionamento | itens | dados, vivo | 2 |
 | 206 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 1 |
-| 207 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, pontuacao_motores, sinais_motores | passagem, nó 3 «medir_sala» | 6 |
+| 207 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, pontuacao_motores, sinais_motores | passagem, nó 3 «medir_sala» | 7 |
 | 208 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | a construir |  |  | 0 |
 | 209 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, vivo, estado | comandos, legado, vivo | 7 |
 | 210 | `eldorado/base/painel/legado.py` | Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: "pedi para consertar diversas vezes  | em funcionamento | dados | dados | 1 |
@@ -301,7 +301,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 212 | `config/comparacao.toml` | Os 14 dias de comparação (critério da Fase 7 e da Fase 10): cada motor novo roda em paralelo com o de origem n | em funcionamento |  | medicao, sala | 0 |
+| 212 | `config/comparacao.toml` | Os 14 dias de comparação (critério da Fase 7 e da Fase 10): cada motor novo roda em paralelo com o de origem n | em funcionamento |  | medicao, sala | 2 |
 | 213 | `eldorado/base/migracao/__init__.py` | testes verdes e uso registrado | a construir |  |  | 0 |
 | 214 | `eldorado/base/migracao/importar_eldorado0.py` | A migração do Eldorado0 (temporária, 30 dias): livros, certidões, documentos, vereditos, selos, leis, empresas | a construir |  |  | 0 |
 
@@ -313,18 +313,18 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 216 | `.github/workflows/bench-ia2.yml` | name: Estudo das IAs (parte 2) O arranjo decidido pela titular (uma IA do Comandante e uma dos pilotos, em par | a construir |  |  | 0 |
 | 217 | `estudos/bench_ia.py` | O estudo das IAs (titular, 25/10/2026): uma Qwen3-8B para as três funções (o Interceptador, o Espião e o Coman | a construir |  |  | 0 |
 | 218 | `estudos/bench_ia2.py` | O estudo das IAs, parte 2 (titular, 25/10/2026): uma IA exclusiva do Comandante e uma dos pilotos (os dois pil | a construir |  |  | 0 |
-| 219 | `estudos/bench_rede_2026_11_02.py` | Benchmark da rede neural do Cérebro (titular, 02/11/2026): para cada pergunta (oportunidade, ação, motor), com | estudo concluído (02/11/2026): os parâmetros da rede (taxa, L2, limiar por pergunta); só sob demanda |  |  | 0 |
+| 219 | `estudos/bench_rede_2026_11_02.py` | Benchmark da rede neural do Cérebro (titular, 02/11/2026): para cada pergunta (oportunidade, ação, motor), com | estudo concluído (02/11/2026): os parâmetros da rede (taxa, L2, limiar por pergunta); só sob demanda |  |  | 1 |
 
 ## 18 Outros
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 220 | `.github/workflows/arquivar.yml` | name: Arquivar (pela titular, no painel) 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Bib | em funcionamento | comandos |  | 0 |
-| 221 | `.github/workflows/ciente.yml` | name: Ciente (pela titular, na Sala de controle) 09/11/2026 (titular): o botão «Ciente» da Sala grava no Céreb | em funcionamento | comandos, passagem |  | 0 |
-| 222 | `.github/workflows/vigia.yml` | O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem grav | em funcionamento |  |  | 0 |
-| 223 | `config/cartorio.toml` | O Cartório (titular, 29/10/2026). Quantos livros da fila da análise externa vão no lote do dia ao Claude no Ch | em funcionamento |  | analise_externa | 0 |
+| 220 | `.github/workflows/arquivar.yml` | name: Arquivar (pela titular, no painel) 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Bib | em funcionamento | comandos |  | 1 |
+| 221 | `.github/workflows/ciente.yml` | name: Ciente (pela titular, na Sala de controle) 09/11/2026 (titular): o botão «Ciente» da Sala grava no Céreb | em funcionamento | comandos, passagem |  | 1 |
+| 222 | `.github/workflows/vigia.yml` | O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem grav | em funcionamento |  |  | 1 |
+| 223 | `config/cartorio.toml` | O Cartório (titular, 29/10/2026). Quantos livros da fila da análise externa vão no lote do dia ao Claude no Ch | em funcionamento |  | analise_externa | 1 |
 | 224 | `config/ponte_base.txt` | 14/11/2026 (R56, S6): os domínios que a ponte BR já atendia (sites públicos do catálogo e sufixos públicos do  | em funcionamento |  | ponte_br | 0 |
-| 225 | `config/pontuacao_motores.toml` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento |  | pontuacao_motores | 0 |
+| 225 | `config/pontuacao_motores.toml` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento |  | pontuacao_motores | 2 |
 | 226 | `eldorado/base/cartorio/historia.py` | A HISTÓRIA COMPLETA DE CADA LIVRO (titular, 02/11/2026): cada livro com todas as suas informações ligadas, sem | em funcionamento |  | dados | 1 |
 | 227 | `eldorado/base/cartorio/importar_ouro.py` | 16/11/2026 (titular): a importação dos LIVROS DE OURO — o resultado da validação de todos os livros no edital, | em funcionamento | analise_externa, cartorio, identidade | analise_externa | 1 |
 | 228 | `eldorado/base/cartorio/leis.py` | 17/11/2026 (C-21): o acompanhamento das leis — as 27 leis tinham a mesma data de atualização (22/10, a importa | em funcionamento |  | encaminhamento | 1 |

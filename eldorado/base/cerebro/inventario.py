@@ -166,6 +166,7 @@ def gerar(raiz: str | Path = ".") -> dict[str, Any]:
         de.setdefault(x["para"], set()).add(x["de"])
         para.setdefault(x["de"], set()).add(x["para"])
     extras = [n["id"] for n in mp["nos"] if not n["id"].endswith(".py") or n["id"].startswith(("estudos/", "scripts/"))]
+    textos_testes = {t.name: t.read_text(encoding="utf-8") for t in sorted((raiz / "testes").glob("test_*.py"))}   # C-23
     for k in sorted(set(extras)):
         if k in info or not (raiz / k).exists() or k.startswith(("dados/", "eldorado/motores/canal/config/")):
             continue
@@ -174,7 +175,10 @@ def gerar(raiz: str | Path = ".") -> dict[str, Any]:
         itens.append({"arquivo": k, "etapa": _etapa(k), "parte": "OPERACAO" if k.startswith((".github/", "scripts/", "workflows/")) else "BASE",
                       "componente": "Operação e configuração", "ligacoes": [], "critico": k in (".github/workflows/eldorado.yml", "workflows/passagem.toml"),
                       "metrica": "o sistema roda sem intervenção", "finalidade": finalidade(k)[:200], "depende_de": sorted(para.get(k, ()))[:12],
-                      "usado_por": sorted(de.get(k, ()))[:12], "acionado_por": [], "eventos": [], "testes": [],
+                      "usado_por": sorted(de.get(k, ()))[:12], "acionado_por": [], "eventos": [],
+                      # 17/11/2026 (C-23): o arquivo que não é Python (o workflow do GitHub, a passagem) tem os testes que o citam
+                      # pelo caminho — antes ficava sempre sem teste, mesmo testado
+                      "testes": [n for n, s_ in textos_testes.items() if k in s_],
                       "linhas": len((raiz / k).read_text(encoding="utf-8", errors="replace").splitlines()), "situacao": sit})
     for k, a in anterior.items():                                   # previstos no projeto e ainda não construídos
         if k not in info and not (raiz / k).exists() and not k.endswith("/") and not any(x["arquivo"] == k for x in itens):

@@ -2636,7 +2636,9 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
 </script>
 <script>
 (function(){
-  const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
+  const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8",operacao:"#7DB4FF"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura",operacao:"operação · pede o ciente"};
+  // 17/11/2026 (R59): o indicador de operação fora da faixa tem cor própria e pede o ciente — não é falha
+  const corDe=x=>x&&x.classe==="operacao"&&(x.estado==="amarelo"||x.estado==="vermelho")?"operacao":(x?x.estado:"cinza");
   const ETAPAS=[   /* 18/10/2026 (titular): os 9 compartimentos da sala, na ordem do workflow; a Regência avalia cada um */
     {id:"regencia",nome:"Regência",faz:"A rede neural organiza todas as informações do sistema, avalia se cada compartimento está sendo cumprido e aciona as ferramentas para chegar aos livros completos.",ids:["rg_regencia","pa_passagem","pa_falhas","al_abertos","ma_cobertura","ma_esgotados","dg_finalidade","ma_memoria_etapa"]},
     {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_sinais","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
@@ -2697,7 +2699,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
       const lo=AL[0]!=null?AL[0]:a, no=N[0]!=null?N[0]:lo, hi=AL[1]!=null?AL[1]:b, nh=N[1]!=null?N[1]:hi;
       seg(a,lo,COR.vermelho); seg(lo,no,COR.amarelo); seg(no,nh,COR.verde); seg(nh,hi,COR.amarelo); seg(hi,b,COR.vermelho);}
     let tk=""; for(let i=0;i<=27;i++){const g=A0+i*10,[x0,y0]=P(g,r+t*.05),[x1,y1]=P(g,r+t*(i%3?.075:.095));tk+=`<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke="rgba(234,242,255,${i%3?.18:.4})" stroke-width="1"/>`;}
-    const gv=v==null?A0:ang(v), L=Math.PI*r*(270/180), frac=(gv-A0)/270, [px,py]=P(gv,r), cor=COR[x.estado]||COR.cinza, id="g"+Math.random().toString(36).slice(2,8);
+    const gv=v==null?A0:ang(v), L=Math.PI*r*(270/180), frac=(gv-A0)/270, [px,py]=P(gv,r), cor=COR[corDe(x)]||COR.cinza, id="g"+Math.random().toString(36).slice(2,8);
     const txt=v==null?"—":(x.unidade==="%"?Math.round(v)+"%":n(v));
     return `<svg viewBox="0 0 ${t} ${t}" width="${t}" height="${t}" role="img" aria-label="${e(x.nome)}: ${txt}"><defs><linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="#9B8CFF"/><stop offset="1" stop-color="${cor}"/></linearGradient>
       <filter id="${id}b"><feGaussianBlur stdDeviation="2.4"/></filter></defs>${z}${tk}
@@ -2747,7 +2749,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   const ehRelogio=x=>x.relogio&&x.escala&&typeof x.valor==="number";
   function medidas(et){ const L=et.ids.map(I).filter(Boolean), R=L.filter(ehRelogio), N=L.filter(x=>!ehRelogio(x));
     const rel=R.map(x=>`<button class="med cam" style="--d:1.6" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')">${mostrador(x,104)}<small>${e(CURTO[x.id]||x.nome)}</small></button>`).join("");
-    const num=N.map(x=>`<button class="cnt-c cam" style="--d:1.2;--c:${COR[x.estado]||COR.cinza}" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')" title="${e(x.motivo||"")}"><b class="mx">${n(x.valor)}</b><small>${e(CURTO[x.id]||x.nome)}</small></button>`).join("");
+    const num=N.map(x=>`<button class="cnt-c cam" style="--d:1.2;--c:${COR[corDe(x)]||COR.cinza}" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')" title="${e(x.motivo||"")}"><b class="mx">${n(x.valor)}</b><small>${e(CURTO[x.id]||x.nome)}</small></button>`).join("");
     return `${rel?`<div class="med-rel">${rel}</div>`:""}<div class="med-num">${num}${contadores(et)}</div>`; }
   /* holograma: nasce do elemento clicado (morph do retângulo de origem até o centro) */
   function completo(et){ const D=SC.detalhes||{}; let h="";
@@ -2761,7 +2763,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
     if(et.id==="externa") h=`<div class="bloco"><h4>Fila de reprocessamento</h4><div class="lista">${linhas(D.reprocessar,14,null,"reproc")}</div></div>`;
     return h; }
   function instrumentoHtml(x){ return `<div class="inst" id="nv-i-${x.id}" data-det="hist|${x.id}" title="clique para ver o histórico das leituras">${ehRelogio(x)?mostrador(x,120):`<div class="mx" style="font-size:26px;align-self:center;text-align:center">${n(x.valor)}<div class="faint" style="font:500 13px Saira Semi Condensed">${e(x.unidade||"")}</div></div>`}
-      <div><h4>${e(x.nome)}</h4><span style="color:${COR[x.estado]};font-weight:600;font-size:13.5px">${EST[x.estado]}</span> <span class="faint" style="font-size:13px">· ${e(x.motivo)}</span>
+      <div><h4>${e(x.nome)}</h4><span style="color:${COR[corDe(x)]};font-weight:600;font-size:13.5px">${EST[corDe(x)]}</span> <span class="faint" style="font-size:13px">· ${e(x.motivo)}</span>
       <dl><dt>O que faz</dt><dd>${e(x.faz)}</dd><dt>Acionado</dt><dd>${x.quando?dm(x.quando)+" · "+idade(x.idade_h):"sem registro"} (a cada ${n(x.cadencia_h)} h)</dd>
       <dt>Efeito</dt><dd>${e(x.efeito)}</dd><dt>Resultado</dt><dd><b>${n(x.valor)} ${e(x.unidade||"")}</b> — ${e(x.resultado)}</dd><dt>Faixa</dt><dd>${e(faixaTxt(x.faixa,x.unidade))}</dd>
       <dt>Tendência</dt><dd>${trilha(x.id)}</dd></dl>${cienteHtml(x)}</div></div>`; }
