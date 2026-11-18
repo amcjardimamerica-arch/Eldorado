@@ -1,4 +1,5 @@
 # 09/11/2026 (titular, R51): um motor por site de divulgação — criado com a sondagem de 09/11 (API do WordPress).
+
 [motor]
 id = "site-editaisculturais-com"
 numero = 60
@@ -18,11 +19,6 @@ url = "https://editaisculturais.com/editais"
 tipo = "pagina"
 papel = "alternativa"
 
-[[fonte]]
-nome = "mapa do site (editaisculturais.com)"
-url = "https://editaisculturais.com/wp-sitemap.xml"
-tipo = "mapa"
-papel = "alternativa"
 
 [[fonte]]
 nome = "Editais Culturais (.com) — editais abertos a OSC (API pública)"
@@ -53,5 +49,5 @@ cadencia_h = 24
 periodo_dias = 14
 
 [aprendizado]
-rotas_que_falharam = ["https://editaisculturais.com/wp-json/wp/v2/posts?orderby=date&per_page=50 — retirada em 14/11/2026 (o site não é WordPress: o endereço devolve a página do aplicativo; parecer dos motores da Bússola)"]
+rotas_que_falharam = ["https://editaisculturais.com/wp-json/wp/v2/posts?orderby=date&per_page=50 — retirada em 14/11/2026 (o site não é WordPress: o endereço devolve a página do aplicativo; parecer dos motores da Bússola)", "https://editaisculturais.com/wp-sitemap.xml — retirada em 17/11/2026 (C-28: o site não é WordPress; o mapa devolve 0 endereço)"]
 licoes = ["09/11/2026: criado pela decisão da titular (R51) — motor 60, grupo «Sites de divulgação — cultura»; site de divulgação (replicador): o motor segue até o edital oficial", "17/11/2026 (manutenção): a API devolve 20 editais por página (47 em 3 páginas); o motor lia só a primeira — agora ?page={pagina} até lastPage"]

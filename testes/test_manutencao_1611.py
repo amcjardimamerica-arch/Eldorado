@@ -86,3 +86,29 @@ def test_o_prazo_da_api_vale_antes_do_texto():
     assert _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api", extra={"fim": futuro}))
     assert not _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api", extra={"fim": "2020-01-01"}))
     assert not _prazo_estruturado_vigente(Pista(titulo="x", link="https://x", origem="api"))
+
+
+def test_publicacao_do_wordpress_com_campo_nulo_e_lida_e_nao_derruba_a_fonte():
+    """C-26: o título, a data ou o resumo nulos não quebram a leitura (TypeError em 27 de 31 leituras da Capta)."""
+    import json
+
+    from eldorado.motores.acesso.escada import Resposta
+    from eldorado.motores.descoberta.estrutura_site import wordpress
+    itens = [{"link": "https://x.org/a", "title": None, "date": None, "excerpt": None}, {"link": "https://x.org/b", "title": {"rendered": None}}]
+    ps = wordpress(lambda u: Resposta(u, 200, json.dumps(itens).encode(), "application/json"), "https://x.org/wp-json/wp/v2/posts")
+    assert [p.link for p in ps] == ["https://x.org/a", "https://x.org/b"]
+
+
+def test_mapa_do_site_com_xml_imperfeito_e_aproveitado():
+    """C-27: a marca mal fechada ou o lixo antes da declaração não derrubam a leitura; os endereços válidos ficam."""
+    from eldorado.motores.descoberta.estrutura_site import ler_mapa
+    xml = b'lixo antes <?xml version="1.0"?><urlset><url><loc>https://x.org/1</loc></url><url><loc>https://x.org/2</loc></urk></urlset>'
+    tipo, itens = ler_mapa(xml)
+    assert tipo == "urlset" and [i[0] for i in itens] == ["https://x.org/1", "https://x.org/2"]
+
+
+def test_frase_generica_nao_certifica_os_anexos():
+    """C-31: 136 certidões de Anexos com frase genérica («Edital completo disponível em…», «Documentos exigidos»)."""
+    from eldorado.base.nucleo.ia import ANEXO_NOMEADO
+    assert ANEXO_NOMEADO.search("conforme o Anexo II – Plano de Trabalho") and ANEXO_NOMEADO.search("ANEXO I - Formulário")
+    assert not ANEXO_NOMEADO.search("Edital completo disponível em www.x.gov.br") and not ANEXO_NOMEADO.search("Documentos exigidos")

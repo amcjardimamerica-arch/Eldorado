@@ -212,6 +212,10 @@ DISJUNTOR_FALHAS, DISJUNTOR_PAUSA_S = 3, 3600
 DISJUNTOR: dict[str, float] = {"seguidas": 0, "desligado_ate": 0.0}
 
 
+# 17/11/2026 (C-31): o item Anexos só é comprovado com o NOME de um anexo no trecho («Anexo I», «Anexo II – Plano de
+# Trabalho», «Anexo 3»); frases genéricas («edital completo disponível em…», «documentos exigidos») não certificam
+ANEXO_NOMEADO = re.compile(r"(?i)\banexos?\s+(?:[IVXL]+|\d+|[A-Z])\b")
+
 def comprovar(ia: IA, itens: list[str], paginas: list[str], titulo: str, validos: tuple[str, ...]) -> tuple[dict[str, dict], Uso]:
     """A IA propõe cada item que falta, com o trecho e a página; o sistema valida (o trecho tem de existir naquela página)."""
     partes = trechos_relevantes(paginas, itens)
@@ -257,6 +261,9 @@ def comprovar(ia: IA, itens: list[str], paginas: list[str], titulo: str, validos
         texto = paginas[pag - 1] if isinstance(pag, int) and 1 <= pag <= len(paginas) else "\n".join(paginas)
         if not trecho_existe(trecho, texto):
             uso.recusas.append(f"{item}: o trecho não existe no documento")
+            continue
+        if item == "Anexos" and not ANEXO_NOMEADO.search(trecho):     # C-31: frase genérica não certifica os anexos
+            uso.recusas.append("Anexos: o trecho não nomeia nenhum anexo (frase genérica não certifica)")
             continue
         aceitos[item] = {"valor": str(p.get("valor") or trecho)[:300], "trecho": trecho[:500], "pagina": pag if isinstance(pag, int) else None}
         uso.aceitas += 1

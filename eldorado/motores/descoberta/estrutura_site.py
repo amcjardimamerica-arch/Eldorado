@@ -71,6 +71,10 @@ def ler_mapa(conteudo: bytes | str) -> tuple[str | None, list[tuple[str, str | N
                 loc, mod = _LOC.search(bloco.group(1)), _LASTMOD.search(bloco.group(1))
                 if loc:
                     itens.append((loc.group(1), mod.group(1) if mod else None))
+            # 17/11/2026 (C-27): o endereço cujo bloco tem a marca mal fechada também é aproveitado (sem a data, que não se
+            # lê com segurança) — antes ele se perdia («mismatched tag» em captadores.org.br)
+            vistos = {i[0] for i in itens}
+            itens += [(m.group(1), None) for m in _LOC.finditer(t) if m.group(1) not in vistos]
     return tipo, [(html.unescape(loc.strip()), (mod or "").strip() or None) for loc, mod in itens if loc and loc.strip()]
 
 
