@@ -231,6 +231,9 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "oportunidade_empresa.registrada": (Alvo(E, "oportunidade_empresa", "inserir_ou_atualizar", ("id",)),),
     "vinculo_livro.registrado": (Alvo(E, "vinculo_livro", "inserir_ou_atualizar", ("cnpj", "livro_id", "papel")),),
     "aprofundamento.registrado": (Alvo(E, "aprofundamento", "inserir"),),
+    # 18/11/2026 (titular): a pesquisa das empresas — o perfil completo e as correções do cadastro (site, razão social, UF)
+    "empresa.perfil": (Alvo(E, "empresa_perfil", "inserir_ou_atualizar", ("cnpj",)),),
+    "empresa.corrigida": (Alvo(E, "empresa", "atualizar", ("cnpj",), _so("cnpj", "razao_social", "uf", "site", "atualizada_em")),),
     # Migração do Eldorado0 (temporária): um lote de eventos dentro de um evento
     "importacao.lote": (Alvo("*", "*", "expandir"),),
 }

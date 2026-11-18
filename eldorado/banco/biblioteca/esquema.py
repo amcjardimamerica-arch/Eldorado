@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 16
+VERSAO = 17
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -226,7 +226,14 @@ DDL_V16 = r"""
 ALTER TABLE livro_dados ADD COLUMN tipo_livro TEXT
 """
 
-MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12, 13: DDL_V13, 14: DDL_V14, 15: DDL_V15, 16: DDL_V16}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
+# 17 (titular, 18/11/2026): o perfil da empresa financiadora — a pesquisa no Claude no Chrome (825 empresas, 3 grupos): ESG,
+# instituto, programas, leis confirmadas, projetos em Goiás, canal para apresentar projeto, melhor caminho e mês, parecer
+DDL_V17 = r"""
+CREATE TABLE IF NOT EXISTS empresa_perfil (cnpj TEXT PRIMARY KEY REFERENCES empresa(cnpj), situacao_cadastral TEXT, site_oficial TEXT, grupo_economico TEXT, unidades_em_goias TEXT, atua_em_goiania TEXT, pagina_esg TEXT, instituto_ou_fundacao TEXT, politica_investimento_social TEXT, programas_proprios TEXT, o_que_financiam TEXT, quem_pode_participar TEXT, valor_por_projeto TEXT, recorrencia_mes_abertura TEXT, datas_edicoes_anteriores TEXT, situacao_hoje TEXT, leis_confirmadas TEXT, anos_destinou TEXT, valor_destinado_por_ano TEXT, projetos_em_goias TEXT, como_escolhe_projetos TEXT, mes_decide_destinacao TEXT, patrocinio_direto TEXT, doacao_de_bens TEXT, relatorio_sustentabilidade TEXT, valor_investimento_social TEXT, temas_e_publico TEXT, territorios_prioritarios TEXT, canal_para_projeto TEXT, area_responsavel TEXT, obrigacoes_que_geram_recurso TEXT, risco_ou_cuidado TEXT, atuacao_goias TEXT, melhor_caminho_de_entrada TEXT, melhor_mes_para_procurar TEXT, parecer_resumido TEXT, buscas_sem_atuacao TEXT,
+  fontes TEXT, buscas TEXT, nao_encontrados TEXT, pesquisa TEXT, pesquisado_em TEXT NOT NULL)
+"""
+
+MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12, 13: DDL_V13, 14: DDL_V14, 15: DDL_V15, 16: DDL_V16, 17: DDL_V17}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
 # 5: as 5 fases do Cartório no passaporte (titular, 22/10/2026); 6: o arquivo (o livro aguardando nova oportunidade);
 # 7: a origem decidida por livro (confirmado, candidato, ausente) e o motivo (titular, 23/10/2026);
 # 9: as empresas (a antiga base Especial) dentro da Biblioteca;
@@ -234,4 +241,4 @@ MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8
 
 
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V11 + ";\n" + DDL_V12 + ";\n" + DDL_V13 + ";\n" + DDL_V14 + ";\n" + DDL_V15 + ";\n" + DDL_V16, VERSAO, MIGRACOES)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V11 + ";\n" + DDL_V12 + ";\n" + DDL_V13 + ";\n" + DDL_V14 + ";\n" + DDL_V15 + ";\n" + DDL_V16 + ";\n" + DDL_V17, VERSAO, MIGRACOES)

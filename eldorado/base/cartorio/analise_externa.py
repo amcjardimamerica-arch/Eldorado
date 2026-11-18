@@ -578,6 +578,8 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
 
         from .vinculo_empresa import vincular  # C-20: o vínculo empresa–livro (só esfera privada e internacional)
         resultado["vinculo_empresa"] = vincular(con, contexto.diario, _dt.now(_tz.utc).isoformat(timespec="seconds"))
+        from ..especial.pesquisa_empresas import importar_pasta as _empresas  # 18/11 (titular): a pesquisa das empresas e o ranking
+        resultado["empresas"] = _empresas(con, contexto.diario)
         hoje = date.today()
         triados = aplicar_triagem(con, contexto.diario)            # 30/10/2026: o que o Chrome sempre descarta não vai a ele
         saiu |= set(triados)
