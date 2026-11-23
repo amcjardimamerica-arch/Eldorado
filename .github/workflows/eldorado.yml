@@ -54,11 +54,16 @@ jobs:
       - name: Conferir a guarda (PRAGMA quick_check; corrompida, volta à fotografia)
         if: ${{ steps.guarda.outputs.cache-matched-key != '' }}
         run: python3 scripts/guarda_bancos.py conferir
+      # 23/11/2026 (C-02): todo passo antes do laço com limite de tempo — sem ele, uma execução ficou 11 h sem passagem
       - name: Abrir os bancos (e aplicar as migrações do esquema)
+        timeout-minutes: 10
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
+        # com a guarda, só os eventos novos (45 min); sem ela, a remontagem inteira tem de caber (240 min)
+        timeout-minutes: ${{ steps.guarda.outputs.cache-matched-key != '' && 45 || 240 }}
         run: eldorado aplicar || echo "::warning::há eventos recusados (viram alarme na sala; o ciclo segue)"
       - name: IA local — o motor llama.cpp (versão fixada)
+        timeout-minutes: 20
         continue-on-error: true
         run: |
           mkdir -p ia_local/motor ia_local/modelos
@@ -66,11 +71,13 @@ jobs:
           curl -sL --retry 3 -o /tmp/llama.tgz "$URL" && tar xzf /tmp/llama.tgz -C /tmp && cp -r /tmp/llama-*/* ia_local/motor/
           ls ia_local/motor | head -5
       - name: IA local — o modelo no cache do GitHub (chave fixa pelo nome do modelo)
+        timeout-minutes: 20
         uses: actions/cache@v4
         with:
           path: ia_local/modelos
           key: modelos-gguf-Qwen3-8B-Q4_K_M
       - name: IA local — baixar o modelo pelos espelhos, se faltar
+        timeout-minutes: 20
         continue-on-error: true
         run: |
           ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])"); DEST="ia_local/modelos/$ARQ"
@@ -81,6 +88,7 @@ jobs:
           done
           echo "::warning::o modelo não foi baixado; os pilotos seguem sem IA"
       - name: IA local — subir o modelo (sem ele, os pilotos seguem sem IA; nada é simulado)
+        timeout-minutes: 20
         continue-on-error: true
         run: |
           ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])")
@@ -92,10 +100,13 @@ jobs:
           for i in $(seq 1 60); do curl -sf http://127.0.0.1:8082/health > /dev/null && { echo "modelo no ar em ${i}x2 s"; echo "::notice title=IA única por cargos::$(curl -s http://127.0.0.1:8082/props | python3 -c 'import json,sys;d=json.load(sys.stdin);print(d.get("total_slots"),"vagas (o Comandante, o Espião e até 5 do Interceptador), contexto",(d.get("default_generation_settings") or {}).get("n_ctx"),"por vaga")' 2>/dev/null)"; exit 0; }; sleep 2; done
           tail -20 /tmp/llama.log; echo "::warning::o modelo não respondeu; os pilotos seguem sem IA"
       - name: Os bancos paralelos para dentro do Cérebro (uma vez; idempotente)
+        timeout-minutes: 20
         run: eldorado consolidar-bancos || echo "::warning::a consolidação dos bancos não terminou"
       - name: Otimizar as instruções dos pilotos (DSPy, semanal; sem o modelo, fica para depois)
+        timeout-minutes: 20
         run: timeout 900 eldorado otimizar-ia --se-antigo-dias 7 || echo "::warning::a otimização das instruções não terminou"
       - name: A ponte BR (o IP brasileiro da HostGator, para os sites que recusam a nuvem)
+        timeout-minutes: 5
         env:
           ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
@@ -103,6 +114,7 @@ jobs:
           r=$(eldorado ponte-br 2>&1 | tail -2); echo "$r"
           echo "::notice::$(echo "$r" | head -1)"
       - name: O portão das regras da titular (sem as regras de pé, o ciclo não começa)
+        timeout-minutes: 15
         run: eldorado travas
       # 11/11/2026 (reanálise da Sala): o laço para aos 300 min OU quando a próxima passagem não couber no trabalho inteiro
       # (345 min desde o começo, menos 25 de reserva para o fim) — a execução #381 passou das 6 h e foi cancelada.

@@ -38,6 +38,24 @@ jobs:
           impl=$(gh run list -R "$R" -w implantar.yml --json status,createdAt -q '[.[] | select(.status=="in_progress")][0].createdAt // ""')
           problemas=""
           [ "$idade" -gt 45 ] && problemas="$problemas\n- a última gravação foi há ${idade} min (limite: 45)"
+          # 23/11/2026 (C-02): o ciclo TRAVADO — a gravação há mais de 90 min e o ciclo em andamento há mais de 90 min — é
+          # cancelado e religado (o vigia só religava sem ciclo nenhum, e um ciclo parado ficou 12 h «em andamento»). A
+          # remontagem sem guarda (o passo «Reaplicar os eventos pendentes», até 240 min) não é travamento.
+          run_id=$(gh run list -R "$R" -w eldorado.yml --json databaseId,status -q '[.[] | select(.status=="in_progress")][0].databaseId // ""')
+          passo=""; idade_ciclo=0
+          if [ -n "$run_id" ]; then
+            passo=$(gh api "repos/$R/actions/runs/$run_id/jobs" -q '[.jobs[0].steps[] | select(.status=="in_progress")][0].name // ""')
+            ini=$(gh api "repos/$R/actions/runs/$run_id" -q '.run_started_at')
+            idade_ciclo=$(( (agora - $(date -u -d "$ini" +%s)) / 60 ))
+            problemas_passo="o ciclo está no passo «${passo:-?}» há ${idade_ciclo} min de execução"
+            echo "$problemas_passo"
+            remonta=0; case "$passo" in "Reaplicar os eventos pendentes"*) [ "$idade_ciclo" -le 250 ] && remonta=1;; esac
+            if [ "$idade" -gt 90 ] && [ "$idade_ciclo" -gt 90 ] && [ "$remonta" = "0" ]; then
+              gh run cancel "$run_id" -R "$R" && sleep 20 && \
+                gh workflow run eldorado.yml -R "$R" --ref main -f gravar_banco=false -f acionar_todos=false && \
+                problemas="$problemas\n- o ciclo estava travado (${problemas_passo}): o vigia o cancelou e religou" && ciclos=1
+            fi
+          fi
           if [ "${ciclos:-0}" = "0" ] && [ -z "$impl" ]; then
             gh workflow run eldorado.yml -R "$R" --ref main -f gravar_banco=false -f acionar_todos=false && \
               problemas="$problemas\n- nenhum ciclo rodando: o vigia religou o ciclo"
@@ -46,7 +64,8 @@ jobs:
             ia=$(( (agora - $(date -u -d "$impl" +%s)) / 60 ))
             [ "$ia" -gt 55 ] && problemas="$problemas\n- a implantação está em andamento há ${ia} min (a fila pode estar presa)"
           fi
-          echo "gravação há ${idade} min · ciclos em andamento: ${ciclos} · implantação: ${impl:-nenhuma}"
+          echo "gravação há ${idade} min · ciclos em andamento: ${ciclos} · passo: ${passo:-—} · implantação: ${impl:-nenhuma}"
+          [ -n "$problemas" ] && [ -n "$passo" ] && problemas="$problemas\n- o passo em curso: ${passo} (${idade_ciclo} min de execução)"
           aberto=$(gh issue list -R "$R" --label vigia --state open --json number -q '.[0].number' 2>/dev/null || true)
           if [ -n "$problemas" ]; then
             corpo=$(printf "O vigia (a cada 30 min) encontrou, em $(date -u +%d/%m\ %H:%M) UTC:\n$problemas\n\nDetalhes na execução: $GITHUB_SERVER_URL/$R/actions/runs/$GITHUB_RUN_ID")

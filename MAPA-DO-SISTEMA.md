@@ -38,7 +38,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 11 | `scripts/guarda_bancos.py` | 23/11/2026 (C-01): a guarda dos bancos entre uma execução e a seguinte (o cache do GitHub Actions). | em funcionamento |  | eldorado | 0 |
 | 12 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 1 |
 | 13 | `scripts/visualizar_sala.py` | Abre a sala de controle num navegador, fotografa em três alturas de rolagem e mede os quadros ao rolar (o flux | a construir |  |  | 0 |
-| 14 | `.github/workflows/painel.yml` | O painel (titular, 23/10/2026): a imagem atual do sistema. A página é a do Eldorado0 (o HTML, os scripts e as  | em funcionamento | comandos, passagem |  | 3 |
+| 14 | `.github/workflows/painel.yml` | O painel (titular, 23/10/2026): a imagem atual do sistema. A página é a do Eldorado0 (o HTML, os scripts e as  | em funcionamento | comandos, passagem |  | 4 |
 | 15 | `.github/workflows/qualidade.yml` | Qualidade: a cada gravação, instala as dependências fixadas, roda o verificador e a bateria inteira. name: Qua | em funcionamento | comandos, gerar_ponte, instalar_bibliotecas |  | 1 |
 | 16 | `scripts/instalar.sh` | !/usr/bin/env bash A instalação completa do Eldorado (plano C: as ferramentas adotadas), usada por todos os fl | em funcionamento | settings, instalar_bibliotecas | eldorado, experimentar-motor | 0 |
 | 17 | `.github/workflows/eldorado.yml` | O Eldorado em FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário fixo, sem trabalho e descanso. Cada  | em funcionamento | ia_local, comandos, gravar, guarda_bancos, instalar, passagem |  | 8 |
@@ -286,15 +286,15 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 199 | `eldorado/base/analise/historia.py` | livros com história completa | substituído por eldorado/base/analise/previsao.py (a história do livro) |  |  | 0 |
 | 200 | `eldorado/base/analise/preditivo.py` | alertas emitidos antes da abertura | substituído por eldorado/base/analise/previsao.py (a previsão da próxima abertura e o alerta) |  |  | 0 |
 | 201 | `eldorado/base/analise/previsao.py` | A análise (fase F9 do plano): a previsão da próxima abertura, o calendário e a história de cada livro. | em funcionamento |  | passagem, nó 23 «analise» | 1 |
-| 202 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 19 |
+| 202 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 20 |
 | 203 | `eldorado/base/painel/api.py` | A API do sistema (plano C: FastAPI, com respostas em orjson): a leitura do sistema para o painel novo e para q | a construir |  |  | 0 |
 | 204 | `eldorado/base/painel/cartorio.py` | O Cartório no site, ligado aos dados (titular, 25/10/2026: a página estava estática). | em funcionamento | itens | dados | 2 |
 | 205 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
 | 206 | `eldorado/base/painel/pilotos.py` | Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de control | em funcionamento | itens | dados, vivo | 2 |
-| 207 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 1 |
+| 207 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 2 |
 | 208 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, pontuacao_motores, sinais_motores | passagem, nó 3 «medir_sala» | 7 |
 | 209 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | a construir |  |  | 0 |
-| 210 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, vivo, estado | comandos, legado, vivo | 7 |
+| 210 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, vivo, estado | comandos, legado, vivo | 8 |
 | 211 | `eldorado/base/painel/legado.py` | Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: "pedi para consertar diversas vezes  | em funcionamento | dados | dados | 1 |
 | 212 | `eldorado/base/painel/vivo.py` | A SALA DE CONTROLE DA PRODUÇÃO (titular, 10/11/2026 — R53). | em funcionamento | mapa_arquivos, dados, pilotos, sala | comandos, dados | 2 |
 
@@ -322,7 +322,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|---|---|---|---|---|
 | 221 | `.github/workflows/arquivar.yml` | name: Arquivar (pela titular, no painel) 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Bib | em funcionamento | comandos |  | 1 |
 | 222 | `.github/workflows/ciente.yml` | name: Ciente (pela titular, na Sala de controle) 09/11/2026 (titular): o botão «Ciente» da Sala grava no Céreb | em funcionamento | comandos, passagem |  | 1 |
-| 223 | `.github/workflows/vigia.yml` | O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem grav | em funcionamento |  |  | 1 |
+| 223 | `.github/workflows/vigia.yml` | O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem grav | em funcionamento |  |  | 2 |
 | 224 | `config/cartorio.toml` | O Cartório (titular, 29/10/2026). Quantos livros da fila da análise externa vão no lote do dia ao Claude no Ch | em funcionamento |  | analise_externa | 1 |
 | 225 | `config/ponte_base.txt` | 14/11/2026 (R56, S6): os domínios que a ponte BR já atendia (sites públicos do catálogo e sufixos públicos do  | em funcionamento |  | ponte_br | 0 |
 | 226 | `config/pontuacao_motores.toml` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento |  | pontuacao_motores | 2 |

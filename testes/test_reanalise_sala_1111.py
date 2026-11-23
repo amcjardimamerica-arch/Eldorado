@@ -143,15 +143,17 @@ def test_o_painel_guarda_os_bancos_entre_as_publicacoes(tmp_path):
     repoe, guarda = usa("actions/cache/restore@"), usa("actions/cache/save@")
     for s in (repoe, guarda):
         assert all(a in s["with"]["path"] for a in ("dados/biblioteca.db", "dados/cerebro.db", "dados/aplicados.json"))
-        # a chave muda com QUALQUER mudança do código e a cada semana (aí remonta do zero, como antes)
-        assert "hashFiles('eldorado/**/*.py')" in s["with"]["key"] and "semana" in s["with"]["key"] and "github.run_id" in s["with"]["key"]
+        # 23/11/2026 (C-03, manutenção de 23/11): a chave NÃO expira por semana nem por código — na segunda-feira a guarda zerou,
+        # a remontagem não coube nos 20 min e o site ficou parado desde 22/11; o esquema novo é das migrações
+        assert s["with"]["key"] == "painel-bancos-${{ github.run_id }}"
     i = {n: passos.index(s) for n, s in (("repoe", repoe), ("guarda", guarda))}
     i_vereditos = next(k for k, s in enumerate(passos) if "eldorado vereditos" in str(s.get("run", "")))
     i_aplicar = next(k for k, s in enumerate(passos) if str(s.get("run", "")).startswith("eldorado aplicar"))
     i_site = next(k for k, s in enumerate(passos) if "eldorado site" in str(s.get("run", "")))
     assert i["repoe"] < i_vereditos < i_aplicar < i["guarda"] < i_site                  # guarda logo depois de aplicar, antes do site
     assert re.search(r"eldorado aplicar \|\|", texto) and "wal_checkpoint" in texto
-    assert guarda["if"] == "steps.guarda.outputs.renovar == 'true'" and guarda.get("continue-on-error") is True
+    # 23/11/2026 (C-03): e só guarda o que foi aplicado por inteiro (a aplicação que não coube não vira guarda)
+    assert guarda["if"] == "steps.guarda.outputs.renovar == 'true' && steps.aplicar.outcome == 'success'" and guarda.get("continue-on-error") is True
     assert "MarcaAplicados(dados, bancos)" in Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
     assert "dados/aplicados.json" in Path(".gitignore").read_text(encoding="utf-8")     # a marca nunca vai ao repositório
     # a decisão de renovar a guarda: a cada 30 min, e nunca com um veredito que o ciclo ainda não importou

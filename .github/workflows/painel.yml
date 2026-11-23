@@ -31,7 +31,7 @@ jobs:
       name: github-pages
       url: ${{ steps.publicacao.outputs.page_url }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30            # 23/11/2026 (C-03): a aplicação tem limite próprio (12 min) e a publicação sai depois dela
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -39,24 +39,32 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -e .
-      - name: A semana da guarda (uma vez por semana os bancos são remontados do zero)
-        id: semana
-        run: echo "semana=$(date -u +%G-%V)" >> "$GITHUB_OUTPUT"
       - name: Os bancos da publicação anterior (só os eventos novos são aplicados)
         # 11/11/2026 (reanálise da Sala): cada publicação remontava os bancos do zero (2,4 milhões de eventos: 10 min dos 12
         # de cada publicação), e a Sala medida pela produção chegava ao site com 15 a 25 min. Os bancos remontados e a marca
         # dos arquivos já aplicados (dados/aplicados.json) ficam guardados de uma publicação para a outra: a seguinte aplica só
-        # os arquivos novos ou que cresceram (segundos). A chave muda com QUALQUER mudança do código e a cada semana: aí os
-        # bancos são remontados do zero, como antes. Sem a guarda, tudo é reaplicado — nada depende dela para estar certo.
+        # os arquivos novos ou que cresceram (segundos). Sem a guarda, tudo é reaplicado — nada depende dela para estar certo.
+        # 23/11/2026 (C-03): a chave NÃO expira por semana nem por código (na segunda-feira a guarda zerava, a remontagem não
+        # cabia nos 20 min e o site ficou parado desde 22/11). Primeiro a guarda do ciclo (C-01: os bancos da produção, salvos
+        # a cada hora); depois a do próprio Painel. O esquema novo é das migrações (eldorado iniciar).
+        id: guarda_restaurada
         uses: actions/cache/restore@v4
         with:
           path: |
             dados/biblioteca.db
             dados/cerebro.db
             dados/aplicados.json
-          key: painel-bancos-${{ hashFiles('eldorado/**/*.py') }}-${{ steps.semana.outputs.semana }}-${{ github.run_id }}
+          key: painel-bancos-${{ github.run_id }}
           restore-keys: |
-            painel-bancos-${{ hashFiles('eldorado/**/*.py') }}-${{ steps.semana.outputs.semana }}-
+            eldorado-bancos-
+            painel-bancos-
+      - name: As migrações do esquema (a guarda pode ser de um esquema anterior)
+        timeout-minutes: 5
+        run: eldorado iniciar
+      - name: A cópia dos bancos restaurados (se a aplicação não couber, a publicação volta a ela, coerente)
+        run: |
+          mkdir -p /tmp/guarda_antes && cp dados/biblioteca.db dados/cerebro.db /tmp/guarda_antes/ 2>/dev/null || true
+          [ -f dados/aplicados.json ] && cp dados/aplicados.json /tmp/guarda_antes/ || true
       - name: A guarda é renovada? (a cada 30 min, e nunca com um veredito que o ciclo ainda não importou)
         # a guarda só tem o que veio dos eventos do repositório: o veredito importado só nesta publicação não entra nela
         id: guarda
@@ -80,15 +88,28 @@ jobs:
           done
       - name: Os eventos mais recentes no banco (o estado de agora)
         # um evento recusado não pode deixar o site velho (25/10/2026: a republicação ficou parada pelas uniões repetidas):
-        # avisa e segue, publicando com o que foi aplicado
+        # avisa e segue, publicando com o que foi aplicado. 23/11/2026 (C-03): com limite próprio — não coube, a publicação
+        # sai assim mesmo (o passo seguinte)
+        id: aplicar
+        timeout-minutes: 12
+        continue-on-error: true
         run: eldorado aplicar || echo "::warning::há eventos recusados; o site foi publicado com os eventos aplicados"
+      - name: A aplicação não coube no tempo — os livros voltam à guarda, coerentes, e a tela avisa a hora deles
+        if: ${{ steps.aplicar.outcome != 'success' }}
+        run: |
+          cp /tmp/guarda_antes/biblioteca.db /tmp/guarda_antes/cerebro.db dados/ 2>/dev/null || true
+          rm -f dados/*.db-wal dados/*.db-shm
+          [ -f /tmp/guarda_antes/aplicados.json ] && cp /tmp/guarda_antes/aplicados.json dados/ || rm -f dados/aplicados.json
+          em=$(python3 -c "import json;print(json.load(open('dados/aplicados.json')).get('em',''))" 2>/dev/null || echo "")
+          echo "ELDORADO_LIVROS_DE=${em:-desconhecida}" >> "$GITHUB_ENV"
+          echo "::warning::a aplicação não coube no tempo: os livros publicados são os da guarda (${em:-sem data}); a Sala é a da produção"
       - name: Consolidar os bancos para a guarda (o que foi aplicado volta para o arquivo do banco)
-        if: steps.guarda.outputs.renovar == 'true'
+        if: steps.guarda.outputs.renovar == 'true' && steps.aplicar.outcome == 'success'
         run: |
           python -c "import sqlite3,glob; [sqlite3.connect(p).execute('PRAGMA wal_checkpoint(TRUNCATE)') for p in glob.glob('dados/*.db')]" \
             || echo "::warning::os bancos não foram consolidados; a próxima publicação reaplica o que faltar"
       - name: Guardar os bancos para a próxima publicação
-        if: steps.guarda.outputs.renovar == 'true'
+        if: steps.guarda.outputs.renovar == 'true' && steps.aplicar.outcome == 'success'
         continue-on-error: true      # a guarda nunca impede a publicação
         uses: actions/cache/save@v4
         with:
@@ -96,7 +117,7 @@ jobs:
             dados/biblioteca.db
             dados/cerebro.db
             dados/aplicados.json
-          key: painel-bancos-${{ hashFiles('eldorado/**/*.py') }}-${{ steps.semana.outputs.semana }}-${{ github.run_id }}
+          key: painel-bancos-${{ github.run_id }}
       - name: Gerar o site do sistema (nenhum dado do Eldorado0)
         env:
           GITHUB_TOKEN: ${{ github.token }}

@@ -3279,6 +3279,12 @@ async function _lerFonte(cam,u){
     catch(e){ _FONTES[cam]={fonte:"falhou nas três fontes",lido_em:new Date(),ok:false}; throw e; }
   }
 }
+/* 23/11/2026 (C-03): a aplicação dos eventos não terminou no tempo da publicação — os livros são os de uma hora anterior */
+document.addEventListener("DOMContentLoaded",()=>{ try{ const L=(window.DADOS||{}).livros_de; if(!L) return;
+  const b=document.createElement("div"); b.id="aviso-livros";
+  b.style.cssText="position:sticky;top:0;z-index:50;background:#7DB4FF;color:#0B1530;padding:6px 12px;font-size:13px;text-align:center";
+  b.textContent=`Dados dos livros de ${new Date(L).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})} · a Sala de controle é a medida agora pela produção`;
+  document.body.prepend(b); }catch(e){} });
 window.recarregarDados=async function(){
   try{ const r=await fetch("dashboard-dados.js"); if(!r.ok) return false;
     const w={}; new Function("window",await r.text())(w);

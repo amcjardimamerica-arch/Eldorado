@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import re
 import shutil
 import sqlite3
@@ -930,6 +931,9 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     status, descricao, _sala = _motores(sis)            # a Sala vem da produção (R53); aqui, os motores das outras abas
     editais, eventos, cal, fontes = _editais(sis)
     bussola, bussola_painel = _bussola(sis, D["bussola"], fontes, status)
+    # 23/11/2026 (C-03): a aplicação dos eventos não terminou no tempo do Painel — os livros são os da guarda (a hora vem no
+    # ELDORADO_LIVROS_DE) e a Sala é a medida pela produção; a tela avisa, em vez de não publicar nada
+    D["livros_de"] = os.environ.get("ELDORADO_LIVROS_DE") or None
     D.update({"gerado_em": agora, "editais": editais, "eventos": eventos, "calendario_decisao": cal, "bussola": bussola, "bussola_painel": bussola_painel})
     total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')").fetchone()[0]
     leis = sis.bib.execute("SELECT COUNT(*) FROM lei").fetchone()[0]
