@@ -59,11 +59,16 @@ def test_a_telemetria_e_guardada_no_repositorio_e_compactada(tmp_path):
     d = Diario(pasta, "exec-2")
     ev = d.emitir("comandante.decidiu", "teste", {"id": 1, "em": "2026-10-20T00:00:00+00:00", "etapa": "x", "acao": "y"})
     arq = next(pasta_operacao(pasta).rglob("exec-2.jsonl"))
-    velho = pasta_operacao(pasta) / "2026" / "10" / "20"
+    # 23/11/2026: as datas relativas a hoje — o dia fixo 20/10 passou dos 30 dias de retenção e passou a ser APAGADO, não
+    # compactado (a trava falhava no portão das regras e parou o sistema); a intenção é a mesma: o dia passado compacta, o de
+    # mais de 30 dias sai
+    from datetime import date, timedelta
+    ontem, ha_60 = date.today() - timedelta(days=1), date.today() - timedelta(days=60)
+    velho = pasta_operacao(pasta) / f"{ontem:%Y}" / f"{ontem:%m}" / f"{ontem:%d}"
     velho.mkdir(parents=True)
     (velho / "exec-2.jsonl").write_bytes(arq.read_bytes())
     os.utime(velho / "exec-2.jsonl", (time.time() - 5 * 3600, time.time() - 5 * 3600))
-    antigo = pasta_operacao(pasta) / "2026" / "09" / "01"
+    antigo = pasta_operacao(pasta) / f"{ha_60:%Y}" / f"{ha_60:%m}" / f"{ha_60:%d}"
     antigo.mkdir(parents=True)
     (antigo / "exec-0.jsonl").write_bytes(arq.read_bytes())
     db = tmp_path / "cerebro.db"

@@ -201,7 +201,12 @@ def montar(bib: sqlite3.Connection, molde) -> dict[str, Any]:
             if e0.get("origem") in (ORIGEM_TRIB, ORIGEM_DOA):
                 e["origem"] = e0["origem"]
             if (e0.get("pontos_lista") or 0) > e["pontos_lista"]:  # vale a melhor avaliação (a do Eldorado0 ou a de agora)
-                e["pontos_lista"], e["pontuacao"] = e0["pontos_lista"], e0.get("pontuacao") or e["pontuacao"]
+                # 23/11/2026: a avaliação herdada nem sempre traz o «porque» (R20: todo número com o motivo) — sem ele, o
+                # motivo é o da própria avaliação herdada (a trava caía no portão das regras e parou o sistema)
+                p0 = {"base": 0, "bonus": 0, **(e0.get("pontuacao") or {})}   # vale a herdada inteira, com o motivo dela
+                if not p0.get("porque"):
+                    p0["porque"] = f"a avaliação do Eldorado0: {e0['pontos_lista']} pontos" + (f" ({e0['nivel']})" if e0.get("nivel") else "")
+                e["pontos_lista"], e["pontuacao"] = e0["pontos_lista"], p0
                 if e0.get("nivel"):
                     e["nivel"], e["nivel_ordem"] = e0["nivel"], e0.get("nivel_ordem") or 5
             e["valor_rouanet"] = max(e["valor_rouanet"], float((e0.get("salic") or {}).get("total") or 0))

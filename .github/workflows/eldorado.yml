@@ -38,6 +38,22 @@ jobs:
       - name: Instalar (versões fixadas)
         run: bash scripts/instalar.sh
         timeout-minutes: 70
+      # 23/11/2026 (C-01): a guarda dos bancos entre as execuções — sem ela, cada execução começava da fotografia de 25/10 e
+      # reaplicava os 3,1 milhões de eventos (de 82 a 448 min sem passagem a cada troca). Sem guarda, ou com ela corrompida,
+      # segue como antes (a fotografia e os eventos); a mudança de esquema é das migrações (eldorado iniciar).
+      - name: Restaurar os bancos da execução anterior (a guarda)
+        id: guarda
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}
+          restore-keys: eldorado-bancos-
+      - name: Conferir a guarda (PRAGMA quick_check; corrompida, volta à fotografia)
+        if: ${{ steps.guarda.outputs.cache-matched-key != '' }}
+        run: python3 scripts/guarda_bancos.py conferir
       - name: Abrir os bancos (e aplicar as migrações do esquema)
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
@@ -88,17 +104,20 @@ jobs:
           echo "::notice::$(echo "$r" | head -1)"
       - name: O portão das regras da titular (sem as regras de pé, o ciclo não começa)
         run: eldorado travas
-      - name: Funcionamento permanente (uma passagem depois da outra enquanto houver fila)
+      # 11/11/2026 (reanálise da Sala): o laço para aos 300 min OU quando a próxima passagem não couber no trabalho inteiro
+      # (345 min desde o começo, menos 25 de reserva para o fim) — a execução #381 passou das 6 h e foi cancelada.
+      # 23/11/2026 (C-01): o laço em 5 blocos de 60 min, com a guarda dos bancos salva entre eles (a execução cortada pelo
+      # limite não chega ao fim); o limite do trabalho inteiro (345 min) segue valendo em cada bloco
+      - name: Funcionamento permanente — bloco 1 de 5 (uma passagem depois da outra enquanto houver fila)
+        if: ${{ !cancelled() }}
         env:
           ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
           ELDORADO_IA_URL: http://127.0.0.1:8082
           GITHUB_TOKEN: ${{ github.token }}
           ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
-        # 11/11/2026 (reanálise da Sala): o laço para aos 300 min OU quando a próxima passagem não couber no trabalho inteiro
-        # (345 min desde o começo, menos 25 de reserva para o fim) — a execução #381 passou das 6 h e foi cancelada
-        run: eldorado permanente --limite-min 300 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
-      - name: Continuar (o funcionamento é permanente) — a continuação entra na fila ANTES da manutenção e da gravação final
+        run: eldorado permanente --limite-min 60 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
+      - name: Continuar (o funcionamento é permanente) — a continuação entra na fila logo depois do 1º bloco do laço (C-01, antes da manutenção e da gravação final)
         # 11/11/2026: acionada aqui, a continuação espera na fila (a mesma concorrência) e começa quando este trabalho
         # terminar — mesmo que o fim dele seja cortado pelo limite de 6 h do GitHub. Antes ficava no último passo: a execução
         # cancelada pelo limite não a acionava e o sistema parava até o vigia (que o GitHub só roda de 5 em 5 horas).
@@ -111,6 +130,137 @@ jobs:
           curl -s -o /dev/null -w "continuação acionada: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/eldorado.yml/dispatches" \
             -d '{"ref":"main","inputs":{"gravar_banco":"false","acionar_todos":"false"}}'
+      - name: Guarda da hora 1 — preparar (wal_checkpoint)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/guarda_bancos.py preparar
+      - name: Guarda da hora 1 — salvar
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}-h1
+      - name: Guarda da hora 1 — apagar as anteriores
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/guarda_bancos.py limpar "eldorado-bancos-${{ github.run_id }}-h1"
+      - name: Laço permanente — bloco 2 de 5 (uma passagem depois da outra enquanto houver fila)
+        if: ${{ !cancelled() }}
+        env:
+          ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
+          ELDORADO_IA_URL: http://127.0.0.1:8082
+          GITHUB_TOKEN: ${{ github.token }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+        run: eldorado permanente --limite-min 60 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
+      - name: Guarda da hora 2 — preparar (wal_checkpoint)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/guarda_bancos.py preparar
+      - name: Guarda da hora 2 — salvar
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}-h2
+      - name: Guarda da hora 2 — apagar as anteriores
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/guarda_bancos.py limpar "eldorado-bancos-${{ github.run_id }}-h2"
+      - name: Laço permanente — bloco 3 de 5 (uma passagem depois da outra enquanto houver fila)
+        if: ${{ !cancelled() }}
+        env:
+          ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
+          ELDORADO_IA_URL: http://127.0.0.1:8082
+          GITHUB_TOKEN: ${{ github.token }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+        run: eldorado permanente --limite-min 60 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
+      - name: Guarda da hora 3 — preparar (wal_checkpoint)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/guarda_bancos.py preparar
+      - name: Guarda da hora 3 — salvar
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}-h3
+      - name: Guarda da hora 3 — apagar as anteriores
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/guarda_bancos.py limpar "eldorado-bancos-${{ github.run_id }}-h3"
+      - name: Laço permanente — bloco 4 de 5 (uma passagem depois da outra enquanto houver fila)
+        if: ${{ !cancelled() }}
+        env:
+          ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
+          ELDORADO_IA_URL: http://127.0.0.1:8082
+          GITHUB_TOKEN: ${{ github.token }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+        run: eldorado permanente --limite-min 60 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
+      - name: Guarda da hora 4 — preparar (wal_checkpoint)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/guarda_bancos.py preparar
+      - name: Guarda da hora 4 — salvar
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}-h4
+      - name: Guarda da hora 4 — apagar as anteriores
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/guarda_bancos.py limpar "eldorado-bancos-${{ github.run_id }}-h4"
+      - name: Laço permanente — bloco 5 de 5 (uma passagem depois da outra enquanto houver fila)
+        if: ${{ !cancelled() }}
+        env:
+          ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
+          ELDORADO_IA_URL: http://127.0.0.1:8082
+          GITHUB_TOKEN: ${{ github.token }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+        run: eldorado permanente --limite-min 60 --gravar-min 5 --limite-job-min 345 --reserva-final-min 25
+      - name: Guarda da hora 5 — preparar (wal_checkpoint)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/guarda_bancos.py preparar
+      - name: Guarda da hora 5 — salvar
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}-h5
+      - name: Guarda da hora 5 — apagar as anteriores
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/guarda_bancos.py limpar "eldorado-bancos-${{ github.run_id }}-h5"
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
         run: eldorado aplicar || echo "::warning::há eventos recusados (viram alarme na sala; o ciclo segue)"
@@ -130,6 +280,25 @@ jobs:
       - name: Consolidar os bancos
         if: always()
         run: eldorado fechar
+      - name: Guarda do fim — preparar (wal_checkpoint)
+        if: always()
+        run: python3 scripts/guarda_bancos.py preparar
+      - name: Guarda do fim — salvar (para a próxima execução)
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dados/biblioteca.db
+            dados/cerebro.db
+            dados/aplicados.json
+          key: eldorado-bancos-${{ github.run_id }}-fim
+      - name: Guarda do fim — apagar as anteriores
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/guarda_bancos.py limpar "eldorado-bancos-${{ github.run_id }}-fim"
       - name: Gravar no repositório
         if: always()
         env:
