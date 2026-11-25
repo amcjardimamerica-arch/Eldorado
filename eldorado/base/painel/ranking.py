@@ -105,10 +105,11 @@ def montar(bib: sqlite3.Connection, molde) -> dict[str, Any]:
     fmt = bib.row_factory
     bib.row_factory = None
     try:
+        from ..especial.ativas import ativas as _ativas
         tem_ficha = "ficha" in {r[1] for r in bib.execute("PRAGMA table_info(empresa)")}
         empresas = bib.execute(
             "SELECT cnpj, razao_social, nome_fantasia, uf, municipio_ibge, porte, atividade_principal, regime_tributario, site, "
-            "descoberta_por, " + ("ficha" if tem_ficha else "NULL") + " FROM empresa"
+            "descoberta_por, " + ("ficha" if tem_ficha else "NULL") + " FROM empresa WHERE " + _ativas(bib)   # R61: sem as excluídas
         ).fetchall()
         inc = defaultdict(list)
         for cnpj, lei, ano, valor, comprovado, fonte in bib.execute("SELECT cnpj, lei, ano, valor, comprovado, fonte FROM incentivo"):

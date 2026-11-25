@@ -105,6 +105,8 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
 
     categoria = _categorias()
     etapas = Counter(lv["fase"] for lv in livros)
+    from ..cartorio.regua import regua as _regua_unica
+    _farol_regua = _regua_unica(bib)["validadas"]
     escada = Counter(_degrau(lv["escada"]) or "sem registro" for lv in livros)
     por_item = {k: {"faltavam": 0, "obtidos": 0, "dispensados": 0} for k in DOZE}
     abord: dict[str, dict] = {}
@@ -193,7 +195,9 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
         "regra": "o Cartório ligado à Biblioteca e ao Cérebro (titular, 25/10/2026)",
         "mostradores": {
             "etapas": [{"id": k, "nome": n, "livros": etapas.get(k, 0)} for k, n in ETAPAS],
-            "saidas": [{"id": k, "nome": n, "livros": etapas.get(k, 0)} for k, n in SAIDAS],
+            # N-06 (25/11/2026): o Farol pela régua única (a aberta no Farol, sem o mecanismo); os que estão na etapa, à parte
+            "saidas": [{"id": k, "nome": n, "livros": (_farol_regua if k == "farol" else etapas.get(k, 0)), "na_etapa": etapas.get(k, 0)}
+                       for k, n in SAIDAS],
             "escada": [{"degrau": k, "nome": n, "livros": escada.get(k, 0)} for k, n in DEGRAUS]
             + [{"degrau": "sem registro", "nome": "sem registro do degrau (achados anteriores a 24/10)", "livros": escada.get("sem registro", 0)}],
         },

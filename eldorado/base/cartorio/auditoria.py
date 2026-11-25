@@ -13,7 +13,7 @@ import json
 import re
 import sqlite3
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from typing import Any, Iterator
 
 from ...motores.leitura import normalizar as N
@@ -574,6 +574,37 @@ def devolver_abertas_do_arquivo(con: sqlite3.Connection, diario: Diario) -> int:
     return n
 
 
+HORAS_NA_RECEPCAO = 24
+
+
+def liberar_recepcao_parada(con: sqlite3.Connection, diario: Diario, agora_: datetime | None = None) -> list[str]:
+    """C-10 de 23/11 (25/11/2026, P-04): a recepção é a etapa de entrada — o livro segue à certificação na mesma passagem
+    (Cartorio.processar, devolver_abertas_do_arquivo). Ainda assim havia 8 livros parados nela, o mais antigo desde 05/11.
+    O livro na recepção há mais de 24 h segue o caminho autorizado (certificação → preparação, onde o Comandante o
+    processa) e a causa fica visível: um alarme com cada livro e o motivo de ter entrado na recepção."""
+    from .passaporte import Passaporte
+    momento = agora_ or datetime.now(timezone.utc)
+    corte = (momento - timedelta(hours=HORAS_NA_RECEPCAO)).isoformat()
+    parados = con.execute(
+        "SELECT p.livro_id, p.entrou_em, COALESCE((SELECT x.motivo FROM passagem x WHERE x.livro_id = p.livro_id AND x.para = 'recepcao' "
+        "ORDER BY x.em DESC LIMIT 1), '') FROM passaporte p JOIN livro l ON l.id = p.livro_id "
+        "WHERE p.fase = 'recepcao' AND p.entrou_em < ? AND l.situacao NOT IN ('excluido', 'unido') ORDER BY p.entrou_em", (corte,)).fetchall()
+    if not parados:
+        return []
+    passaporte, liberados = Passaporte(con, diario, maximo=10), []
+    for lid, _entrou, _motivo in parados:
+        ok = all(passaporte.mover(lid, passo, f"parado na recepção há mais de {HORAS_NA_RECEPCAO} h: segue o caminho autorizado",
+                                  {"gerou": "o livro parado na recepção seguiu à preparação (o Comandante o processa)"})[0]
+                 for passo in ("certificacao", "preparacao"))
+        if ok:
+            liberados.append(lid)
+    lista = "; ".join(f"{lid} (desde {str(e)[:16]}, entrou por: {m[:80] or 'sem motivo'})" for lid, e, m in parados)
+    diario.emitir("alarme.aberto", "cartorio", {"gravidade": "baixa", "modulo": "cartorio", "aberto_em": agora(),
+                                                "mensagem": f"{len(parados)} livro(s) parado(s) na recepção há mais de {HORAS_NA_RECEPCAO} h "
+                                                            f"({len(liberados)} seguiram à preparação): {lista}"[:2000]})
+    return liberados
+
+
 def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem: valida e decupa os livros novos ou alterados (a automação só exclui logicamente)."""
     from pathlib import Path
@@ -589,8 +620,9 @@ def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         arquivados = arquivar_encerrados(con, contexto.diario, date.today())
         devolvidos = devolver_abertas_do_arquivo(con, contexto.diario)
         arquivados += farol_so_com_prazo_aberto(con, contexto.diario)
+        liberados = liberar_recepcao_parada(con, contexto.diario)   # C-10 de 23/11 (25/11/2026)
     finally:
         con.close()
     aplicar(res, contexto.diario)
     return [{"auditados": len(res), "expurgados": sum(r.validacao == "expurgado" for r in res), "revisar": sum(r.validacao == "revisar" for r in res),
-             "arquivados": arquivados, "devolvidos_do_arquivo": devolvidos}]
+             "arquivados": arquivados, "devolvidos_do_arquivo": devolvidos, "liberados_da_recepcao": len(liberados)}]

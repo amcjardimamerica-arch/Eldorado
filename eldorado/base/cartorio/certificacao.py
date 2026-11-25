@@ -70,9 +70,15 @@ def esfera_pelo_orgao(texto: str) -> tuple[str, str] | None:
 
 @dataclass
 class Pagina:
-    documento_id: int | str          # o número do documento no banco, ou a assinatura (documento ainda em registro)
+    documento_id: int | str          # a assinatura do documento (N-02, 25/11/2026: sempre que houver); o número só nos testes antigos
     numero: int
     texto: str
+
+
+def ref_documento(documento_id: int | str) -> dict:
+    """N-02 (25/11/2026): a certidão aponta para o documento pela assinatura (vale em qualquer banco); o número do banco só
+    quando não há assinatura (compatibilidade)."""
+    return {"documento_sha256": documento_id} if isinstance(documento_id, str) else {"documento_id": documento_id}
 
 
 def localizar(item: str, paginas: list[Pagina]) -> dict | None:
@@ -82,7 +88,7 @@ def localizar(item: str, paginas: list[Pagina]) -> dict | None:
         for p in paginas:
             e = esfera_pelo_orgao(p.texto)
             if e:
-                return {"valor": e[0], "trecho": re.sub(r"\s+", " ", e[1]).strip()[:500], "pagina": p.numero, "documento_id": p.documento_id}
+                return {"valor": e[0], "trecho": re.sub(r"\s+", " ", e[1]).strip()[:500], "pagina": p.numero, **ref_documento(p.documento_id)}
     return r
 
 
@@ -103,8 +109,7 @@ def _localizar(item: str, paginas: list[Pagina]) -> dict | None:
                 ini, fim = max(0, m.start() - 60), min(len(busca), m.end() + 60)
                 trecho = re.sub(r"\s+", " ", busca[ini:fim]).strip()
                 if len(valor) >= 3:
-                    doc = {"documento_sha256": p.documento_id} if isinstance(p.documento_id, str) else {"documento_id": p.documento_id}
-                    return {"valor": valor[:300], "trecho": trecho[:500], "pagina": p.numero, **doc}
+                    return {"valor": valor[:300], "trecho": trecho[:500], "pagina": p.numero, **ref_documento(p.documento_id)}
     return None
 
 

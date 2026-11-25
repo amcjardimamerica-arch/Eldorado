@@ -23,8 +23,7 @@
     "testes/test_painel_site.py::test_o_molde_nao_tem_nenhum_dado",
     "testes/test_painel_site.py::test_a_pagina_le_so_o_proprio_site"
    ],
-   "expira_em": "2026-11-23",
-   "condicao": "vale até a eliminação do Eldorado0 (30 dias a partir de 24/10/2026); na data, a titular decide a remoção",
+   "condicao": "titular, 25/11/2026: a R01 passa a valer sem prazo (antes: até 23/11/2026, a eliminação do Eldorado0; venceu e o portão das regras falhava)",
    "tema": "site sem dados do eldorado0"
   },
   {
@@ -881,6 +880,62 @@
    "travas": [
     "testes/test_manutencao_1611.py::test_livro_de_mecanismo_com_link_de_lei_e_valido_e_nao_recebe_previsao_de_abertura",
     "testes/test_manutencao_1611.py::test_mecanismo_nao_conta_como_aberta_sem_data_de_fim"
+   ]
+  },
+  {
+   "id": "R61",
+   "data": "2026-11-18",
+   "tema": "o cadastro das empresas financiadoras",
+   "regra": "Decisões da titular de 18/11/2026 sobre o cadastro das financiadoras: (1) a atuação em Goiás é só a DECLARADA em programa ou projeto — filial, fábrica, loja, unidade e ICMS não contam; (2) a empresa fica ligada ao estado da SEDE, e a atuação por estado é um filtro próprio, por projeto (a base do mapa futuro); (3) a nota é da empresa, pelo CNPJ da MATRIZ — o registro sem CNPJ não entra com «nome:…», fica na lista «a identificar»; (4) fundos internacionais e ONGs ficam no cadastro de empresas, com o tipo Fundação ou Fundo no filtro; (5) as pessoas físicas (o identificador interno «E0:», sem CNPJ) saem do cadastro por EXCLUSÃO LÓGICA (titular, 25/11/2026: a linha fica no banco — R35, as empresas ficam — e sai de todas as telas, do ranking, do Espião e dos vínculos); (6) empresa nova só entra com uma condição: lucro real, 100 ou mais empregados, lista oficial, financiadora de livro ou grupo de empresa já cadastrada; (7) os indicadores de empresas não entram na Sala como operação.",
+   "porque": "titular, 18/11/2026 (parecer das empresas e pesquisa no Claude no Chrome); implantado em 25/11/2026 (C-08 da manutenção de 23/11, pendente P-03 em 25/11): a pesquisa de 825 empresas não tinha entrado (os arquivos chegaram marcados como importados) e 752 estavam «COMPROVADA» em Goiás, a maior parte só por unidade ou ICMS.",
+   "onde": "eldorado/banco/biblioteca/esquema.py (versão 18: empresa.tipo, empresa_perfil.sede_uf e atuacao_declarada, empresa_a_identificar, empresa.excluida_em e motivo_exclusao); eldorado/base/especial/pesquisa_empresas.py e ativas.py (o filtro em todo leitor do cadastro); eldorado/base/nucleo/eventos.py (empresa.retirada, só «E0:»; empresa.a_identificar)",
+   "travas": [
+    "testes/test_c08_empresas_r61_2511.py::test_unidade_ou_icms_em_goias_nao_e_atuacao_declarada",
+    "testes/test_c08_empresas_r61_2511.py::test_a_empresa_fica_no_estado_da_sede_e_a_nota_e_da_matriz",
+    "testes/test_c08_empresas_r61_2511.py::test_fundos_e_fundacoes_ficam_no_cadastro_com_o_tipo",
+    "testes/test_c08_empresas_r61_2511.py::test_pessoa_fisica_nao_fica_no_cadastro_de_empresas",
+    "testes/test_c08_empresas_r61_2511.py::test_registro_sem_cnpj_fica_a_identificar_e_empresa_nova_so_com_condicao",
+    "testes/test_c08_empresas_r61_2511.py::test_indicadores_de_empresas_nao_entram_na_sala_como_operacao"
+   ]
+  },
+  {
+   "id": "R62",
+   "data": "2026-11-25",
+   "tema": "a chave reproduzível dos eventos (o documento pela assinatura)",
+   "regra": "O evento aponta para o documento pela ASSINATURA (documento_sha256), que vale em qualquer banco — nunca só pelo número sequencial do banco. A certidão, o expurgo da leitura e o descarte do documento levam a assinatura; o gravador resolve o número pela assinatura. As certidões já gravadas com o número (desde 23/11/2026) são traduzidas uma única vez, na produção, para a assinatura do documento que a produção tem (correcoes/certidoes_sha256.json); nenhum evento é reescrito e nenhuma certidão é duplicada. Remontar os bancos dos eventos dá o mesmo resultado da produção.",
+   "porque": "titular, 25/11/2026 (N-02 da manutenção de 25/11; autorizou a regravação única): numa remontagem, 1.968 certidões de 24 e 25/11 se perdiam (1.214) ou apontavam para outro documento (754), porque a produção deixou de ser remontada dos eventos depois da guarda dos bancos (C-01 de 23/11).",
+   "onde": "eldorado/base/cartorio/cartorio.py, certificacao.py, identidade.py, leitura_efemera.py; eldorado/base/nucleo/gravador.py, correcoes.py, comandos.py (corrigir-certidoes); .github/workflows/eldorado.yml; scripts/gravar.sh (correcoes/)",
+   "travas": [
+    "testes/test_n02_certidao_pela_assinatura_2511.py::test_certidao_gravada_leva_o_sha256_do_documento",
+    "testes/test_n02_certidao_pela_assinatura_2511.py::test_remontar_dos_eventos_da_o_mesmo_documento_a_cada_certidao",
+    "testes/test_n02_certidao_pela_assinatura_2511.py::test_expurgo_e_descarte_pela_assinatura_nao_tocam_outro_documento"
+   ]
+  },
+  {
+   "id": "R63",
+   "data": "2026-11-25",
+   "tema": "as versões do lote do Chrome",
+   "regra": "A versão do lote do Claude no Chrome só é gravada quando o conteúdo muda (sem a hora de geração); a geração idêntica vira apelido no índice das versões, e o veredito que declara essa hora continua achando a versão que o Chrome recebeu (R41). A versão vencida há 7 dias (pelo último uso) ou repetida sai da máquina E do repositório; a de veredito ainda não importado fica.",
+   "porque": "titular, 25/11/2026 (N-03 da manutenção de 25/11; autorizou apagar do repositório as versões com mais de 7 dias sem veredito pendente): 1.496 versões (2,4 GB) — o mesmo lote gravado a cada 5 minutos — e o repositório em 4,5 GB para um limite recomendado de 5 GB.",
+   "onde": "eldorado/base/cartorio/analise_externa.py (guardar_versao, arquivo_da_versao, limpar_versoes, versoes_a_tirar_do_repositorio, trazer_vereditos_novos); eldorado/base/nucleo/comandos.py (versoes-a-tirar); scripts/gravar.sh",
+   "travas": [
+    "testes/test_n03_versoes_do_lote_2511.py::test_lote_identico_nao_gera_versao_nova",
+    "testes/test_n03_versoes_do_lote_2511.py::test_o_veredito_acha_a_versao_pelo_conteudo",
+    "testes/test_n03_versoes_do_lote_2511.py::test_um_veredito_de_lote_antigo_ainda_e_importado",
+    "testes/test_n03_versoes_do_lote_2511.py::test_a_gravacao_tira_do_repositorio_a_versao_vencida"
+   ]
+  },
+  {
+   "id": "R64",
+   "data": "2026-11-25",
+   "tema": "o governador e a memória da IA",
+   "regra": "O governador decide pela memória LIVRE real (a disponível na máquina) contra o custo estimado do motor mais uma margem fixa de 1 GB — a memória fixa da IA local não conta como carga dos motores. Acima de 95% de ocupação nada novo começa. O limite de 85% não é folgado e o alarme de carga acima de 85% continua igual. O motivo do adiamento mostra as partes: a IA (fixa), os motores e o sistema, e a livre.",
+   "porque": "titular, 25/11/2026 (N-04 da manutenção de 25/11): a IA local ocupa de 6,3 a 8,5 GB dos 15,7 GB; somada à carga, o governador adiava até 74 motores numa hora dizendo «memória sem folga até 85%» com memória disponível.",
+   "onde": "eldorado/base/cerebro/governador.py (Leitura, medidor_psutil, pode_iniciar, paralelismo, motivo)",
+   "travas": [
+    "testes/test_n04_governador_memoria_livre_2511.py::test_memoria_fixa_da_ia_nao_adia_motor_quando_ha_memoria_livre",
+    "testes/test_n04_governador_memoria_livre_2511.py::test_acima_de_95_por_cento_nada_comeca_e_o_alarme_de_85_continua",
+    "testes/test_n04_governador_memoria_livre_2511.py::test_o_limite_de_85_por_cento_nao_foi_folgado"
    ]
   }
  ]

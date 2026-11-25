@@ -133,10 +133,12 @@ class Encaminhamento:
                 m = self.registro.obter(motor)
                 a = m.pesquisar({"id": lv.id, "titulo": lv.titulo, "link_oficial": lv.link_oficial, "link_divulgacao": lv.link_divulgacao}) \
                     if hasattr(m, "pesquisar") else None
-                self.diario.emitir("tentativa.registrada", "rede", {"livro_id": lv.id, "fase": "preparacao", "ferramenta": f"motor {motor}",
-                                                                    "numero": _numero_tentativa(self.con, lv.id, f"motor {motor}"),
-                                                                    "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
-                                                                    "proxima_em": None})
+                numero = _numero_tentativa(self.con, lv.id, f"motor {motor}")
+                if numero <= 3:                                         # C-04: o banco aceita de 1 a 3 (a quarta seria recusada)
+                    self.diario.emitir("tentativa.registrada", "rede", {"livro_id": lv.id, "fase": "preparacao", "ferramenta": f"motor {motor}",
+                                                                        "numero": numero,
+                                                                        "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
+                                                                        "proxima_em": None})
                 return f"motor {motor}", (self._entregar(a, motor) if a else None)
         pref = abordagens if self.rede is not None else _preferencia_do_ciclo(abordagens)   # 06/11: sem a rede, a ordem do ciclo dos 100
         r = self.interceptador.voar(lv, ate, preferencia=pref)   # o plano de voo
@@ -195,9 +197,11 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     a rede treinada é a mesma do nó da rede (guardada por 15 min), sem treino duplicado."""
     if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
         return []
-    from .pilotos_permanentes import ATIVO, entregas
+    from .pilotos_permanentes import ATIVO, alarmar_invalidas, entregas
     if ATIVO.is_set():                                            # os voos permanentes: o nó entrega o que eles trouxeram
-        return entregas("interceptador")
+        saida = entregas("interceptador")                              # N-01 (25/11/2026): sempre dicionários
+        alarmar_invalidas(contexto, "interceptador")
+        return saida
     from ...motores.pilotos.interceptador import Interceptador
     from ..nucleo.ia import IA
     from .rede import rede_atual
@@ -241,9 +245,11 @@ def no_espiao(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto)
     """Nó da passagem: o Espião — o Cérebro decide as missões (na ociosidade e o mínimo garantido) e ele age."""
     if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
         return []
-    from .pilotos_permanentes import ATIVO, entregas
+    from .pilotos_permanentes import ATIVO, alarmar_invalidas, entregas
     if ATIVO.is_set():                                            # os voos permanentes: o nó entrega o que eles trouxeram
-        return entregas("espiao")
+        saida = entregas("espiao")                              # N-01 (25/11/2026): sempre dicionários
+        alarmar_invalidas(contexto, "espiao")
+        return saida
     from .fila import fila_do_sistema
     from .pilotos import missoes
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
@@ -286,3 +292,15 @@ def no_originais(itens: list[dict[str, Any]], parametros: dict[str, Any], contex
         return saida
     finally:
         con.close()
+
+
+def _confirmar(piloto: str):
+    def confirmar() -> None:
+        from .pilotos_permanentes import confirmar_entregas
+        confirmar_entregas(piloto)
+    return confirmar
+
+
+# N-01 (25/11/2026): o executor chama isto depois de gravar o passo como concluído — só então a entrega sai do disco
+no_encaminhar.confirmar = _confirmar("interceptador")   # type: ignore[attr-defined]
+no_espiao.confirmar = _confirmar("espiao")              # type: ignore[attr-defined]

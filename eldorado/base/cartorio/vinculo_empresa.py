@@ -32,7 +32,8 @@ def vincular(con: sqlite3.Connection, diario, agora: str) -> dict[str, Any]:
     try:
         livros = con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, d.esfera, d.inscricao_inicio, d.inscricao_fim, d.catalogo_ouro "
                              "FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao NOT IN ('excluido', 'unido')").fetchall()
-        empresas = con.execute("SELECT cnpj, razao_social, nome_fantasia FROM empresa").fetchall()
+        from ..especial.ativas import ativas
+        empresas = con.execute(f"SELECT cnpj, razao_social, nome_fantasia FROM empresa WHERE {ativas(con)}").fetchall()   # R61: sem as excluídas
         ja = {r[0] for r in con.execute("SELECT livro_id FROM vinculo_livro")}
     except sqlite3.Error:
         return {"vinculos": 0}

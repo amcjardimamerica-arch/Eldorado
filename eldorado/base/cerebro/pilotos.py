@@ -72,9 +72,11 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
     if (dados / "biblioteca.db").exists():                       # as empresas, na Biblioteca
         esp = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
         try:
-            empresas = [r[0] for r in esp.execute("SELECT COALESCE(nome_fantasia, razao_social) FROM empresa WHERE uf = 'GO' LIMIT 300") if r[0]]
+            from ..especial.ativas import ativas
+            empresas = [r[0] for r in esp.execute(f"SELECT COALESCE(nome_fantasia, razao_social) FROM empresa WHERE uf = 'GO' AND {ativas(esp)} LIMIT 300")
+                        if r[0]]
             # 14/11/2026 (R55, C11): os sites do cadastro, para a varredura direta (a camada 1)
-            sites = [r[0] for r in esp.execute("SELECT DISTINCT site FROM empresa WHERE site IS NOT NULL AND site <> '' LIMIT 2000") if r[0]]
+            sites = [r[0] for r in esp.execute(f"SELECT DISTINCT site FROM empresa WHERE site IS NOT NULL AND site <> '' AND {ativas(esp)} LIMIT 2000") if r[0]]
         finally:
             esp.close()
     for _d in getattr(escada, "degraus", []) or []:             # R55 (C17): a ponte no modo do Espião (os sites privados)

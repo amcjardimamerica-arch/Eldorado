@@ -27,6 +27,9 @@ from typing import Any
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
+from ..cartorio.regua import clausula_aberta
+from ..cartorio.regua import regua as _regua
+
 AQUI = Path(__file__).parent
 MOLDE = AQUI / "molde"
 RAIZ_CONFIG = AQUI.parents[2] / "config"
@@ -202,7 +205,7 @@ class Sistema:
                 "SELECT l.*, d.abrangencia, d.esfera, d.inscricao_inicio, d.inscricao_fim, d.resultado_em, d.area AS area_d, d.validacao, "
                 f"d.situacao_prazo, d.municipio, d.origem, {self._escada}, {self._codigo}, p.fase "
                 "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
-                "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim"
+                f"WHERE {clausula_aberta(self.bib)} ORDER BY d.inscricao_fim"   # N-06 (25/11/2026): a régua única (R46, R60)
             )
         )
 
@@ -601,7 +604,7 @@ def _bussola(sis: Sistema, molde: dict, fontes: list[dict], status: list[dict]) 
     abertos = [e for f in fontes for e in f["editais"]]
     urgentes = [e for e in abertos if e["fim"] and e["fim"] <= (datetime.fromisoformat(sis.hoje) + timedelta(days=7)).date().isoformat()]
     nomes = {f["fonte_id"]: f["fonte_nome"] for f in fontes}
-    farol = sis.bib.execute("SELECT COUNT(*) " + VIVOS + " AND p.fase = 'farol'").fetchone()[0]
+    farol = _regua(sis.bib)["validadas"]   # N-06 (25/11/2026): o Farol da régua única (a aberta no Farol, sem o mecanismo)
     dominios = {
         urlsplit(u).hostname
         for c in sis.configs.values()
@@ -880,7 +883,8 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
         for r in sis.esp.execute("SELECT cnpj, lei, ano, valor, fonte FROM incentivo"):
             inc[r["cnpj"]].append({"lei": r["lei"], "ano": r["ano"], "valor": r["valor"], "fonte": r["fonte"]})
         por_uf: dict[str, list] = defaultdict(list)                  # todas as empresas da Biblioteca, cada uma na aba do seu estado
-        for r in sis.esp.execute("SELECT * FROM empresa ORDER BY razao_social"):
+        from ..especial.ativas import ativas
+        for r in sis.esp.execute(f"SELECT * FROM empresa WHERE {ativas(sis.esp)} ORDER BY razao_social"):   # R61: sem as excluídas
             por_uf["GO" if r["uf"] in ("GO", "BR", None, "") else r["uf"]].append(_item(
                 "empresa",
                 id=r["cnpj"],
@@ -950,7 +954,6 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
                                                          "temas": {t: len(v) for t, v in _pt.items()}, "por_tema": _pt}
     fases = dict(sis.bib.execute("SELECT p.fase, COUNT(*) " + VIVOS + " GROUP BY p.fase").fetchall())
     D["fila_verificacao"].update({"gerado_em": agora, "total": fases.get("analise externa", 0)})
-    from ..cartorio.regua import regua as _regua  # R46: as elegíveis são as validadas (abertas no Farol), a régua única
     D["farol_resumo"]["decisoes"].update({"elegiveis": _regua(sis.bib)["validadas"]})
     arquivos: dict[str, Any] = {}
     sm = _molde("status_motores.json")

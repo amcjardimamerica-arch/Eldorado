@@ -56,7 +56,8 @@ class Cartorio:
         r = self.con.execute("SELECT id FROM documento WHERE sha256=?", (sha256,)).fetchone()
         if not r:
             return []
-        return [Pagina(r[0], n, _dz.decompress(t).decode("utf-8")) for n, t in
+        # N-02 (25/11/2026): a página leva a ASSINATURA do documento (vale em qualquer banco), não o número do banco
+        return [Pagina(sha256, n, _dz.decompress(t).decode("utf-8")) for n, t in
                 self.con.execute("SELECT numero, texto_zstd FROM pagina WHERE documento_id=? ORDER BY numero", (r[0],))]
 
     def _certidoes(self, livro: str) -> dict[str, dict]:

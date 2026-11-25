@@ -44,30 +44,95 @@ def entregar(piloto: str, achado: Any) -> None:
             f.write(linha + "\n")
 
 
-def entregas(piloto: str) -> list[dict[str, Any]]:
-    """O que os voos trouxeram desde a última passagem (o nó do piloto devolve isto): a fila e, se a fila se perdeu (a
-    passagem cortada, o processo reiniciado), o arquivo. O arquivo é esvaziado na entrega."""
+def _como_dicionario(x: Any) -> dict[str, Any] | None:
+    """N-01 (25/11/2026): a entrega no formato que o executor exige (dicionário). O achado já passou por
+    Encaminhamento._entregar no voo (os eventos já foram emitidos): aqui só muda a forma, nada é emitido de novo."""
+    if isinstance(x, dict):
+        return x
+    try:
+        import msgspec
+
+        d = msgspec.to_builtins(x)
+    except Exception:  # noqa: BLE001
+        return None
+    return d if isinstance(d, dict) else None
+
+
+INVALIDAS: dict[str, int] = {"interceptador": 0, "espiao": 0}   # N-01: entregas que não viraram dicionário (separadas)
+_EM_ENTREGA: dict[str, bool] = {"interceptador": False, "espiao": False}
+
+
+def _ler_linhas(arq: Path, piloto: str) -> list[dict[str, Any]]:
+    """As linhas do arquivo como dicionários; a linha ilegível vai para <piloto>.invalidas.jsonl (não derruba as outras)."""
     import json as _json
-    saida = []
+    saida, ruins = [], []
+    for ln in arq.read_text(encoding="utf-8").splitlines():
+        if not ln.strip():
+            continue
+        try:
+            d = _como_dicionario(_json.loads(ln))
+        except ValueError:
+            d = None
+        if d is None:
+            ruins.append(ln)
+        else:
+            saida.append(d)
+    if ruins:
+        INVALIDAS[piloto] = INVALIDAS.get(piloto, 0) + len(ruins)
+        with open(PASTA_ENTREGAS / f"{piloto}.invalidas.jsonl", "a", encoding="utf-8") as f:
+            f.write("\n".join(ruins) + "\n")
+    return saida
+
+
+def entregas(piloto: str) -> list[dict[str, Any]]:
+    """O que os voos trouxeram desde a última passagem aceita (o nó do piloto devolve isto), sempre como dicionários.
+
+    A fila e, se a fila se perdeu (a passagem cortada, o processo reiniciado, os 5 blocos de 60 min da C-01), o arquivo.
+    N-01 (25/11/2026): o arquivo NÃO é apagado aqui — vai para <piloto>.em-entrega.jsonl e só sai quando a passagem
+    aceitou o retorno (confirmar_entregas, chamado pelo executor). Se a passagem falhar, a seguinte entrega de novo o que
+    estava em entrega mais o que chegou (R35: nenhum dado se perde; R18: a entrega inválida é separada, não derruba)."""
+    fila = []
     while True:
         try:
-            saida.append(ENTREGAS[piloto].get_nowait())
+            fila.append(ENTREGAS[piloto].get_nowait())
         except queue.Empty:
             break
+    da_fila = [d for d in (_como_dicionario(x) for x in fila) if d is not None]
+    if len(da_fila) < len(fila):
+        INVALIDAS[piloto] = INVALIDAS.get(piloto, 0) + len(fila) - len(da_fila)
     arq = PASTA_ENTREGAS / f"{piloto}.jsonl"
+    pend = PASTA_ENTREGAS / f"{piloto}.em-entrega.jsonl"
     with _TRAVA_ENTREGAS:
+        pendentes = _ler_linhas(pend, piloto) if pend.exists() else []
+        novas = da_fila
         if arq.exists():
-            linhas = [ln for ln in arq.read_text(encoding="utf-8").splitlines() if ln.strip()]
+            import json as _json
+            do_arquivo = _ler_linhas(arq, piloto)          # a linha ilegível já foi separada (não volta a cada passagem)
+            if len(do_arquivo) > len(da_fila):             # a fila se perdeu: o arquivo tem tudo
+                novas = do_arquivo
+            if do_arquivo:
+                with open(pend, "a", encoding="utf-8") as f:   # em entrega até a passagem aceitar
+                    f.write("".join(_json.dumps(d, ensure_ascii=False) + "\n" for d in do_arquivo))
             arq.unlink()
-            if len(linhas) > len(saida):                   # a fila se perdeu: o arquivo tem tudo
-                try:
-                    import msgspec
+        _EM_ENTREGA[piloto] = pend.exists()
+    return pendentes + novas
 
-                    from ..nucleo.contratos import Achado
-                    saida = [msgspec.convert(_json.loads(ln), Achado) for ln in linhas]
-                except Exception:  # noqa: BLE001 — o arquivo ilegível não derruba a passagem
-                    pass
-    return saida
+
+def confirmar_entregas(piloto: str) -> None:
+    """N-01: a passagem aceitou o retorno do nó — o que estava em entrega pode sair do disco."""
+    with _TRAVA_ENTREGAS:
+        if _EM_ENTREGA.get(piloto):
+            (PASTA_ENTREGAS / f"{piloto}.em-entrega.jsonl").unlink(missing_ok=True)
+            _EM_ENTREGA[piloto] = False
+
+
+def alarmar_invalidas(contexto, piloto: str) -> None:
+    """N-01: a entrega que não virou dicionário tem alarme próprio (as outras seguem)."""
+    n = INVALIDAS.get(piloto, 0)
+    if n and getattr(contexto, "alarmes", None) is not None:
+        INVALIDAS[piloto] = 0
+        contexto.alarmes.abrir("media", f"piloto:{piloto}",
+                               f"{n} entrega(s) do {piloto} fora do formato foram separadas em dados/pilotos/{piloto}.invalidas.jsonl (as outras seguiram)")
 
 
 def sinal(diario, piloto: str, motivo: str) -> None:

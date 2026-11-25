@@ -30,11 +30,12 @@ def expurgar(banco: str | Path, eventos: str | Path, horas: float = HORAS_NO_BAN
     con = sqlite3.connect(f"file:{Path(banco)}?mode=ro", uri=True)
     try:
         docs = [
-            r[0]
+            (r[0], r[1])
             for r in con.execute(
-                "SELECT DISTINCT p.documento_id FROM pagina p JOIN documento d ON d.id = p.documento_id WHERE COALESCE(d.obtido_em, '') < ?", (corte,)
+                "SELECT DISTINCT p.documento_id, d.sha256 FROM pagina p JOIN documento d ON d.id = p.documento_id WHERE COALESCE(d.obtido_em, '') < ?", (corte,)
             )
         ]
+        sha_de = dict(con.execute("SELECT id, sha256 FROM documento WHERE COALESCE(obtido_em, '') < ?", (corte,)).fetchall())
     finally:
         con.close()
     # R35 (titular: "não exclua nenhum livro, apenas os dados que não são livros"): o achado que não virou livro e o documento
@@ -62,8 +63,9 @@ def expurgar(banco: str | Path, eventos: str | Path, horas: float = HORAS_NO_BAN
     if docs or sem_livro or sem_uso:
         dia = Diario(eventos, execucao)
         agora_ = datetime.now(timezone.utc).isoformat()
-        for doc in docs:
-            dia.emitir("leitura.expurgada", "leitura-efemera", {"documento_id": doc, "motivo": "R35: a leitura do site não fica guardada"})
+        for doc, sha in docs:   # N-02 (25/11/2026): com a assinatura (o número só vale neste banco)
+            dia.emitir("leitura.expurgada", "leitura-efemera", {"documento_id": doc, **({"documento_sha256": sha} if sha else {}),
+                                                                "motivo": "R35: a leitura do site não fica guardada"})
         for i, m, enc, dec, mot, link in sem_livro:
             dia.emitir(
                 "achado.descartado",
@@ -71,7 +73,7 @@ def expurgar(banco: str | Path, eventos: str | Path, horas: float = HORAS_NO_BAN
                 {"id": i, "motor": m, "encontrado_em": enc, "decisao": dec, "motivo": (mot or "")[:300], "link": link, "descartado_em": agora_},
             )
         for doc in sem_uso:
-            dia.emitir("documento.descartado", "leitura-efemera", {"documento_id": doc})
+            dia.emitir("documento.descartado", "leitura-efemera", {"documento_id": doc, **({"documento_sha256": sha_de[doc]} if sha_de.get(doc) else {})})
     apagados = 0
     ef = pasta_efemera(eventos)
     if ef.exists():

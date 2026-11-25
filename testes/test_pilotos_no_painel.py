@@ -164,7 +164,11 @@ def test_os_achados_dos_pilotos_sobrevivem_num_arquivo(tmp_path, monkeypatch):
     while not PP.ENTREGAS["espiao"].empty():  # a fila se perdeu (o corte)
         PP.ENTREGAS["espiao"].get_nowait()
     voltou = PP.entregas("espiao")
-    assert [x.id for x in voltou] == ["x1"] and not (tmp_path / "espiao.jsonl").exists()
+    # N-01 (25/11/2026): volta como dicionário (o executor exige) e fica em entrega até a passagem aceitar
+    assert [x["id"] for x in voltou] == ["x1"] and not (tmp_path / "espiao.jsonl").exists()
+    assert (tmp_path / "espiao.em-entrega.jsonl").exists()
+    PP.confirmar_entregas("espiao")
+    assert not (tmp_path / "espiao.em-entrega.jsonl").exists()
 
 
 def test_a_familia_e_sorteada_e_descansa_quando_cansa():
@@ -287,7 +291,9 @@ def test_arquivar_pela_titular_grava_na_biblioteca_e_sai_das_abertas(bancos, gra
     assert b.execute("SELECT fase FROM passaporte WHERE livro_id = 'L1'").fetchone()[0] == "arquivo"
     assert b.execute("SELECT motivo FROM passagem WHERE livro_id = 'L1' ORDER BY id DESC").fetchone()[0].startswith("pela titular:")
     src = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
-    assert "AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim" in src  # sai das abertas
+    # sai das abertas — 25/11/2026 (N-06): a condição vem da régua única (clausula_aberta), que tira o arquivo
+    assert "WHERE {clausula_aberta(self.bib)} ORDER BY d.inscricao_fim" in src
+    assert "p.fase <> 'arquivo'" in Path("eldorado/base/cartorio/regua.py").read_text(encoding="utf-8")
     assert Path(".github/workflows/arquivar.yml").exists()
 
 

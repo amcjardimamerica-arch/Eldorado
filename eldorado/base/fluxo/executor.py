@@ -168,6 +168,12 @@ class Executor:
             ok, saida, erro = self._chamar(fn, no, itens, ctx, diario)
             if ok:
                 estado.registrar_passo(diario, no.id, "concluido", itens, self._herdar_linhagem(itens, saida))
+                confirmar = getattr(fn, "confirmar", None)   # N-01 (25/11/2026): o nó apaga o que entregou só depois de aceito
+                if callable(confirmar):
+                    try:
+                        confirmar()
+                    except Exception as e:  # noqa: BLE001 — a confirmação que falha só deixa a entrega para a próxima passagem
+                        alarmes.abrir("baixa", f"workflow:{self.d.id}", f"a confirmação do nó {no.id} falhou: {e}")
                 for x in saida:  # o nó de agente do Comandante: as etapas a pular nesta passagem
                     if isinstance(x, dict) and x.get("__pular__"):
                         estado.pular.update(str(n) for n in x["__pular__"])

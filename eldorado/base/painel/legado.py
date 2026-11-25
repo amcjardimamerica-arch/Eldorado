@@ -14,6 +14,8 @@ import sqlite3
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
+from ..especial.ativas import ativas as _ativas
+
 
 def _idade_h(iso: str | None, agora: datetime) -> float | None:
     if not iso:
@@ -247,10 +249,10 @@ def _montar(bib, cer, motores, pilotos, molde, agora, iso, hoje) -> dict[str, di
     saida["resgates_piloto.json"] = rg
     try:
         emp = bib.execute(
-            "SELECT cnpj, razao_social, nome_fantasia, uf, site FROM empresa WHERE uf = 'GO' AND (site IS NULL OR site = '') "
+            "SELECT cnpj, razao_social, nome_fantasia, uf, site FROM empresa WHERE uf = 'GO' AND (site IS NULL OR site = '') AND " + _ativas(bib) + " "
             "ORDER BY razao_social LIMIT 300"
         ).fetchall()
-        n_go = bib.execute("SELECT COUNT(*) FROM empresa WHERE uf = 'GO'").fetchone()[0]
+        n_go = bib.execute("SELECT COUNT(*) FROM empresa WHERE uf = 'GO' AND " + _ativas(bib)).fetchone()[0]
     except sqlite3.Error:
         emp, n_go = [], 0
     rd = molde("radar_piloto.json")

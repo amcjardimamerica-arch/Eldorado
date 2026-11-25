@@ -34,6 +34,14 @@ _BASE = "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p 
 PRAZO_ABERTO = "COALESCE(d.situacao_prazo, '') = 'aberta' AND (d.inscricao_fim IS NULL OR d.inscricao_fim >= date('now'))"
 
 
+def clausula_aberta(bib: sqlite3.Connection, p: str = "p") -> str:
+    """N-06 (25/11/2026): a condição ÚNICA de «aberta» (R46), para toda tela que lista ou conta as abertas — o relatório da
+    titular, as abas, a lista e a Sala tinham cada um a sua cópia, sem tirar o mecanismo (R60): 424, 418 e 396 para a mesma
+    coisa. `p` é o apelido da tabela passaporte na consulta de quem chama (livro é «l», livro_dados é «d»)."""
+    base = _ABERTA_BASE if p == "p" else _ABERTA_BASE.replace("p.fase", f"{p}.fase")
+    return base + (" AND COALESCE(d.tipo_livro, '') <> 'mecanismo'" if tem_tipo(bib) else "")
+
+
 def regua(bib: sqlite3.Connection, fila_interceptador: int | None = None) -> dict[str, Any]:
     q = lambda sql, *a: bib.execute(sql, a).fetchone()[0] or 0  # noqa: E731
     _ABERTA = globals()["_ABERTA"] if tem_tipo(bib) else _ABERTA_BASE   # R60: o mecanismo fora, quando a coluna existe

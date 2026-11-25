@@ -25,6 +25,7 @@ def _selo(estrela: str | None, selo: str | None) -> str:
 
 
 def reunir(dados: Path, agora: datetime) -> dict[str, Any]:
+    from ..cartorio.regua import clausula_aberta
     bib = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
     cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
     hoje, h24 = agora.date(), (agora - timedelta(hours=24)).isoformat()
@@ -33,7 +34,8 @@ def reunir(dados: Path, agora: datetime) -> dict[str, Any]:
             "SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.estrela, l.selo_livro, d.inscricao_fim, p.fase FROM livro l "
             "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
             # 16/11/2026 (C-18, R46): as abertas pela régua única (fora do arquivo) — o relatório dizia 294 e a régua 291
-            "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim"
+            # N-06 (25/11/2026): a MESMA condição da régua (clausula_aberta, sem o mecanismo — R60): 424 aqui, 396 na Sala
+            f"WHERE {clausula_aberta(bib)} ORDER BY d.inscricao_fim"
         ).fetchall()
         fecham = []
         for lid, tit, org, uf, link, est, selo, fim, fase in abertas:

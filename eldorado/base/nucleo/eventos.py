@@ -88,6 +88,14 @@ def _so(*colunas: str) -> Callable[[dict[str, Any]], dict[str, Any]]:
 
 B, C = "biblioteca", "cerebro"
 E = B  # as empresas vivem na Biblioteca (titular, 24/10/2026)
+
+
+def _so_pessoa_fisica(d: dict[str, Any]) -> dict[str, Any]:
+    """R61 (titular, 18/11 e 25/11/2026): a saída da pessoa física é a EXCLUSÃO LÓGICA (a linha fica, R35) e só vale para o
+    identificador interno «E0:» — qualquer outra chave é recusada."""
+    if not str(d.get("cnpj") or "").startswith("E0:"):
+        raise ValueError(f"só a pessoa física (E0:) sai do cadastro de empresas: {d.get('cnpj')}")
+    return {"cnpj": d["cnpj"], "excluida_em": d["em"], "motivo_exclusao": d.get("motivo")}
 CATALOGO: dict[str, tuple[Alvo, ...]] = {
     # Regência, fluxo e medição (cerebro.db)
     "plano.criado": (Alvo(C, "plano", "inserir"),),
@@ -233,7 +241,11 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "aprofundamento.registrado": (Alvo(E, "aprofundamento", "inserir"),),
     # 18/11/2026 (titular): a pesquisa das empresas — o perfil completo e as correções do cadastro (site, razão social, UF)
     "empresa.perfil": (Alvo(E, "empresa_perfil", "inserir_ou_atualizar", ("cnpj",)),),
-    "empresa.corrigida": (Alvo(E, "empresa", "atualizar", ("cnpj",), _so("cnpj", "razao_social", "uf", "site", "atualizada_em")),),
+    "empresa.corrigida": (Alvo(E, "empresa", "atualizar", ("cnpj",), _so("cnpj", "razao_social", "uf", "site", "tipo", "atualizada_em")),),
+    # 25/11/2026 (R61, decisões da titular de 18/11): a pessoa física sai do cadastro (só o identificador interno «E0:»); o
+    # registro sem CNPJ fica na lista «a identificar»
+    "empresa.retirada": (Alvo(E, "empresa", "atualizar", ("cnpj",), _so_pessoa_fisica),),
+    "empresa.a_identificar": (Alvo(E, "empresa_a_identificar", "inserir_ou_atualizar", ("nome",)),),
     # Migração do Eldorado0 (temporária): um lote de eventos dentro de um evento
     "importacao.lote": (Alvo("*", "*", "expandir"),),
 }

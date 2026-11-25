@@ -276,10 +276,15 @@ jobs:
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
         run: eldorado aplicar || echo "::warning::há eventos recusados (viram alarme na sala; o ciclo segue)"
+      - name: A tradução das certidões gravadas com o número do documento (N-02; uma vez, conclui sozinha)
+        if: always()
+        continue-on-error: true
+        run: timeout 600 eldorado corrigir-certidoes || echo "::warning::a tradução das certidões não terminou"
       - name: A manutenção dos bancos e o índice de busca (sqlite-utils)
         if: always()
         run: timeout 600 eldorado manutencao || echo "::warning::a manutenção dos bancos não terminou"
       - name: A cópia de segurança dos livros (a cada 3 dias, só os que mudaram)
+        if: always()   # N-05 (25/11/2026): sem isto, uma falha anterior pulava a cópia (parada desde 21/11)
         continue-on-error: true
         run: timeout 600 eldorado copia-livros || echo "::warning::a cópia dos livros não terminou"
       - name: A cópia no Drive (aguarda a pasta; sem os segredos, só avisa)

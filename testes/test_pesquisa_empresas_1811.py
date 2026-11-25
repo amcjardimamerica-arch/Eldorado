@@ -47,7 +47,9 @@ def test_a_importacao_corrige_o_cadastro_junta_a_mesma_empresa_e_acontece_uma_ve
     d = _D()
     r = P.importar_pasta(c, d, pasta)
     tipos = [t for t, _ in d.ev]
-    assert [x["novas_no_cadastro"] for x in r["importados"]] == [0, 1] and tipos.count("incentivo.registrado") == 1
+    # 25/11/2026 (R61, 6): a «Empresa Nova» sem condição de entrada não entra no cadastro — fica «a identificar»
+    assert [x["novas_no_cadastro"] for x in r["importados"]] == [0, 0] and tipos.count("incentivo.registrado") == 1
+    assert [x["a_identificar"] for x in r["importados"]] == [0, 1]
     perfil = [x for t, x in d.ev if t == "empresa.perfil" and x["cnpj"] == "39346861000161"][-1]
     assert perfil["canal_para_projeto"] and perfil["site_oficial"] == "cencosud.com.br"            # as duas pesquisas juntas
     assert any(t == "empresa.corrigida" and x.get("site") == "https://cencosud.com.br" for t, x in d.ev)

@@ -18,6 +18,7 @@ import json
 import random
 import re
 import sqlite3
+import threading
 import tomllib
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -229,6 +230,30 @@ TIPO_FAMILIA = {"empresa do cadastro": "empresa_semente", "financiador conhecido
 # 17/11/2026 (C-20, parte 3): os objetivos de empresa — o achado leva a empresa como financiador e o vínculo empresa–livro a liga
 TIPOS_EMPRESARIAIS = ("empresa do cadastro", "institutos e fundações do Brasil", "estatais e bancos públicos")
 
+# C-05 de 23/11 (25/11/2026, P-02): a memória do voo. O Espião é recriado a cada missão e o uso do objetivo e da consulta
+# só chega ao Cérebro quando a passagem aplica os eventos — enquanto isso o «menos usado» era sempre o mesmo (a mesma
+# consulta 40 vezes em 2 h 30; «Fundação Walmart» 19 vezes; 56% de consultas diferentes). A memória é do processo (não é
+# banco: a gravação continua só por evento, R35) e vale junto com os 3 dias do Cérebro.
+_VOO_TRAVA = threading.Lock()
+VOO: dict[str, dict[str, set[str]]] = {}   # o Cérebro (o arquivo) → os objetivos e as consultas usados neste voo
+
+
+def _voo(chave: str) -> dict[str, set[str]]:
+    return VOO.setdefault(chave, {"objetivos": set(), "consultas": set()})
+
+
+def lembrar_no_voo(chave: str, objetivo: str | None, consulta: str | None) -> None:
+    with _VOO_TRAVA:
+        if objetivo:
+            _voo(chave)["objetivos"].add(str(objetivo))
+        if consulta:
+            _voo(chave)["consultas"].add(_normal(consulta))
+
+
+def _normal(q: str) -> str:
+    return re.sub(r"\s+", " ", str(q or "")).strip().lower()
+
+
 class Espiao:
     def __init__(
         self,
@@ -245,6 +270,7 @@ class Espiao:
     ):
         from ...banco.cerebro_db.esquema import abrir  # dentro do Cérebro (as tabelas espiao_* são da versão 2)
         self.con = abrir(estado)
+        self._chave_voo = str(Path(estado).resolve()) if not str(estado).startswith(":") else f"mem-{id(self)}"
         self.con.row_factory = None
         self.con.isolation_level = ""                         # as transações explícitas do Espião (commit) seguem valendo
         self.consultar, self.ler = consultar, ler
@@ -311,9 +337,12 @@ class Espiao:
         """17/11/2026 (C-04, R55 «a busca é diferente a cada tentativa»): as consultas usadas nos últimos RECENTE_DIAS dias."""
         desde = (datetime.now(timezone.utc) - timedelta(days=self.RECENTE_DIAS)).isoformat()
         try:
-            return {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE ultima >= ?", (desde,))}
+            banco = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE ultima >= ?", (desde,))}
         except sqlite3.Error:
-            return set()
+            banco = set()
+        with _VOO_TRAVA:                               # C-05 (25/11/2026): mais as consultas deste voo, ainda sem aplicar
+            voo = set(_voo(self._chave_voo)["consultas"])
+        return banco | voo | {_normal(q) for q in banco}
 
     def escolher(self) -> tuple[str, str]:
         if getattr(self, "preferida", None) in self.fams:                        # a família escolhida pelo Comandante (25/10/2026)
@@ -321,7 +350,7 @@ class Espiao:
             ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")} | self._recentes()
             for _ in range(6):
                 q = self.fams[self.preferida](self.rnd, ano)
-                if q and q not in ruins:
+                if q and q not in ruins and _normal(q) not in ruins:
                     return self.preferida, re.sub(r"\s+", " ", q).strip()
         ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")} | self._recentes()
         sorteio = sorted(
@@ -363,11 +392,19 @@ class Espiao:
         família que o Comandante escolheu, quando houver."""
         try:
             tipos = [t for t, f in TIPO_FAMILIA.items() if f == familia] if familia else []
-            filtro = f" WHERE tipo IN ({','.join('?' * len(tipos))})" if tipos else ""
+            with _VOO_TRAVA:
+                usados = sorted(_voo(self._chave_voo)["objetivos"])
+            conds, args = [], list(tipos)
+            if tipos:
+                conds.append(f"tipo IN ({','.join('?' * len(tipos))})")
+            if usados:                                # C-05 (25/11/2026): nunca o objetivo já usado neste voo
+                conds.append(f"id NOT IN ({','.join('?' * len(usados))})")
+                args += usados
+            filtro = (" WHERE " + " AND ".join(conds)) if conds else ""
             r = self.con.execute(f"SELECT id, tipo, alvo, consultas, usos, achados FROM espiao_objetivo{filtro} "
-                                 "ORDER BY usos, prioridade, COALESCE(ultima, '') LIMIT 1", tipos).fetchone()   # rodízio: o menos usado
+                                 "ORDER BY usos, prioridade, COALESCE(ultima, '') LIMIT 1", args).fetchone()   # rodízio: o menos usado
             if r is None and tipos:
-                return self.proximo_objetivo(None)
+                return self.proximo_objetivo(None)    # a família sem objetivo novo: troca de família, não repete
         except sqlite3.Error:                         # o Cérebro antes da versão 13: sem fila
             return None
         if r is None:
@@ -375,12 +412,26 @@ class Espiao:
         return {"id": r[0], "tipo": r[1], "alvo": r[2], "consultas": json.loads(r[3] or "[]"), "usos": r[4] or 0, "achados": r[5] or 0}
 
     def missao(self) -> dict[str, Any]:
-        obj = self.proximo_objetivo(getattr(self, "preferida", None))
-        if obj and obj["consultas"]:
-            fam = TIPO_FAMILIA.get(obj["tipo"], "setor_apoio_regiao")
-            q = re.sub(r"\s+", " ", self.rnd.choice(obj["consultas"]).replace("{ano}", str(date.today().year))).strip()
-        else:
+        # C-05 de 23/11 (25/11/2026): o objetivo e a consulta deste voo não se repetem — o objetivo sem consulta nova é
+        # deixado e vem o seguinte (até 20); sem nenhum, a escolha pela família (que também exclui as do voo)
+        recentes = self._recentes()
+        fam = q = None
+        obj = None
+        for _ in range(20):
+            obj = self.proximo_objetivo(getattr(self, "preferida", None))
+            if not obj or not obj["consultas"]:
+                obj = None
+                break
+            lembrar_no_voo(self._chave_voo, obj["id"], None)
+            opcoes = [re.sub(r"\s+", " ", c.replace("{ano}", str(date.today().year))).strip() for c in obj["consultas"]]
+            novas = [c for c in opcoes if c not in recentes and _normal(c) not in recentes]
+            if novas:
+                fam, q = TIPO_FAMILIA.get(obj["tipo"], "setor_apoio_regiao"), self.rnd.choice(novas)
+                break
+            obj = None
+        if q is None:
             fam, q = self.escolher()
+        lembrar_no_voo(self._chave_voo, None, q)
         pistas, relato = self.consultar(q)
         for linha in relato:  # o descanso das rotas vale entre as execuções
             # 14/11/2026 (R55, C1): só a linha «falhou» grava o descanso, com os minutos que a metabusca calculou (2 a 60; o

@@ -27,11 +27,20 @@ CUSTO_PADRAO = {"leve": 0.05, "pesado": 0.25}      # fração da máquina, até 
 CUSTO_MEM_PADRAO = {"leve": 0.02, "pesado": 0.08}  # a memória que uma tarefa ocupa (≈ 0,3 e 1,3 GB em 16 GB)
 
 
+MARGEM_MEMORIA_MB = 1024   # N-04 (25/11/2026; titular): a folga fixa além do custo do motor
+TETO_MEMORIA = 0.95        # N-04: acima disto nada novo começa, haja o que houver de memória livre (proteção contra a falta)
+
+
 @dataclass(frozen=True)
 class Leitura:
     processador: float      # frações de 0 a 1
     memoria: float
     disco: float
+    # N-04 (25/11/2026): a memória em MB — a livre de verdade (available), a fixa da IA local e o total. Sem elas (o medidor
+    # simulado dos testes antigos), a decisão é a de antes, pelo percentual.
+    mem_livre_mb: float | None = None
+    mem_ia_mb: float | None = None
+    mem_total_mb: float | None = None
 
     @property
     def carga(self) -> float:
@@ -141,9 +150,19 @@ def cpu_total(intervalo: float = 0.2) -> float:
 def medidor_psutil(caminho_disco: str = ".") -> Callable[[], Leitura]:
     psutil.cpu_percent(interval=None)                 # a primeira leitura do psutil é sempre 0; descartada
     def medir() -> Leitura:
-        return Leitura(processador=cpu_sem_ia(0.2), memoria=psutil.virtual_memory().percent / 100,
-                       disco=psutil.disk_usage(caminho_disco).percent / 100)
+        vm = psutil.virtual_memory()
+        return Leitura(processador=cpu_sem_ia(0.2), memoria=vm.percent / 100, disco=psutil.disk_usage(caminho_disco).percent / 100,
+                       mem_livre_mb=vm.available / 1048576, mem_ia_mb=memoria_ia_mb(), mem_total_mb=vm.total / 1048576)
     return medir
+
+
+def memoria_ia_mb() -> float:
+    """N-04 (25/11/2026): a memória residente da IA local (fixa enquanto ela está carregada)."""
+    p = _processo_ia()
+    try:
+        return p.memory_info().rss / 1048576 if p is not None else 0.0
+    except psutil.Error:
+        return 0.0
 
 
 @dataclass
@@ -185,7 +204,26 @@ class Governador:
             return False
         cpu = self.custos_cpu.get(modulo or "", CUSTO_PADRAO[peso])
         mem = self.custos_mem.get(modulo or "", CUSTO_MEM_PADRAO[peso])
-        return leitura.processador + cpu <= self.limite and leitura.memoria + mem <= self.limite
+        return leitura.processador + cpu <= self.limite and self._memoria_cabe(leitura, mem, self.limite)
+
+    @staticmethod
+    def _memoria_cabe(leitura: Leitura, mem: float, limite: float) -> bool:
+        """N-04 (25/11/2026; titular: «decidir pela memória livre real, com margem de 1 GB»): a IA local ocupa de 6 a 8 GB
+        FIXOS; somada à carga, adiava até 74 motores por hora com memória disponível. Agora: a memória livre de verdade
+        cobre o custo do motor mais 1 GB — e acima de 95% de ocupação nada começa. O alarme de 85% continua (alertas)."""
+        if leitura.mem_livre_mb is None or not leitura.mem_total_mb:
+            return leitura.memoria + mem <= limite          # sem a medida em MB: a regra de antes
+        if leitura.memoria >= TETO_MEMORIA:
+            return False
+        return leitura.mem_livre_mb >= mem * leitura.mem_total_mb + MARGEM_MEMORIA_MB
+
+    @staticmethod
+    def _folga_memoria(leitura: Leitura, limite: float) -> float:
+        if leitura.mem_livre_mb is None or not leitura.mem_total_mb:
+            return limite - leitura.memoria
+        if leitura.memoria >= TETO_MEMORIA:
+            return 0.0
+        return max(0.0, (leitura.mem_livre_mb - MARGEM_MEMORIA_MB) / leitura.mem_total_mb)
 
     def motivo(self) -> str:
         leitura = self.ultima
@@ -193,6 +231,16 @@ class Governador:
             return "sem leitura"
         if leitura.disco >= self.disco_critico:
             return f"disco {leitura.disco:.0%} ocupado: sem espaço seguro para gravar"
+        if leitura.mem_livre_mb is not None and leitura.mem_total_mb:
+            # N-04: as duas partes da memória — a fixa da IA e a dos motores — e a livre de verdade
+            ia = (leitura.mem_ia_mb or 0) / 1024
+            usada = (leitura.mem_total_mb - leitura.mem_livre_mb) / 1024
+            livre = leitura.mem_livre_mb / 1024
+            cpu_ok = leitura.processador < self.limite
+            qual = (f"a memória sem folga (livre {livre:.1f} GB; precisa do custo do motor mais {MARGEM_MEMORIA_MB / 1024:.0f} GB)"
+                    if cpu_ok else f"o processador sem folga até {self.limite:.0%}")
+            return (f"carga {leitura.carga:.0%} (processador {leitura.processador:.0%}, memória {leitura.memoria:.0%}: IA {ia:.1f} GB fixos; "
+                    f"motores e sistema {max(0.0, usada - ia):.1f} GB; livre {livre:.1f} GB): {qual}")
         qual = "o processador" if leitura.processador >= leitura.memoria else "a memória"
         return (f"carga {leitura.carga:.0%} (processador {leitura.processador:.0%}, memória {leitura.memoria:.0%}): {qual} sem folga "
                 f"até {self.limite:.0%}")
@@ -208,7 +256,7 @@ class Governador:
 
     def paralelismo(self, modulo: str | None = None, peso: str = "leve") -> int:
         leitura = self.ler()
-        folga = self.limite - leitura.carga
+        folga = min(self.limite - leitura.processador, self._folga_memoria(leitura, self.limite))   # N-04: a memória livre real
         if folga <= 0 or leitura.disco >= self.disco_critico:
             return 0
         return max(0, min(self.paralelismo_maximo, math.floor(folga / self.custo(modulo, peso) + 1e-9)))

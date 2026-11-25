@@ -331,7 +331,9 @@ def unir(con: sqlite3.Connection, diario, fica: str, unido: str, motivo: str) ->
     for c in con.execute("SELECT * FROM certidao WHERE livro_id = ? AND situacao IN ('comprovado', 'dispensado')", (unido,)).fetchall():
         if (c["item"], c["valor"]) in ja:
             continue
-        diario.emitir("certidao.gravada", "identidade", {"livro_id": fica, "item": c["item"], "valor": c["valor"], "documento_id": c["documento_id"],
+        sha = con.execute("SELECT sha256 FROM documento WHERE id = ?", (c["documento_id"],)).fetchone() if c["documento_id"] else None
+        doc = {"documento_sha256": sha[0]} if sha and sha[0] else {"documento_id": c["documento_id"]}   # N-02: pela assinatura
+        diario.emitir("certidao.gravada", "identidade", {"livro_id": fica, "item": c["item"], "valor": c["valor"], **doc,
                                                          "pagina": c["pagina"], "trecho": c["trecho"], "fase": c["fase"], "situacao": c["situacao"],
                                                          "justificativa": (c["justificativa"] or "") + f" (da união com o livro {unido})", "em": c["em"]})
     a = con.execute("SELECT link_oficial, link_divulgacao FROM livro WHERE id = ?", (fica,)).fetchone()

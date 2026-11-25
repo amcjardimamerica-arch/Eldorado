@@ -31,6 +31,7 @@ from urllib.parse import quote, urlsplit
 import zstandard
 
 from ...base.cartorio import origem
+from ...base.especial.ativas import ativas as _ativas
 from ...base.missao import itens as I
 from ...base.nucleo.contratos import Achado
 from ...base.nucleo.eventos import Diario, agora
@@ -483,7 +484,8 @@ class Interceptador:
             if getattr(self, "_cadastro_sites", None) is None:      # o cadastro, sem acento, carregado uma vez
                 self._cadastro_sites = {}
                 try:
-                    for nf, rs, site in self.con.execute("SELECT nome_fantasia, razao_social, site FROM empresa WHERE site IS NOT NULL AND site <> ''"):
+                    for nf, rs, site in self.con.execute("SELECT nome_fantasia, razao_social, site FROM empresa "
+                                                       "WHERE site IS NOT NULL AND site <> '' AND " + _ativas(self.con)):
                         for nome in (nf, rs):
                             if nome:
                                 self._cadastro_sites.setdefault(" ".join(sa(nome).split()), site)

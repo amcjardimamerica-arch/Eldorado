@@ -20,6 +20,7 @@ import zstandard
 
 from ...banco._sqlite import colunas
 from .contratos import Linhagem
+from .correcoes import corrigir
 from .eventos import CATALOGO, Alvo, Diario, Evento, agora
 
 APAGAVEIS = {"aprendizado_temporario", "memoria"}   # só o temporário do Cérebro se apaga: vence em 30 dias (o aprendizado e a memória)
@@ -135,6 +136,7 @@ class Gravador:
                     r.repetidos += 1
                     continue
                 dados = alvo.mapa(ev.dados) if alvo.mapa else dict(ev.dados)
+                dados = corrigir(ev.tipo, ev.id, dados)          # N-02 (25/11/2026): a certidão com número, pela assinatura
                 self._executar(con, alvo, dados)
                 con.execute("INSERT INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
                 con.execute("COMMIT")
@@ -185,7 +187,22 @@ class Gravador:
         sql = "SELECT 1 FROM livro WHERE id = ? AND missao = ? AND chave = ?"           # a criação idêntica: o mesmo id e a mesma chave
         return con.execute(sql, (d.get("id"), d.get("missao"), d.get("chave"))).fetchone() is not None
 
+    @staticmethod
+    def _documento_pela_assinatura(con: sqlite3.Connection, dados: dict[str, Any]) -> bool:
+        """N-02 (25/11/2026): a assinatura vale mais que o número (o número só vale num banco). Devolve False quando a
+        assinatura veio e o documento não está neste banco."""
+        sha = dados.get("documento_sha256")
+        if not sha:
+            return True
+        linha = con.execute("SELECT id FROM documento WHERE sha256=?", (sha,)).fetchone()
+        if linha is None:
+            return False
+        dados["documento_id"] = linha[0]
+        return True
+
     def _executar(self, con: sqlite3.Connection, alvo: Alvo, dados: dict[str, Any]) -> None:
+        if alvo.operacao in ("expurgar_leitura", "descartar_documento") and not self._documento_pela_assinatura(con, dados):
+            return                                  # N-02: o documento dessa assinatura não está neste banco — nada a tirar
         if alvo.operacao == "pagina":
             self._pagina(con, dados)
             return
@@ -245,7 +262,7 @@ class Gravador:
     def _pagina(self, con: sqlite3.Connection, d: dict[str, Any]) -> None:
         """O texto literal da página: comprimido com zstd e indexado na busca, sem uma segunda cópia do texto."""
         texto = d["texto"]
-        doc = d.get("documento_id")
+        doc = d.get("documento_id") if not d.get("documento_sha256") else None   # N-02: a assinatura primeiro (vale em qualquer banco)
         if doc is None:                                         # ligada pela assinatura do documento
             linha = con.execute("SELECT id FROM documento WHERE sha256=?", (d["documento_sha256"],)).fetchone()
             if linha is None:

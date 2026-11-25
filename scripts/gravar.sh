@@ -39,7 +39,7 @@ completo() { local f="$1"
   local b="${f%.jsonl}"; b="${b%-[0-9]*}"; local partes=("$b.jsonl" "$b"-[0-9]*.jsonl)
   ! cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.iniciada"' || cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.concluida"'; }
 LISTA=$(mktemp)
-for pasta in eventos operacao verificacao dados/ia backups painel_vivo dados/ponte/pedidos relatorios/espiao; do   # 14/11: os pedidos ao computador local chegam ao repositório   # backups: a cópia dos livros; operacao: a telemetria (30 dias); painel_vivo: a Sala medida pela produção (R53)
+for pasta in eventos operacao verificacao dados/ia backups painel_vivo dados/ponte/pedidos relatorios/espiao correcoes; do   # 25/11 (N-02): a tradução das certidões   # 14/11: os pedidos ao computador local chegam ao repositório   # backups: a cópia dos livros; operacao: a telemetria (30 dias); painel_vivo: a Sala medida pela produção (R53)
   [ -d "$RAIZ/$pasta" ] || continue
   if [ -f "$RAIZ/.inicio_ciclo" ]; then
     find "$pasta" -type f -newer .inicio_ciclo
@@ -80,6 +80,10 @@ for i in 1 2 3 4; do
   # gera os lotes, então o arquivo ausente no ciclo é um lote apagado
   # 04/11/2026: só os lotes que o ciclo gera (o do dia e as partes); as versões (R41) e os lotes das partes do Chrome ficam
   git ls-files "verificacao/lotes/*.json" 2>/dev/null | grep -v "/versoes/" | grep -v -- "-externa-" | grep -v -- "-completo" | while read -r f; do [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
+  # 25/11/2026 (N-03, autorizado pela titular): a versão do lote que a máquina tirou (vencida há 7 dias ou repetida — a
+  # mesma geração gravada de novo) sai do repositório; a de veredito ainda não importado fica (a máquina a guarda)
+  git ls-files "verificacao/lotes/versoes/*.json" 2>/dev/null | eldorado versoes-a-tirar 2>/dev/null | while read -r f; do
+    [ -n "$f" ] && [ ! -e "$RAIZ/$f" ] && git update-index --force-remove "$f"; done
   # 05/11/2026: a telemetria que o ciclo compactou (o .gz existe e o .jsonl não) sai do repositório como .jsonl — antes
   # ficava ao lado do .gz (667 arquivos, 156 MB) e era lida duas vezes
   git ls-files "operacao/*.jsonl" 2>/dev/null | while read -r f; do [ -e "$RAIZ/$f" ] || [ ! -e "$RAIZ/$f.gz" ] || git update-index --force-remove "$f"; done

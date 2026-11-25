@@ -390,6 +390,33 @@ def consolidar_bancos():
     typer.echo(consolidar())
 
 
+@app.command("corrigir-certidoes")
+def corrigir_certidoes(desde: str = typer.Option("2026-11-23", help="o primeiro dia dos eventos lidos (a guarda dos bancos, C-01)"),
+                       banco: str = typer.Option("dados/biblioteca.db", help="a Biblioteca DA PRODUÇÃO (a numeração que vale)"),
+                       eventos: str = typer.Option("eventos", help="a pasta do histórico de eventos")):
+    """N-02 (25/11/2026; autorizado pela titular): a tradução única das certidões gravadas com o número do documento para a
+    assinatura (correcoes/certidoes_sha256.json). Idempotente; conclui sozinha 24 h depois da última certidão com número."""
+    from .correcoes import gerar
+
+    if not Path(banco).exists():
+        typer.echo(f"sem a Biblioteca ({banco}): nada a corrigir")
+        raise typer.Exit(0)
+    typer.echo(json.dumps(gerar(banco, eventos, desde), ensure_ascii=False))
+
+
+@app.command("versoes-a-tirar")
+def versoes_a_tirar(pasta: str = typer.Option("verificacao/lotes", help="a pasta dos lotes")):
+    """N-03 (25/11/2026): lê da entrada os caminhos das versões no repositório e escreve os que a máquina tirou (vencidas
+    ou repetidas) — o gravar.sh os tira do repositório."""
+    import sys
+    from datetime import date as _date
+
+    from ..cartorio.analise_externa import versoes_a_tirar_do_repositorio
+
+    for c in versoes_a_tirar_do_repositorio(sys.stdin.read().split(), Path(pasta), _date.today()):
+        typer.echo(c)
+
+
 @app.command("copia-livros")
 def copia_livros(forcar: bool = typer.Option(False, help="faz a cópia agora, mesmo antes dos 3 dias")):
     """A cópia de segurança dos livros: a cada 3 dias, só dos que mudaram desde a anterior (titular, 29/10/2026)."""

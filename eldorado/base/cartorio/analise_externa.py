@@ -238,6 +238,10 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
     livros = novos + retornos
     nome = f"lote-{hoje.isoformat()}"
     completo = pasta_lotes / f"{nome}.json"
+    try:
+        limpar_versoes(pasta_lotes, hoje)   # N-03 (25/11/2026): a cada passagem, pelo último uso; as de veredito pendente ficam
+    except OSError:
+        pass
     partes_velhas = sorted(pasta_lotes.glob(f"{nome}-parte-*.json"))
     if not livros:
         for f in [completo, *partes_velhas]:
@@ -264,7 +268,7 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
             f.unlink(missing_ok=True)
     # 30/10/2026: o lote do dia tem a fila inteira; os lotes de dias anteriores saem (a gravação os tira do repositório)
     # 03/11/2026 (R41): mantidos por 7 dias — o veredito do Chrome que chega depois precisa do lote que ele recebeu
-    for f in [*pasta_lotes.glob("lote-*.json"), *(pasta_lotes / "versoes").glob("lote-*.json")]:
+    for f in pasta_lotes.glob("lote-*.json"):
         if f.stem[5:15] < (hoje - timedelta(days=7)).isoformat():
             f.unlink(missing_ok=True)
     for k, np_ in enumerate(nomes_partes):
@@ -278,13 +282,157 @@ def _marca(gerado_em: str) -> str:
     return str(gerado_em).replace(":", "").replace("+0000", "Z")[:20]
 
 
+RETENCAO_VERSOES_DIAS = 7
+INDICE_VERSOES = "indice.json"
+
+
+def _hash_conteudo(conteudo: dict) -> str:
+    """N-03 (25/11/2026): o conteúdo do lote sem a hora de geração (duas gerações iguais têm o mesmo hash)."""
+    import hashlib
+    corpo = {k: v for k, v in conteudo.items() if k != "gerado_em"}
+    return hashlib.sha256(json.dumps(corpo, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _ler_indice(pv: Path) -> dict:
+    try:
+        d = json.loads((pv / INDICE_VERSOES).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        d = {}
+    d.setdefault("apelidos", {})
+    d.setdefault("ultimo", {})
+    return d
+
+
+def _gravar_indice(pv: Path, idx: dict) -> None:
+    pv.mkdir(parents=True, exist_ok=True)
+    (pv / INDICE_VERSOES).write_text(json.dumps(idx, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
+
+
 def guardar_versao(pasta_lotes: Path, nome: str, conteudo: dict) -> None:
-    """A cópia de cada versão do lote (7 dias), para a conferência da entrega completa (R41) usar a que o Chrome recebeu."""
+    """A cópia de cada versão do lote (7 dias), para a conferência da entrega completa (R41) usar a que o Chrome recebeu.
+
+    N-03 (25/11/2026): a versão só é gravada quando o CONTEÚDO mudou (sem a hora de geração). A geração idêntica vira um
+    apelido no índice (versoes/indice.json: «<lote>@<hora>» → o arquivo com o mesmo conteúdo) — o veredito que declara
+    essa hora continua achando a versão que o Chrome recebeu (R41), sem uma cópia nova de 1,6 MB a cada 5 minutos."""
     if not conteudo.get("gerado_em"):
         return
     pv = pasta_lotes / "versoes"
     pv.mkdir(parents=True, exist_ok=True)
-    (pv / f"{nome}@{_marca(conteudo['gerado_em'])}.json").write_text(json.dumps(conteudo, ensure_ascii=False, indent=1), encoding="utf-8")
+    chave = f"{nome}@{_marca(conteudo['gerado_em'])}"
+    h = _hash_conteudo(conteudo)
+    idx = _ler_indice(pv)
+    u = idx["ultimo"].get(nome)
+    if u and u.get("hash") == h and (pv / u["arquivo"]).exists():
+        if u["arquivo"] != f"{chave}.json":
+            idx["apelidos"][chave] = u["arquivo"]
+            _gravar_indice(pv, idx)
+        return
+    # N-03: a versão é interna (o Chrome recebe o lote, não a versão): sem recuo, 15% menor
+    (pv / f"{chave}.json").write_text(json.dumps(conteudo, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    idx["ultimo"][nome] = {"arquivo": f"{chave}.json", "hash": h}
+    _gravar_indice(pv, idx)
+
+
+def arquivo_da_versao(pasta_lotes: Path, nome: str, gerado_em: str) -> Path | None:
+    """A versão que o Chrome recebeu: o arquivo próprio ou, se a geração era idêntica a uma anterior, o apelido (N-03)."""
+    pv = pasta_lotes / "versoes"
+    chave = f"{Path(nome).stem}@{_marca(gerado_em)}"
+    if (pv / f"{chave}.json").exists():
+        return pv / f"{chave}.json"
+    alvo = _ler_indice(pv)["apelidos"].get(chave)
+    return pv / alvo if alvo and (pv / alvo).exists() else None
+
+
+def _dia_da_chave(chave: str) -> str:
+    """O dia da geração (lote-AAAA-MM-DD…@AAAA-MM-DDTHHMMSSZ): a hora depois do @; sem ela, o dia do nome do lote."""
+    m = re.search(r"@(\d{4}-\d{2}-\d{2})", chave)
+    return m.group(1) if m else chave[5:15]
+
+
+def _protegidas(pv: Path, pasta_vereditos: Path | None) -> set[str]:
+    """As versões que um veredito ainda não importado declara (R41: elas ficam até a importação)."""
+    out: set[str] = set()
+    if pasta_vereditos is None or not pasta_vereditos.exists():
+        return out
+    idx = _ler_indice(pv)
+    for arq in pasta_vereditos.glob("*.json"):
+        try:
+            d = json.loads(arq.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if not isinstance(d, dict) or not d.get("lote") or not d.get("lote_gerado_em"):
+            continue
+        chave = f"{Path(str(d['lote'])).stem}@{_marca(d['lote_gerado_em'])}"
+        out.add(f"{chave}.json")
+        if chave in idx["apelidos"]:
+            out.add(idx["apelidos"][chave])
+    return out
+
+
+def limpar_versoes(pasta_lotes: Path, hoje: date, pasta_vereditos: Path | None = Path("verificacao/vereditos")) -> dict[str, int]:
+    """N-03 (25/11/2026, autorizado pela titular): a retenção das versões.
+
+    1. Uma vez: as versões idênticas já gravadas (a mesma geração repetida) viram apelido da primeira.
+    2. Sempre: a versão cujo último uso (o arquivo ou um apelido dele) passou de 7 dias sai — menos a que um veredito ainda
+       não importado declara (R41). A gravação (scripts/gravar.sh) tira do repositório o que saiu daqui."""
+    pv = pasta_lotes / "versoes"
+    if not pv.exists():
+        return {"duplicadas": 0, "vencidas": 0}
+    idx = _ler_indice(pv)
+    duplicadas = 0
+    if not idx.get("deduplicado"):
+        por_lote: dict[str, list[Path]] = {}
+        for f in sorted(pv.glob("lote-*.json")):
+            por_lote.setdefault(f.stem.split("@")[0], []).append(f)
+        for nome, arqs in por_lote.items():
+            anterior: tuple[str, str] | None = None
+            for f in sorted(arqs, key=lambda x: x.stem.split("@")[-1]):
+                try:
+                    h = _hash_conteudo(json.loads(f.read_text(encoding="utf-8")))
+                except (OSError, ValueError):
+                    anterior = None
+                    continue
+                if anterior and anterior[0] == h:
+                    idx["apelidos"][f.stem] = anterior[1]
+                    f.unlink(missing_ok=True)
+                    duplicadas += 1
+                else:
+                    anterior = (h, f.name)
+            if anterior:
+                idx["ultimo"][nome] = {"arquivo": anterior[1], "hash": anterior[0]}
+        idx["deduplicado"] = hoje.isoformat()
+    corte = (hoje - timedelta(days=RETENCAO_VERSOES_DIAS)).isoformat()
+    guardar = _protegidas(pv, pasta_vereditos)
+    uso: dict[str, str] = {f.name: _dia_da_chave(f.stem) for f in pv.glob("lote-*.json")}
+    for chave, alvo in idx["apelidos"].items():
+        if alvo in uso:
+            uso[alvo] = max(uso[alvo], _dia_da_chave(chave))
+    vencidas = 0
+    for nome_arq, dia in uso.items():
+        if dia < corte and nome_arq not in guardar:
+            (pv / nome_arq).unlink(missing_ok=True)
+            vencidas += 1
+    idx["apelidos"] = {k: v for k, v in idx["apelidos"].items() if (pv / v).exists() and (_dia_da_chave(k) >= corte or f"{k}.json" in guardar
+                                                                                          or v in guardar)}
+    idx["ultimo"] = {k: v for k, v in idx["ultimo"].items() if (pv / v["arquivo"]).exists()}
+    _gravar_indice(pv, idx)
+    return {"duplicadas": duplicadas, "vencidas": vencidas}
+
+
+def versoes_a_tirar_do_repositorio(caminhos: list[str], pasta_lotes: Path, hoje: date) -> list[str]:
+    """N-03: para o gravar.sh — as versões do repositório que a máquina tirou (vencidas ou repetidas). Só sai a que não
+    está na pasta E é vencida ou é apelido de outra: a versão que a máquina ainda não trouxe nunca sai por engano."""
+    pv = pasta_lotes / "versoes"
+    apelidos = _ler_indice(pv)["apelidos"]
+    corte = (hoje - timedelta(days=RETENCAO_VERSOES_DIAS)).isoformat()
+    out = []
+    for c in caminhos:
+        n = Path(c.strip()).name
+        if not n.startswith("lote-") or not n.endswith(".json") or (pv / n).exists():
+            continue
+        if _dia_da_chave(n[:-5]) < corte or n[:-5] in apelidos:
+            out.append(c.strip())
+    return out
 
 
 def gravar_lote_completo(con: sqlite3.Connection, pasta_lotes: Path, hoje: date, tam: int = 50) -> dict[str, Any]:
@@ -389,8 +537,8 @@ def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path =
     arq = pasta_lotes / f"{Path(r.lote).stem}.json"
     # 04/11/2026: a VERSÃO do lote que o Chrome recebeu (o lote do dia é regravado; a versão guardada tem a mesma hora)
     if r.lote_gerado_em:
-        v = pasta_lotes / "versoes" / f"{Path(r.lote).stem}@{_marca(r.lote_gerado_em)}.json"
-        if v.exists():
+        v = arquivo_da_versao(pasta_lotes, r.lote, r.lote_gerado_em)   # N-03: o arquivo próprio ou o apelido da geração idêntica
+        if v is not None:
             arq = v
     if not arq.exists():
         return f"o lote {r.lote} não está em {pasta_lotes}"
@@ -531,6 +679,10 @@ def trazer_vereditos_novos(pasta: Path) -> list[str]:
                 destino = pasta / sub / Path(n).name
                 if not n.endswith(".json") or destino.exists() or (sub == "lotes/" and "-externa-" not in n and "-completo" not in n):
                     continue
+                if sub == "lotes/versoes/" and versoes_a_tirar_do_repositorio([n], pasta / "lotes", date.today()):
+                    continue          # N-03: a versão que a máquina tirou (vencida ou repetida) não volta
+                if sub == "lotes/versoes/" and Path(n).name == INDICE_VERSOES:
+                    continue          # o índice é da máquina (o do repositório é a cópia dele)
                 corpo = subprocess.run(["git", "show", f"origin/main:{n}"], capture_output=True, timeout=60)
                 if corpo.returncode == 0 and corpo.stdout:
                     destino.parent.mkdir(parents=True, exist_ok=True)
@@ -579,7 +731,7 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
         from .vinculo_empresa import vincular  # C-20: o vínculo empresa–livro (só esfera privada e internacional)
         resultado["vinculo_empresa"] = vincular(con, contexto.diario, _dt.now(_tz.utc).isoformat(timespec="seconds"))
         from ..especial.pesquisa_empresas import importar_pasta as _empresas  # 18/11 (titular): a pesquisa das empresas e o ranking
-        resultado["empresas"] = _empresas(con, contexto.diario)
+        resultado["empresas"] = _empresas(con, contexto.diario, pasta / "empresas")   # 25/11: a pasta do nó (o ensaio não lê a da produção)
         hoje = date.today()
         triados = aplicar_triagem(con, contexto.diario)            # 30/10/2026: o que o Chrome sempre descarta não vai a ele
         saiu |= set(triados)

@@ -258,8 +258,9 @@ def montar(
     # 209 do Início) e as validadas pela estrela; agora tudo vem de eldorado/base/cartorio/regua.py
     from ..cartorio.regua import regua as _regua
     RG = _regua(bib)
+    from ..cartorio.regua import clausula_aberta as _clausula  # N-06 (25/11/2026): a mesma condição da régua (sem o mecanismo)
     AB = ("FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p_ab ON p_ab.livro_id = l.id "
-          "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') AND p_ab.fase <> 'arquivo'")
+          f"WHERE {_clausula(bib, 'p_ab')}")
     abertas = RG["abertas"]
     estrelas = Counter(RG["estrelas"])
     validadas = RG["validadas"]
