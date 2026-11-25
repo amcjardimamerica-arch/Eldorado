@@ -621,6 +621,9 @@ class Interceptador:
             except Exception as e:  # noqa: BLE001 — uma abordagem que falha é pulada: nunca derruba a investigação nem o nó (R18)
                 urls, erro = [], f"{type(e).__name__}: {str(e)[:120]}"
             if not urls:
+                if self._numero(lv.id, f"abordagem {n}") > 3:   # C-04: o banco aceita de 1 a 3
+                    lv.tentadas.add(n)
+                    continue
                 self.diario.emitir("tentativa.registrada", "interceptador", {
                     "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": self._numero(lv.id, f"abordagem {n}"), "em": agora(),
                     "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
@@ -634,12 +637,21 @@ class Interceptador:
             # 17/11/2026 (C-17): o tempo esgotado da IA («indisponível») também é pendência — 47 de 367 abordagens em 24 h
             # contavam como tentadas e o material se perdia
             ferr = f"ia pendente · abordagem {n}" if ("adiada" in ia_d or "estourou" in ia_d or "indisponivel" in ia_d) else f"abordagem {n}"
+            nota = None
+            # 23/11/2026 (C-04): a pendência da IA vale até a TERCEIRA vez — depois a abordagem conta como tentada, com o motivo
+            # (a pendência repetia sem teto, a quarta tentativa era recusada pelo banco e abria alarme: 48 dos 51 alarmes)
+            if ferr.startswith("ia pendente") and self._numero(lv.id, ferr) >= 3:
+                ferr, nota = f"abordagem {n}", "IA não leu em 3 tentativas"
+            numero = self._numero(lv.id, ferr)
+            if numero > 3:                                # o banco aceita de 1 a 3: a quarta não é emitida
+                lv.tentadas.add(n)
+                continue
             self.diario.emitir("tentativa.registrada", "interceptador", {
-                "livro_id": lv.id, "fase": "preparacao", "ferramenta": ferr, "numero": self._numero(lv.id, ferr), "em": agora(),
+                "livro_id": lv.id, "fase": "preparacao", "ferramenta": ferr, "numero": numero, "em": agora(),
                 "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
                                          "enderecos": len(urls), "faltam": lv.faltam,
                                          "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0,
-                                         "ia": (achado.dados or {}).get("ia") if achado else None}, ensure_ascii=False),
+                                         "ia": (achado.dados or {}).get("ia") if achado else None, "nota": nota}, ensure_ascii=False),
                 "proxima_em": None})
             lv.tentadas.add(n)
             return {"livro": lv.id, "abordagem": n, "achado": achado, "esgotado": False}

@@ -142,6 +142,15 @@ class Gravador:
             except (sqlite3.Error, KeyError, ValueError, TypeError) as e:
                 if con.in_transaction:
                     con.execute("ROLLBACK")
+                if ev.tipo == "tentativa.registrada" and "numero BETWEEN 1 AND 3" in str(e) \
+                        and str(ev.dados.get("ferramenta") or "").startswith("ia pendente"):
+                    # 23/11/2026 (C-04): SÓ a marca do defeito — a pendência «ia pendente · abordagem N» acima de 3, emitida de 19
+                    # a 25/11 (o código corrigido não a emite mais). Nada se perde: a abordagem conta como tentada; o evento é
+                    # dispensado, sem alarme (eram 48 dos 51). Qualquer outra tentativa fora de 1 a 3 segue recusada com alarme.
+                    con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
+                    con.commit()
+                    r.dispensados += 1
+                    continue
                 if isinstance(e, LinhaAusente) and ev.tipo in DISPENSAVEIS:   # 27/10/2026: o dado recalculado sem a ficha
                     con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
                     con.commit()
@@ -276,6 +285,12 @@ class Gravador:
         try:                                        # 27/10/2026: um evento recusado tem no máximo um alarme aberto (antes: ×4)
             if cer is not None and cer.execute("SELECT 1 FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' AND instr(mensagem, ?) > 0",
                                                (f", {ev.id})",)).fetchone():
+                return
+            # 23/11/2026 (C-04): a mesma causa (o mesmo tipo de evento e o mesmo motivo) tem um alarme só — 48 recusas iguais
+            # abriam 48 alarmes, um por código de evento
+            if cer is not None and cer.execute("SELECT 1 FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' "
+                                               "AND mensagem LIKE ? AND substr(mensagem, instr(mensagem, '): ') + 3) = ?",
+                                               (f"evento recusado ({ev.tipo}, %", str(motivo)[:2000])).fetchone():
                 return
         except sqlite3.Error:
             pass

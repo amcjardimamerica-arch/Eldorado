@@ -139,3 +139,45 @@ def test_o_site_publica_com_a_sala_da_producao_quando_a_aplicacao_nao_termina():
     gera = next(p for p in passos if p.get("name", "").startswith("Gerar o site"))
     assert "if" not in gera                                                                   # publica sempre
     assert 'os.environ.get("ELDORADO_LIVROS_DE")' in inspect.getsource(dados.gerar)
+
+
+def _aplicar_eventos(tmp_path, emitir):
+    import sqlite3
+
+    import typer
+
+    from eldorado.base.nucleo import comandos
+    from eldorado.base.nucleo.eventos import Diario
+    cfg = _config(tmp_path)
+    emitir(Diario(tmp_path / "eventos", "teste"))
+    try:
+        comandos.aplicar(cfg)
+    except typer.Exit:
+        pass
+    return sqlite3.connect(tmp_path / "dados" / "cerebro.db")
+
+
+def test_a_ia_pendente_para_na_terceira_tentativa_e_nao_gera_evento_recusado(tmp_path):
+    """C-04: a quarta tentativa «ia pendente» era recusada pelo banco (1 a 3) e abria alarme — a pendência para na terceira
+    (a abordagem passa a contar como tentada) e o evento antigo com a quarta é dispensado, sem alarme."""
+    import inspect
+
+    from eldorado.motores.pilotos import interceptador
+    fonte = inspect.getsource(interceptador)
+    assert 'if ferr.startswith("ia pendente") and self._numero(lv.id, ferr) >= 3:' in fonte and "if numero > 3:" in fonte
+
+    def emitir(d):
+        d.emitir("tentativa.registrada", "interceptador", {"livro_id": "L1", "fase": "preparacao", "ferramenta": "ia pendente · abordagem 2",
+                                                           "numero": 4, "em": "2026-11-23T10:00:00+00:00", "resultado": "{}", "proxima_em": None})
+    cer = _aplicar_eventos(tmp_path, emitir)
+    assert cer.execute("SELECT COUNT(*) FROM alarme WHERE mensagem LIKE 'evento recusado (tentativa.registrada%'").fetchone()[0] == 0
+
+
+def test_recusas_iguais_do_gravador_sao_uma_causa_so_na_sala(tmp_path):
+    """C-04: 48 recusas iguais abriam 48 alarmes (o código do evento na causa) — a mesma causa tem um alarme só."""
+    def emitir(d):
+        for ano in (2024, 2025, 2026):
+            d.emitir("incentivo.registrado", "teste", {"cnpj": "1", "lei": "LEI-QUE-NAO-EXISTE", "ano": ano, "valor": None, "comprovado": 1,
+                                                        "fonte": "x", "em": "2026-11-23T10:00:00+00:00"})
+    cer = _aplicar_eventos(tmp_path, emitir)
+    assert cer.execute("SELECT COUNT(*) FROM alarme WHERE fechado_em IS NULL AND mensagem LIKE 'evento recusado (incentivo.registrado%'").fetchone()[0] == 1
