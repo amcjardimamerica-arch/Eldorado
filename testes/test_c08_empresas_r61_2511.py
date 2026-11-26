@@ -106,10 +106,17 @@ def test_o_importador_para_quando_quase_toda_a_pesquisa_seria_nova(tmp_path, ban
 
 def test_a_pesquisa_ja_importada_nao_chega_marcada_como_importada():
     """Os três arquivos de 18/11 chegaram dentro de importados/, com os relatórios de um ensaio: a produção os pulava."""
+    # 26/11/2026: depois que a produção importa pela R61, o relatório dela está no repositório (e a trava, que só aceitava
+    # a ausência, derrubou o portão). O que se protege é o mesmo: nenhum relatório de ENSAIO antigo marcando a pesquisa como
+    # importada — se houver relatório, é o da importação pela R61 (com a atuação declarada separada da unidade em Goiás)
+    import json
     pesquisas = sorted(PASTA.glob("pesquisa-*.json"))
     assert len(pesquisas) == 3
     for arq in pesquisas:
-        assert not (PASTA / "importados" / (arq.stem + "-relatorio.json")).exists()
+        rel = PASTA / "importados" / (arq.stem + "-relatorio.json")
+        if rel.exists():
+            r = json.loads(rel.read_text(encoding="utf-8"))
+            assert "goias_declarada" in r and "goias_so_unidade" in r, f"{rel.name} não é da importação pela R61"
 
 
 def test_indicadores_de_empresas_nao_entram_na_sala_como_operacao():

@@ -264,3 +264,28 @@ def test_item_sem_id_e_separado_e_nao_derruba_o_decidir_rede():
     assert saida == [] and any(t == "alarme.aberto" and "item inválido separado" in x["mensagem"] for t, x in d.ev)
     fonte = inspect.getsource(encaminhamento.no_originais)
     assert 'saida.append({"leis"' not in fonte and 'saida.append({"tempos"' not in fonte
+
+
+def test_a_empresa_excluida_some_do_ranking_e_o_total_e_o_das_ativas(tmp_path):
+    """26/11/2026: na produção, as pessoas físicas excluídas (R61) tiraram 184 empresas do ranking e do site, e as travas que
+    contavam a tabela inteira derrubaram o portão. Reproduz: uma cópia migrada, com uma empresa excluída."""
+    import shutil
+    import sqlite3
+
+    from eldorado.base.especial.ativas import ativas
+    from eldorado.base.fluxo.nos import abrir_bancos
+    from eldorado.base.painel.dados import _molde
+    from eldorado.base.painel.ranking import montar
+    (tmp_path / "dados").mkdir()
+    for n in ("biblioteca", "cerebro"):
+        shutil.copy(f"dados/{n}.db", tmp_path / "dados" / f"{n}.db")
+    for c in {id(x): x for x in abrir_bancos(tmp_path / "dados").values()}.values():
+        c.close()
+    con = sqlite3.connect(tmp_path / "dados" / "biblioteca.db")
+    fora = con.execute("SELECT cnpj FROM empresa LIMIT 1").fetchone()[0]
+    con.execute("UPDATE empresa SET excluida_em = '2026-11-25T00:00:00+00:00' WHERE cnpj = ?", (fora,))
+    con.commit()
+    r = montar(con, _molde)
+    n = con.execute(f"SELECT COUNT(*) FROM empresa WHERE {ativas(con)}").fetchone()[0]
+    assert r["total"] == n == len(r["empresas"]) and n == con.execute("SELECT COUNT(*) FROM empresa").fetchone()[0] - 1
+    assert fora not in {e.get("cnpj") or e.get("cnpj_matriz") for e in r["empresas"]}

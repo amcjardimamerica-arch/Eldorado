@@ -68,7 +68,8 @@ def test_o_item_do_radar_e_o_livro_campo_a_campo(tmp_path):
     fase = dict(bib.execute("SELECT livro_id, fase FROM passaporte").fetchall())
     emp = json.loads((tmp_path / "site" / "dados" / "empresas.json").read_text(encoding="utf-8"))["estados"]
     cnpjs = [x["cnpj"] for v in emp.values() if isinstance(v, dict) for x in v.get("empresas", [])]
-    assert sorted(cnpjs) == sorted(r[0] for r in bib.execute("SELECT cnpj FROM empresa"))       # as empresas: as mesmas, sem repetir
+    from eldorado.base.especial.ativas import ativas  # 26/11/2026 (R61): as ativas — a excluída não aparece no site
+    assert sorted(cnpjs) == sorted(r[0] for r in bib.execute(f"SELECT cnpj FROM empresa WHERE {ativas(bib)}"))   # as mesmas, sem repetir
     for x in itens:
         m = I.melhor(certs.get(x["id"], []))
         assert {k for k, v in x["checklist"].items() if v.get("s")} == {k for k in I.DOZE if I.resolvido(m.get(k))}, x["id"]

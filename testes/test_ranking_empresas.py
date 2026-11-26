@@ -8,7 +8,10 @@ from eldorado.base.painel.ranking import montar
 def test_o_ranking_tem_todas_as_empresas_da_biblioteca():
     con = sqlite3.connect("file:dados/biblioteca.db?mode=ro", uri=True)
     r = montar(con, _molde)
-    n = con.execute("SELECT COUNT(*) FROM empresa").fetchone()[0]
+    # 26/11/2026 (R61, decisão de 25/11): a pessoa física sai por exclusão lógica e some do ranking — conta só as ativas (com
+    # a tabela inteira, a trava caía no portão da produção: 22.598 no ranking contra 22.782 linhas, 184 excluídas)
+    from eldorado.base.especial.ativas import ativas
+    n = con.execute(f"SELECT COUNT(*) FROM empresa WHERE {ativas(con)}").fetchone()[0]
     assert r["total"] == n == len(r["empresas"]) > 0                                      # todas as empresas, nenhuma de fora
     assert r["listas"]["destinacao_tributaria"]["total"] + r["listas"]["patrocinio_privado"]["total"] == n
     trib = [e for e in r["empresas"] if e["origem"] == "destinação tributária"]
