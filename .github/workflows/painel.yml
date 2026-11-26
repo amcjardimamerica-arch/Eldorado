@@ -29,7 +29,7 @@ jobs:
   publicar:
     environment:
       name: github-pages
-      url: ${{ steps.publicacao.outputs.page_url }}
+      url: ${{ steps.publicacao.outputs.page_url || steps.publicacao2.outputs.page_url }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30            # 23/11/2026 (C-03): a aplicação tem limite próprio (12 min) e a publicação sai depois dela
     steps:
@@ -128,6 +128,29 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      # 26/11/2026 (manutenção da Sala): o envio do artefato terminava e o deploy-pages, logo em seguida, ainda não o via
+      # («Found 0 artifacts»): a lista de artefatos do GitHub demora alguns segundos para mostrar o que acabou de subir, e a
+      # publicação falhava com o site pronto. Agora a publicação espera o artefato aparecer e, se ainda assim falhar, tenta
+      # de novo uma vez.
+      - name: Esperar o artefato do site aparecer para a publicação
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 12); do
+            n=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" \
+                  --jq '[.artifacts[] | select(.name == "github-pages")] | length' 2>/dev/null || echo 0)
+            [ "${n:-0}" -gt 0 ] && { echo "artefato visível depois de $(( (i - 1) * 5 )) s"; exit 0; }
+            sleep 5
+          done
+          echo "::warning::o artefato não apareceu na lista em 60 s; a publicação tenta assim mesmo"
       - name: Publicar
         id: publicacao
+        continue-on-error: true      # a segunda tentativa, logo abaixo, cobre a falha passageira
+        uses: actions/deploy-pages@v4
+      - name: Esperar antes da segunda tentativa
+        if: steps.publicacao.outcome == 'failure'
+        run: sleep 20
+      - name: Publicar (segunda tentativa)
+        id: publicacao2
+        if: steps.publicacao.outcome == 'failure'
         uses: actions/deploy-pages@v4
