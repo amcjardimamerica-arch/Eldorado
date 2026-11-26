@@ -5,6 +5,7 @@ como retorno (para ele aprender).
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -55,7 +56,16 @@ def no_decidir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         itens = list(itens) + [x for x in pendentes_sem_decisao(Path(parametros.get("dados", "dados")), int(parametros.get("recuperar_pendentes")))
                                if x["id"] not in ja]
     for item in itens:
-        achado = msgspec.convert({k: v for k, v in item.items() if not k.startswith("_")}, Achado)
+        try:
+            achado = msgspec.convert({k: v for k, v in item.items() if not k.startswith("_")}, Achado)
+        except (msgspec.ValidationError, AttributeError, TypeError) as e:
+            # 23/11/2026 (C-09): o item inválido é separado e registrado, com o conteúdo e a origem; os demais seguem (um item
+            # sem id derrubava o nó inteiro)
+            contexto.diario.emitir("alarme.aberto", "pertinencia", {
+                "gravidade": "media", "modulo": "pertinencia", "aberto_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "mensagem": f"item inválido separado na Pertinência ({type(e).__name__}: {str(e)[:120]}); origem: "
+                            f"{(item or {}).get('motor') if isinstance(item, dict) else type(item).__name__}; conteúdo: {str(item)[:300]}"})
+            continue
         r = p.decidir(achado)
         r.fonte = (achado.dados or {}).get("fonte")
         retornos.setdefault(achado.motor, []).append(r)

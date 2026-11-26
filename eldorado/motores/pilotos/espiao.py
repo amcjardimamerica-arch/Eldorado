@@ -273,7 +273,7 @@ class Espiao:
         self._chave_voo = str(Path(estado).resolve()) if not str(estado).startswith(":") else f"mem-{id(self)}"
         self.con.row_factory = None
         self.con.isolation_level = ""                         # as transações explícitas do Espião (commit) seguem valendo
-        self.consultar, self.ler = consultar, ler
+        self.consultar, self.ler = consultar, self._protegida(ler)
         self.vigiados, self.conhecidos = vigiados or set(), conhecidos or set()
         self.fams = familias(empresas or [])
         self.rnd = rnd or random.Random()
@@ -316,6 +316,20 @@ class Espiao:
         return not any((rotas.get(r) or "") <= agora_ for r in ROTAS_GERAIS)
 
     RECENTE_DIAS = 3
+
+    def _protegida(self, ler):
+        """23/11/2026 (C-07): o erro de um leitor nunca encerra o voo — a pista vira «página não lida», o voo segue e o erro
+        é contado na missão, com o tipo (o leitor de áudio derrubou o voo três vezes em seis minutos em 22/11)."""
+        self.erros_leitura: dict[str, int] = {}
+
+        def ler_protegido(url):
+            try:
+                return ler(url)
+            except Exception as e:  # noqa: BLE001
+                k = f"erro do leitor ({type(e).__name__}: {str(e)[:60]})"
+                self.erros_leitura[k] = self.erros_leitura.get(k, 0) + 1
+                return None
+        return ler_protegido
 
     def fora_do_ar(self, rota: str) -> bool:
         """17/11/2026 (C-05): a rota que não respondeu nenhuma vez em 24 h, com 5 falhas ou mais, está fora do ar — a metabusca é
@@ -514,6 +528,10 @@ class Espiao:
             self.conhecidos.add(p.link.rstrip("/"))
         bloqueada = not pistas and all(("descans" in r or "falhou" in r or "deslig" in r.lower()) for r in relato)
         em = datetime.now(timezone.utc).isoformat()
+        for k, n in getattr(self, "erros_leitura", {}).items():    # C-07: o erro do leitor vira registro da missão
+            motivos[k] = motivos.get(k, 0) + n
+        if getattr(self, "erros_leitura", None):
+            self.erros_leitura.clear()
         linha_m = {"em": em, "familia": fam, "consulta": q, "resultados": len(pistas), "candidatos": candidatos, "achados": len(achados),
                    "motivos": json.dumps(motivos, ensure_ascii=False), "rotas": json.dumps(relato, ensure_ascii=False), "bloqueada": int(bloqueada)}
         if obj:                                     # C-20 (3): o achado leva o objetivo e, se é de empresa, a empresa como financiador

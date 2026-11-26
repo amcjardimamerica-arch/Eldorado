@@ -25,8 +25,13 @@ class LeitorAudio:
         with tempfile.NamedTemporaryFile(suffix=".media") as f:
             f.write(conteudo)
             f.flush()
-            segmentos, _ = self._m.transcribe(f.name, language="pt", vad_filter=True)
-            texto = " ".join(s.text.strip() for s in segmentos)
+            try:
+                segmentos, _ = self._m.transcribe(f.name, language="pt", vad_filter=True)
+                texto = " ".join(s.text.strip() for s in segmentos)
+            except Exception as e:  # noqa: BLE001
+                # 23/11/2026 (C-07): qualquer erro do áudio vira «sem leitor» para este documento (a biblioteca av sem versão
+                # fixada recusou um argumento do faster-whisper e derrubou o voo do Espião três vezes)
+                raise SemLeitor(f"leitor de áudio: {type(e).__name__}: {str(e)[:160]}") from e
         partes = [texto[i:i + 3000] for i in range(0, len(texto), 3000)] or [""]
         return Leitura(tipo="audio", leitor=self.nome, sha256=sha256(conteudo), paginas=[Pagina(n + 1, t) for n, t in enumerate(partes)],
                        alertas=["transcrição automática (faster-whisper): conferir os trechos"])

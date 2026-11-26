@@ -197,3 +197,70 @@ def test_o_laco_sai_limpo_no_actions_depois_de_gravar(monkeypatch):
     assert blocos and all(b["env"].get("ELDORADO_SAIDA_DIRETA") == "1" for b in blocos)
     fonte = inspect.getsource(comandos.permanente)
     assert fonte.index("gravar_agora(esperar=True)") < fonte.index("_sair_limpo()")   # sai só depois de gravar
+
+
+def test_o_no_originais_respeita_o_orcamento_mesmo_com_lei_que_nao_responde():
+    """C-06: uma passagem ficou 2 h 55 presa no nó «originais» — a lei que não responde fica para a próxima passagem."""
+    import sqlite3
+    import time
+    from datetime import datetime, timezone
+
+    from eldorado.base.cartorio.leis import acompanhar
+    b = sqlite3.connect(":memory:")
+    b.execute("CREATE TABLE lei(id TEXT, esfera TEXT, numero TEXT, ementa TEXT, situacao TEXT, link_oficial TEXT, atualizada_em TEXT)")
+    b.executemany("INSERT INTO lei VALUES (?, 'federal', ?, 'x', 'vigente', ?, '2026-10-22')", [(f"L{i}", f"Lei {i}", f"https://x/{i}") for i in range(4)])
+
+    def lenta(url):
+        time.sleep(30)                                   # a lei que nunca responde
+    t0 = time.monotonic()
+    r = acompanhar(b, _D(), lenta, datetime(2026, 11, 23, tzinfo=timezone.utc), orcamento_s=2, limite_lei_s=0.5)
+    assert time.monotonic() - t0 < 4 and r["conferidas"] == 0 and r["adiadas"] == 4
+
+
+class _D:
+    def __init__(self):
+        self.ev = []
+
+    def emitir(self, tipo, origem, dados):
+        self.ev.append(tipo)
+
+
+def test_erro_do_leitor_de_audio_nao_derruba_o_voo_do_espiao(tmp_path):
+    """C-07: o erro de um leitor (o mesmo TypeError do av) não encerra o voo — a pista é pulada e o erro fica na missão."""
+    import json
+    import random
+
+    from eldorado.motores.descoberta.pistas import Pista
+    from eldorado.motores.pilotos.espiao import Espiao
+
+    def leitor_quebrado(url):
+        raise TypeError("open() got an unexpected keyword argument 'metadata_errors'")
+    pistas = [Pista(titulo="Edital de chamamento para OSC", link="https://exemplo.org/edital.mp4", origem="busca")]
+    e = Espiao(tmp_path / "c.db", lambda q: (pistas, ["searxng: 1 pista(s)"]), leitor_quebrado, rnd=random.Random(1))
+    m = e.missao()                                                             # não levanta
+    motivos = json.loads(e.con.execute("SELECT motivos FROM espiao_missao ORDER BY id DESC LIMIT 1").fetchone()[0])
+    assert m is not None and any("erro do leitor (TypeError" in k for k in motivos)
+
+
+def test_item_sem_id_e_separado_e_nao_derruba_o_decidir_rede():
+    """C-09: um item sem id (o {"leis": …} que o nó dos originais punha na saída) derrubava o decidir_rede — o item inválido
+    é separado, com alarme, e os demais seguem; e o nó dos originais não põe mais nada além de achados na saída."""
+    import inspect
+    from types import SimpleNamespace
+
+    from eldorado.base.cerebro import encaminhamento
+    from eldorado.base.cerebro.pertinencia import no_decidir
+
+    class Diario:
+        def __init__(self):
+            self.ev = []
+
+        def emitir(self, tipo, origem, dados):
+            self.ev.append((tipo, dados))
+            return SimpleNamespace(id="x")
+    d = Diario()
+    saida = no_decidir([{"leis": {"conferidas": 1}}], {"missao": "eldorado.base.missao.oportunidades:MissaoOportunidades"},
+                       SimpleNamespace(diario=d))
+    assert saida == [] and any(t == "alarme.aberto" and "item inválido separado" in x["mensagem"] for t, x in d.ev)
+    fonte = inspect.getsource(encaminhamento.no_originais)
+    assert 'saida.append({"leis"' not in fonte and 'saida.append({"tempos"' not in fonte

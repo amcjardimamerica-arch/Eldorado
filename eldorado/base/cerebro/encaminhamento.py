@@ -268,8 +268,13 @@ def no_originais(itens: list[dict[str, Any]], parametros: dict[str, Any], contex
         return []
     from .originais import vigiar
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
+    import time
+    t0 = time.monotonic()
+    teto = float(parametros.get("teto_originais_s", 300))      # 23/11/2026 (C-06): o nó inteiro com teto (uma passagem ficou 2 h 55 aqui)
+    tempos: dict[str, float] = {}
     try:
         dos_originais, _ = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario)
+        tempos["vigilia_s"] = round(time.monotonic() - t0, 1)
         enc = Encaminhamento(con, contexto.diario, registro, None)
         saida = []
         from ..cartorio.leis import acompanhar  # C-21: o andamento das leis, pela mesma escada
@@ -277,18 +282,26 @@ def no_originais(itens: list[dict[str, Any]], parametros: dict[str, Any], contex
         def _ler_lei(u: str) -> str | None:
             r = escada.buscar(u)
             return r.conteudo.decode("utf-8", errors="replace") if r is not None else None
+        t_leis = time.monotonic()
         try:
-            leis = acompanhar(con, contexto.diario, _ler_lei)
-            if leis.get("conferidas"):                                # só quando alguma lei foi conferida
-                saida.append({"leis": leis})
+            resta = teto - (t_leis - t0)
+            leis = acompanhar(con, contexto.diario, _ler_lei, orcamento_s=min(120.0, resta)) if resta > 5 else {"conferidas": 0}
+            # 23/11/2026 (C-09): o resultado das leis vai ao registro da execução, NÃO à saída do nó — a saída vai à
+            # Pertinência, que só recebe achados (o item {"leis": …}, sem id, derrubou o decidir_rede em 21/11)
+            if leis.get("conferidas") or leis.get("adiadas"):
+                print(f"  originais — as leis: {leis}", flush=True)
         except Exception as e:  # noqa: BLE001 — o acompanhamento das leis nunca derruba a vigília dos originais
-            saida.append({"leis": f"{type(e).__name__}: {str(e)[:120]}"})
+            print(f"  originais — as leis: {type(e).__name__}: {str(e)[:120]}", flush=True)
+        tempos["leis_s"] = round(time.monotonic() - t_leis, 1)
         for a in dos_originais:                       # C-01: cada entrega isolada — uma com defeito não derruba as outras
             try:
                 saida.append(enc._entregar(a, a.motor))
             except Exception as e:  # noqa: BLE001
                 msg = f"entrega do original {a.link_divulgacao}: {type(e).__name__}: {str(e)[:160]}"
                 contexto.diario.emitir("alarme.aberto", "originais", {"gravidade": "media", "modulo": "originais", "aberto_em": agora(), "mensagem": msg})
+        tempos["entregas_s"] = round(time.monotonic() - t0 - tempos["vigilia_s"] - tempos["leis_s"], 1)
+        tempos["total_s"] = round(time.monotonic() - t0, 1)
+        print(f"  originais — o tempo de cada parte: {tempos}" + (" (passou do teto)" if tempos["total_s"] > teto else ""), flush=True)   # C-06
         return saida
     finally:
         con.close()
