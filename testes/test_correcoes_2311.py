@@ -181,3 +181,19 @@ def test_recusas_iguais_do_gravador_sao_uma_causa_so_na_sala(tmp_path):
                                                         "fonte": "x", "em": "2026-11-23T10:00:00+00:00"})
     cer = _aplicar_eventos(tmp_path, emitir)
     assert cer.execute("SELECT COUNT(*) FROM alarme WHERE fechado_em IS NULL AND mensagem LIKE 'evento recusado (incentivo.registrado%'").fetchone()[0] == 1
+
+
+def test_o_laco_sai_limpo_no_actions_depois_de_gravar(monkeypatch):
+    """26/11/2026: o bloco do laço, já concluído e gravado, abortava na saída (código 134) com uma linha de execução em
+    segundo plano viva — no GitHub Actions a saída é direta; fora dele (os testes), nada muda."""
+    import inspect
+
+    from eldorado.base.nucleo import comandos
+    monkeypatch.delenv("ELDORADO_SAIDA_DIRETA", raising=False)
+    assert comandos._sair_limpo() is None                                     # sem a variável (os testes): segue normal
+    import yaml
+    passos = yaml.safe_load(Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8"))["jobs"]["passagem"]["steps"]
+    blocos = [p for p in passos if "eldorado permanente" in str(p.get("run", ""))]
+    assert blocos and all(b["env"].get("ELDORADO_SAIDA_DIRETA") == "1" for b in blocos)
+    fonte = inspect.getsource(comandos.permanente)
+    assert fonte.index("gravar_agora(esperar=True)") < fonte.index("_sair_limpo()")   # sai só depois de gravar

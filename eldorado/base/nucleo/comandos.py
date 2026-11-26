@@ -902,6 +902,25 @@ def permanente(
         typer.echo(f"  relatório de turno: {type(e).__name__}: {str(e)[:160]}")
     gravar_agora(esperar=True)  # tudo o que terminou é gravado; nada fica pela metade
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
+    _sair_limpo()
+
+
+def _sair_limpo() -> None:
+    """26/11/2026: o trabalho do laço está gravado — a saída é direta, sem esperar as linhas de execução em segundo plano (a
+    leitura do OCR ou do Common Crawl que passou do tempo segue sozinha). Com elas vivas no encerramento do Python, a biblioteca
+    em C++ abortava o processo («terminate called without an active exception», código 134) e o bloco do laço, já concluído,
+    aparecia como falha. Só com ELDORADO_SAIDA_DIRETA=1 (os blocos do laço no eldorado.yml): nos testes — inclusive os da
+    Qualidade, que também rodam no Actions —, o processo segue normal."""
+    import os
+    import sys
+    if os.environ.get("ELDORADO_SAIDA_DIRETA") != "1":
+        return
+    for f in (sys.stdout, sys.stderr):
+        try:
+            f.flush()
+        except Exception:  # noqa: BLE001
+            pass
+    os._exit(0)
 
 
 @app.command()
