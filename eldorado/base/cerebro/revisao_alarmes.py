@@ -46,6 +46,11 @@ def revisar(cer: sqlite3.Connection, expurgo: Path | None = None) -> list[tuple[
             # 10/11/2026 (parecer, passo 4): o voo que caiu, com voos avaliados depois dele (o piloto voltou a voar)
             if _voou_depois(cer, aberto):
                 fechar.append((aid, "o Interceptador voltou a voar e os voos seguintes foram avaliados"))
+        elif modulo == "piloto:espiao" and "falhou" in msg:
+            # 26/11/2026 (manutenção da Sala): o voo permanente do Espião que caiu (TypeError «metadata_errors», 22/11) ficava
+            # aceso para sempre; fecha quando o Espião pousou de um voo depois do alarme (o sinal «pousou» do piloto)
+            if _espiao_pousou_depois(cer, aberto):
+                fechar.append((aid, "o Espião voltou a voar e pousou depois do alarme"))
         elif modulo == "analise-externa" and "triagem-aprendida" in msg:
             # 10/11/2026 (parecer, passo 1; R53): a triagem do próprio sistema não passa mais pela conferência do Chrome (R41)
             fechar.append((aid, "a triagem aprendida é do sistema: a entrega completa do Chrome (R41) não se aplica a ela"))
@@ -63,6 +68,14 @@ def _leu_depois(cer: sqlite3.Connection, motor: str, desde: str) -> bool:
 def _voou_depois(cer: sqlite3.Connection, desde: str) -> bool:
     try:
         return cer.execute("SELECT 1 FROM comandante_decisao WHERE etapa = 'interceptador' AND em > ? AND recompensa IS NOT NULL LIMIT 1",
+                           (desde,)).fetchone() is not None
+    except sqlite3.Error:
+        return False
+
+
+def _espiao_pousou_depois(cer: sqlite3.Connection, desde: str) -> bool:
+    try:
+        return cer.execute("SELECT 1 FROM medicao WHERE marcador = 'piloto:espiao' AND em > ? AND motivo LIKE 'pousou%' LIMIT 1",
                            (desde,)).fetchone() is not None
     except sqlite3.Error:
         return False

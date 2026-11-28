@@ -59,7 +59,16 @@ DISPENSAVEIS = {"livro.codigo", "livro.base", "livro.esfera", "livro.localizado"
                 "comandante.avaliada",   # avaliar a decisão que saiu pela regra dos 30 dias não é erro (01/11/2026)
                 # 10/11/2026 (parecer da Sala, passo 3): o prazo é recalculado pela auditoria e vai junto no livro.decupado, que
                 # cria a ficha; o prazo que chega antes da ficha é dispensado (3 alarmes vermelhos de 09/11 ficavam acesos)
-                "livro.prazo"}
+                "livro.prazo",
+                # 26/11/2026 (manutenção da Sala): expirar a memória que já saiu (duas passagens leem a mesma fotografia e as
+                # duas pedem a expiração) não é erro — o que se queria, a linha fora da memória, já aconteceu
+                "memoria.expirada"}
+
+# 26/11/2026 (manutenção da Sala): a correção C-04 chegou à produção em 25/11/2026 às 23:46 (UTC). As recusas da tentativa
+# fora de 1 a 3 abertas ANTES disso são a marca do defeito «ia pendente · abordagem N» (as 76 da Sala, de 23 a 25/11; todas
+# as tentativas fora da faixa nos eventos são «ia pendente»): o evento nunca volta a ser aplicado (o arquivo já foi marcado
+# como aplicado), então o alarme fecha por esta data. Depois dela, qualquer tentativa fora de 1 a 3 segue recusada com alarme.
+C04_EM_PRODUCAO = "2026-11-25T23:46:00+00:00"
 
 
 class LinhaAusente(ValueError):
@@ -93,16 +102,17 @@ class Gravador:
         if cer is None:
             return
         try:
-            abertos = cer.execute("SELECT id, mensagem FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' "
+            abertos = cer.execute("SELECT id, mensagem, aberto_em FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' "
                                   "AND mensagem LIKE 'evento recusado (%'").fetchall()
         except sqlite3.Error:
             return
-        for aid, msg in abertos:
+        for aid, msg, aberto in abertos:
             m = re.match(r"evento recusado \(([a-z_.]+), ([^)]+)\)", msg or "")
             if not m:
                 continue
             tipo, eid = m.group(1), m.group(2)
-            resolvido = tipo in DISPENSAVEIS or eid in DEPENDENTES_DISPENSADOS
+            resolvido = tipo in DISPENSAVEIS or eid in DEPENDENTES_DISPENSADOS or \
+                (tipo == "tentativa.registrada" and "numero BETWEEN 1 AND 3" in msg and (aberto or "9") < C04_EM_PRODUCAO)
             if not resolvido:
                 for nome in {a.banco for a in CATALOGO.get(tipo, ())}:
                     try:
@@ -255,7 +265,7 @@ class Gravador:
                 raise ValueError(f"nada se apaga em {alvo.tabela}")
             cur = con.execute(f"DELETE FROM {alvo.tabela} WHERE {' AND '.join(f'{c}=?' for c in alvo.chave)}", [dados[c] for c in alvo.chave])
             if cur.rowcount == 0:
-                raise ValueError(f"linha não encontrada em {alvo.tabela}")
+                raise LinhaAusente(f"linha não encontrada em {alvo.tabela}")   # 26/11/2026: a linha que já saiu (dispensável por tipo)
         else:
             raise ValueError(f"operação desconhecida: {alvo.operacao}")
 
